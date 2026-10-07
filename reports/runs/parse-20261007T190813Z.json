@@ -1,0 +1,250 @@
+{
+  "run_id": "parse-20261007T190813Z",
+  "stage": "parse",
+  "started_at": "2026-10-07T19:08:13+00:00",
+  "finished_at": "2026-10-07T19:09:54+00:00",
+  "status": "done",
+  "git_commit": "5f14ef1cdb836e60e871b5c4b33782a274087916",
+  "params": {
+    "term": null,
+    "limit": null,
+    "force": false,
+    "time_budget": 550.0
+  },
+  "prompt_versions": {},
+  "models": {},
+  "counts": {
+    "in_scope": 16,
+    "to_parse": 11,
+    "ok": 6,
+    "ocr": 5,
+    "failed": 0,
+    "tamil": 3,
+    "chunks_written": 342,
+    "redated": 0,
+    "date_review_rows": 16,
+    "stopped": null
+  },
+  "config": {
+    "settings": {
+      "paths": {
+        "db": "data/ept.sqlite",
+        "raw_evidence": "data/raw/evidence",
+        "manual_dir": "data/raw/evidence/_manual",
+        "manual_manifest": "data/raw/evidence/_manual/manual_manifest.csv",
+        "trackers_raw": "data/raw/trackers",
+        "catalogue_dir": "data/interim/catalogue",
+        "text_dir": "data/interim/text",
+        "lang_pairs": "data/interim/lang_pairs.csv",
+        "tracker_leads": "data/interim/tracker_leads.csv",
+        "date_review": "data/interim/date_review.csv",
+        "runs": "reports/runs",
+        "coverage_md": "reports/coverage_01.md",
+        "coverage_json": "reports/coverage_01.json",
+        "prompts": "prompts",
+        "llm_cache": "cache/llm",
+        "llm_usage_log": "reports/llm_usage.jsonl",
+        "llm_fixtures": "tests/fixtures/llm",
+        "http_cache": "cache/http"
+      },
+      "terms": [
+        {
+          "term_id": "AIADMK-2016",
+          "party": "AIADMK",
+          "manifesto_year": 2016,
+          "sworn_in": "2016-05-23",
+          "term_end": "2021-05-06",
+          "role": "backtest"
+        },
+        {
+          "term_id": "DMK-2021",
+          "party": "DMK",
+          "manifesto_year": 2021,
+          "sworn_in": "2021-05-07",
+          "term_end": "2026-05-09",
+          "role": "train"
+        },
+        {
+          "term_id": "TVK-2026",
+          "party": "TVK",
+          "manifesto_year": 2026,
+          "sworn_in": "2026-05-10",
+          "term_end": null,
+          "role": "project"
+        }
+      ],
+      "evidence_window": {
+        "start": "2016-05-01",
+        "end": null
+      },
+      "http": {
+        "user_agent": "EPT-research-crawler/0.1 (Tamil Nadu election promise tracker, student course project; contact: 166200422+abinav-ts@users.noreply.github.com)",
+        "timeout_s": 60.0,
+        "retries": 3,
+        "backoff_s": 2.0,
+        "rate_per_host": 1.0,
+        "obey_robots": true,
+        "listing_cache_ttl_days": 7.0
+      },
+      "wayback": {
+        "host": "web.archive.org",
+        "cdx_url": "https://web.archive.org/cdx/search/cdx",
+        "raw_template": "https://web.archive.org/web/{ts}id_/{url}",
+        "rate": 0.5
+      },
+      "parse": {
+        "ocr_min_chars_per_page": 200,
+        "ocr_lang": "eng",
+        "ocr_dpi": 300,
+        "ocr_timeout_s": 120.0,
+        "front_matter_pages": 2
+      },
+      "lang": {
+        "tamil_ratio": 0.3,
+        "legacy_garbage_ratio": 0.25
+      },
+      "chunk": {
+        "target_words": 400,
+        "min_words": 300,
+        "max_words": 500
+      },
+      "date": {
+        "conflict_days": 7,
+        "fy_slack_months": 3
+      },
+      "tamil": {
+        "include_in_evidence": false
+      },
+      "go": {
+        "download_mode": "all"
+      },
+      "llm": {
+        "retries": 1,
+        "temperature": 0.0,
+        "models": {
+          "bulk": null,
+          "strong": "claude-cowork",
+          "mock": "mock"
+        }
+      }
+    },
+    "sources": {
+      "order": [
+        "tn_policy_notes",
+        "tnbudget_speeches",
+        "governor_addresses",
+        "cag_reports",
+        "tn_schemes",
+        "tn_gos",
+        "manual"
+      ],
+      "departments": {
+        "1": "Social Justice Department",
+        "2": "Agriculture - Farmers Welfare Department",
+        "3": "Animal Husbandry, Dairying, Fisheries and Fishermen Welfare Department",
+        "4": "BC, MBC & Minorities Welfare Department",
+        "5": "Co-operation, Food and Consumer Protection Department",
+        "6": "Commercial Taxes and Registration Department",
+        "7": "Energy Department",
+        "8": "Environment, Climate Change and Forests Department",
+        "9": "Finance Department",
+        "10": "Handlooms, Handicrafts, Textiles and Khadi Department",
+        "11": "Health and Family Welfare Department",
+        "12": "Higher Education Department",
+        "13": "Highways and Minor Ports Department",
+        "14": "Home, Prohibition and Excise Department",
+        "15": "Housing and Urban Development Department",
+        "16": "Industries, Investment Promotion & Commerce Department",
+        "17": "Artificial Intelligence, Information Technology and Digital Services Department",
+        "18": "Labour Welfare and Skill Development Department",
+        "19": "Law Department",
+        "21": "Municipal Administration and Water Supply Department",
+        "22": "Human Resources Management Department",
+        "23": "Planning and Development Department",
+        "24": "Public Department",
+        "26": "Revenue and Disaster Management Department",
+        "27": "Rural Development and Panchayat Raj Department",
+        "28": "School Education Department",
+        "29": "Micro, Small and Medium Enterprises Department",
+        "30": "Social Welfare and Women Empowerment Department",
+        "31": "Tamil Dev. and Information Department",
+        "32": "Tourism, Culture and Special Initiatives Department",
+        "33": "Transport Department",
+        "34": "Youth Welfare and Sports Development Department",
+        "35": "Welfare of Differently Abled Persons",
+        "38": "Public (Elections) Department",
+        "41": "Special Programme Implementation",
+        "42": "Public Works Department",
+        "44": "Water Resources Department",
+        "45": "Natural Resources Department"
+      },
+      "sources": {
+        "tn_policy_notes": {
+          "enabled": true,
+          "doc_type": "policy_note",
+          "base_url": "https://www.tn.gov.in/",
+          "dept_list_url": "https://www.tn.gov.in/document_dept_list.php?cate_name=YWxs",
+          "dept_page": "document.php?dep_id={dep_id_b64}&year={fy_b64}&cate_name=YWxs",
+          "wayback_prefixes": [
+            "cms.tn.gov.in/cms_migrated/document/docfiles/",
+            "cms.tn.gov.in/sites/default/files/documents/"
+          ],
+          "wayback_legacy": {
+            "cms.tn.gov.in/cms_migrated/document/docfiles/": [
+              "cms.tn.gov.in/sites/default/files/documents/"
+            ]
+          },
+          "wayback_legacy_suffixes": [
+            "",
+            "_0",
+            "_1"
+          ]
+        },
+        "tnbudget_speeches": {
+          "enabled": true,
+          "doc_type": "budget_speech",
+          "cdx_prefix": "tnbudget.tn.gov.in/tnweb_files/",
+          "wayback_prefixes": [
+            "tnbudget.tn.gov.in/tnweb_files/"
+          ],
+          "dep_id": 9,
+          "skip_if_covered_by": "tn_policy_notes"
+        },
+        "governor_addresses": {
+          "enabled": true,
+          "doc_type": "governor_address"
+        },
+        "cag_reports": {
+          "enabled": true,
+          "doc_type": "cag_report",
+          "cdx_prefix": "cag.gov.in/uploads/download_audit_report/",
+          "cdx_filters": [
+            "original:.*[Tt]amil.*"
+          ]
+        },
+        "tn_schemes": {
+          "enabled": true,
+          "doc_type": "scheme_page",
+          "base_url": "https://www.tn.gov.in/",
+          "list_url": "schemes.php",
+          "dept_param": "dep_id",
+          "archived_prefix": "tn.gov.in/scheme/data_view/",
+          "wayback_prefixes": [
+            "tn.gov.in/scheme/data_view/"
+          ],
+          "html_main": "table.ng-table, .region-content",
+          "html_rows": "tr, .node_viewlist_even, .node_viewlist_odd"
+        },
+        "tn_gos": {
+          "enabled": true,
+          "doc_type": "go"
+        },
+        "manual": {
+          "enabled": true,
+          "doc_type": null
+        }
+      },
+      "trackers": []
+    }
+  }
+}

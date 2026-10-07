@@ -60,15 +60,32 @@ sources:
 
   tnbudget_speeches:
     doc_type: budget_speech
+    cdx_prefix: "tnbudget.tn.gov.in/tnweb_files/"
+    wayback_prefixes: ["tnbudget.tn.gov.in/tnweb_files/"]
+    dep_id: 9                     # Finance Department
+    skip_if_covered_by: tn_policy_notes   # D-025: S3 only fills gaps
 
   governor_addresses:
     doc_type: governor_address
 
   cag_reports:
     doc_type: cag_report
+    cdx_prefix: "cag.gov.in/uploads/download_audit_report/"
+    cdx_filters: ["original:.*[Tt]amil.*"]   # file names mention the state as "Tamil"/"Tamil_Nadu"
 
   tn_schemes:
     doc_type: scheme_page
+    base_url: https://www.tn.gov.in/
+    list_url: schemes.php
+    dept_param: dep_id
+    archived_prefix: "tn.gov.in/scheme/data_view/"
+    wayback_prefixes: ["tn.gov.in/scheme/data_view/"]
+    # main content: current portal's detail table, else the previous portal's content region
+    html_main: "table.ng-table, .region-content"
+    html_rows: "tr, .node_viewlist_even, .node_viewlist_odd"
+    # Pages are snapshots: dates in the text (GO dates, "Introduced On") describe the scheme,
+    # not the page, so only a Wayback capture may date them (spec 01 §2.3).
+    text_dating: false
 
   tn_gos:
     doc_type: go

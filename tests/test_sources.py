@@ -83,3 +83,88 @@ def test_s1_adapter_yields_items(root):
     assert pn.doc_type == "policy_note" and pn.department == "Health and Family Welfare Department"
     assert pn.fiscal_year == "2019-20" and pn.lang_hint == "en" and pn.dep_id == "11"
     assert items[2].status == "excluded"
+
+
+# --- S3 / S5 / S6 ------------------------------------------------------------
+
+def _cdx_body(originals):
+    import json
+    header = ["timestamp", "original", "statuscode", "digest", "mimetype", "length"]
+    rows = [[f"2021010{i}000000", o, "200", f"D{i}", "application/pdf", "1"] for i, o in enumerate(originals)]
+    return json.dumps([header] + rows).encode()
+
+
+def _clients(routes):
+    from ept.config import get_config
+    from ept.corpus.wayback import Wayback
+    from ept.net import Http
+    from fakes import FakeResponse, FakeSession
+
+    cfg = get_config()
+    http = Http(cfg, session=FakeSession([("robots.txt", FakeResponse(404))] + routes), sleep=lambda s: None)
+    return cfg, http, Wayback(http)
+
+
+def test_s3_cdx_catalogue_skips_years_s1_covers(root):
+    from ept.corpus.catalogue import Catalogue, CatalogueItem
+    from ept.corpus.sources.tnbudget_speeches import TnBudgetSpeeches
+    from ept.runs import Budget
+    from fakes import FakeResponse
+
+    s1 = Catalogue("tn_policy_notes")
+    s1.add([CatalogueItem(url="https://cms.tn.gov.in/x/budget_speech_e_2022_2023.pdf", source="tn_policy_notes",
+                          doc_type="budget_speech", fiscal_year="2022-23", lang_hint="en")])
+    s1.save()
+    base = "http://www.tnbudget.tn.gov.in:80/tnweb_files/"
+    body = _cdx_body([base + "budget_speech_e_2020_21.pdf", base + "BS_2022_23_ENG_FINAL.pdf",
+                      base + "budget_speech_t_2020_21.pdf", base + "budget%20highlights/2019-20/BS%202019-20%20English-highlights.pdf",
+                      base + "MTFP_2020_2021_eng.pdf"])
+    cfg, http, wb = _clients([("showNumPages", FakeResponse(200, b"1")), ("cdx/search", FakeResponse(200, body))])
+    items = {i.title: i for i in TnBudgetSpeeches(cfg, http, wb).catalogue(Budget(None))}
+    assert set(items) == {"budget_speech_e_2020_21", "BS_2022_23_ENG_FINAL", "budget_speech_t_2020_21",
+                          "BS 2019-20 English-highlights"}
+    keep = items["budget_speech_e_2020_21"]
+    assert keep.status == "new" and keep.fiscal_year == "2020-21" and keep.lang_hint == "en"
+    assert keep.discovery == "wayback_cdx" and keep.url == "http://www.tnbudget.tn.gov.in/tnweb_files/budget_speech_e_2020_21.pdf"
+    assert items["BS_2022_23_ENG_FINAL"].excluded_reason == "covered by tn_policy_notes (D-025)"
+    assert items["budget_speech_t_2020_21"].lang_hint == "ta"
+    assert items["BS 2019-20 English-highlights"].excluded_reason == "budget highlights, not the speech"
+
+
+@pytest.mark.parametrize("name,expected", [
+    ("Tamil_Nadu_Report_5_of_2016_Economic_Sector.pdf", None),
+    ("Report_No.1_of_2017_-_Economic_Sector_Government_of_Tamil_Nadu.pdf", None),
+    ("Chapter_2_Performance_Audit_of_Report_No_7_of_2017_-_Economic_Sector_Government_of_Tamil_Nadu.pdf", "part"),
+    ("Annexures_Tamil_Nadu_Report_4_of_2016_PSUs.pdf", "part"),
+    ("Tamil_Nadu_Revenue_1_2013_Chap_4.pdf", "before"),
+    ("6-Chapter-I-Tamil-0675959bc33cff3.98564847.pdf", "part"),
+    ("Report-No.2-of-2023---Housing-for-Urban-Poor-(Tamil)-065269051922cd6.pdf", "Tamil-language"),
+    ("Government-of-the-Union-Territory-of-Puducherry-Report-No.-1-of-2023-Tamil.pdf", "Puducherry"),
+])
+def test_s5_cag_exclusions(name, expected):
+    from ept.corpus.sources.cag_reports import exclusion
+
+    year = "2013" if "2013" in name else "2017"
+    reason = exclusion(f"cag.gov.in/uploads/download_audit_report/{year}/{name}", name, 2016)
+    assert (reason is None) if expected is None else (expected in reason)
+
+
+def test_s6_scheme_department_and_list_pages():
+    from ept.corpus.sources.tn_schemes import parse_departments, parse_scheme_list
+
+    deps = parse_departments((HTML / "s6_schemes.html").read_text(encoding="utf-8"))
+    assert deps["2"].startswith("Agriculture") and len(deps) == 11
+    items = parse_scheme_list((HTML / "s6_scheme_list.html").read_text(encoding="utf-8"),
+                              "https://www.tn.gov.in/scheme_list.php?dep_id=Mg==")
+    assert items[0] == ("https://www.tn.gov.in/scheme_details.php?id=MTU2Ng==", "Training to Farmers")
+    assert len(items) == len({u for u, _ in items})
+
+
+def test_s6_scheme_pages_extract_as_label_value_rows():
+    from ept.corpus.parse import extract_html
+
+    rows = "tr, .node_viewlist_even, .node_viewlist_odd"
+    cur = extract_html(HTML / "s6_scheme_detail.html", "table.ng-table, .region-content", [], rows)
+    assert any(p.startswith("Scheme Title/Name:") and "UYEGP" in p for p in cur.pages[0])
+    old = extract_html(HTML / "s6_scheme_old.html", "table.ng-table, .region-content", [], rows)
+    assert old.pages[0][0].startswith("Concerned Department : Agriculture")

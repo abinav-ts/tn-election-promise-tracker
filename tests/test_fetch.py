@@ -171,3 +171,14 @@ def test_out_of_window_and_tamil_items_are_not_selected(conn, root):
     assert [i.url for i in todo] == [URL + "?c"]
     assert [i.url for i in select(cat, get_config(), "en", "AIADMK-2016", None, False)[0]] == [URL + "?c"]
     assert select(cat, get_config(), "en", "DMK-2021", None, False)[0] == []  # FY 2019-20 ends before 2021-05-07
+
+
+def test_wayback_outage_defers_instead_of_failing(conn, root):
+    f, _ = _fetcher(conn, [("cdx/search", FakeResponse(503)), (URL, FakeResponse(404))])
+    r = f.fetch(_item())
+    assert r.status == "deferred" and "wayback unavailable" in r.error
+    cat_ = Catalogue("tn_policy_notes")
+    stats = CrawlStats()
+    crawl_source(_OneShotAdapter([_item()]), f, cat_, lang="en", download=True, term=None, limit=None,
+                 force=False, budget=Budget(None), stats=stats)
+    assert stats.deferred == 1 and cat_.get(URL).status == "new"

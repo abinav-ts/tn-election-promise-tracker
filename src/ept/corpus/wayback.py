@@ -70,9 +70,10 @@ def parse_cdx_json(text: str) -> list[Capture]:
 
 
 def url_key(url: str) -> str:
-    """Scheme-less canonical URL: Wayback stores http and https captures of the same file."""
+    """Scheme-less, www-less canonical URL: Wayback treats http/https and www/non-www as one URL."""
     canon = canonical_url(url if "://" in url else "http://" + url)
-    return canon.split("://", 1)[1]
+    key = canon.split("://", 1)[1]
+    return key[4:] if key.startswith("www.") else key
 
 
 class Wayback:
@@ -122,16 +123,18 @@ class Wayback:
         data, _ = self.http.get_bytes(self.raw_url(capture.timestamp, capture.original))
         return data
 
-    def prefix_index(self, prefix: str) -> dict[str, list[Capture]]:
-        """All status-200 captures under a URL prefix, keyed by url_key; cached in cache/http/."""
-        if prefix in self._index:
-            return self._index[prefix]
-        cache = self.http.cfg.path("http_cache") / f"wayback_prefix_{hashlib.sha1(prefix.encode()).hexdigest()}.json"
+    def prefix_index(self, prefix: str, filters: tuple[str, ...] = ()) -> dict[str, list[Capture]]:
+        """All status-200 captures under a URL prefix (plus CDX filters), keyed by url_key; cached in cache/http/."""
+        ident = prefix + "|" + "|".join(filters)
+        if ident in self._index:
+            return self._index[ident]
+        cache = self.http.cfg.path("http_cache") / f"wayback_prefix_{hashlib.sha1(ident.encode()).hexdigest()}.json"
         ttl = self.http.cfg.settings.http.listing_cache_ttl_days * 86400
         if cache.exists() and time.time() - cache.stat().st_mtime < ttl:
             rows = [Capture(**r) for r in json.loads(cache.read_text(encoding="utf-8"))]
         else:
             base = [("url", prefix), ("matchType", "prefix"), ("filter", "statuscode:200")]
+            base += [("filter", f) for f in filters]
             pages_txt = self._get(f"{self.cfg.cdx_url}?{urlencode(base + [('showNumPages', 'true')])}")
             n_pages = int(pages_txt.strip() or "1")
             rows = []
@@ -143,7 +146,7 @@ class Wayback:
         index: dict[str, list[Capture]] = {}
         for r in rows:
             index.setdefault(url_key(r.original), []).append(r)
-        self._index[prefix] = index
+        self._index[ident] = index
         return index
 
     def captures(self, url: str) -> list[Capture]:

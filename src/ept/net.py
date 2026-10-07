@@ -40,6 +40,7 @@ class Http:
         self._sleep = sleep
         self._clock = clock
         self._last: dict[str, float] = {}
+        self.down_hosts: dict[str, str] = {}  # host -> reason; connection failures trip this for the run
         self._robots: dict[str, Optional[urllib.robotparser.RobotFileParser]] = {}
 
     # --- politeness -----------------------------------------------------
@@ -85,20 +86,28 @@ class Http:
         http = self.cfg.settings.http
         retries = http.retries if retries is None else retries
         host = urlsplit(url).netloc
+        if host in self.down_hosts:
+            raise FetchError(url, f"host unreachable earlier in this run ({self.down_hosts[host]})")
         last_err = ""
         status = None
+        connection_failed = False
         for attempt in range(retries + 1):
             self._throttle(host)
             try:
                 resp = self.session.get(url, timeout=http.timeout_s, stream=stream)
+            except (requests.ConnectionError, requests.Timeout) as e:
+                last_err, status, connection_failed = f"{type(e).__name__}: {e}"[:300], None, True
             except requests.RequestException as e:
-                last_err, status = f"{type(e).__name__}: {e}", None
+                last_err, status = f"{type(e).__name__}: {e}"[:300], None
             else:
+                connection_failed = False
                 if resp.status_code not in RETRY_STATUS:
                     return resp
                 last_err, status = f"HTTP {resp.status_code}", resp.status_code
             if attempt < retries:
                 self._sleep(http.backoff_s * (2 ** attempt))
+        if connection_failed:
+            self.down_hosts[host] = last_err[:120]
         raise FetchError(url, last_err, status)
 
     def get(self, url: str) -> requests.Response:

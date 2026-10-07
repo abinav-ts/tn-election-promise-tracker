@@ -59,6 +59,8 @@ def run_crawl(sources: Optional[list[str]] = None, lang: str = "en", download: O
             backfill_wayback(fetcher, budget, stats)
         if wayback.down:
             per_source["wayback_unavailable"] = wayback.down
+        if not stats.stopped and stats.deferred:
+            stats.stopped = f"{stats.deferred} deferred: Wayback unavailable"
         if stats.stopped:
             status = f"stopped: {stats.stopped}"
     finally:

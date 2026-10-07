@@ -89,9 +89,13 @@ def update_sidecar(raw_file: Path, **fields: Any) -> dict[str, Any]:
 # --- fetcher ----------------------------------------------------------------
 
 
+class Deferred(FetchError):
+    """Live failed and Wayback was unavailable: retry on a later run, don't mark fetch_failed."""
+
+
 @dataclass
 class FetchResult:
-    status: str  # downloaded | exists | duplicate | fetch_failed
+    status: str  # downloaded | exists | duplicate | fetch_failed | deferred
     doc_id: Optional[str] = None
     error: Optional[str] = None
     via: Optional[str] = None
@@ -141,7 +145,8 @@ class Fetcher:
                     return _Payload(data, "wayback", self.wayback.raw_url(latest.timestamp, latest.original), attempts)
                 attempts.append(f"wayback {latest.timestamp}: {err}")
         except WaybackUnavailable as e:
-            attempts.append(f"wayback unavailable: {e}")
+            attempts.append(f"wayback unavailable: {str(e)[:120]}")
+            raise Deferred(url, "; ".join(attempts))
         except FetchError as e:
             attempts.append(f"wayback: {e.reason}")
         raise FetchError(url, "; ".join(attempts))
@@ -165,6 +170,8 @@ class Fetcher:
         else:
             try:
                 payload = self._download(item.url)
+            except Deferred as e:
+                return FetchResult("deferred", doc_id, error=e.reason)
             except FetchError as e:
                 return FetchResult(cat.FETCH_FAILED, doc_id, error=e.reason)
             data, via, archive_url = payload.data, payload.via, payload.archive_url
@@ -271,6 +278,7 @@ class CrawlStats:
     exists: int = 0
     duplicate: int = 0
     fetch_failed: int = 0
+    deferred: int = 0
     wayback_backfilled: int = 0
     stopped: Optional[str] = None  # None = done; "time budget"
 
@@ -367,6 +375,9 @@ def crawl_source(adapter, fetcher: Fetcher, catalogue: Catalogue, *, lang: str, 
                 return
             result = fetcher.fetch(item)
             setattr(stats, result.status, getattr(stats, result.status) + 1)
+            if result.status == "deferred":
+                catalogue.update(item.url, fetch_error=result.error)  # stays pending for the next run
+                continue
             status = cat.DOWNLOADED if result.status == "exists" else result.status
             catalogue.update(item.url, status=status, doc_id=result.doc_id, fetch_error=result.error)
             if n % 20 == 19:

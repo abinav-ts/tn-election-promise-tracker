@@ -91,7 +91,8 @@ def extract_pdf(path: Path, cfg: Config) -> Extracted:
     return out
 
 
-def extract_html(path: Path, main_selector: Optional[str], strip: list[str]) -> Extracted:
+def extract_html(path: Path, main_selector: Optional[str], strip: list[str],
+                 row_selector: Optional[str] = None) -> Extracted:
     out = Extracted()
     raw = path.read_bytes()
     soup = BeautifulSoup(raw, "lxml")
@@ -100,8 +101,12 @@ def extract_html(path: Path, main_selector: Optional[str], strip: list[str]) -> 
             el.decompose()
     root = soup.select_one(main_selector) if main_selector else None
     root = root or soup.body or soup
-    lines = [" ".join(line.split()) for line in root.get_text("\n").split("\n")]
-    paras = [line for line in lines if line]
+    rows = root.select(row_selector) if row_selector else []
+    if rows:  # one paragraph per table row / labelled field: "Label : value"
+        paras = [t for r in rows for t in [" ".join(r.get_text(" ", strip=True).split())] if t]
+    else:
+        lines = [" ".join(line.split()) for line in root.get_text("\n").split("\n")]
+        paras = [line for line in lines if line]
     out.pages.append(paras)
     if out.n_chars == 0:
         out.error = "no text in HTML main content"
@@ -126,10 +131,12 @@ def _source_cfg(cfg: Config, meta: dict[str, Any]):
     return cfg.sources.sources.get(source) if source else None
 
 
-def text_dating(ext: Extracted, cfg: Config, today: dt.date) -> dict[str, Any]:
+def text_dating(ext: Extracted, cfg: Config, today: dt.date, use_text: bool = True) -> dict[str, Any]:
+    """Issue-date and © candidates from the front matter (unless the source disables text dating),
+    plus the latest date mentioned anywhere (for the anachronism check)."""
     front = "\n\n".join(ext.page_texts[: cfg.settings.parse.front_matter_pages])
-    issue = datefind.issue_date_from_text(front)
-    copyright = datefind.copyright_year(front)
+    issue = datefind.issue_date_from_text(front) if use_text else None
+    copyright = datefind.copyright_year(front) if use_text else None
     latest = datefind.latest_mention("\n\n".join(ext.page_texts), today)
     return {
         "text_candidate": asdict(issue) if issue else None,
@@ -147,7 +154,8 @@ def parse_document(conn: sqlite3.Connection, cfg: Config, doc: Document, today: 
     else:
         scfg = _source_cfg(cfg, meta)
         ext = extract_html(raw, scfg.get("html_main") if scfg else None,
-                           list(scfg.get("html_strip") or []) if scfg else [])
+                           list(scfg.get("html_strip") or []) if scfg else [],
+                           scfg.get("html_rows") if scfg else None)
 
     hint = (meta.get("listing") or {}).get("lang_hint")
     full_text = "\n\n".join(ext.page_texts)
@@ -168,7 +176,9 @@ def parse_document(conn: sqlite3.Connection, cfg: Config, doc: Document, today: 
         "text_path": text_path.relative_to(cfg.root).as_posix() if not ext.error else None,
         "parsed_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
     }
-    meta.setdefault("dating", {}).update(text_dating(ext, cfg, today) if not ext.error else {})
+    scfg = _source_cfg(cfg, meta)
+    use_text = scfg.get("text_dating", True) if scfg else True
+    meta.setdefault("dating", {}).update(text_dating(ext, cfg, today, use_text) if not ext.error else {})
     write_sidecar(raw, meta)
 
     doc = doc.model_copy(update={"parse_status": status.value, "lang": lang.value})
