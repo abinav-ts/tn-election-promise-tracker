@@ -1,0 +1,173 @@
+import json
+
+import pytest
+
+from ept import db
+from ept.config import get_config
+from ept.corpus.catalogue import Catalogue, CatalogueItem, doc_id_for_url
+from ept.corpus.fetch import (
+    CrawlStats, Fetcher, crawl_source, payload_error, read_sidecar, select,
+)
+from ept.corpus.wayback import Wayback, payload_digest
+from ept.net import Http
+from ept.runs import Budget
+from fakes import ERROR_PAGE, PDF, FakeResponse, FakeSession
+
+URL = "https://cms.tn.gov.in/cms_migrated/document/docfiles/hfw_e_pn_2019_20.pdf"
+PDF_HDR = {"Content-Type": "application/pdf"}
+
+
+def _cdx(rows):
+    header = ["timestamp", "original", "statuscode", "digest", "mimetype", "length"]
+    return FakeResponse(200, json.dumps([header] + rows).encode(), {"Content-Type": "application/json"})
+
+
+def _item(url=URL, **kw):
+    base = dict(url=url, source="tn_policy_notes", doc_type="policy_note", fiscal_year="2019-20",
+                lang_hint="en", department="Health and Family Welfare Department", title="PN")
+    base.update(kw)
+    return CatalogueItem(**base)
+
+
+def _fetcher(conn, routes):
+    cfg = get_config()
+    session = FakeSession([("robots.txt", FakeResponse(404))] + routes)
+    http = Http(cfg, session=session, sleep=lambda s: None)
+    return Fetcher(cfg, http, Wayback(http), conn), session
+
+
+def test_payload_error_detects_html_instead_of_pdf():
+    assert payload_error(ERROR_PAGE, URL) == "HTML error page instead of PDF"
+    assert payload_error(b"", URL) == "empty response"
+    assert payload_error(PDF, URL) is None
+    assert payload_error(b"<html><body>x</body></html>", "https://www.tn.gov.in/scheme.php") is None
+
+
+def test_live_download_registers_document(conn, root):
+    f, _ = _fetcher(conn, [(URL, FakeResponse(200, PDF, PDF_HDR)), ("cdx", _cdx([]))])
+    r = f.fetch(_item())
+    assert r.status == "downloaded" and r.via == "live"
+    doc = db.get(conn, "documents", doc_id_for_url(URL))
+    assert doc.parse_status == "pending" and doc.discovery == "listing" and doc.archive_url is None
+    raw = root / doc.local_path
+    assert raw.read_bytes() == PDF and raw.parent.name == "policy_note"
+    meta = read_sidecar(raw)
+    assert meta["source_url"] == URL and meta["fetched_from"] == "live" and meta["wayback"]["checked"] is True
+
+
+def test_live_error_page_falls_back_to_wayback(conn, root):
+    digest = payload_digest(PDF)
+    cdx = _cdx([["20200101000000", URL, "200", "OLDDIGEST", "application/pdf", "1"],
+                ["20220101000000", URL, "200", digest, "application/pdf", "1"]])
+    f, session = _fetcher(conn, [
+        ("web.archive.org/web/20220101000000id_/", FakeResponse(200, PDF, PDF_HDR)),
+        ("cdx/search", cdx),
+        (URL, FakeResponse(200, ERROR_PAGE, {"Content-Type": "text/html"})),
+    ])
+    r = f.fetch(_item())
+    assert r.status == "downloaded" and r.via == "wayback"
+    doc = db.get(conn, "documents", r.doc_id)
+    assert doc.source_url == URL  # always the original URL
+    assert doc.archive_url == "https://web.archive.org/web/20220101000000id_/" + URL
+    wb = read_sidecar(root / doc.local_path)["wayback"]
+    assert wb["kept_first_capture"] == "20220101000000"  # first capture of the kept bytes
+    assert wb["url_first_capture"] == "20200101000000"
+    assert [v["digest"] for v in wb["superseded"]] == ["OLDDIGEST"]
+
+
+def test_both_fail_marks_fetch_failed(conn):
+    f, _ = _fetcher(conn, [("cdx/search", _cdx([])), (URL, FakeResponse(500))])
+    r = f.fetch(_item())
+    assert r.status == "fetch_failed" and "live: HTTP 500" in r.error and "no 200 capture" in r.error
+    assert db.get(conn, "documents", r.doc_id) is None
+
+
+def test_wayback_outage_leaves_lookup_pending(conn, root):
+    f, _ = _fetcher(conn, [(URL, FakeResponse(200, PDF, PDF_HDR)), ("cdx/search", FakeResponse(503))])
+    r = f.fetch(_item())
+    assert r.status == "downloaded"
+    meta = read_sidecar(root / db.get(conn, "documents", r.doc_id).local_path)
+    assert meta["wayback"]["checked"] is False
+    assert f.wayback.down  # circuit breaker open for the rest of the run
+
+
+def test_existing_raw_file_is_never_overwritten(conn, root):
+    f, session = _fetcher(conn, [(URL, FakeResponse(200, PDF, PDF_HDR)), ("cdx", _cdx([]))])
+    raw = f.raw_file("policy_note", doc_id_for_url(URL), ".pdf")
+    raw.parent.mkdir(parents=True)
+    raw.write_bytes(b"%PDF-1.4 earlier bytes")
+    r = f.fetch(_item())
+    assert r.status == "downloaded"
+    assert raw.read_bytes() == b"%PDF-1.4 earlier bytes"
+    assert URL not in session.calls  # registered from disk, not re-downloaded
+    assert f.fetch(_item()).status == "exists"
+
+
+def test_sha256_dedup_adds_alias(conn, root):
+    other = URL.replace("hfw_e_pn", "hfw_e_pn_copy")
+    f, _ = _fetcher(conn, [(other, FakeResponse(200, PDF, PDF_HDR)), (URL, FakeResponse(200, PDF, PDF_HDR)),
+                           ("cdx", _cdx([]))])
+    first = f.fetch(_item())
+    second = f.fetch(_item(url=other))
+    assert second.status == "duplicate" and second.doc_id == first.doc_id
+    assert db.query(conn, "SELECT count(*) n FROM documents")[0]["n"] == 1
+    assert read_sidecar(root / db.get(conn, "documents", first.doc_id).local_path)["aliases"] == [other]
+
+
+class _OneShotAdapter:
+    def __init__(self, items):
+        self.items = items
+
+    def catalogue(self, budget, force=False):
+        yield from self.items
+
+
+def _items(n):
+    return [_item(url=URL.replace("2019_20", f"x{i}")) for i in range(n)]
+
+
+def test_limit_selects_the_same_items(conn, root):
+    cat = Catalogue("tn_policy_notes")
+    cat.add(_items(10))
+    todo, n = select(cat, get_config(), "en", None, 3, False)
+    assert n == 3 and len(todo) == 3
+    assert [i.url for i in todo] == [i.url for i in select(cat, get_config(), "en", None, 3, False)[0]]
+
+
+def test_limit_and_rerun_downloads_zero(conn, root):
+    routes = [("cms.tn.gov.in", FakeResponse(200, b"%PDF-1.4 " + b"x", PDF_HDR)), ("cdx", _cdx([]))]
+    f, _ = _fetcher(conn, routes)
+    # distinct bytes per URL so dedup doesn't kick in
+    f.http.session.routes[1] = ("cms.tn.gov.in", lambda u: FakeResponse(200, b"%PDF-1.4 " + u.encode(), PDF_HDR))
+    adapter = _OneShotAdapter(_items(10))
+    for expected in (3, 0):
+        stats = CrawlStats()
+        crawl_source(adapter, f, Catalogue("tn_policy_notes"), lang="en", download=True, term=None, limit=3,
+                     force=False, budget=Budget(None), stats=stats)
+        assert stats.downloaded == expected and stats.stopped is None
+
+
+def test_time_budget_stops_cleanly_and_resumes(conn, root):
+    f, _ = _fetcher(conn, [("cms.tn.gov.in", lambda u: FakeResponse(200, b"%PDF-1.4 " + u.encode(), PDF_HDR)),
+                           ("cdx", _cdx([]))])
+    adapter = _OneShotAdapter(_items(4))
+    ticks = iter(range(100))
+    budget = Budget(2.5, clock=lambda: next(ticks))  # expires after a couple of checks
+    stats = CrawlStats()
+    crawl_source(adapter, f, Catalogue("tn_policy_notes"), lang="en", download=True, term=None, limit=None,
+                 force=False, budget=budget, stats=stats)
+    assert stats.stopped == "time budget" and 0 < stats.downloaded < 4
+    stats2 = CrawlStats()
+    crawl_source(adapter, f, Catalogue("tn_policy_notes"), lang="en", download=True, term=None, limit=None,
+                 force=False, budget=Budget(None), stats=stats2)
+    assert stats2.stopped is None and stats.downloaded + stats2.downloaded == 4
+
+
+def test_out_of_window_and_tamil_items_are_not_selected(conn, root):
+    cat = Catalogue("tn_policy_notes")
+    cat.add([_item(url=URL + "?a", fiscal_year="2014-15"), _item(url=URL + "?b", lang_hint="ta"),
+             _item(url=URL + "?c")])
+    todo, n = select(cat, get_config(), "en", None, None, False)
+    assert [i.url for i in todo] == [URL + "?c"]
+    assert [i.url for i in select(cat, get_config(), "en", "AIADMK-2016", None, False)[0]] == [URL + "?c"]
+    assert select(cat, get_config(), "en", "DMK-2021", None, False)[0] == []  # FY 2019-20 ends before 2021-05-07

@@ -6,6 +6,7 @@ import datetime as dt
 import json
 import re
 import subprocess
+import time
 from typing import Any, Optional
 
 from ept.config import get_config
@@ -84,3 +85,14 @@ def finish_run(
         meta["models"] = models
     path.write_text(json.dumps(meta, indent=2, default=str), encoding="utf-8")
     return meta
+
+
+class Budget:
+    """--time-budget: commands check `expired()` between items and stop cleanly."""
+
+    def __init__(self, seconds: Optional[float], clock=None):
+        self._clock = clock or time.monotonic
+        self.deadline = None if seconds is None else self._clock() + seconds
+
+    def expired(self) -> bool:
+        return self.deadline is not None and self._clock() >= self.deadline

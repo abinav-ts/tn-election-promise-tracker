@@ -5,9 +5,12 @@ Every command takes --term, --limit, --force and --time-budget (spec 01 §4.1).
 
 from __future__ import annotations
 
+import logging
 from typing import Optional
 
 import typer
+
+logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
 
 app = typer.Typer(add_completion=False, no_args_is_help=True, help="Tamil Nadu election promise tracker")
 
@@ -15,6 +18,12 @@ TermOpt = typer.Option(None, "--term", help="Restrict to one term, e.g. DMK-2021
 LimitOpt = typer.Option(None, "--limit", help="Cap the number of new items processed")
 ForceOpt = typer.Option(False, "--force", help="Redo finished work (never re-downloads raw files)")
 BudgetOpt = typer.Option(None, "--time-budget", help="Stop cleanly after this many seconds")
+
+
+def _report(command: str, stats: dict) -> None:
+    stopped = stats.pop("stopped", None)
+    typer.echo(f"{command}: " + ", ".join(f"{k}={v}" for k, v in stats.items() if not isinstance(v, dict)))
+    typer.echo(f"{command}: stopped ({stopped}); re-run to continue" if stopped else f"{command}: done")
 
 
 @app.command("init-db")
@@ -41,7 +50,11 @@ def crawl(
     ),
 ) -> None:
     """Catalogue sources and download documents (spec 01 §4.3)."""
-    typer.echo("crawl: not implemented yet")
+    from ept.corpus.crawl import run_crawl
+
+    stats = run_crawl(sources=source or None, lang=lang, download=download, term=term, limit=limit,
+                      force=force, time_budget=time_budget)
+    _report("crawl", stats)
 
 
 @app.command()
@@ -52,7 +65,9 @@ def parse(
     time_budget: Optional[float] = BudgetOpt,
 ) -> None:
     """Parse, date and chunk downloaded documents (spec 01 §4.4–4.5)."""
-    typer.echo("parse: not implemented yet")
+    from ept.corpus.parse import run_parse
+
+    _report("parse", run_parse(term=term, limit=limit, force=force, time_budget=time_budget))
 
 
 @app.command()

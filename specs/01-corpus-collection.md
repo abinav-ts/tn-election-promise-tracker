@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.0** (2026-10-07). Decisions D-016–D-022 |
+| Status | **APPROVED v1.1** (2026-10-08; build-time amendments D-023–D-026). v1.0 approved 2026-10-07 with D-016–D-022 |
 | Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
 | CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept leads` |
@@ -39,10 +39,10 @@ Probed from Claude's environment on 2026-10-07. Every source uses the same fetch
 
 | # | Source adapter | doc_type | Where | Status (2026-10-07) | Date source |
 |---|---|---|---|---|---|
-| S1 | `tn_policy_notes` | `policy_note` (performance budgets → `other`, see OQ-4) | `www.tn.gov.in/document_dept_list.php?cate_name=YWxs` → `document.php?dep_id=b64(n)&year=b64("YYYY-YYYY")&cate_name=YWxs`. Files are `cms.tn.gov.in/cms_migrated/document/docfiles/{dept}_{e\|t}_pn_{YYYY}_{YY}.pdf` | Live. FY archive 2014-15 → 2026-27 | Text front matter → else Wayback first capture → else undated + review |
+| S1 | `tn_policy_notes` | `policy_note`; performance budgets → `other` (subtype `performance_budget`, OQ-4). **Also from this listing (D-025):** budget speeches → `budget_speech` (subtypes `interim`, `revised`, `agriculture`), Governor's addresses → `governor_address`, state sector policies → `other` (subtype `policy` / `policy_draft`). Citizen Charters and everything else (audit reports, directories, rolls, tenders, …) are catalogued but excluded | `www.tn.gov.in/document_dept_list.php?cate_name=YWxs` → `document.php?dep_id=b64(n)&year=b64("YYYY-YYYY")&cate_name=YWxs`. Files are `cms.tn.gov.in/cms_migrated/document/docfiles/{name}.pdf`; the pre-migration copy of the same file is `cms.tn.gov.in/sites/default/files/documents/{name}[_0].pdf` (Wayback only) | Live. FY archive 2014-15 → 2026-27. Measured 2026-10-08: 545 policy notes, 73 performance budgets, 20 budget speeches (2016-17 → 2026-27; **2020-21 main speech missing**), 13 Governor's addresses (Jun 2016 → Jun 2026), 19 policies | Text front matter → else Wayback first capture of the kept bytes (current or pre-migration URL, D-023) → else © year (D-024) → else undated + review |
 | S2 | `tn_gos` | `go` | `www.tn.gov.in/godept_list.php` (38 departments) → `go.php?dep_id=b64(n)&year=b64(YYYY)`. Files are `cms.tn.gov.in/cms_migrated/document/GO/{dept}_{e\|t}_{no}_{MS_}{YYYY}.pdf` | Live, **with holes** (e.g. Health 2017 = 0 GOs, 2022 = 37 vs 2019 = 278) | Listing date (day) |
-| S3 | `tnbudget_speeches` | `budget_speech` | `tnbudget.tn.gov.in` (**live site unreachable**) → Wayback CDX `tnbudget.tn.gov.in/*`. `tnweb_files/BS_{YYYY}_{YY}_{ENG\|TAM}_FINAL.pdf` (2021-22 → 2025-26 seen) | Wayback only. **2016-17 → 2020-21 not yet located** | Text ("presented on …") → else Wayback first capture |
-| S4 | `governor_addresses` | `governor_address` | Wayback `tnbudget.tn.gov.in/tnweb_files/Bud_gov_speeches/` has addresses up to ~2009 only. `assembly.tn.gov.in` to be explored | **2016–2026 not located** → discovery timebox (§4.10 step 7), else manual drop | Text |
+| S3 | `tnbudget_speeches` | `budget_speech` | `tnbudget.tn.gov.in` (**live site unreachable**) → Wayback CDX `tnbudget.tn.gov.in/*`. `tnweb_files/BS_{YYYY}_{YY}_{ENG\|TAM}_FINAL.pdf` (2021-22 → 2025-26 seen) | Wayback only. Mostly covered by S1 since D-025; **only the 2020-21 main speech is still missing** | Text ("presented on …") → else Wayback first capture |
+| S4 | `governor_addresses` | `governor_address` | Wayback `tnbudget.tn.gov.in/tnweb_files/Bud_gov_speeches/` has addresses up to ~2009 only. `assembly.tn.gov.in` to be explored | **Covered by S1 since D-025** (Jun 2016 → Jun 2026). A separate adapter is only needed if a gap shows up | Text, filename |
 | S5 | `cag_reports` | `cag_report` | `cag.gov.in` (**live site unreachable**) → Wayback CDX filtered to Tamil Nadu state reports | Wayback only, to be explored | Text (date of signing / laying) |
 | S6 | `tn_schemes` | `scheme_page` | `www.tn.gov.in/schemes.php`, `scheme_list.php?dep_id=b64(n)` | Live (current snapshot only); older versions via Wayback | Wayback first capture (upper bound) |
 | S7 | `manual` | any | `data/raw/evidence/_manual/` + `manual_manifest.csv` (filename, doc_type, department, title, doc_date, date_precision, lang, source_url, note) | For anything that can't be crawled | As given (`date_source=manual`) |
@@ -113,10 +113,13 @@ Order of work (user decision): S1 → S3 → S4 → S5 → S6 → S2 (GOs last, 
    - The item is in the evidence window (or, with `--term`, in that term's [sworn_in, term_end or today]).
    - lang = requested lang.
    - For GOs, the download-mode rule applies (OQ-2).
-   - `--limit` caps the number of new downloads.
+   - `--limit N` selects the **first N in-scope items of each source**, in a fixed order (sha1 of the URL), so a small run is spread across departments and years and a re-run touches the same N items (downloads 0). It therefore also caps new downloads at N (D-026).
 3. **Fetch.** Live URL first. On failure (timeout, 4xx/5xx, HTML error page in place of a PDF), use the latest 200 Wayback capture via `https://web.archive.org/web/{ts}id_/{url}`. If both fail, the item gets `fetch_failed` in the catalogue and appears in the coverage gap list.
 4. **Register.** Write the raw file and sidecar, then upsert the `documents` row with `parse_status=pending`, sha256, `fetched_at`, `department` (canonicalised via a `dep_id → name` map in `sources.yaml`; unmapped names are kept raw and logged) and `fiscal_year`.
 5. **Wayback first capture.** For every downloaded document, look up the earliest CDX capture of its URL and store it in the sidecar. It is used only as a date fallback (§4.5).
+   - The date fallback is the first capture **whose digest equals the kept bytes** (D-018), searched at the document's URL **and** at known pre-migration URLs of the same file (`wayback_legacy` in `sources.yaml`, D-023). A legacy capture with a different digest is never used.
+   - CDX lookups use one cached prefix query per source directory (`wayback_prefixes`), not one query per document.
+   - If Wayback is unavailable, the sidecar keeps `wayback.checked = false`; later crawl runs retry, and `ept parse` re-dates every document on each run.
 
 Language is decided in this order:
 1. Filename tag (`_e_`/`_t_`, `ENG`/`TAM`, `(Eng)`/`(Tam)`, `English`/`Tamil`).
@@ -142,7 +145,8 @@ Every candidate date is recorded in the sidecar. The stored `doc_date` follows t
 | 2 | `listing` | Date shown next to the item in the official listing (GOs) | day | only on conflict |
 | 3 | `document_text` | Issue date in the front matter (first 2 pages): patterns such as "dated", "presented on", "delivered on", G.O. header dates; dd.mm.yyyy / dd-mm-yyyy / "d Month yyyy" | day or month | only on conflict |
 | 4 | `filename` | Explicit date in the URL (e.g. `Budget_Speech_04_08_2011`) | day | yes |
-| 5 | `wayback_capture` | Earliest Wayback capture = **upper bound** on publication | day | **yes**: listed in `date_review.csv` for manual search (user request) |
+| 5 | `wayback_capture` | Earliest Wayback capture **of the kept bytes** (current or pre-migration URL, D-023) = **upper bound** on publication | day | **yes**: listed in `date_review.csv` for manual search (user request) |
+| 5½ | `document_text` (© year) | "© Government of Tamil Nadu YYYY" in the front matter → `YYYY-01-01`, year precision, so stage 04 sees it from 31 Dec YYYY (D-024). **Not used** if the year is earlier than the document's fiscal year (stale template) or the text mentions a later date | year | yes |
 | 6 | `none` | Only a fiscal year is known (e.g. policy-note listing) → `doc_date = NULL`, `fiscal_year` kept | — | yes |
 
 Checks (each failure adds a row to `date_review.csv` with a reason):
@@ -189,6 +193,7 @@ Checks (each failure adds a row to `date_review.csv` with a reason):
 Environment: work on the user's machine through the project folder. Run commands from the project root.
 - **Two virtualenvs, never shared:** Claude's Linux sandbox uses `.venv-linux/`; the user's Mac uses `.venv/`. A Linux venv does not run on macOS, or the reverse. Both are gitignored (`.venv-*/`). Install with `pip install -e ".[dev]"` (Python ≥ 3.10).
 - Each tool call has a ~3-minute limit, and **background processes (`nohup`, `setsid`) are killed when the call returns** (verified 2026-10-07).
+- Note 2026-10-08: from the build session on, Claude Code runs directly on the user's Mac, so it uses `.venv/` and has no `timeout` command; it runs commands with `--time-budget`. D-021 is unchanged.
 - So every long job runs as repeated foreground slices: `timeout 175 python -m ept … --time-budget 160`, re-run until it reports `done`. This is why resumability is mandatory and tested.
 - Full-volume runs are done by the user in their own terminal (D-021, step 9).
 
