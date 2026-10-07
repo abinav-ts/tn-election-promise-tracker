@@ -85,6 +85,9 @@ date:
 tamil:
   include_in_evidence: false
 
+coverage:
+  hole_fraction: 0.25         # a GO department-year below this share of the department's median is a hole
+
 go:
   download_mode: all          # D-021: all English GOs in the window
 

@@ -78,7 +78,9 @@ def coverage(
     time_budget: Optional[float] = BudgetOpt,
 ) -> None:
     """Write the coverage report (spec 01 §4.8)."""
-    typer.echo("coverage: not implemented yet")
+    from ept.corpus.coverage import run_coverage
+
+    _report("coverage", run_coverage())
 
 
 @app.command()

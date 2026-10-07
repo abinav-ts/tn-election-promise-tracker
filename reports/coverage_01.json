@@ -1,0 +1,4336 @@
+{
+ "generated_at": "2026-10-07T19:54:29+00:00",
+ "totals": {
+  "catalogued": 10257,
+  "documents": 80,
+  "chunks": 2217
+ },
+ "by_type_fy": {
+  "budget_speech": {
+   "2016-17": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2017-18": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2018-19": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2019-20": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2020-21": {
+    "catalogued": 1,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2021-22": {
+    "catalogued": 3,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2022-23": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2023-24": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2024-25": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2025-26": {
+    "catalogued": 2,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2026-27": {
+    "catalogued": 4,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "unknown": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   }
+  },
+  "cag_report": {
+   "2016-17": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2017-18": {
+    "catalogued": 1,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2018-19": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2019-20": {
+    "catalogued": 1,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2020-21": {
+    "catalogued": 4,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2021-22": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2022-23": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2023-24": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2024-25": {
+    "catalogued": 0,
+    "downloaded": 7,
+    "parsed": 7,
+    "chunked": 4
+   },
+   "2025-26": {
+    "catalogued": 0,
+    "downloaded": 7,
+    "parsed": 7,
+    "chunked": 4
+   },
+   "2026-27": {
+    "catalogued": 0,
+    "downloaded": 3,
+    "parsed": 3,
+    "chunked": 3
+   },
+   "unknown": {
+    "catalogued": 35,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   }
+  },
+  "go": {
+   "2016-17": {
+    "catalogued": 441,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2017-18": {
+    "catalogued": 663,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2018-19": {
+    "catalogued": 993,
+    "downloaded": 4,
+    "parsed": 4,
+    "chunked": 4
+   },
+   "2019-20": {
+    "catalogued": 806,
+    "downloaded": 3,
+    "parsed": 3,
+    "chunked": 3
+   },
+   "2020-21": {
+    "catalogued": 852,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2021-22": {
+    "catalogued": 777,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "2022-23": {
+    "catalogued": 788,
+    "downloaded": 4,
+    "parsed": 4,
+    "chunked": 4
+   },
+   "2023-24": {
+    "catalogued": 558,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2024-25": {
+    "catalogued": 700,
+    "downloaded": 3,
+    "parsed": 3,
+    "chunked": 3
+   },
+   "2025-26": {
+    "catalogued": 592,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2026-27": {
+    "catalogued": 105,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "unknown": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   }
+  },
+  "governor_address": {
+   "2016-17": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2017-18": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2018-19": {
+    "catalogued": 1,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2019-20": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2020-21": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2021-22": {
+    "catalogued": 2,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2022-23": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2023-24": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2024-25": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2025-26": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2026-27": {
+    "catalogued": 1,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "unknown": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   }
+  },
+  "other": {
+   "2016-17": {
+    "catalogued": 7,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2017-18": {
+    "catalogued": 10,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2018-19": {
+    "catalogued": 12,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2019-20": {
+    "catalogued": 11,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2020-21": {
+    "catalogued": 7,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2021-22": {
+    "catalogued": 7,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2022-23": {
+    "catalogued": 10,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2023-24": {
+    "catalogued": 5,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2024-25": {
+    "catalogued": 11,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2025-26": {
+    "catalogued": 7,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2026-27": {
+    "catalogued": 5,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "unknown": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   }
+  },
+  "policy_note": {
+   "2016-17": {
+    "catalogued": 48,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "2017-18": {
+    "catalogued": 40,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "2018-19": {
+    "catalogued": 42,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2019-20": {
+    "catalogued": 42,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "2020-21": {
+    "catalogued": 29,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2021-22": {
+    "catalogued": 54,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2022-23": {
+    "catalogued": 57,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2023-24": {
+    "catalogued": 59,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "2024-25": {
+    "catalogued": 57,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "2025-26": {
+    "catalogued": 60,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2026-27": {
+    "catalogued": 55,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 2
+   },
+   "unknown": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   }
+  },
+  "scheme_page": {
+   "2016-17": {
+    "catalogued": 0,
+    "downloaded": 4,
+    "parsed": 4,
+    "chunked": 4
+   },
+   "2017-18": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2018-19": {
+    "catalogued": 0,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2019-20": {
+    "catalogued": 0,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2020-21": {
+    "catalogued": 0,
+    "downloaded": 2,
+    "parsed": 2,
+    "chunked": 0
+   },
+   "2021-22": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2022-23": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2023-24": {
+    "catalogued": 0,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2024-25": {
+    "catalogued": 0,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   },
+   "2025-26": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "2026-27": {
+    "catalogued": 0,
+    "downloaded": 0,
+    "parsed": 0,
+    "chunked": 0
+   },
+   "unknown": {
+    "catalogued": 1487,
+    "downloaded": 1,
+    "parsed": 1,
+    "chunked": 1
+   }
+  }
+ },
+ "go_grid": {
+  "Agriculture - Farmers Welfare Department": {
+   "listed": {
+    "2016": 79,
+    "2017": 79,
+    "2018": 120,
+    "2019": 51,
+    "2020": 47,
+    "2021": 49,
+    "2022": 41,
+    "2023": 26,
+    "2024": 37,
+    "2025": 11,
+    "2026": 3
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 2,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 47,
+   "holes": [
+    2025,
+    2026
+   ]
+  },
+  "Animal Husbandry, Dairying, Fisheries and Fishermen Welfare Department": {
+   "listed": {
+    "2016": 5,
+    "2017": 2,
+    "2018": 7,
+    "2019": 17,
+    "2020": 4,
+    "2021": 1,
+    "2022": 1,
+    "2023": 0,
+    "2024": 2,
+    "2025": 2,
+    "2026": 5
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 2,
+   "holes": [
+    2023
+   ]
+  },
+  "Artificial Intelligence, Information Technology and Digital Services Department": {
+   "listed": {
+    "2016": 3,
+    "2017": 22,
+    "2018": 17,
+    "2019": 29,
+    "2020": 22,
+    "2021": 13,
+    "2022": 9,
+    "2023": 8,
+    "2024": 7,
+    "2025": 9,
+    "2026": 1
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 9,
+   "holes": [
+    2026
+   ]
+  },
+  "BC, MBC & Minorities Welfare Department": {
+   "listed": {
+    "2016": 1,
+    "2017": 5,
+    "2018": 6,
+    "2019": 7,
+    "2020": 14,
+    "2021": 8,
+    "2022": 9,
+    "2023": 6,
+    "2024": 3,
+    "2025": 10,
+    "2026": 3
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 6,
+   "holes": [
+    2016
+   ]
+  },
+  "Co-operation, Food and Consumer Protection Department": {
+   "listed": {
+    "2016": 6,
+    "2017": 4,
+    "2018": 6,
+    "2019": 10,
+    "2020": 5,
+    "2021": 10,
+    "2022": 3,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 1
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 4,
+   "holes": [
+    2023,
+    2024,
+    2025
+   ]
+  },
+  "Commercial Taxes and Registration Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 93,
+    "2018": 86,
+    "2019": 88,
+    "2020": 67,
+    "2021": 3,
+    "2022": 1,
+    "2023": 0,
+    "2024": 14,
+    "2025": 35,
+    "2026": 1
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 1,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 14,
+   "holes": [
+    2016,
+    2021,
+    2022,
+    2023,
+    2026
+   ]
+  },
+  "Energy Department": {
+   "listed": {
+    "2016": 2,
+    "2017": 1,
+    "2018": 0,
+    "2019": 0,
+    "2020": 2,
+    "2021": 0,
+    "2022": 2,
+    "2023": 1,
+    "2024": 4,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 1,
+   "holes": [
+    2018,
+    2019,
+    2021,
+    2025,
+    2026
+   ]
+  },
+  "Environment, Climate Change and Forests Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 5,
+    "2018": 3,
+    "2019": 4,
+    "2020": 0,
+    "2021": 36,
+    "2022": 24,
+    "2023": 46,
+    "2024": 111,
+    "2025": 68,
+    "2026": 13
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 1,
+    "2022": 0,
+    "2023": 1,
+    "2024": 1,
+    "2025": 1,
+    "2026": 0
+   },
+   "median": 13,
+   "holes": [
+    2016,
+    2018,
+    2020
+   ]
+  },
+  "Finance Department": {
+   "listed": {
+    "2016": 32,
+    "2017": 74,
+    "2018": 50,
+    "2019": 49,
+    "2020": 65,
+    "2021": 30,
+    "2022": 59,
+    "2023": 41,
+    "2024": 19,
+    "2025": 23,
+    "2026": 18
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 1,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 41,
+   "holes": []
+  },
+  "Handlooms, Handicrafts, Textiles and Khadi Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 3,
+    "2020": 5,
+    "2021": 5,
+    "2022": 5,
+    "2023": 4,
+    "2024": 2,
+    "2025": 1,
+    "2026": 1
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 2,
+   "holes": [
+    2016,
+    2017,
+    2018
+   ]
+  },
+  "Health and Family Welfare Department": {
+   "listed": {
+    "2016": 26,
+    "2017": 0,
+    "2018": 259,
+    "2019": 287,
+    "2020": 280,
+    "2021": 88,
+    "2022": 36,
+    "2023": 45,
+    "2024": 86,
+    "2025": 238,
+    "2026": 114
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 2,
+    "2019": 1,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 88,
+   "holes": [
+    2017
+   ]
+  },
+  "Higher Education Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 4,
+    "2018": 28,
+    "2019": 28,
+    "2020": 23,
+    "2021": 26,
+    "2022": 28,
+    "2023": 10,
+    "2024": 7,
+    "2025": 12,
+    "2026": 15
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 15,
+   "holes": [
+    2016
+   ]
+  },
+  "Highways and Minor Ports Department": {
+   "listed": {
+    "2016": 4,
+    "2017": 11,
+    "2018": 139,
+    "2019": 83,
+    "2020": 85,
+    "2021": 82,
+    "2022": 46,
+    "2023": 12,
+    "2024": 3,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 12,
+   "holes": [
+    2025,
+    2026
+   ]
+  },
+  "Home, Prohibition and Excise Department": {
+   "listed": {
+    "2016": 12,
+    "2017": 13,
+    "2018": 40,
+    "2019": 30,
+    "2020": 35,
+    "2021": 70,
+    "2022": 80,
+    "2023": 94,
+    "2024": 84,
+    "2025": 43,
+    "2026": 18
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 1,
+    "2026": 0
+   },
+   "median": 40,
+   "holes": []
+  },
+  "Housing and Urban Development Department": {
+   "listed": {
+    "2016": 2,
+    "2017": 13,
+    "2018": 14,
+    "2019": 15,
+    "2020": 10,
+    "2021": 23,
+    "2022": 53,
+    "2023": 10,
+    "2024": 18,
+    "2025": 16,
+    "2026": 9
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 1,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 14,
+   "holes": [
+    2016
+   ]
+  },
+  "Human Resources Management Department": {
+   "listed": {
+    "2016": 5,
+    "2017": 19,
+    "2018": 24,
+    "2019": 13,
+    "2020": 27,
+    "2021": 19,
+    "2022": 15,
+    "2023": 6,
+    "2024": 1,
+    "2025": 8,
+    "2026": 6
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 1,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 13,
+   "holes": [
+    2024
+   ]
+  },
+  "Industries, Investment Promotion & Commerce Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 2,
+    "2018": 2,
+    "2019": 3,
+    "2020": 12,
+    "2021": 14,
+    "2022": 34,
+    "2023": 6,
+    "2024": 2,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 2,
+   "holes": [
+    2016,
+    2025,
+    2026
+   ]
+  },
+  "Labour Welfare and Skill Development Department": {
+   "listed": {
+    "2016": 2,
+    "2017": 10,
+    "2018": 14,
+    "2019": 30,
+    "2020": 1,
+    "2021": 32,
+    "2022": 79,
+    "2023": 12,
+    "2024": 22,
+    "2025": 29,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 1,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 14,
+   "holes": [
+    2016,
+    2020,
+    2026
+   ]
+  },
+  "Law Department": {
+   "listed": {
+    "2016": 6,
+    "2017": 3,
+    "2018": 5,
+    "2019": 1,
+    "2020": 10,
+    "2021": 20,
+    "2022": 9,
+    "2023": 12,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 1,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 5,
+   "holes": [
+    2019,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  "Micro, Small and Medium Enterprises Department": {
+   "listed": {
+    "2016": 2,
+    "2017": 7,
+    "2018": 6,
+    "2019": 10,
+    "2020": 23,
+    "2021": 23,
+    "2022": 14,
+    "2023": 16,
+    "2024": 38,
+    "2025": 15,
+    "2026": 2
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 14,
+   "holes": [
+    2016,
+    2026
+   ]
+  },
+  "Municipal Administration and Water Supply Department": {
+   "listed": {
+    "2016": 3,
+    "2017": 0,
+    "2018": 0,
+    "2019": 1,
+    "2020": 1,
+    "2021": 5,
+    "2022": 48,
+    "2023": 5,
+    "2024": 1,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 1,
+   "holes": [
+    2017,
+    2018,
+    2025,
+    2026
+   ]
+  },
+  "Natural Resources Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 1,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 0,
+   "holes": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2025,
+    2026
+   ]
+  },
+  "Planning and Development Department": {
+   "listed": {
+    "2016": 26,
+    "2017": 35,
+    "2018": 34,
+    "2019": 31,
+    "2020": 22,
+    "2021": 9,
+    "2022": 15,
+    "2023": 7,
+    "2024": 16,
+    "2025": 4,
+    "2026": 1
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 16,
+   "holes": [
+    2026
+   ]
+  },
+  "Public (Elections) Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 0,
+   "holes": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  "Public Department": {
+   "listed": {
+    "2016": 28,
+    "2017": 17,
+    "2018": 5,
+    "2019": 8,
+    "2020": 6,
+    "2021": 15,
+    "2022": 10,
+    "2023": 12,
+    "2024": 12,
+    "2025": 10,
+    "2026": 11
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 11,
+   "holes": []
+  },
+  "Public Works Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 2,
+    "2018": 0,
+    "2019": 2,
+    "2020": 0,
+    "2021": 1,
+    "2022": 4,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 0,
+   "holes": [
+    2016,
+    2018,
+    2020,
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  "Revenue and Disaster Management Department": {
+   "listed": {
+    "2016": 5,
+    "2017": 9,
+    "2018": 3,
+    "2019": 10,
+    "2020": 35,
+    "2021": 42,
+    "2022": 21,
+    "2023": 3,
+    "2024": 2,
+    "2025": 1,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 1,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 5,
+   "holes": [
+    2025,
+    2026
+   ]
+  },
+  "Rural Development and Panchayat Raj Department": {
+   "listed": {
+    "2016": 14,
+    "2017": 50,
+    "2018": 27,
+    "2019": 30,
+    "2020": 44,
+    "2021": 63,
+    "2022": 48,
+    "2023": 52,
+    "2024": 66,
+    "2025": 12,
+    "2026": 7
+   },
+   "downloaded": {
+    "2016": 1,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 1,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 44,
+   "holes": [
+    2026
+   ]
+  },
+  "School Education Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 2,
+    "2018": 16,
+    "2019": 7,
+    "2020": 1,
+    "2021": 4,
+    "2022": 4,
+    "2023": 2,
+    "2024": 1,
+    "2025": 21,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 2,
+   "holes": [
+    2016,
+    2026
+   ]
+  },
+  "Social Justice Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 4,
+    "2019": 8,
+    "2020": 1,
+    "2021": 4,
+    "2022": 4,
+    "2023": 5,
+    "2024": 3,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 3,
+   "holes": [
+    2016,
+    2017,
+    2025,
+    2026
+   ]
+  },
+  "Social Welfare and Women Empowerment Department": {
+   "listed": {
+    "2016": 12,
+    "2017": 29,
+    "2018": 29,
+    "2019": 12,
+    "2020": 1,
+    "2021": 2,
+    "2022": 4,
+    "2023": 1,
+    "2024": 3,
+    "2025": 1,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 3,
+   "holes": [
+    2026
+   ]
+  },
+  "Special Programme Implementation": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 1,
+    "2023": 0,
+    "2024": 0,
+    "2025": 1,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 0,
+   "holes": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2023,
+    2024,
+    2026
+   ]
+  },
+  "Tamil Dev. and Information Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 0,
+   "holes": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  "Tourism, Culture and Special Initiatives Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 2,
+    "2020": 0,
+    "2021": 6,
+    "2022": 1,
+    "2023": 0,
+    "2024": 2,
+    "2025": 3,
+    "2026": 1
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 1,
+   "holes": [
+    2016,
+    2017,
+    2018,
+    2020,
+    2023
+   ]
+  },
+  "Transport Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 1,
+    "2018": 9,
+    "2019": 1,
+    "2020": 13,
+    "2021": 12,
+    "2022": 22,
+    "2023": 20,
+    "2024": 14,
+    "2025": 2,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 9,
+   "holes": [
+    2016,
+    2017,
+    2019,
+    2025,
+    2026
+   ]
+  },
+  "Water Resources Department": {
+   "listed": {
+    "2016": 0,
+    "2017": 1,
+    "2018": 0,
+    "2019": 0,
+    "2020": 1,
+    "2021": 8,
+    "2022": 108,
+    "2023": 61,
+    "2024": 121,
+    "2025": 68,
+    "2026": 24
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 8,
+   "holes": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+   ]
+  },
+  "Welfare of Differently Abled Persons": {
+   "listed": {
+    "2016": 16,
+    "2017": 32,
+    "2018": 11,
+    "2019": 2,
+    "2020": 5,
+    "2021": 7,
+    "2022": 9,
+    "2023": 3,
+    "2024": 0,
+    "2025": 2,
+    "2026": 2
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 1,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 5,
+   "holes": [
+    2024
+   ]
+  },
+  "Youth Welfare and Sports Development Department": {
+   "listed": {
+    "2016": 6,
+    "2017": 1,
+    "2018": 11,
+    "2019": 6,
+    "2020": 1,
+    "2021": 1,
+    "2022": 4,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "downloaded": {
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+    "2026": 0
+   },
+   "median": 1,
+   "holes": [
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  }
+ },
+ "dating": {
+  "by_type": {
+   "budget_speech": {
+    "documents": 2,
+    "date_source": {
+     "document_text": 1,
+     "wayback_capture": 1
+    },
+    "precision": {
+     "day": 2
+    },
+    "undated": 0,
+    "day_precision_share": 1.0
+   },
+   "cag_report": {
+    "documents": 20,
+    "date_source": {
+     "wayback_capture": 20
+    },
+    "precision": {
+     "day": 20
+    },
+    "undated": 0,
+    "day_precision_share": 1.0
+   },
+   "go": {
+    "documents": 20,
+    "date_source": {
+     "listing": 20
+    },
+    "precision": {
+     "day": 20
+    },
+    "undated": 0,
+    "day_precision_share": 1.0
+   },
+   "governor_address": {
+    "documents": 1,
+    "date_source": {
+     "filename": 1
+    },
+    "precision": {
+     "day": 1
+    },
+    "undated": 0,
+    "day_precision_share": 1.0
+   },
+   "other": {
+    "documents": 2,
+    "date_source": {
+     "wayback_capture": 2
+    },
+    "precision": {
+     "day": 2
+    },
+    "undated": 0,
+    "day_precision_share": 1.0
+   },
+   "policy_note": {
+    "documents": 15,
+    "date_source": {
+     "wayback_capture": 8,
+     "document_text": 4,
+     "none": 3
+    },
+    "precision": {
+     "day": 8,
+     "year": 4,
+     "none": 3
+    },
+    "undated": 3,
+    "day_precision_share": 0.533
+   },
+   "scheme_page": {
+    "documents": 20,
+    "date_source": {
+     "wayback_capture": 19,
+     "none": 1
+    },
+    "precision": {
+     "day": 19,
+     "none": 1
+    },
+    "undated": 1,
+    "day_precision_share": 0.95
+   }
+  },
+  "undated_total": 4,
+  "date_review_rows": 66,
+  "review_reasons": {
+   "dated by Wayback first capture (upper bound)": 50,
+   "anachronism": 21,
+   "out of window": 10,
+   "FY mismatch": 5,
+   "dated from © year (year precision)": 4,
+   "undated (fiscal year only)": 3,
+   "conflict": 1,
+   "dated from filename": 1,
+   "undated": 1
+  }
+ },
+ "parsing": {
+  "status": {
+   "ocr": 54,
+   "ok": 26
+  },
+  "pages": 5749,
+  "ocr_pages": 554,
+  "ocr_page_share": 0.096,
+  "chunks": 2217,
+  "chunk_words": {
+   "min": 29,
+   "p10": 400,
+   "median": 408,
+   "p90": 463,
+   "max": 500
+  },
+  "failed": []
+ },
+ "language": {
+  "documents": {
+   "budget_speech|en": 2,
+   "cag_report|en": 14,
+   "cag_report|ta": 6,
+   "go|en": 20,
+   "governor_address|en": 1,
+   "other|en": 2,
+   "policy_note|en": 15,
+   "scheme_page|en": 18,
+   "scheme_page|ta": 2
+  },
+  "catalogue_lang_hints": {
+   "budget_speech|en": 52,
+   "budget_speech|ta": 32,
+   "budget_speech|untagged": 1,
+   "cag_report|en": 263,
+   "excluded|en": 117,
+   "excluded|untagged": 55,
+   "go|en": 7379,
+   "go|ta": 30,
+   "go|untagged": 191,
+   "governor_address|en": 13,
+   "other|en": 77,
+   "other|untagged": 15,
+   "policy_note|en": 545,
+   "scheme_page|en": 1487
+  },
+  "tamil_pairing": {
+   "status": "not run yet (spec 01 §4.10 step 10)"
+  }
+ },
+ "fetch_path": {
+  "via": {
+   "live": 40,
+   "wayback": 40
+  },
+  "fetch_failed": [
+   {
+    "source": "tn_policy_notes",
+    "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/law_e_pn_2019_20.pdf",
+    "error": "live: HTTP 404; wayback: no 200 capture"
+   }
+  ],
+  "deferred": [],
+  "wayback_lookups_pending": 0,
+  "superseded_versions": [
+   {
+    "doc_id": "41c7737a05eb7568",
+    "url": "https://tnbudget.tn.gov.in/tnweb_files/budget_speech_e_2020_21.pdf",
+    "digest": "B6GIFH4CPWEB6GOKPJGD47O5UUB7TMDA",
+    "first": "20211028201257",
+    "last": "20211028201257",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "0f75930b9c58fb4d",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2016/Tamil_Nadu_Report_5_of_2016_Economic_Sector.pdf",
+    "digest": "QFZAJRSJZBYGMCJHMXUR44UDVH2CJ4KE",
+    "first": "20210517101728",
+    "last": "20210924101956",
+    "n_captures": 2
+   },
+   {
+    "doc_id": "19c58c9539b68a09",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2024/Report-No-3-of-2024-Welfare-of-Building-Tamil-0668286d671de57.93583562.pdf",
+    "digest": "PNFUIFANTXUQ76S762FZG6IHHAP5MREO",
+    "first": "20250219060431",
+    "last": "20250219060431",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "Q452N7HZENCLVWYPBBDU3M5C5YHLDFRD",
+    "first": "20140108003557",
+    "last": "20140108003557",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "I2LX6WCSE4T3X5A6ZEYVRRVCTXXZX25Z",
+    "first": "20141022000308",
+    "last": "20141022000308",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "XXSK5HTDBGPQKQDUUC74JSWM2PNZ536X",
+    "first": "20141226090720",
+    "last": "20141226090720",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "VT3WOVCHM577DJBZZ3ETRT5MVVEVJSH4",
+    "first": "20161015050729",
+    "last": "20161015050729",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "AC6OUFX23H75KNMIHBUT2ZU224Z5JIH4",
+    "first": "20161115133452",
+    "last": "20161115133452",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "AF3DDTLXVOCKNVCVHJUSPNWBDN3IYJ7C",
+    "first": "20170114115854",
+    "last": "20170114115854",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "XLHHFOZAAOEB5AQ2KCFZYVU5355BOMQL",
+    "first": "20170719170259",
+    "last": "20170719170259",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "SKNIK5D2YKVFNBSWET4DBIYG7MBLL5XU",
+    "first": "20170820010359",
+    "last": "20170820010359",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "O2B3B26PENKKJIBYOMHYETU4WC3C6BOC",
+    "first": "20170922014239",
+    "last": "20170922014239",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "JLDO2WOSOILOQK7754Y2AJL4BWFJWHNX",
+    "first": "20171023093025",
+    "last": "20171023093025",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "64EYG3NST7SVZCDBCC74BKKSW42JRBNT",
+    "first": "20171125174443",
+    "last": "20171125174443",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "N4INLFGCGZUSK5PKVJ2Q2G6MJPOV7E3W",
+    "first": "20171226115819",
+    "last": "20171226115819",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "RVNDYYPMV6ZLBAJMLQBGO7N6H3K32LEX",
+    "first": "20180127055216",
+    "last": "20180127055216",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "OIODWMUNDS7K5BYWPWIBIZZPIZC7MJG6",
+    "first": "20180502005858",
+    "last": "20180502005858",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "D2YH6FZH5PSCOZW77GEKUDXYZUAZZEUS",
+    "first": "20180603164836",
+    "last": "20180603164836",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "REHXKT6ZL34TI4JCQ5XWGS7WARM55LWN",
+    "first": "20180813001414",
+    "last": "20180813001414",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "NJ63DM4GB7VNOLF5TAO2VCMFZDSFNCGY",
+    "first": "20180921004920",
+    "last": "20180921004920",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "2UNFDIESCO66KCMS5SJUUHFI3ORWDGMS",
+    "first": "20181022122139",
+    "last": "20181022122139",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "YMNUOOS22Y7ICJIFVGKI4CPRIDEQ74LH",
+    "first": "20190718092631",
+    "last": "20190718092631",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "G6PN4PS2YTA6BEBAYYSBOVDPMLQBJSO5",
+    "first": "20190916004707",
+    "last": "20190916004707",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "6JVTM3C46A4NG4U7L3IKMZBDYRIVA4OQ",
+    "first": "20200201000552",
+    "last": "20200201000552",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "HEMIG56JVM6CDN7ITEIGWBXXNA6PN5A3",
+    "first": "20200301152442",
+    "last": "20200301152442",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "3OATZQJBWMGSWZ6F4M253AV2WK2MSOQW",
+    "first": "20200311095359",
+    "last": "20200311095359",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "W2RBTPUUWN4DX2UZPCQBAKT5JFDZDDKM",
+    "first": "20200410113357",
+    "last": "20200410113357",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "IQFRLAI4M4CTYFFSTN3EU5XAOGOU2LGD",
+    "first": "20210421103928",
+    "last": "20210421103928",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "MU4OL7UQKFJ3LTAKUEXE2NN3ZYV5EPLA",
+    "first": "20210918222218",
+    "last": "20210918222218",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "CP67J6ZQA2VJIPMIVQ4RLP2OTZLPBDKM",
+    "first": "20220205135833",
+    "last": "20220205135833",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "XIIU3HFE2JCUD4MEMZRHE2XEJSRONWDU",
+    "first": "20220815001947",
+    "last": "20220815001947",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "4ENZG4FGLG2NYZV6U5Z6TMQOFAUOOTQA",
+    "first": "20221203183854",
+    "last": "20221203183854",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "NRLX3JHXCY2CQLJNQISTTX6QAAVOYNGT",
+    "first": "20230327161914",
+    "last": "20230327161914",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "ZJBYSF5BYN4NYJ7FWDDIC2RSDWVOJ2CJ",
+    "first": "20231207031231",
+    "last": "20231207031231",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00109164c20c3a81",
+    "url": "https://www.tn.gov.in/scheme/data_view/27483",
+    "digest": "6XKUOIPEHJSAYWITIMEQ65XQW23OZZLE",
+    "first": "20240519105901",
+    "last": "20240519105901",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "6DTWXPE6K3HEW7NSSNKD5IJ5SFS3JJDO",
+    "first": "20170425050832",
+    "last": "20170425050832",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "BXVND6ZWNM7JBLFWRNNAHFBYMM7BLQJY",
+    "first": "20170526123226",
+    "last": "20170526123226",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "QGPQGS3QNUVDNIMU42NCQN2Y2EVI4G7F",
+    "first": "20170527145247",
+    "last": "20170527145247",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "DUY6Y2VISXPALFJLTQJS2CP5ZPSOIHPU",
+    "first": "20170627131528",
+    "last": "20170627131528",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "DNTP3MPSE22B7SZ4PXGOATWKOHVJDGAG",
+    "first": "20170728142043",
+    "last": "20170728142043",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "ALGQTK5DSBGAWU3NFOS5EOGQIFIZVJBQ",
+    "first": "20170830223232",
+    "last": "20170830223232",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "H2PDN2AYZ7XD7IOTK2LQDI6QNCHKCW2J",
+    "first": "20170930200040",
+    "last": "20170930200040",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "SBQBTVSBBDNMEOTO3A3MGUC2773NNXU2",
+    "first": "20171101115829",
+    "last": "20171101115829",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "QDYZCDPILIVIOUGHA2CWTS4CZ2ZXKR5N",
+    "first": "20171203072026",
+    "last": "20171203072026",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "PNT5POS64UOA45T5OSFMVDZTNIWXTZC3",
+    "first": "20180103111037",
+    "last": "20180103111037",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "UVXZ3QTJJI2PW76PZ77EHCBUPDI6UIM4",
+    "first": "20180206133858",
+    "last": "20180206133858",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "008a7cb7f681ca6d",
+    "url": "http://www.tn.gov.in/scheme/data_view/3217",
+    "digest": "HVMSTRC53ADXCAAP7QD6JR37ACM3WGTO",
+    "first": "20180310222045",
+    "last": "20180310222045",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00a410e086ded786",
+    "url": "http://www.tn.gov.in/scheme/data_view/43864",
+    "digest": "X2ZMZDCX3BRJNHL2B4R27II4TYQFNSIE",
+    "first": "20151102220158",
+    "last": "20151102220158",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00a410e086ded786",
+    "url": "http://www.tn.gov.in/scheme/data_view/43864",
+    "digest": "RDWSIDKPBGAEHNWZARVSXF2JKMJ43RDS",
+    "first": "20151104084052",
+    "last": "20151104084052",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00e4deb10916a956",
+    "url": "https://www.tn.gov.in/scheme/data_view/26776",
+    "digest": "ASL553ELOUOYNDCUF5LDWWKDQYOGIRCW",
+    "first": "20161028154530",
+    "last": "20161028154530",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00e4deb10916a956",
+    "url": "https://www.tn.gov.in/scheme/data_view/26776",
+    "digest": "UX6VNSPHTWEJU5GDJRATNKMVLEVJAEBG",
+    "first": "20170709205413",
+    "last": "20170709205413",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "00e4deb10916a956",
+    "url": "https://www.tn.gov.in/scheme/data_view/26776",
+    "digest": "7DPE4SPBZK42RP2NS6P2CTSOY4J545C5",
+    "first": "20181016015840",
+    "last": "20181016015840",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "0111dcc8f9b01091",
+    "url": "http://www.tn.gov.in/scheme/data_view/43859",
+    "digest": "ETMIP4SC7SJYL4L7SGPX6AI6ASMZ4CT4",
+    "first": "20140305110204",
+    "last": "20140305110204",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "0111dcc8f9b01091",
+    "url": "http://www.tn.gov.in/scheme/data_view/43859",
+    "digest": "WE6KWVXHZU33KTMJJXFNXJAYH37F6DVI",
+    "first": "20141206055422",
+    "last": "20141206055422",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "0111dcc8f9b01091",
+    "url": "http://www.tn.gov.in/scheme/data_view/43859",
+    "digest": "Q3TX6QCKG7HQIZDPSH3A3ASQMXMWR3N4",
+    "first": "20150428084228",
+    "last": "20150428084228",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "0111dcc8f9b01091",
+    "url": "http://www.tn.gov.in/scheme/data_view/43859",
+    "digest": "CLODJFZEMFLXJQT6N5B7XUGMTXWAU6CC",
+    "first": "20150709091813",
+    "last": "20150709091813",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "2c7a55b7c914b60f",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2020/English%20version%20of%20Audit%20Report%202019-20%20Compliance%20Audit%20-%20Tamil%20Nadu-0614035946a4512.47613892.pdf",
+    "digest": "I34BLW7OT3MJ7GCRIEESCUQUB2JCO7WJ",
+    "first": "20220523043252",
+    "last": "20220523043252",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "40d984d04336349b",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2018/Report_No_2_of_2018_-_Revenue_Sector_Government_of_Tamil_Nadu.pdf",
+    "digest": "K6HALK54V4QOYLOEH2PDN2H5XLTM5PRL",
+    "first": "20210306181825",
+    "last": "20210511210124",
+    "n_captures": 2
+   },
+   {
+    "doc_id": "40ee0929e48ca726",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2017/Report_No.3_of_2017_-_General_and_Social_Sector,_Government_of_Tamil_Nadu.pdf",
+    "digest": "V7HHXUVEPJFESPX6W265TF5N3GOL7HAY",
+    "first": "20210410231803",
+    "last": "20210410231803",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "42f6acc2cc3c4aab",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2017/Tamil_Nadu_Report_1_of_2016_GSS.pdf",
+    "digest": "DDLCXO5VABIKW3KLLMUIZ5DU6HTWC656",
+    "first": "20210924101106",
+    "last": "20210924101106",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "47a7384c81c1d2b9",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2024/Reports-Revenue-Tamil-4-2024-06683da018bfe13.65569400.pdf",
+    "digest": "UTGEIAUMDEOPDD7KPZT3AUYB3T7YJUXO",
+    "first": "20240804073356",
+    "last": "20240804073356",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "584f28a8be6c85ec",
+    "url": "https://cag.gov.in/uploads/download_audit_report/2025/CAG's-Report-Compliance-Audit-1-of-2025-Tamil-06810bbb3b6a887.88265101.pdf",
+    "digest": "IGJV2LQN4QYBFY5TCTYQGLIQCFQSCEQ2",
+    "first": "20250709161756",
+    "last": "20250709161756",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "O5MWOAHPEPKEVF2WA2H6UJRDALUXRNVJ",
+    "first": "20140108003752",
+    "last": "20140108003752",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "7GYDDGY6ME5UF4BWUFTL4JHMXFE5XJG5",
+    "first": "20141022000459",
+    "last": "20141022000459",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "NB3ZS4GJJUCPZZFEUQRF64AQW2XKETTX",
+    "first": "20150505164454",
+    "last": "20150505164454",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "ARS2L3O2XOYP54CJL62GT5VGT3T3X37X",
+    "first": "20150702020824",
+    "last": "20150702020824",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "XXTWG6BKS353ZVEI4OKNWOIPCIVIWVHB",
+    "first": "20160304130354",
+    "last": "20160304130354",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "UHHSJESATTINW5S4DEWHK57RB3MPQHJU",
+    "first": "20160305163300",
+    "last": "20160305163300",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "BLUQHKOGFGJAUWLKSQE6OO2RH67QRWES",
+    "first": "20160306174826",
+    "last": "20160306174826",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "6PHPL634DN6OZQCHRSWAD6E7BYSSKBOX",
+    "first": "20160405183802",
+    "last": "20160405183802",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "TOQSPF6NEXIKWBN7NZQ5WXTGBBGZML3X",
+    "first": "20160724222204",
+    "last": "20160724222204",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "5D42ZRENOGFCWN4FEH57QH6WYVJYYRAA",
+    "first": "20160825055406",
+    "last": "20160825055406",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "2NC5WCPFYDTWSXMDVB6U26FXGWUPO4TU",
+    "first": "20160927114544",
+    "last": "20160927114544",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "O4BJRLHGYGF2I35SKD7N3TOYJNIQN5SX",
+    "first": "20161030005003",
+    "last": "20161030005003",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "UGKMICIO36XGASXEIW46OBRDFFMTGN4W",
+    "first": "20170429201410",
+    "last": "20170429201410",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "EROBFMIY5UATDOXE47OSVWZQCCEA7K23",
+    "first": "20170530220509",
+    "last": "20170530220509",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "YERDT34BI2DB2TY563XPXMHPPKAXCWT6",
+    "first": "20170630155850",
+    "last": "20170630155850",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "UQ4O2SPAZRJXF563WSZU62MNN47TJHL7",
+    "first": "20170731235336",
+    "last": "20170731235336",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "OPKWF2LFJXWBVXBE4X5VDEOBGRC2DV5L",
+    "first": "20170831214548",
+    "last": "20170831214548",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "L27CEL64CO47L7EP3GDUISH2ODU6BCHC",
+    "first": "20171001180938",
+    "last": "20171001180938",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "KXZQFYJ7ULNLL3M4HZFTTYG6EYQWCS2I",
+    "first": "20171102090057",
+    "last": "20171102090057",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "DPCAEFW4YL3HFZM7RGY3TGVOGNJZSFW2",
+    "first": "20171203071431",
+    "last": "20171203071431",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "IPOCFRGYLM37HUOTQ5RWVZ62XLI6H7Z7",
+    "first": "20180206184702",
+    "last": "20180206184702",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "GC47OZ4DOTEUTIJ3OG2J2AQU5OK6PVIW",
+    "first": "20180310192920",
+    "last": "20180310192920",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "BOBYDKX3AB5N6ZHPJRMIW3FUTC3YPOTB",
+    "first": "20180914000320",
+    "last": "20180914000320",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "012d9153b16dbb6e",
+    "url": "http://www.tn.gov.in/scheme/data_view/43801",
+    "digest": "6XNTWTQPBDXTQKRBWTOZE3QXUCTXGHT5",
+    "first": "20181018231226",
+    "last": "20181018231226",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "013befc9616be173",
+    "url": "http://www.tn.gov.in/scheme/data_view/27540",
+    "digest": "NIVGNCOLGJYKO7J7JLRPSHDZXIRLMBC4",
+    "first": "20160204194941",
+    "last": "20160204194941",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01af46a978de5e4b",
+    "url": "http://www.tn.gov.in/scheme/data_view/43663",
+    "digest": "4BIDWAXM3ZF77DA2X5RPWLRHAH3IMR4K",
+    "first": "20151013011133",
+    "last": "20151013011133",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01af46a978de5e4b",
+    "url": "http://www.tn.gov.in/scheme/data_view/43663",
+    "digest": "LEBE4GHL36ZU3ZB7L4KSHSDOJNHPQKWC",
+    "first": "20151211042211",
+    "last": "20151211042211",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01cc96c38d36a2be",
+    "url": "http://www.tn.gov.in/scheme/data_view/27354",
+    "digest": "H2Y3P7VFO5W4TCL46HOZX7VKR2EHBOHB",
+    "first": "20141013060136",
+    "last": "20141013060136",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01cc96c38d36a2be",
+    "url": "http://www.tn.gov.in/scheme/data_view/27354",
+    "digest": "IXH2DIB6GYBQZFEMUJSYYMWTIJR344FG",
+    "first": "20150318082435",
+    "last": "20150318082435",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01cc96c38d36a2be",
+    "url": "http://www.tn.gov.in/scheme/data_view/27354",
+    "digest": "LOQSILIIBLNWT7OW64GVXVXVPOSDPDDY",
+    "first": "20150514153518",
+    "last": "20150514153518",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01f4c0a513857b77",
+    "url": "http://www.tn.gov.in/scheme/data_view/27221",
+    "digest": "HPQROUCF5SCPA3V2CR6I2C6SKBTKLPG3",
+    "first": "20151007223540",
+    "last": "20151007223540",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "01f4c0a513857b77",
+    "url": "http://www.tn.gov.in/scheme/data_view/27221",
+    "digest": "CTGOUX3CZHXOHM5NOWXSFPXN66MVOTGM",
+    "first": "20151009060117",
+    "last": "20151009060117",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "028dcbada36291fc",
+    "url": "http://www.tn.gov.in/scheme/data_view/45308",
+    "digest": "RGWB5OFAKM2SKV76ZH657Q6DOJFH2FLK",
+    "first": "20141027164215",
+    "last": "20141027164215",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "028dcbada36291fc",
+    "url": "http://www.tn.gov.in/scheme/data_view/45308",
+    "digest": "BECMW3M7WLKB7R2XI7GXZ7GCJ4ODW4YN",
+    "first": "20150428085340",
+    "last": "20150428085340",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "JQZZUUXYTSBCREFV3ALO44IQKKRYSKIS",
+    "first": "20130828192512",
+    "last": "20130828192512",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "GMUS3UXDCVWJ6X5UMEDXFG45WFXXROX7",
+    "first": "20131030194439",
+    "last": "20131030194439",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "EOFSAOJMZW2CKS5IRY5XRFE3MYF3WDHS",
+    "first": "20170611181314",
+    "last": "20170611181314",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "OUNL73JBMTABQ6PPAZUX62JM362G2IWL",
+    "first": "20170909231322",
+    "last": "20170909231322",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "HIKNP5VZXBK3T7LVTXX5QWDZH4DWYMZH",
+    "first": "20171109134409",
+    "last": "20171109134409",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "G4OCFJLBQ73TQA2SZHHRSM6P34UARSWM",
+    "first": "20180115055434",
+    "last": "20180115055434",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "AEI22H2CCT3N5NDX6UA6BN2I52BUM5DS",
+    "first": "20180215091150",
+    "last": "20180215091150",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "3PAALLRV47VJDXYNMYKKZ4WNR3RLTRED",
+    "first": "20180318145634",
+    "last": "20180318145634",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "7IX3ESSUHR3WLUFTMM4LR7PN6FOPKFYM",
+    "first": "20180418231833",
+    "last": "20180418231833",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "RNHCHOUTVXTMB32UPHTMAQZR254ZV45O",
+    "first": "20180520114515",
+    "last": "20180520114515",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "NMX4LRXNPD257NSW4Q6SKWBOFWHNTVTU",
+    "first": "20180826231202",
+    "last": "20180826231202",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "7EOWS5TC3ZJGOFBSFU5F6EGVF7YR3WRB",
+    "first": "20181010103334",
+    "last": "20181010103334",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "RQ2ZHRE3HPNV4HFGPHG3TYPXQUUS2MTO",
+    "first": "20190718090906",
+    "last": "20190718090906",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "PPK4UHCAVBWK72KWCIF7E7MIPRUT6CM3",
+    "first": "20190916003050",
+    "last": "20190916003050",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "Q2MA5F5OU3RXV5PX4UH4TCQVEXUYVJAD",
+    "first": "20191106234920",
+    "last": "20191106234920",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "A73ONV6A6M47XG4ZRJJYM25X4774MPYJ",
+    "first": "20200109143406",
+    "last": "20200109143406",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "GHHLGPKE24RMRG5UIR7IQMMWRIWQJRTJ",
+    "first": "20200311134646",
+    "last": "20200311134646",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "YSMDJMCN35PXFOOMH23QPQO5BQRHDXUB",
+    "first": "20201030233158",
+    "last": "20201030233158",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "QNBWFK5VE6VWZ4ZS36GPRGLIYXY62KWS",
+    "first": "20210414142113",
+    "last": "20210414142113",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "WXGC5LYKUDJNT7CZE477BXPT3E26MYWW",
+    "first": "20210923000911",
+    "last": "20210923000911",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "V36NGQDI5OMWPKOFGPBHUJKVL6XU2DJT",
+    "first": "20220205132252",
+    "last": "20220205132252",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02a02b434384cbbc",
+    "url": "http://www.tn.gov.in/scheme/data_view/3529",
+    "digest": "OK2QKCMNIBMWIQWZQNLGEAY5H2W44T4G",
+    "first": "20220811180313",
+    "last": "20220811180313",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02f5363a3369f893",
+    "url": "https://www.tn.gov.in/scheme/data_view/26785",
+    "digest": "COH2XWDHOIOV45BYW6IFRFD4KNQOMOCQ",
+    "first": "20161028154536",
+    "last": "20161028154536",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02f5363a3369f893",
+    "url": "https://www.tn.gov.in/scheme/data_view/26785",
+    "digest": "5OFXPT2XONUDUFA7R6UJ4WWOAGD2H2R7",
+    "first": "20170709203145",
+    "last": "20170709203145",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "02f5363a3369f893",
+    "url": "https://www.tn.gov.in/scheme/data_view/26785",
+    "digest": "Y4NWHETMMOVT6VQDJZDT4RFL46WFDGOI",
+    "first": "20181011151449",
+    "last": "20181011151449",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "032f0541248d4320",
+    "url": "http://www.tn.gov.in/scheme/data_view/44034",
+    "digest": "K3SG2NMDXCBKF6BJKVM5WOITYX5LW7MZ",
+    "first": "20140312063926",
+    "last": "20140312063926",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "032f0541248d4320",
+    "url": "http://www.tn.gov.in/scheme/data_view/44034",
+    "digest": "KCSFRED2R3W6LAYNP4JP34V5WSQT7NPH",
+    "first": "20150429010443",
+    "last": "20150429010443",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "032f0541248d4320",
+    "url": "http://www.tn.gov.in/scheme/data_view/44034",
+    "digest": "FIPKI42DE2Z764X7M25IWB43FKOCSDTY",
+    "first": "20150903063952",
+    "last": "20150903063952",
+    "n_captures": 1
+   },
+   {
+    "doc_id": "0362d3cd77435b16",
+    "url": "http://www.tn.gov.in/scheme/data_view/27299",
+    "digest": "IQVFCMKQY4EESWOI7TGCM6JQYESLDM7Z",
+    "first": "20141013055419",
+    "last": "20141013055419",
+    "n_captures": 1
+   }
+  ]
+ },
+ "leads": {
+  "status": "not run yet (spec 01 §4.10 step 10)"
+ },
+ "gaps": [
+  {
+   "doc_type": "go",
+   "department": "Agriculture - Farmers Welfare Department",
+   "year": 2025,
+   "issue": "only 11 GOs listed (< 25% of median 47)",
+   "suggested_search": "tn.gov.in GO listing for Agriculture - Farmers Welfare Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Agriculture - Farmers Welfare Department",
+   "year": 2026,
+   "issue": "only 3 GOs listed (< 25% of median 47)",
+   "suggested_search": "tn.gov.in GO listing for Agriculture - Farmers Welfare Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Animal Husbandry, Dairying, Fisheries and Fishermen Welfare Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Animal Husbandry, Dairying, Fisheries and Fishermen Welfare Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Artificial Intelligence, Information Technology and Digital Services Department",
+   "year": 2026,
+   "issue": "only 1 GOs listed (< 25% of median 9)",
+   "suggested_search": "tn.gov.in GO listing for Artificial Intelligence, Information Technology and Digital Services Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "BC, MBC & Minorities Welfare Department",
+   "year": 2016,
+   "issue": "only 1 GOs listed (< 25% of median 6)",
+   "suggested_search": "tn.gov.in GO listing for BC, MBC & Minorities Welfare Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Co-operation, Food and Consumer Protection Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Co-operation, Food and Consumer Protection Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Co-operation, Food and Consumer Protection Department",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Co-operation, Food and Consumer Protection Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Co-operation, Food and Consumer Protection Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Co-operation, Food and Consumer Protection Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Commercial Taxes and Registration Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Commercial Taxes and Registration Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Commercial Taxes and Registration Department",
+   "year": 2021,
+   "issue": "only 3 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Commercial Taxes and Registration Department, 2021; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Commercial Taxes and Registration Department",
+   "year": 2022,
+   "issue": "only 1 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Commercial Taxes and Registration Department, 2022; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Commercial Taxes and Registration Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Commercial Taxes and Registration Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Commercial Taxes and Registration Department",
+   "year": 2026,
+   "issue": "only 1 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Commercial Taxes and Registration Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Energy Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Energy Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Energy Department",
+   "year": 2019,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Energy Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Energy Department",
+   "year": 2021,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Energy Department, 2021; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Energy Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Energy Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Energy Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Energy Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Environment, Climate Change and Forests Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Environment, Climate Change and Forests Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Environment, Climate Change and Forests Department",
+   "year": 2018,
+   "issue": "only 3 GOs listed (< 25% of median 13)",
+   "suggested_search": "tn.gov.in GO listing for Environment, Climate Change and Forests Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Environment, Climate Change and Forests Department",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Environment, Climate Change and Forests Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Handlooms, Handicrafts, Textiles and Khadi Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Handlooms, Handicrafts, Textiles and Khadi Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Handlooms, Handicrafts, Textiles and Khadi Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Handlooms, Handicrafts, Textiles and Khadi Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Handlooms, Handicrafts, Textiles and Khadi Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Handlooms, Handicrafts, Textiles and Khadi Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Health and Family Welfare Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Health and Family Welfare Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Higher Education Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Higher Education Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Highways and Minor Ports Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Highways and Minor Ports Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Highways and Minor Ports Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Highways and Minor Ports Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Housing and Urban Development Department",
+   "year": 2016,
+   "issue": "only 2 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Housing and Urban Development Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Human Resources Management Department",
+   "year": 2024,
+   "issue": "only 1 GOs listed (< 25% of median 13)",
+   "suggested_search": "tn.gov.in GO listing for Human Resources Management Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Industries, Investment Promotion & Commerce Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Industries, Investment Promotion & Commerce Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Industries, Investment Promotion & Commerce Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Industries, Investment Promotion & Commerce Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Industries, Investment Promotion & Commerce Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Industries, Investment Promotion & Commerce Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Labour Welfare and Skill Development Department",
+   "year": 2016,
+   "issue": "only 2 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Labour Welfare and Skill Development Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Labour Welfare and Skill Development Department",
+   "year": 2020,
+   "issue": "only 1 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Labour Welfare and Skill Development Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Labour Welfare and Skill Development Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Labour Welfare and Skill Development Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Law Department",
+   "year": 2019,
+   "issue": "only 1 GOs listed (< 25% of median 5)",
+   "suggested_search": "tn.gov.in GO listing for Law Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Law Department",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Law Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Law Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Law Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Law Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Law Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Micro, Small and Medium Enterprises Department",
+   "year": 2016,
+   "issue": "only 2 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Micro, Small and Medium Enterprises Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Micro, Small and Medium Enterprises Department",
+   "year": 2026,
+   "issue": "only 2 GOs listed (< 25% of median 14)",
+   "suggested_search": "tn.gov.in GO listing for Micro, Small and Medium Enterprises Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Municipal Administration and Water Supply Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Municipal Administration and Water Supply Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Municipal Administration and Water Supply Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Municipal Administration and Water Supply Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Municipal Administration and Water Supply Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Municipal Administration and Water Supply Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Municipal Administration and Water Supply Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Municipal Administration and Water Supply Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2019,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2021,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2021; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2022,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2022; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Natural Resources Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Natural Resources Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Planning and Development Department",
+   "year": 2026,
+   "issue": "only 1 GOs listed (< 25% of median 16)",
+   "suggested_search": "tn.gov.in GO listing for Planning and Development Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2019,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2021,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2021; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2022,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2022; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public (Elections) Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public (Elections) Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Public Works Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Public Works Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Revenue and Disaster Management Department",
+   "year": 2025,
+   "issue": "only 1 GOs listed (< 25% of median 5)",
+   "suggested_search": "tn.gov.in GO listing for Revenue and Disaster Management Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Revenue and Disaster Management Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Revenue and Disaster Management Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Rural Development and Panchayat Raj Department",
+   "year": 2026,
+   "issue": "only 7 GOs listed (< 25% of median 44)",
+   "suggested_search": "tn.gov.in GO listing for Rural Development and Panchayat Raj Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "School Education Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for School Education Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "School Education Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for School Education Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Social Justice Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Social Justice Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Social Justice Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Social Justice Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Social Justice Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Social Justice Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Social Justice Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Social Justice Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Social Welfare and Women Empowerment Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Social Welfare and Women Empowerment Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2019,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2021,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2021; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Special Programme Implementation",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Special Programme Implementation, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2019,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2021,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2021; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2022,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2022; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tamil Dev. and Information Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tamil Dev. and Information Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Tourism, Culture and Special Initiatives Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tourism, Culture and Special Initiatives Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tourism, Culture and Special Initiatives Department",
+   "year": 2017,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tourism, Culture and Special Initiatives Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tourism, Culture and Special Initiatives Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tourism, Culture and Special Initiatives Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tourism, Culture and Special Initiatives Department",
+   "year": 2020,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tourism, Culture and Special Initiatives Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Tourism, Culture and Special Initiatives Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Tourism, Culture and Special Initiatives Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Transport Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Transport Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Transport Department",
+   "year": 2017,
+   "issue": "only 1 GOs listed (< 25% of median 9)",
+   "suggested_search": "tn.gov.in GO listing for Transport Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Transport Department",
+   "year": 2019,
+   "issue": "only 1 GOs listed (< 25% of median 9)",
+   "suggested_search": "tn.gov.in GO listing for Transport Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Transport Department",
+   "year": 2025,
+   "issue": "only 2 GOs listed (< 25% of median 9)",
+   "suggested_search": "tn.gov.in GO listing for Transport Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Transport Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Transport Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": "go",
+   "department": "Water Resources Department",
+   "year": 2016,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Water Resources Department, 2016; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Water Resources Department",
+   "year": 2017,
+   "issue": "only 1 GOs listed (< 25% of median 8)",
+   "suggested_search": "tn.gov.in GO listing for Water Resources Department, 2017; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Water Resources Department",
+   "year": 2018,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Water Resources Department, 2018; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Water Resources Department",
+   "year": 2019,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Water Resources Department, 2019; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Water Resources Department",
+   "year": 2020,
+   "issue": "only 1 GOs listed (< 25% of median 8)",
+   "suggested_search": "tn.gov.in GO listing for Water Resources Department, 2020; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Welfare of Differently Abled Persons",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Welfare of Differently Abled Persons, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Youth Welfare and Sports Development Department",
+   "year": 2023,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Youth Welfare and Sports Development Department, 2023; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Youth Welfare and Sports Development Department",
+   "year": 2024,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Youth Welfare and Sports Development Department, 2024; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Youth Welfare and Sports Development Department",
+   "year": 2025,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Youth Welfare and Sports Development Department, 2025; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": false
+  },
+  {
+   "doc_type": "go",
+   "department": "Youth Welfare and Sports Development Department",
+   "year": 2026,
+   "issue": "no GOs listed",
+   "suggested_search": "tn.gov.in GO listing for Youth Welfare and Sports Development Department, 2026; Wayback for cms.tn.gov.in/cms_migrated/document/GO/ files of that year; department website",
+   "partial_year": true
+  },
+  {
+   "doc_type": null,
+   "source": "tn_policy_notes",
+   "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/law_e_pn_2019_20.pdf",
+   "issue": "fetch failed",
+   "detail": "live: HTTP 404; wayback: no 200 capture",
+   "suggested_search": "download by hand into _manual/ and add a manual_manifest.csv row"
+  },
+  {
+   "doc_type": "budget_speech",
+   "fiscal_year": "2026-27",
+   "subtype": "revised",
+   "issue": "expected budget speech not found",
+   "suggested_search": "Finance Department budget speech 2026-27 (revised): tn.gov.in documents, tnbudget.tn.gov.in via Wayback, Assembly library"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Environment, Climate Change and Forests Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Environment, Climate Change and Forests Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Finance Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Finance Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Handlooms, Handicrafts, Textiles and Khadi Department",
+   "fiscal_year": "2019-20",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Handlooms, Handicrafts, Textiles and Khadi Department 2019-20: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Handlooms, Handicrafts, Textiles and Khadi Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Handlooms, Handicrafts, Textiles and Khadi Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Highways and Minor Ports Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Highways and Minor Ports Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Home, Prohibition and Excise Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Home, Prohibition and Excise Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Industries, Investment Promotion & Commerce Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Industries, Investment Promotion & Commerce Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Industries, Investment Promotion & Commerce Department",
+   "fiscal_year": "2018-19",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Industries, Investment Promotion & Commerce Department 2018-19: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Micro, Small and Medium Enterprises Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Micro, Small and Medium Enterprises Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2016-17",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2016-17: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2018-19",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2018-19: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2019-20",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2019-20: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2021-22",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2021-22: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2022-23",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2022-23: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Natural Resources Department",
+   "fiscal_year": "2023-24",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Natural Resources Department 2023-24: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2016-17",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public (Elections) Department 2016-17: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public (Elections) Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2018-19",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public (Elections) Department 2018-19: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2019-20",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public (Elections) Department 2019-20: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public (Elections) Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2021-22",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public (Elections) Department 2021-22: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public (Elections) Department",
+   "fiscal_year": "2026-27",
+   "issue": "no policy note listed",
+   "partial_year": true,
+   "suggested_search": "Policy note Public (Elections) Department 2026-27: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Public Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Public Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Social Justice Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Social Justice Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Tourism, Culture and Special Initiatives Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Tourism, Culture and Special Initiatives Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Water Resources Department",
+   "fiscal_year": "2016-17",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Water Resources Department 2016-17: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Water Resources Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Water Resources Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Water Resources Department",
+   "fiscal_year": "2018-19",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Water Resources Department 2018-19: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Water Resources Department",
+   "fiscal_year": "2019-20",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Water Resources Department 2019-20: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Water Resources Department",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Water Resources Department 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Water Resources Department",
+   "fiscal_year": "2026-27",
+   "issue": "no policy note listed",
+   "partial_year": true,
+   "suggested_search": "Policy note Water Resources Department 2026-27: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Welfare of Differently Abled Persons",
+   "fiscal_year": "2018-19",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Welfare of Differently Abled Persons 2018-19: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Welfare of Differently Abled Persons",
+   "fiscal_year": "2019-20",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Welfare of Differently Abled Persons 2019-20: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Welfare of Differently Abled Persons",
+   "fiscal_year": "2020-21",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Welfare of Differently Abled Persons 2020-21: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Youth Welfare and Sports Development Department",
+   "fiscal_year": "2017-18",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Youth Welfare and Sports Development Department 2017-18: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "policy_note",
+   "department": "Youth Welfare and Sports Development Department",
+   "fiscal_year": "2019-20",
+   "issue": "no policy note listed",
+   "partial_year": false,
+   "suggested_search": "Policy note Youth Welfare and Sports Development Department 2019-20: tn.gov.in documents listing, Wayback cms.tn.gov.in/sites/default/files/documents/"
+  },
+  {
+   "doc_type": "cag_report",
+   "year": 2026,
+   "issue": "no full CAG report on Tamil Nadu found in Wayback for this year",
+   "suggested_search": "cag.gov.in audit reports, state = Tamil Nadu (site unreachable from here: download by hand)"
+  }
+ ]
+}

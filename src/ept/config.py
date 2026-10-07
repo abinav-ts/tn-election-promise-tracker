@@ -97,6 +97,10 @@ class Tamil(_Cfg):
     include_in_evidence: bool
 
 
+class CoverageCfg(_Cfg):
+    hole_fraction: float
+
+
 class Go(_Cfg):
     download_mode: str
 
@@ -118,6 +122,7 @@ class Settings(_Cfg):
     chunk: Chunk
     date: DateCfg
     tamil: Tamil
+    coverage: CoverageCfg
     go: Go
     llm: Llm
 

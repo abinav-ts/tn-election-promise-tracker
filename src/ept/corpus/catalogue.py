@@ -27,9 +27,16 @@ FETCH_FAILED = "fetch_failed"
 EXCLUDED = "excluded"
 
 
+MANUAL_PREFIX = "manual/"
+
+
 def canonical_url(url: str) -> str:
-    """Lower-case scheme and host, drop default ports and fragments; path and query kept as is."""
-    parts = urlsplit(url.strip())
+    """Lower-case scheme and host, drop default ports and fragments; path and query kept as is.
+    Manual-drop keys ("manual/<relative path>") are returned unchanged."""
+    url = url.strip()
+    if url.startswith(MANUAL_PREFIX):
+        return url
+    parts = urlsplit(url)
     scheme = parts.scheme.lower()
     host = (parts.hostname or "").lower()
     port = parts.port
@@ -44,7 +51,8 @@ def doc_id_for_url(url: str) -> str:
 
 
 def doc_id_for_manual(relative_path: str) -> str:
-    return hashlib.sha1(("manual/" + relative_path.replace(os.sep, "/")).encode("utf-8")).hexdigest()[:16]
+    """spec 01 §4.2: sha1("manual/" + relative_path). Same as doc_id_for_url of the manual key."""
+    return hashlib.sha1((MANUAL_PREFIX + relative_path.replace(os.sep, "/")).encode("utf-8")).hexdigest()[:16]
 
 
 class CatalogueItem(BaseModel):

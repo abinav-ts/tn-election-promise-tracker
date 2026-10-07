@@ -19,7 +19,7 @@ from urllib.parse import urlsplit
 from ept import db
 from ept.config import Config
 from ept.corpus import catalogue as cat
-from ept.corpus.catalogue import Catalogue, CatalogueItem, doc_id_for_url
+from ept.corpus.catalogue import MANUAL_PREFIX, Catalogue, CatalogueItem, doc_id_for_url
 from ept.corpus.wayback import Capture, Wayback, WaybackUnavailable, payload_digest
 from ept.dates import fy_bounds
 from ept.net import FetchError, Http, RobotsDisallowed
@@ -163,7 +163,15 @@ class Fetcher:
             return FetchResult("exists", doc_id)
 
         meta = read_sidecar(raw)
-        if raw.exists():  # file stored by an interrupted run: register without re-downloading
+        manual = item.url.startswith(MANUAL_PREFIX)
+        if manual:
+            src = self.cfg.path("manual_dir") / item.url[len(MANUAL_PREFIX):]
+            raw = self.raw_file(item.doc_type, doc_id, src.suffix.lower())
+            meta = read_sidecar(raw)
+            if not src.exists():
+                return FetchResult(cat.FETCH_FAILED, doc_id, error=f"manual file missing: {src.name}")
+            data, via, archive_url = src.read_bytes(), "manual", None
+        elif raw.exists():  # file stored by an interrupted run: register without re-downloading
             data = raw.read_bytes()
             via = meta.get("fetched_from", "live")
             archive_url = meta.get("archive_url")
@@ -193,7 +201,8 @@ class Fetcher:
             tmp.replace(raw)
         meta.update({
             "doc_id": doc_id,
-            "source_url": item.url,
+            "source_url": item.identifiers.get("source_url") if manual else item.url,
+            "manual_path": item.url[len(MANUAL_PREFIX):] if manual else None,
             "archive_url": archive_url,
             "fetched_from": via,
             "fetched_at": meta.get("fetched_at") or fetched_at.isoformat(),
@@ -202,19 +211,21 @@ class Fetcher:
             "listing": item.model_dump(mode="json", exclude={"status", "fetch_error", "doc_id"}),
             "aliases": meta.get("aliases", []),
         })
-        meta.setdefault("wayback", {"checked": False})
+        meta.setdefault("wayback", {"checked": manual})  # manual files are dated by the manifest
         write_sidecar(raw, meta)
 
-        listing_date = item.listing_date
-        self._register(item, doc_id, raw, sha, archive_url, fetched_at, listing_date)
-        self.wayback_lookup(raw)
+        self._register(item, doc_id, raw, sha, archive_url, fetched_at, item.listing_date)
+        if not manual:
+            self.wayback_lookup(raw)
         return FetchResult(cat.DOWNLOADED, doc_id, via=via)
 
     def _register(self, item: CatalogueItem, doc_id: str, raw: Path, sha: str, archive_url: Optional[str],
                   fetched_at: dt.datetime, listing_date: Optional[dt.date]) -> None:
+        manual = item.url.startswith(MANUAL_PREFIX)
+        precision = (item.identifiers.get("date_precision") or DatePrecision.day.value) if listing_date else None
         doc = Document(
             doc_id=doc_id,
-            source_url=item.url,
+            source_url=item.identifiers.get("source_url") if manual else item.url,
             archive_url=archive_url,
             local_path=self.rel(raw),
             doc_type=item.doc_type,
@@ -222,8 +233,8 @@ class Fetcher:
             title=item.title,
             lang=item.lang_hint or Lang.en,  # provisional; parse confirms (§4.3)
             doc_date=listing_date,
-            date_precision=DatePrecision.day if listing_date else None,
-            date_source=DateSource.listing if listing_date else DateSource.none,
+            date_precision=precision,
+            date_source=(DateSource.manual if manual else DateSource.listing) if listing_date else DateSource.none,
             fiscal_year=item.fiscal_year,
             discovery=item.discovery,
             sha256=sha,
@@ -238,7 +249,9 @@ class Fetcher:
         Returns False if Wayback was unavailable (the sidecar stays `checked: false` for a later run).
         """
         meta = read_sidecar(raw)
-        url = meta["source_url"]
+        url = meta.get("source_url")
+        if meta.get("manual_path") or not url:
+            return True  # manual files are dated by the manifest
         try:
             caps = self.wayback.captures(url)
             legacy = [c for alias in self.wayback.legacy_aliases(url) for c in self.wayback.captures(alias)]

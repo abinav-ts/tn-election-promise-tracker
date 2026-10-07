@@ -182,3 +182,35 @@ def test_wayback_outage_defers_instead_of_failing(conn, root):
     crawl_source(_OneShotAdapter([_item()]), f, cat_, lang="en", download=True, term=None, limit=None,
                  force=False, budget=Budget(None), stats=stats)
     assert stats.deferred == 1 and cat_.get(URL).status == "new"
+
+
+def test_manual_drop_registers_with_manual_date(conn, root):
+    import shutil
+
+    from ept.corpus.catalogue import doc_id_for_manual
+    from ept.corpus.parse import redate_all
+    from ept.corpus.sources.manual import Manual
+    from conftest import FIXTURES
+    import datetime as dt
+
+    cfg = get_config()
+    mdir = cfg.path("manual_dir")
+    mdir.mkdir(parents=True)
+    shutil.copy(FIXTURES / "pdf" / "text.pdf", mdir / "ga_2016.pdf")
+    cfg.path("manual_manifest").write_text(
+        "filename,doc_type,department,title,doc_date,date_precision,lang,source_url,note\n"
+        "ga_2016.pdf,governor_address,Public Department,Governor's Address June 2016,2016-06-01,month,en,"
+        "https://example.org/ga.pdf,from assembly library\n"
+        "missing.pdf,go,,,,,,,\n")
+    f, session = _fetcher(conn, [])
+    items = list(Manual(cfg, f.http, f.wayback).catalogue(Budget(None)))
+    assert [i.status for i in items] == ["new", "excluded"]
+    r = f.fetch(items[0])
+    assert r.status == "downloaded" and r.doc_id == doc_id_for_manual("ga_2016.pdf")
+    assert session.calls == []  # no network for manual files
+    doc = db.get(conn, "documents", r.doc_id)
+    assert doc.discovery == "manual" and doc.date_source == "manual" and doc.date_precision == "month"
+    assert doc.source_url == "https://example.org/ga.pdf" and doc.local_path.startswith("data/raw/evidence/governor_address/")
+    redate_all(conn, cfg, dt.date(2026, 10, 7))
+    doc = db.get(conn, "documents", r.doc_id)
+    assert doc.date_source == "manual" and doc.doc_date == dt.date(2016, 6, 1)
