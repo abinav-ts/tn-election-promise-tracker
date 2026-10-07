@@ -1,0 +1,97 @@
+# Project settings. All configurable values live here (global spec §9.4).
+# Only ept.config reads this file.
+
+paths:
+  db: data/ept.sqlite
+  raw_evidence: data/raw/evidence
+  manual_dir: data/raw/evidence/_manual
+  manual_manifest: data/raw/evidence/_manual/manual_manifest.csv
+  trackers_raw: data/raw/trackers
+  catalogue_dir: data/interim/catalogue
+  text_dir: data/interim/text
+  lang_pairs: data/interim/lang_pairs.csv
+  tracker_leads: data/interim/tracker_leads.csv
+  date_review: data/interim/date_review.csv
+  runs: reports/runs
+  coverage_md: reports/coverage_01.md
+  coverage_json: reports/coverage_01.json
+  prompts: prompts
+  llm_cache: cache/llm
+  llm_usage_log: reports/llm_usage.jsonl
+  llm_fixtures: tests/fixtures/llm
+  http_cache: cache/http
+
+# Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
+terms:
+  - term_id: AIADMK-2016
+    party: AIADMK
+    manifesto_year: 2016
+    sworn_in: 2016-05-23
+    term_end: 2021-05-06
+    role: backtest
+  - term_id: DMK-2021
+    party: DMK
+    manifesto_year: 2021
+    sworn_in: 2021-05-07
+    term_end: 2026-05-09
+    role: train
+  - term_id: TVK-2026
+    party: TVK
+    manifesto_year: 2026
+    sworn_in: 2026-05-10
+    term_end: null
+    role: project
+
+# Spec 01 §2.2. end: null = run date.
+evidence_window:
+  start: 2016-05-01
+  end: null
+
+http:
+  user_agent: "EPT-research-crawler/0.1 (Tamil Nadu election promise tracker, student course project; contact: 166200422+abinav-ts@users.noreply.github.com)"
+  timeout_s: 60
+  retries: 3
+  backoff_s: 2.0
+  rate_per_host: 1.0          # requests per second, default for every host
+  obey_robots: true
+  listing_cache_ttl_days: 7   # listing HTML in cache/http is reused for this long
+
+wayback:
+  host: web.archive.org
+  cdx_url: https://web.archive.org/cdx/search/cdx
+  raw_template: "https://web.archive.org/web/{ts}id_/{url}"
+  rate: 0.5                   # requests per second
+
+parse:
+  ocr_min_chars_per_page: 200
+  ocr_lang: eng
+  ocr_dpi: 300
+  ocr_timeout_s: 120
+  front_matter_pages: 2       # pages searched for the issue date (spec 01 §4.5 rank 3)
+
+lang:
+  tamil_ratio: 0.30           # share of letters in the Tamil Unicode block
+  legacy_garbage_ratio: 0.25  # share of Latin-1 symbol/accented chars that marks legacy-font Tamil
+
+chunk:
+  target_words: 400
+  min_words: 300
+  max_words: 500
+
+date:
+  conflict_days: 7
+  fy_slack_months: 3
+
+tamil:
+  include_in_evidence: false
+
+go:
+  download_mode: all          # D-021: all English GOs in the window
+
+llm:
+  retries: 1                  # one retry on schema-validation failure (global §6.1)
+  temperature: 0
+  models:
+    bulk: null                # chosen in spec 02
+    strong: claude-cowork
+    mock: mock

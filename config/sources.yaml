@@ -1,0 +1,34 @@
+# Source adapters (spec 01 §2.3). Only ept.config reads this file.
+
+# Order of work (user decision, spec 01 §2.3).
+order: [tn_policy_notes, tnbudget_speeches, governor_addresses, cag_reports, tn_schemes, tn_gos, manual]
+
+# Canonical department names, keyed by short code. Filled in step 3/6.
+departments: {}
+
+sources:
+  tn_policy_notes:
+    doc_type: policy_note
+    base_url: https://www.tn.gov.in/
+    dept_list_url: https://www.tn.gov.in/document_dept_list.php?cate_name=YWxs
+    dept_page: "document.php?dep_id={dep_id_b64}&year={fy_b64}&cate_name=YWxs"
+
+  tnbudget_speeches:
+    doc_type: budget_speech
+
+  governor_addresses:
+    doc_type: governor_address
+
+  cag_reports:
+    doc_type: cag_report
+
+  tn_schemes:
+    doc_type: scheme_page
+
+  tn_gos:
+    doc_type: go
+
+  manual:
+    doc_type: null
+
+trackers: []
