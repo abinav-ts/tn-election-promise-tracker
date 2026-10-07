@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.3 (2026-10-06) |
+| Status | APPROVED v0.4 (2026-10-07; amendments from spec 01, D-016–D-022) |
 | Owner | Abinav (solo), built with Claude (Cowork, Pro plan) |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -57,7 +57,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 **Out of scope**
 - Opposition parties and alliance partners' manifestos.
 - Scandal scores, favourability scores, any composite party "rating".
-- Tamil-language **evidence** documents (only manifestos may be in Tamil).
+- Using Tamil-language **evidence** documents as evidence. They are catalogued, paired with English versions and may be downloaded (spec 01), but enter the evidence pool only by a later logged decision (D-017).
 - Judging whether a promise was good policy.
 - AIADMK 2011–16 (only if everything else finishes early).
 
@@ -145,7 +145,7 @@ Storage: one SQLite file (`data/ept.sqlite`, rebuildable). Pydantic models in `s
 
 **`terms`** (from config): `term_id` PK · `party` · `manifesto_year` · `sworn_in` (date) · `term_end` (date | null if ongoing) · `role` (`train` | `backtest` | `project`)
 
-**`documents`**: `doc_id` PK (16-hex sha1 of source URL or path) · `source_url` · `archive_url` · `local_path` · `doc_type` (`manifesto` | `policy_note` | `budget_speech` | `governor_address` | `go` | `cag_report` | `scheme_page` | `news` | `other`) · `department` · `title` · `doc_date` · `date_precision` (`day` | `month` | `year`) · `fiscal_year` · `sha256` · `fetched_at` · `parse_status` (`pending` | `ok` | `ocr` | `failed`)
+**`documents`**: `doc_id` PK (16-hex sha1 of source URL or path; one document per URL, the latest version, D-018) · `source_url` · `archive_url` · `local_path` · `doc_type` (`manifesto` | `policy_note` | `budget_speech` | `governor_address` | `go` | `cag_report` | `scheme_page` | `news` | `other`) · `department` · `title` · `lang` (`en` | `ta`) · `doc_date` · `date_precision` (`day` | `month` | `year`) · `date_source` (`listing` | `document_text` | `filename` | `wayback_capture` | `manual` | `none`) · `fiscal_year` · `discovery` (`listing` | `wayback_cdx` | `tracker_lead` | `manual`) · `sha256` · `fetched_at` · `parse_status` (`pending` | `ok` | `ocr` | `failed`)
 
 **`chunks`**: `chunk_id` PK (`{doc_id}-{seq:04d}`) · `doc_id` FK · `seq` · `text` · `page_start` · `page_end` · `doc_date` (copied, for cutoff filtering) · `n_words`
 
@@ -226,7 +226,8 @@ Election-Promise-Tracking/
 ├── data/
 │   ├── raw/
 │   │   ├── manifestos/ manifesto PDFs (added by the user)
-│   │   └── evidence/   crawled government documents
+│   │   ├── evidence/   crawled government documents (+ _manual/ for hand-added files)
+│   │   └── trackers/   third-party tracker pages (leads only, never evidence)
 │   ├── interim/        review sheets, intermediate files
 │   ├── processed/      indexes, fitted models
 │   ├── judgments/      strong-judge batches in/out (committed)
@@ -299,8 +300,8 @@ Every stage spec uses this template: Purpose · Inputs · Outputs · Behaviour �
 
 | # | Question | Resolve in |
 |---|---|---|
-| Q-01 | Exact swearing-in dates (DMK 2021, TVK 2026) and term boundaries | 01 |
-| Q-02 | Source URLs and which older documents survive only on the Wayback Machine | 01 |
+| Q-01 | ✅ Resolved in spec 01 (D-016) | 01 |
+| Q-02 | ✅ Resolved in spec 01 (sources table §2.3) | 01 |
 | Q-03 | Bulk backend: Gemini free tier vs. a Kaggle-hosted open model | 02 |
 | Q-04 | Promise splitting and deduplication rules | 02 |
 | Q-10 | Tamil manifesto handling: OCR quality check and translation-in-extraction prompt | 02 |

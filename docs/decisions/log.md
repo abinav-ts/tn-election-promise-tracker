@@ -17,3 +17,10 @@ One line per settled decision: ID · date · decision · reason. Settled decisio
 - **D-013 · 2026-10-06 · Deliverable:** a static website (JSON exported by the pipeline) with a whitepaper page; free static hosting.
 - **D-014 · 2026-10-06 · Manifestos may be Tamil.** Tesseract `tam` OCR fallback; promises extracted in English with the verbatim Tamil source kept. Evidence stays English, with Tesseract `eng` as a fallback.
 - **D-015 · 2026-10-06 · Solo, 20 days, one conversation per stage, git commit after every stage.**
+- **D-016 · 2026-10-07 · Term dates:** AIADMK-2016 sworn in 2016-05-23, DMK-2021 2021-05-07, TVK-2026 2026-05-10; `term_end` = day before the next swearing-in; CM changes within a party's term do not start a new term. Evidence window starts 2016-05-01.
+- **D-017 · 2026-10-07 · Tamil evidence is catalogued and paired, not used.** English first; Tamil-only documents (no English counterpart by GO number / fiscal year / date) are candidates, decided later. Amends global §3.
+- **D-018 · 2026-10-07 · One document per URL: the latest version** (treated as the post-modification/revocation version). Wayback date fallback uses the first capture of the kept file, not of the URL. Superseded versions are listed in the coverage report.
+- **D-019 · 2026-10-07 · `documents` gains `lang`, `date_source`, `discovery`** (global §7). Wayback-capture and undated documents go to a date-review sheet for manual search.
+- **D-020 · 2026-10-07 · Third-party trackers are leads only,** never evidence, prompts or labels. Documents found through them are tagged `tracker_lead`; results are checked with and without them.
+- **D-021 · 2026-10-07 · Download all English GOs in the window (~7,050, ~9 GB).** Claude builds and tests with `--limit`; the user runs the full download in their own terminal (background jobs don't survive in Claude's environment, and this saves usage).
+- **D-022 · 2026-10-07 · Manifestos renamed `{TERM}_{lang}.pdf`;** manifesto parsing belongs to stage 02. Policy notes + Performance Budgets in, Citizen Charters out. 45-min discovery timebox for missing sources, then manual drop.
