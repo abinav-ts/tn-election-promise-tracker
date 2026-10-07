@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Status | **DRAFT v0.1** (2026-10-07). Not final until §9 open questions are answered |
-| Global spec | `specs/00-global-spec.md` v0.3. This spec references §7/§8 and redefines nothing; proposed amendments are listed in §9 |
+| Status | **APPROVED v1.0** (2026-10-07). Decisions D-016–D-022 |
+| Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
 | CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept leads` |
 | Resolves | Q-01 (term dates), Q-02 (sources, Wayback) |
@@ -100,7 +100,9 @@ Order of work (user decision): S1 → S3 → S4 → S5 → S6 → S2 (GOs last, 
 
 ### 4.2 Identity and immutability
 - `doc_id` = first 16 hex chars of sha1(canonical `source_url`), per §7. `source_url` is always the **original** URL, even when the bytes came from Wayback; `archive_url` then holds the Wayback URL.
-- If one URL served **different files over time** (distinct Wayback digests, e.g. the interim and revised 2021-22 budget at the same URL), each version after the first gets `doc_id = sha1(source_url + "@" + wayback_timestamp)`. This needs a §7 wording amendment (OQ-1).
+- If one URL served **different files over time** (distinct Wayback digests), keep **only the latest version**, which is treated as the updated document after modifications or revocations (user decision, 2026-10-07). This keeps one document per URL, so the §7 `doc_id` rule needs no change.
+  - **Date safety:** the Wayback date fallback for that document uses the first capture **of the kept digest**, not the URL's first capture. The URL's first capture would date the newer file to the older file's timestamp, which is too early and leaks.
+  - Superseded versions are not downloaded. They are listed (URL, digest, capture range) in the coverage report so nothing disappears silently. Known case: `BS_2021_22_*` served the AIADMK interim budget (Feb 2021) and later the DMK revised budget (Aug 2021). Only the revised one is kept.
 - Content dedup: a download whose sha256 matches an existing document is not stored again. Its URL is added to that document's sidecar as an alias.
 - Manual files: `doc_id = sha1("manual/" + relative_path)`.
 - Raw files are never overwritten. `--force` re-parses; it never re-downloads over an existing file.
@@ -184,7 +186,11 @@ Checks (each failure adds a row to `date_review.csv` with a reason):
 `paths.*`, `terms[]`, `evidence_window.{start,end}`, `http.{user_agent,timeout_s,retries,rate_per_host}`, `wayback.{cdx_url,raw_template,rate}`, `parse.{ocr_min_chars_per_page,ocr_lang}`, `lang.tamil_ratio`, `chunk.{target_words,min_words,max_words}`, `date.{conflict_days,fy_slack_months}`, `tamil.{include_in_evidence:false}`, `go.download_mode` (OQ-2). `sources.yaml` holds the per-source URLs, `dep_id` maps, HTML selectors and the tracker list.
 
 ### 4.10 Build order (for Claude Code; commit at each ✔)
-Environment: work on the user's machine through the project folder. Use Python 3.10 in a project `.venv` (gitignored) with `pip install -e ".[dev]"`. Run commands from the project root. Each tool call has a ~3-minute limit, so long jobs use `--time-budget 150` loops or `nohup … &` with a log under `reports/logs/` (gitignored), polled for progress.
+Environment: work on the user's machine through the project folder. Run commands from the project root.
+- **Two virtualenvs, never shared:** Claude's Linux sandbox uses `.venv-linux/`; the user's Mac uses `.venv/`. A Linux venv does not run on macOS, or the reverse. Both are gitignored (`.venv-*/`). Install with `pip install -e ".[dev]"` (Python ≥ 3.10).
+- Each tool call has a ~3-minute limit, and **background processes (`nohup`, `setsid`) are killed when the call returns** (verified 2026-10-07).
+- So every long job runs as repeated foreground slices: `timeout 175 python -m ept … --time-budget 160`, re-run until it reports `done`. This is why resumability is mandatory and tested.
+- Full-volume runs are done by the user in their own terminal (D-021, step 9).
 
 1. `pyproject.toml`, package skeleton, `config.py` + both YAMLs, `schema.py`, `db.py`, `dates.py`, `runs.py`, `cli.py` with stub commands.
    - Check: `pytest tests/test_foundation.py` passes. ✔ `stage 01: foundation`
@@ -195,10 +201,10 @@ Environment: work on the user's machine through the project folder. Use Python 3
 4. `parse.py`, `ocr.py`, `lang.py`, `chunk.py`, `datefind.py`.
    - Check: `ept parse --limit 5`. Then show the user the 5 docs' type, date, date_source and first chunk. **Pause for the user.** ✔ `stage 01: crawl+parse core`
 5. Adapters S3 → S5 → S6, each with a `--limit 5` check.
-6. S2 GO adapter. First run `ept crawl --source tn_gos --catalogue-only`, then report the volume estimate (item count × average size from a 20-file sample, hours at the rate limit). **Stop for OQ-2 if it wasn't settled.**
+6. S2 GO adapter. First run `ept crawl --source tn_gos --catalogue-only`, which should list ≈ 7,050 English GOs in the window (probe figure, §9 OQ-2). Then download per OQ-2.
 7. Discovery timebox (≤ 45 min total) for S3 2016–21, S4 and S5. Whatever isn't found goes into the gap list as a manual-drop request to the user. Don't keep searching past the timebox.
 8. `coverage.py`, then a `--limit 20` real run across sources. **Human spot-check of 20 documents** (type, date, department, chunk sanity), recorded in STATUS. ✔ `stage 01: limit-20 run`
-9. Full English run (background, resumable), then `ept coverage`.
+9. **Full English run, done by the user in their Mac terminal** (D-021). Claude writes the exact commands into `docs/STATUS.md` under "Waiting on the user": venv setup, then `python -m ept crawl` (all English sources; resumable, so re-run after any interruption until it reports `done`), then `python -m ept parse`. When the user reports back, Claude runs `ept coverage` and checks the results.
 10. Tamil pass (`--lang ta`, catalogue + pairing), then `ept leads`.
 11. Final coverage report, STATUS update and spec-vs-build diff; deviations logged. ✔ `stage 01: corpus collection`
 
@@ -268,6 +274,20 @@ Rules from the global warning box that apply to this stage:
 
 ## 9. Open questions (answer before this spec is final)
 
+**Settled 2026-10-07** (logged on approval):
+- OQ-1(a) Tamil catalogue: yes.
+- OQ-1(c): replaced by the latest-version rule (§4.2).
+- OQ-1(d) folders: yes.
+- OQ-3: trackers are used as a lead/summary source; `discovery=tracker_lead` is kept as a tag, and with/without reporting is retained as a cheap check.
+- OQ-4: yes.
+- OQ-5: yes.
+
+- OQ-1(b): yes (D-019).
+- OQ-2: (A), all English GOs (D-021).
+- OQ-7: (A), the user runs the full download (D-021).
+
+**Still open:** OQ-6, which is for stage 02 and doesn't block this stage. The original text of each question is kept below for the record.
+
 **OQ-1 — Global spec amendments (needs approval; I edit 00 → v0.4 and log D-016…D-0xx together with this spec's approval).**
 - (a) §3 "Out of scope: Tamil-language evidence" becomes: *Tamil evidence documents are catalogued, paired with English versions and may be downloaded; they enter the evidence pool only by a later logged decision.*
 - (b) §7 `documents` gains three fields:
@@ -279,7 +299,17 @@ Rules from the global warning box that apply to this stage:
 
 Approve all four?
 
-**OQ-2 — GO download volume.** There are 38 departments × ~10 years, ~40–280 GOs per department-year, so very roughly 20k–40k PDFs (several GB, 6–12 h at 1 req/s). Options:
+**OQ-2 — GO download volume.**
+
+**Measured 2026-10-07** (all 38 departments × 2016–2026 listings, HTML only):
+- **7,350 GOs listed; 7,051 in the evidence window.** 7,115 English, 30 Tamil, 205 untagged.
+- 100 of 418 department-years are **empty**. The site publishes only a subset of GOs.
+- 25-file sample: mean 1.3 MB, median 0.64 MB, so **≈ 9 GB** in total. Disk has 204 GB free.
+- Subjects that look routine (transfers, pensions, leave, …): only ~11 %.
+
+**Revised recommendation: (A) download all ~7,050 English GOs.** The volume is manageable and a subject filter saves little.
+
+Original options:
 - (A) Download all English GOs in the window.
 - (B) Catalogue everything (dates and subjects are in the listing), then download GOs lazily in stage 04 for retrieved candidates and tracker leads.
 - (C) Like A, but excluding routine subjects by an outcome-blind subject filter fixed in config (transfers, postings, leave, sanction of pensions, …).
@@ -297,6 +327,12 @@ Accept? Also, do you know other trackers (e.g. for AIADMK 2016) to add to `sourc
 **OQ-4 — Policy-note listings also contain Performance Budgets and Citizen Charters.** Proposal: include Performance Budgets (`doc_type=other`, subtype in the sidecar), because they report delivered outputs; skip Citizen Charters. OK?
 
 **OQ-5 — Sources not yet located:** budget speeches 2016-17 → 2020-21, Governor's addresses 2016–2026, and CAG state reports. Proposal: a 45-minute discovery timebox (§4.10 step 7), then a manual-drop list for you. OK?
+
+**OQ-7 — Who runs the full-volume crawl?** About 9 GB of GOs plus a few hundred policy notes means roughly 3–5 hours of downloading. Because background jobs die (§4.10), doing this through Claude takes on the order of 60–100 three-minute slices, which costs a lot of Claude usage and conversation length. Options:
+- (A) Claude builds and tests everything with `--limit` runs. You then run one command in your Mac terminal (`python -m ept crawl --source tn_gos`, ~3–5 h, resumable), and Claude does parse + coverage afterwards (also sliced, or in your terminal).
+- (B) Claude runs all slices itself.
+
+Recommendation: A.
 
 **OQ-6 — Tamil OCR (for stage 02; not blocking here).** `tesseract --list-langs` in my working environment still shows only `eng osd` after your install. The Mac's Homebrew Tesseract is separate from the sandbox I run commands in. For stage 02, options are:
 - I place `tam.traineddata` in a project-local `vendor/tessdata/` and set `TESSDATA_PREFIX` (needs github.com reachable);
