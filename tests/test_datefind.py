@@ -142,3 +142,9 @@ def test_copyright_leak_guards():
     assert r.source == "none" and any("not used: text mentions later date" in x for x in r.reasons)
     r = resolve([_cr(2016)], fiscal_year="2016-17", latest_mentioned=C("text_mention", "2016-12-31"), **KW)
     assert r.source == "document_text"
+
+
+def test_dated_keyword_beats_assembly_mention():
+    text = ("Schemes - Announcement made on the Floor of the Legislative Assembly on 19.10.2022 - Orders - Issued.\n"
+            "G.O. (Ms) No.132 Dated: 06.12.2022\nRead: letter dated 04.11.2022")
+    assert issue_date_from_text(text).date == "2022-12-06"

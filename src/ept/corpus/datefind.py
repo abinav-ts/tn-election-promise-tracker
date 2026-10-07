@@ -29,11 +29,12 @@ _DAY_MON_YEAR = re.compile(rf"(?<!\d)(\d{{1,2}}){_ORD}\s*(?:day\s+of\s+|of\s+)?{
 _MON_DAY_YEAR = re.compile(rf"\b{_MON}\.?\s+(\d{{1,2}}){_ORD},?\s*((?:19|20)\d{{2}})(?!\d)", re.I)
 _MON_YEAR = re.compile(rf"\b{_MON}\.?,?\s+((?:19|20)\d{{2}})(?!\d)", re.I)
 
-_KEYWORD = re.compile(
-    r"\b(dated|date\s*:|presented\s+on|delivered\s+on|laid\s+(?:on|before)|tabled\s+on|issued\s+on|"
-    r"signed\s+on|assembly\s+on)\b",
-    re.I,
-)
+# Issue-date keywords, strongest first: a GO's "Dated:" beats an earlier "Assembly on <date>" in its subject.
+_KEYWORDS = [
+    re.compile(r"\b(dated|date\s*:)", re.I),
+    re.compile(r"\b(presented\s+on|delivered\s+on|laid\s+(?:on|before)|tabled\s+on|issued\s+on|signed\s+on)\b", re.I),
+    re.compile(r"\b(assembly\s+on)\b", re.I),
+]
 _KEYWORD_WINDOW = 60  # characters after a keyword in which the date must start
 
 COPYRIGHT_RANK = 5.5  # after wayback_capture: only dates documents that would otherwise stay undated (D-024)
@@ -115,11 +116,12 @@ def find_dates(text: str) -> list[Found]:
 def issue_date_from_text(front_matter: str) -> Optional[Candidate]:
     """First date that follows an issue keyword ("dated", "presented on", ...) in the front matter."""
     dates = find_dates(front_matter)
-    for kw in _KEYWORD.finditer(front_matter):
-        for f in dates:
-            if kw.end() <= f.start <= kw.end() + _KEYWORD_WINDOW:
-                snippet = " ".join(front_matter[kw.start():f.end].split())
-                return Candidate(DateSource.document_text.value, f.date.isoformat(), f.precision, snippet[:120])
+    for rx in _KEYWORDS:
+        for kw in rx.finditer(front_matter):
+            for f in dates:
+                if kw.end() <= f.start <= kw.end() + _KEYWORD_WINDOW:
+                    snippet = " ".join(front_matter[kw.start():f.end].split())
+                    return Candidate(DateSource.document_text.value, f.date.isoformat(), f.precision, snippet[:120])
     return None
 
 

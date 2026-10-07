@@ -168,3 +168,21 @@ def test_s6_scheme_pages_extract_as_label_value_rows():
     assert any(p.startswith("Scheme Title/Name:") and "UYEGP" in p for p in cur.pages[0])
     old = extract_html(HTML / "s6_scheme_old.html", "table.ng-table, .region-content", [], rows)
     assert old.pages[0][0].startswith("Concerned Department : Agriculture")
+
+
+def test_s2_go_cards():
+    from ept.corpus.sources.tn_gos import parse_go_number, parse_listing
+    import datetime as dt
+
+    gos = parse_listing((HTML / "s2_hfw_2021.html").read_text(encoding="utf-8"),
+                        "https://www.tn.gov.in/go.php?dep_id=MTE=&year=MjAyMQ==")
+    assert len(gos) == 4
+    first = gos[0]
+    assert first["url"] == "https://cms.tn.gov.in/cms_migrated/document/GO/hfw_e_1347_2021.pdf"
+    assert first["listing_date"] == dt.date(2021, 12, 20)
+    assert (first["series"], first["number"]) == ("D", "1347")
+    assert first["subject"].startswith("Indian Medicine and Homoeopathy - Admission")
+    assert parse_go_number("G.O.(Ms) No. 045") == ("Ms", "45")
+    assert parse_go_number("G.O.(Rt) No.12") == ("Rt", "12")
+    assert parse_go_number("G.O.(2D)No.100") == ("2D", "100")
+    assert parse_go_number("Notification") == (None, None)

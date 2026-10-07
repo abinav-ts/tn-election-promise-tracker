@@ -89,6 +89,9 @@ sources:
 
   tn_gos:
     doc_type: go
+    base_url: https://www.tn.gov.in/
+    dept_page: "go.php?dep_id={dep_id_b64}&year={year_b64}"
+    wayback_prefixes: ["cms.tn.gov.in/cms_migrated/document/GO/"]
 
   manual:
     doc_type: null
