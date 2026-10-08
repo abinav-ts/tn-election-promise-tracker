@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.4 (2026-10-07; amendments from spec 01, D-016–D-022) |
+| Status | APPROVED v0.5 (2026-10-08; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027) |
 | Owner | Abinav (solo), built with Claude (Cowork, Pro plan) |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -246,15 +246,29 @@ Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · Py
 ## 12. Working method
 
 ### 12.1 Spec-first, one stage at a time
-For each stage: Claude drafts the spec → **unresolved questions go back to Abinav before the spec is final** → spec approved → code + tests → a small real run (`--limit 20`) checked by hand → full run → STATUS updated.
+For each stage: Claude drafts the spec → **unresolved questions go back to Abinav before the spec is final** → spec approved → code + tests → a small real run (`--limit 20`) → **human spot-check of the 7–10 most problematic items** (§12.4) → full run → STATUS updated.
 
 Every stage spec uses this template: Purpose · Inputs · Outputs · Behaviour · **Leakage warning** · Acceptance criteria · Tests · Out of scope · Open questions.
 
 ### 12.2 Definition of done (per stage)
 1. Acceptance criteria in the stage spec pass.
 2. Tests pass offline (mock LLM, fixtures).
-3. A `--limit 20` real run was spot-checked by a human.
+3. A `--limit 20` real run was done, and its 7–10 most problematic items were spot-checked by a human (§12.4).
 4. The spec matches what was built; deviations are logged in `docs/decisions/`.
+
+### 12.4 Human spot-checks (D-027)
+Every stage that needs a human check asks for **7–10 items, never more**, chosen as the stage's **most problematic** outputs, not a random sample.
+
+1. **Problem score.** Each stage spec defines how its outputs are ranked. Generic signals, in priority order:
+   - validation-rule or leakage-check failures;
+   - fallback paths taken (OCR, Wayback or year-only dates, missing dates, retries);
+   - low model confidence, or disagreement between methods (bulk vs. strong judge, BM25 vs. dense);
+   - statistical outliers (odd lengths, counts or dates);
+   - items close to a cutoff date or feeding a headline result.
+2. **Spread.** At most 3 items from the same source, term or category, so one bad source doesn't fill the whole list.
+3. **Sheet.** The stage writes `data/interim/spotcheck_{stage}.csv` (one row per item: `item_id`, `why_flagged`, `what_to_check`, a link or path to open, and empty `verdict` (`ok` / `wrong` / `unsure`) and `note` columns). Claude prepares everything so that each item takes ≤ 2 minutes; the whole check is ≤ 15 minutes.
+4. **Pass rule.** Because these are worst cases, errors are expected; there is no percentage threshold. The stage passes when every `wrong` item has a logged root cause and is either fixed (re-check only the fixed items) or recorded as a known limitation in STATUS. If **more than half** are `wrong`, the stage is not done: fix the cause, re-run, and draw a fresh list.
+5. **What this does not measure.** A worst-case sample says nothing about overall accuracy. Unbiased accuracy comes only from the gold set in stage 06, which this rule does not change.
 
 ### 12.3 Day plan (Day 1 = 2026-10-06)
 

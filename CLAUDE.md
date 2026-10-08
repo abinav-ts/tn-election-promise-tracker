@@ -12,6 +12,7 @@ A solo course project (Data Science & AI), due 2026-10-25. Extract promises from
 - **Spec first.** Draft the stage spec using the template in global spec §12.1. **Any unresolved question goes back to the user before the spec is final, and before any code depends on it.** Do not guess on decisions that are the user's.
 - **Specs are the source of truth.** If code must deviate, update the spec in the same change and log it in `docs/decisions/log.md`.
 - **Shared schema and status enum live only in global spec §7–§8.** Never redefine them elsewhere.
+- **Human spot-checks:** ask the user to review only the 7–10 most problematic items, ranked by the stage's problem score, in a prepared CSV (global spec §12.4). Never ask for more.
 - **Git:** commit at the end of every stage (and at sensible checkpoints within one). Commit messages: `stage NN: <what>`. Never commit `.env`, `cache/` or raw data.
 - **End of session:** update `docs/STATUS.md` (checklist + session log + next step), then commit.
 

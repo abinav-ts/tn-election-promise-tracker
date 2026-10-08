@@ -208,7 +208,7 @@ Environment: work on the user's machine through the project folder. Run commands
 5. Adapters S3 → S5 → S6, each with a `--limit 5` check.
 6. S2 GO adapter. First run `ept crawl --source tn_gos --catalogue-only`, which should list ≈ 7,050 English GOs in the window (probe figure, §9 OQ-2). Then download per OQ-2.
 7. Discovery timebox (≤ 45 min total) for S3 2016–21, S4 and S5. Whatever isn't found goes into the gap list as a manual-drop request to the user. Don't keep searching past the timebox.
-8. `coverage.py`, then a `--limit 20` real run across sources. **Human spot-check of 20 documents** (type, date, department, chunk sanity), recorded in STATUS. ✔ `stage 01: limit-20 run`
+8. `coverage.py`, then a `--limit 20` real run across sources. **Human spot-check of the 7–10 most problematic documents** (global §12.4), recorded in STATUS. Problem score for this stage, in priority order: (a) any failed date check, incl. anachronism; (b) `date_source ∈ {none, wayback_capture, copyright_year}`; (c) `parse_status ∈ {ocr, failed}`; (d) unmapped department or doubtful `doc_type`; (e) chunk-count outliers relative to page count. At most 3 per source. The user checks type, date, department and first-chunk sanity in `data/interim/spotcheck_01.csv`. ✔ `stage 01: limit-20 run`
 9. **Full English run, done by the user in their Mac terminal** (D-021). Claude writes the exact commands into `docs/STATUS.md` under "Waiting on the user": venv setup, then `python -m ept crawl` (all English sources; resumable, so re-run after any interruption until it reports `done`), then `python -m ept parse`. When the user reports back, Claude runs `ept coverage` and checks the results.
 10. Tamil pass (`--lang ta`, catalogue + pairing), then `ept leads`.
 11. Final coverage report, STATUS update and spec-vs-build diff; deviations logged. ✔ `stage 01: corpus collection`
@@ -248,7 +248,7 @@ Rules from the global warning box that apply to this stage:
 5. Zero chunks from `doc_type=manifesto`, from Tamil documents, or from tracker pages.
 6. Every document with `date_source ∈ {filename, wayback_capture, none}`, or with a failed check, appears in `date_review.csv` with a reason.
 7. `reports/coverage_01.md` contains all 8 sections of §4.8. The JSON gap list is valid.
-8. The human spot-check of 20 documents shows correct doc_type and an acceptable date (correct, or correctly flagged) for ≥ 18/20.
+8. The human spot-check of the 7–10 most problematic documents (global §12.4) is done. Every `wrong` item has a logged root cause and is fixed or recorded as a known limitation, and no more than half were `wrong`.
 9. The full English run is finished. STATUS records total documents, chunks, % dated at day precision, and the top gaps.
 10. `reports/runs/` has a metadata file for each run.
 
