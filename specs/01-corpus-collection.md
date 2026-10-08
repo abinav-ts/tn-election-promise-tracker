@@ -5,7 +5,7 @@
 | Status | **APPROVED v1.1** (2026-10-08; build-time amendments D-023–D-026). v1.0 approved 2026-10-07 with D-016–D-022 |
 | Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
-| CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept leads` |
+| CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept spotcheck`, `python -m ept leads` |
 | Resolves | Q-01 (term dates), Q-02 (sources, Wayback) |
 
 ---
@@ -67,6 +67,7 @@ Order of work (user decision): S1 → S3 → S4 → S5 → S6 → S2 (GOs last, 
 | Tamil pairing | `data/interim/lang_pairs.csv` (ta_item, en_doc_id\|null, pair_key, status `paired`\|`tamil_only`) | no |
 | Tracker leads | `data/raw/trackers/{sha1}.html` + `data/interim/tracker_leads.csv` | no |
 | Date-review sheet | `data/interim/date_review.csv` (every doc whose date needs a human; reason column) | no |
+| Spot-check sheet | `data/interim/spotcheck_01.csv` (7–10 worst documents, global §12.4) | no |
 | Coverage report | `reports/coverage_01.md` + `reports/coverage_01.json` | yes |
 | Run metadata | `reports/runs/{run_id}.json` (§9.4) | yes |
 | Tests + fixtures | `tests/test_*.py`, `tests/fixtures/{html,pdf,llm}/…` | yes |
@@ -208,7 +209,7 @@ Environment: work on the user's machine through the project folder. Run commands
 5. Adapters S3 → S5 → S6, each with a `--limit 5` check.
 6. S2 GO adapter. First run `ept crawl --source tn_gos --catalogue-only`, which should list ≈ 7,050 English GOs in the window (probe figure, §9 OQ-2). Then download per OQ-2.
 7. Discovery timebox (≤ 45 min total) for S3 2016–21, S4 and S5. Whatever isn't found goes into the gap list as a manual-drop request to the user. Don't keep searching past the timebox.
-8. `coverage.py`, then a `--limit 20` real run across sources. **Human spot-check of the 7–10 most problematic documents** (global §12.4), recorded in STATUS. Problem score for this stage, in priority order: (a) any failed date check, incl. anachronism; (b) `date_source ∈ {none, wayback_capture, copyright_year}`; (c) `parse_status ∈ {ocr, failed}`; (d) unmapped department or doubtful `doc_type`; (e) chunk-count outliers relative to page count. At most 3 per source. The user checks type, date, department and first-chunk sanity in `data/interim/spotcheck_01.csv`. ✔ `stage 01: limit-20 run`
+8. `coverage.py`, then a `--limit 20` real run across sources. **Human spot-check of the 7–10 most problematic documents** (global §12.4), recorded in STATUS. Problem score for this stage, in priority order: (a) any failed date check (anachronism, conflict, FY mismatch, out of window), ranked ahead of every merely weak date; (b) a weak date: `date_source ∈ {none, wayback_capture}`, or a © year date (D-024), which is stored as `date_source = document_text` and recognised by `kind = copyright` in the sidecar / the "dated from © year" reason in `date_review.csv`; (c) `parse_status ∈ {ocr, failed}`; (d) unmapped department or doubtful `doc_type`; (e) chunk-count outliers relative to page count (Tukey fences on chunks per page). At most 3 per source. `python -m ept spotcheck` writes `data/interim/spotcheck_01.csv` (columns per global §12.4), where the user checks type, date, department and first-chunk sanity. ✔ `stage 01: limit-20 run`
 9. **Full English run, done by the user in their Mac terminal** (D-021). Claude writes the exact commands into `docs/STATUS.md` under "Waiting on the user": venv setup, then `python -m ept crawl` (all English sources; resumable, so re-run after any interruption until it reports `done`), then `python -m ept parse`. When the user reports back, Claude runs `ept coverage` and checks the results.
 10. Tamil pass (`--lang ta`, catalogue + pairing), then `ept leads`.
 11. Final coverage report, STATUS update and spec-vs-build diff; deviations logged. ✔ `stage 01: corpus collection`

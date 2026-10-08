@@ -34,6 +34,7 @@ class Paths(_Cfg):
     lang_pairs: str
     tracker_leads: str
     date_review: str
+    spotcheck: str
     runs: str
     coverage_md: str
     coverage_json: str
@@ -101,6 +102,12 @@ class CoverageCfg(_Cfg):
     hole_fraction: float
 
 
+class SpotcheckCfg(_Cfg):
+    min_items: int
+    max_items: int
+    per_source: int
+
+
 class Go(_Cfg):
     download_mode: str
 
@@ -123,6 +130,7 @@ class Settings(_Cfg):
     date: DateCfg
     tamil: Tamil
     coverage: CoverageCfg
+    spotcheck: SpotcheckCfg
     go: Go
     llm: Llm
 

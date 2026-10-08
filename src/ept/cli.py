@@ -92,3 +92,14 @@ def leads(
 ) -> None:
     """Harvest GO references from tracker pages (spec 01 §4.7)."""
     typer.echo("leads: not implemented yet")
+
+
+@app.command()
+def spotcheck() -> None:
+    """Write the 7–10 most problematic documents to data/interim/spotcheck_01.csv (global §12.4)."""
+    from ept.corpus.spotcheck import run_spotcheck
+
+    out = run_spotcheck()
+    typer.echo(f"spotcheck: {out['rows']} rows -> {out['path']}")
+    if out["below_minimum"]:
+        typer.echo("spotcheck: fewer flagged documents than the minimum; all flagged ones are listed")
