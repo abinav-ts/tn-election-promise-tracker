@@ -27,6 +27,7 @@ _Updated at the end of every session. Read this first._
   caffeinate -i python -m ept crawl      # all English sources, ~7,300 GOs + ~1,950 other docs, ~10 GB
   caffeinate -i python -m ept parse      # OCR-heavy (most GOs are scans)
   ```
+  - Progress: since 2026-10-08 both commands print a timestamped line every 25 documents (with an ETA) and one when each source starts. A run started before that prints only warnings and the final summary; you can press Ctrl-C and start the same command again to get progress lines (nothing is lost).
   - Both commands are resumable: if a run is interrupted, or ends with `stopped (...)` / `N deferred: Wayback unavailable`, just run the same command again until it prints `crawl: done` / `parse: done`.
   - Rough time from the limit-20 run: crawl 4–6 h (Wayback downloads are slow), parse ~10 h (~5 s per OCR'd GO). `caffeinate -i` keeps the Mac awake.
   - Then tell Claude; Claude runs `ept coverage` and checks the results (step 9).
@@ -35,7 +36,7 @@ _Updated at the end of every session. Read this first._
 ## Next step
 1. You: the full English run above.
 2. Claude (same stage-01 conversation or a new one): `ept coverage` on the full corpus, then step 10 (Tamil catalogue + pairing, tracker leads) and step 11 (final report, spec-vs-build diff, stage commit).
-3. Open question for you (does not block the full run): narrow the anachronism check (see session log 2026-10-08).
+3. Anachronism check narrowed (D-028); applied automatically when `ept parse` re-dates, no re-OCR needed.
 
 ## Session log
 - **2026-10-06** — Folder structure, global spec v0.3 (reverse backtest, Tamil manifesto handling), CLAUDE.md, STATUS, decision log, git initialised.
@@ -47,5 +48,5 @@ _Updated at the end of every session. Read this first._
   - Limit-20 run: 80 docs, 2,217 chunks, 0 parse failures; acceptance criteria 3–7 and 10 verified on real data.
   - **Spot-check (D-027, `spotcheck_01.csv`): 10/10 ok.** All 10 were anachronism flags that turned out to be future or end-of-period dates in the text (e.g. "Dec 31, 2020", "extended up to 30.04.2020", dues to be paid later). No wrong items, so nothing to fix or log as a limitation.
   - Known limitations: Wayback dates are conservative upper bounds (CAG reports often dated years late); CAG coverage limited to files named with "Tamil"; OCR of rotated tables produces some garbage text; `--time-budget` can overrun by one slow download.
-  - Open idea (user's spot-check note, not yet decided): the anachronism check flags ~25% of documents, mostly future dates. Ignoring dates preceded by forward words ("before", "by", "up to", "till", "with effect from") and end-of-period dates (31 Dec / 31 Mar) would cut review noise. It changes the spec 01 §4.5 check, so it needs your OK.
+  - Anachronism check narrowed on the user's spot-check note (D-028, spec 01 v1.2): flags 21 → 9 on the 80 documents. `crawl`/`parse` now print progress lines.
 

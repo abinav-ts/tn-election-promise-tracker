@@ -102,6 +102,11 @@ class CoverageCfg(_Cfg):
     hole_fraction: float
 
 
+class ProgressCfg(_Cfg):
+    every_items: int
+    every_catalogued: int
+
+
 class SpotcheckCfg(_Cfg):
     min_items: int
     max_items: int
@@ -130,6 +135,7 @@ class Settings(_Cfg):
     date: DateCfg
     tamil: Tamil
     coverage: CoverageCfg
+    progress: ProgressCfg
     spotcheck: SpotcheckCfg
     go: Go
     llm: Llm

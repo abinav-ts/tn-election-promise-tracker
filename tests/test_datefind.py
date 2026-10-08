@@ -148,3 +148,17 @@ def test_dated_keyword_beats_assembly_mention():
     text = ("Schemes - Announcement made on the Floor of the Legislative Assembly on 19.10.2022 - Orders - Issued.\n"
             "G.O. (Ms) No.132 Dated: 06.12.2022\nRead: letter dated 04.11.2022")
     assert issue_date_from_text(text).date == "2022-12-06"
+
+
+def test_narrowed_mentions_skip_forward_and_period_end_dates():
+    text = ("Issued on 12.05.2021. Funds to be spent before 15.08.2021, the work completed by 20.09.2021, "
+            "extended up to 30.04.2022, w.e.f. 01.07.2021, for the year ending 31.03.2022 and Dec 31, 2021, "
+            "in December 2021 and March 2022. Review meeting held on 03.06.2021.")
+    assert latest_mention(text, TODAY).date == D(2022, 4, 30)          # unnarrowed: everything counts
+    assert latest_mention(text, TODAY, narrow=True).date == D(2021, 6, 3)  # only the plain dates remain
+
+
+def test_copyright_guard_still_uses_every_mention():
+    r = resolve([_cr(2016)], fiscal_year="2016-17", latest_mentioned=None,
+                latest_any=C("text_mention", "2017-03-31"), **KW)
+    assert r.source == "none" and any("© year 2016 not used" in x for x in r.reasons)

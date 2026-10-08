@@ -115,6 +115,8 @@ def test_sha256_dedup_adds_alias(conn, root):
 
 
 class _OneShotAdapter:
+    name = "test_source"
+
     def __init__(self, items):
         self.items = items
 

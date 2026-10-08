@@ -89,6 +89,10 @@ tamil:
 coverage:
   hole_fraction: 0.25         # a GO department-year below this share of the department's median is a hole
 
+progress:
+  every_items: 25             # crawl/parse print a progress line every N documents
+  every_catalogued: 500       # ... and every N catalogue items while reading listings
+
 spotcheck:                    # global spec §12.4 (D-027)
   min_items: 7
   max_items: 10

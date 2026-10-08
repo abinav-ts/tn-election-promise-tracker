@@ -10,6 +10,7 @@ import csv
 import datetime as dt
 import logging
 import sqlite3
+import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Optional
@@ -23,7 +24,7 @@ from ept.corpus import datefind, lang as langmod, ocr
 from ept.corpus.chunk import Paragraph, clean_block, make_chunks
 from ept.corpus.fetch import read_sidecar, write_sidecar
 from ept.dates import fy_bounds
-from ept.runs import Budget, finish_run, start_run
+from ept.runs import Budget, eta, finish_run, progress, start_run
 from ept.schema import DocType, Document, Lang, ParseStatus
 
 log = logging.getLogger(__name__)
@@ -137,13 +138,35 @@ def text_dating(ext: Extracted, cfg: Config, today: dt.date, use_text: bool = Tr
     front = "\n\n".join(ext.page_texts[: cfg.settings.parse.front_matter_pages])
     issue = datefind.issue_date_from_text(front) if use_text else None
     copyright = datefind.copyright_year(front) if use_text else None
-    latest = datefind.latest_mention("\n\n".join(ext.page_texts), today)
     return {
         "text_candidate": asdict(issue) if issue else None,
         "copyright_candidate": asdict(copyright) if copyright else None,
-        "latest_mention": {"date": latest.date.isoformat(), "precision": latest.precision, "text": latest.text}
-        if latest else None,
+        **mentions("\n\n".join(ext.page_texts), today),
     }
+
+
+def _found(f: Optional[datefind.Found]) -> Optional[dict[str, Any]]:
+    return {"date": f.date.isoformat(), "precision": f.precision, "text": f.text} if f else None
+
+
+def mentions(text: str, today: dt.date) -> dict[str, Any]:
+    """Latest date in the text: narrowed for the anachronism flag, unnarrowed for the © leak guard (D-028)."""
+    return {
+        "latest_mention": _found(datefind.latest_mention(text, today, narrow=True)),
+        "latest_mention_any": _found(datefind.latest_mention(text, today)),
+        "mention_rule": datefind.MENTION_RULE,
+    }
+
+
+def refresh_mentions(meta: dict[str, Any], cfg: Config, today: dt.date) -> None:
+    """Documents parsed under an older mention rule: recompute from the saved text (no OCR)."""
+    dating = meta.get("dating")
+    text_path = (meta.get("parse") or {}).get("text_path")
+    if not dating or dating.get("mention_rule") == datefind.MENTION_RULE or not text_path:
+        return
+    path = cfg.root / text_path
+    if path.exists():
+        dating.update(mentions(path.read_text(encoding="utf-8").replace("\f", "\n\n"), today))
 
 
 def parse_document(conn: sqlite3.Connection, cfg: Config, doc: Document, today: dt.date) -> ParseOutcome:
@@ -230,15 +253,23 @@ def candidates_for(meta: dict[str, Any], today: dt.date) -> list[datefind.Candid
 
 def apply_dating(doc: Document, meta: dict[str, Any], cfg: Config, today: dt.date) -> Document:
     """Resolve doc_date from the sidecar's candidates; store the result back in the sidecar."""
+    refresh_mentions(meta, cfg, today)
     cands = candidates_for(meta, today)
-    latest = (meta.get("dating") or {}).get("latest_mention")
-    latest_c = datefind.Candidate("text_mention", latest["date"], latest["precision"], latest["text"]) if latest else None
+    dating = meta.get("dating") or {}
+
+    def as_cand(m: Optional[dict[str, Any]]) -> Optional[datefind.Candidate]:
+        return datefind.Candidate("text_mention", m["date"], m["precision"], m["text"]) if m else None
+
+    latest_c = as_cand(dating.get("latest_mention"))
+    # sidecars from before D-028 have no "_any": their latest_mention is the unnarrowed one
+    any_c = as_cand(dating.get("latest_mention_any", dating.get("latest_mention")))
     extra = []
     if not (meta.get("wayback") or {}).get("checked"):
         extra.append("wayback lookup pending")
     s = cfg.settings
     dating = datefind.resolve(
-        cands, fiscal_year=doc.fiscal_year, latest_mentioned=latest_c, window_start=s.evidence_window.start,
+        cands, fiscal_year=doc.fiscal_year, latest_mentioned=latest_c, latest_any=any_c,
+        window_start=s.evidence_window.start,
         today=today, conflict_days=s.date.conflict_days, fy_slack_months=s.date.fy_slack_months,
         extra_reasons=extra,
     )
@@ -324,7 +355,13 @@ def run_parse(term: Optional[str] = None, limit: Optional[int] = None, force: bo
         stats["in_scope"] = len(docs)
         todo = [d for d in docs if force or d.parse_status == ParseStatus.pending.value]
         stats["to_parse"] = len(todo)
-        for doc in todo:
+        every = cfg.settings.progress.every_items
+        progress(f"parse: {len(docs)} documents in scope, {len(todo)} to parse")
+        start = time.monotonic()
+        for n, doc in enumerate(todo):
+            if n and n % every == 0:
+                progress(f"parse: {n}/{len(todo)} (ok {stats['ok']}, ocr {stats['ocr']}, failed {stats['failed']}"
+                         f"{eta(n, len(todo), time.monotonic() - start)})")
             if budget.expired():
                 stats["stopped"] = "time budget"
                 break
@@ -333,6 +370,7 @@ def run_parse(term: Optional[str] = None, limit: Optional[int] = None, force: bo
             stats["chunks_written"] += out.n_chunks
             if out.lang == Lang.ta.value:
                 stats["tamil"] += 1
+        progress("parse: re-dating all documents and writing date_review.csv")
         stats["redated"], stats["date_review_rows"] = redate_all(conn, cfg, today)
     finally:
         finish_run(run_id, stats, status=f"stopped: {stats['stopped']}" if stats["stopped"] else "done")

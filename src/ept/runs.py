@@ -6,6 +6,7 @@ import datetime as dt
 import json
 import re
 import subprocess
+import sys
 import time
 from typing import Any, Optional
 
@@ -96,3 +97,15 @@ class Budget:
 
     def expired(self) -> bool:
         return self.deadline is not None and self._clock() >= self.deadline
+
+
+def progress(message: str) -> None:
+    """One progress line on stderr, so a long run shows it is alive."""
+    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}] {message}", file=sys.stderr, flush=True)
+
+
+def eta(done: int, total: int, elapsed_s: float) -> str:
+    if not done or done >= total:
+        return ""
+    left = elapsed_s / done * (total - done)
+    return f", ~{left / 3600:.1f} h left" if left >= 3600 else f", ~{left / 60:.0f} min left"

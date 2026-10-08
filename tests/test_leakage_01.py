@@ -82,3 +82,28 @@ def test_chunk_dates_follow_redating(conn, root):
     redate_all(conn, cfg, TODAY)
     dates = {r["doc_date"] for r in db.query(conn, "SELECT doc_date FROM chunks WHERE doc_id = ?", (doc.doc_id,))}
     assert dates == {"2021-11-24"}
+
+
+def test_old_sidecars_get_narrowed_mentions_from_saved_text(conn, root):
+    """D-028: documents parsed under the old rule are re-checked from data/interim/text, no OCR."""
+    import csv
+
+    from ept.corpus.fetch import read_sidecar, write_sidecar
+
+    doc = register(conn, "pdf/text.pdf", url="https://x/go.pdf", listing_date="2021-05-12")
+    cfg = get_config()
+    parse_document(conn, cfg, doc, TODAY)
+    raw = root / doc.local_path
+    text_path = root / read_sidecar(raw)["parse"]["text_path"]
+    text_path.write_text(text_path.read_text() + "\fThe scheme runs up to 31.12.2021. Meeting held on 01.05.2021.")
+    meta = read_sidecar(raw)
+    meta["dating"].pop("mention_rule")
+    meta["dating"]["latest_mention"] = {"date": "2021-12-31", "precision": "day", "text": "31.12.2021"}  # old rule
+    meta["dating"].pop("latest_mention_any")
+    write_sidecar(raw, meta)
+    redate_all(conn, cfg, TODAY)
+    dating = read_sidecar(raw)["dating"]
+    assert dating["mention_rule"] == "v2" and dating["latest_mention"]["date"] == "2021-05-12"
+    assert dating["latest_mention_any"]["date"] == "2021-12-31"
+    rows = list(csv.DictReader((root / "data" / "interim" / "date_review.csv").open()))
+    assert all("anachronism" not in r["reasons"] for r in rows if r["doc_id"] == doc.doc_id)

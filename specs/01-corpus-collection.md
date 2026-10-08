@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.1** (2026-10-08; build-time amendments D-023–D-026). v1.0 approved 2026-10-07 with D-016–D-022 |
+| Status | **APPROVED v1.2** (2026-10-08; build-time amendments D-023–D-026, D-028). v1.0 approved 2026-10-07 with D-016–D-022 |
 | Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
 | CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept spotcheck`, `python -m ept leads` |
@@ -153,6 +153,7 @@ Every candidate date is recorded in the sidecar. The stored `doc_date` follows t
 Checks (each failure adds a row to `date_review.csv` with a reason):
 - **Conflict:** two sources from ranks 2–4 differ by more than `date.conflict_days` (7).
 - **Anachronism:** `doc_date` is earlier than the latest date mentioned anywhere in the text. A document can't be published before a date it cites, so this signals a wrong date and possible leakage.
+  - Since D-028 the check ignores forward-looking dates (preceded by "before", "by", "up to", "till", "until", "with effect from", "effective from", "w.e.f.") and end-of-period dates (31 Dec, 31 Mar, or month-only December/March), which in the limit-20 spot-check were all deadlines or periods, not signs of a wrong date. The © year leak guard (rank 5½) still uses every mentioned date. Documents parsed under the old rule are re-checked from `data/interim/text/` (no re-OCR).
 - **Out of window:** the date is before 2016-05-01 or after the run date.
 - **FY mismatch:** the date falls outside the document's listed fiscal year (± 3 months).
 

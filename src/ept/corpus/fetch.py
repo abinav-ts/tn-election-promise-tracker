@@ -11,6 +11,7 @@ import hashlib
 import json
 import logging
 import sqlite3
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
@@ -23,7 +24,7 @@ from ept.corpus.catalogue import MANUAL_PREFIX, Catalogue, CatalogueItem, doc_id
 from ept.corpus.wayback import Capture, Wayback, WaybackUnavailable, payload_digest
 from ept.dates import fy_bounds
 from ept.net import FetchError, Http, RobotsDisallowed
-from ept.runs import Budget
+from ept.runs import Budget, eta, progress
 from ept.schema import DatePrecision, DateSource, Document, Lang, ParseStatus
 
 log = logging.getLogger(__name__)
@@ -368,9 +369,15 @@ def backfill_wayback(fetcher: Fetcher, budget: Budget, stats: CrawlStats) -> Non
 def crawl_source(adapter, fetcher: Fetcher, catalogue: Catalogue, *, lang: str, download: bool,
                  term: Optional[str], limit: Optional[int], force: bool, budget: Budget,
                  stats: CrawlStats) -> None:
+    every = fetcher.cfg.settings.progress
+    progress(f"{adapter.name}: reading listings")
+    seen = 0
     try:
         for item in adapter.catalogue(budget, force=force):
             stats.catalogued_new += catalogue.add([item])
+            seen += 1
+            if seen % every.every_catalogued == 0:
+                progress(f"{adapter.name}: {seen} listing items read")
     finally:
         catalogue.save()
     if budget.expired():
@@ -381,13 +388,21 @@ def crawl_source(adapter, fetcher: Fetcher, catalogue: Catalogue, *, lang: str, 
     todo, n_scope = select(catalogue, fetcher.cfg, lang, term, limit, force)
     stats.in_scope += n_scope
     stats.to_fetch += len(todo)
+    progress(f"{adapter.name}: {seen} listing items, {n_scope} in scope, {len(todo)} to fetch")
+    start = time.monotonic()
+    counts = {"downloaded": 0, "duplicate": 0, "fetch_failed": 0, "deferred": 0, "exists": 0}
     try:
         for n, item in enumerate(todo):
+            if n and n % every.every_items == 0:
+                progress(f"{adapter.name}: {n}/{len(todo)} fetched ("
+                         + ", ".join(f"{k} {v}" for k, v in counts.items() if v)
+                         + f"{eta(n, len(todo), time.monotonic() - start)})")
             if budget.expired():
                 stats.stopped = "time budget"
                 return
             result = fetcher.fetch(item)
             setattr(stats, result.status, getattr(stats, result.status) + 1)
+            counts[result.status] += 1
             if result.status == "deferred":
                 catalogue.update(item.url, fetch_error=result.error)  # stays pending for the next run
                 continue
@@ -395,5 +410,8 @@ def crawl_source(adapter, fetcher: Fetcher, catalogue: Catalogue, *, lang: str, 
             catalogue.update(item.url, status=status, doc_id=result.doc_id, fetch_error=result.error)
             if n % 20 == 19:
                 catalogue.save()
+        if todo:
+            progress(f"{adapter.name}: {len(todo)}/{len(todo)} fetched ("
+                     + ", ".join(f"{k} {v}" for k, v in counts.items() if v) + ")")
     finally:
         catalogue.save()

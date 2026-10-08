@@ -156,9 +156,25 @@ def date_from_filename(url: str, today: dt.date) -> Optional[Candidate]:
     return None
 
 
-def latest_mention(text: str, today: dt.date) -> Optional[Found]:
-    """Latest date mentioned anywhere in the text, ignoring dates after the run date."""
-    dates = [f for f in find_dates(text) if f.date <= today]
+MENTION_RULE = "v2"  # D-028: forward-looking and end-of-period dates don't count for the anachronism flag
+_FORWARD = re.compile(
+    r"\b(?:before|by|up\s*to|upto|till|until|with\s+effect\s+from|effective\s+from|w\.?\s*e\.?\s*f\.?)\s*[:,]?\s*(?:the\s+)?$", re.I)
+
+
+def is_forward_or_period_end(text: str, f: Found) -> bool:
+    """A date after 'before/by/up to/till/until/with effect from/effective from', or a year/FY end (31 Dec, 31 Mar,
+    December, March): these usually describe deadlines or periods, not when the document was written."""
+    if _FORWARD.search(text[max(0, f.start - 30):f.start]):
+        return True
+    if f.precision == "day":
+        return (f.date.month, f.date.day) in {(12, 31), (3, 31)}
+    return f.precision == "month" and f.date.month in (12, 3)
+
+
+def latest_mention(text: str, today: dt.date, narrow: bool = False) -> Optional[Found]:
+    """Latest date mentioned anywhere in the text, ignoring dates after the run date.
+    With `narrow`, forward-looking and end-of-period dates are skipped (anachronism flag, D-028)."""
+    dates = [f for f in find_dates(text) if f.date <= today and not (narrow and is_forward_or_period_end(text, f))]
     return max(dates, key=lambda f: f.date) if dates else None
 
 
@@ -180,6 +196,7 @@ def resolve(
     *,
     fiscal_year: Optional[str],
     latest_mentioned: Optional[Candidate],
+    latest_any: Optional[Candidate] = None,
     window_start: dt.date,
     today: dt.date,
     conflict_days: int,
@@ -190,7 +207,8 @@ def resolve(
     kept = []
     for c in candidates:
         if c.kind == "copyright":
-            why = _copyright_rejection(c, fiscal_year, latest_mentioned)
+            # the © leak guard keeps using every mentioned date, not the narrowed one
+            why = _copyright_rejection(c, fiscal_year, latest_any or latest_mentioned)
             if why:
                 reasons.append(f"© year {c.date[:4]} not used: {why}")
                 continue
