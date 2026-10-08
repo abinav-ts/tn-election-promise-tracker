@@ -16,7 +16,7 @@ from typing import Optional
 from urllib.parse import urlencode
 
 from ept.corpus.catalogue import canonical_url
-from ept.net import FetchError, Http
+from ept.net import FetchError, Http, is_transient
 
 FIELDS = ("timestamp", "original", "statuscode", "digest", "mimetype", "length")
 
@@ -86,7 +86,6 @@ class Wayback:
         self.prefixes = tuple(url_key(p) for p in prefixes)
         # current prefix -> (legacy prefixes, filename suffix variants)
         self.legacy = {url_key(k): ([url_key(p) for p in v[0]], v[1]) for k, v in (legacy or {}).items()}
-        self.down: Optional[str] = None
         self._index: dict[str, dict[str, list[Capture]]] = {}
 
     def raw_url(self, timestamp: str, url: str) -> str:
@@ -104,23 +103,28 @@ class Wayback:
             params.append(("collapse", collapse))
         return parse_cdx_json(self._get(f"{self.cfg.cdx_url}?{urlencode(params)}"))
 
+    @property
+    def down(self) -> Optional[str]:
+        """Reason Wayback is cooling down (the shared per-host breaker in ept.net), else None."""
+        return self.http.host_down(self.cfg.host)
+
     def _get(self, url: str) -> str:
-        if self.down:
-            raise WaybackUnavailable(self.down)
         try:
             resp = self.http.get(url)
         except FetchError as e:
-            self.down = str(e)
-            raise WaybackUnavailable(self.down) from e
+            raise WaybackUnavailable(str(e)) from e
         if resp.status_code != 200:
-            self.down = f"CDX HTTP {resp.status_code}"
-            raise WaybackUnavailable(self.down)
+            raise WaybackUnavailable(f"CDX HTTP {resp.status_code}")
         return resp.text
 
     def fetch_raw(self, capture: Capture) -> bytes:
-        if self.down:
-            raise WaybackUnavailable(self.down)
-        data, _ = self.http.get_bytes(self.raw_url(capture.timestamp, capture.original))
+        """Raw capture bytes. Transient failures raise WaybackUnavailable; a 4xx raises FetchError."""
+        try:
+            data, _ = self.http.get_bytes(self.raw_url(capture.timestamp, capture.original))
+        except FetchError as e:
+            if is_transient(e):
+                raise WaybackUnavailable(str(e)) from e
+            raise
         return data
 
     def prefix_index(self, prefix: str, filters: tuple[str, ...] = ()) -> dict[str, list[Capture]]:

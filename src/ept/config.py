@@ -60,6 +60,9 @@ class Http(_Cfg):
     backoff_s: float
     rate_per_host: float
     obey_robots: bool
+    host_failures_to_trip: int
+    host_cooldown_s: float
+    host_max_cooldown_s: float
     listing_cache_ttl_days: float
 
 

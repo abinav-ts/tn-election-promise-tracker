@@ -75,11 +75,24 @@ def test_live_error_page_falls_back_to_wayback(conn, root):
     assert [v["digest"] for v in wb["superseded"]] == ["OLDDIGEST"]
 
 
-def test_both_fail_marks_fetch_failed(conn):
-    f, _ = _fetcher(conn, [("cdx/search", _cdx([])), (URL, FakeResponse(500))])
+def test_both_fail_definitively_marks_fetch_failed(conn):
+    f, _ = _fetcher(conn, [("cdx/search", _cdx([])), (URL, FakeResponse(404))])
     r = f.fetch(_item())
-    assert r.status == "fetch_failed" and "live: HTTP 500" in r.error and "no 200 capture" in r.error
+    assert r.status == "fetch_failed" and "live: HTTP 404" in r.error and "no 200 capture" in r.error
     assert db.get(conn, "documents", r.doc_id) is None
+
+
+def test_server_error_or_connection_problem_defers(conn):
+    import requests
+
+    f, _ = _fetcher(conn, [("cdx/search", _cdx([])), (URL, FakeResponse(500))])
+    assert f.fetch(_item()).status == "deferred"  # 5xx may work next time
+
+    def refuse(url):
+        raise requests.ConnectionError("connection reset")
+
+    f, _ = _fetcher(conn, [("cdx/search", _cdx([])), (URL, refuse)])
+    assert f.fetch(_item()).status == "deferred"
 
 
 def test_wayback_outage_leaves_lookup_pending(conn, root):
@@ -88,7 +101,6 @@ def test_wayback_outage_leaves_lookup_pending(conn, root):
     assert r.status == "downloaded"
     meta = read_sidecar(root / db.get(conn, "documents", r.doc_id).local_path)
     assert meta["wayback"]["checked"] is False
-    assert f.wayback.down  # circuit breaker open for the rest of the run
 
 
 def test_existing_raw_file_is_never_overwritten(conn, root):
@@ -216,3 +228,48 @@ def test_manual_drop_registers_with_manual_date(conn, root):
     redate_all(conn, cfg, dt.date(2026, 10, 7))
     doc = db.get(conn, "documents", r.doc_id)
     assert doc.date_source == "manual" and doc.doc_date == dt.date(2016, 6, 1)
+
+
+def test_breaker_trips_after_repeated_failures_and_recovers():
+    from ept.net import Breaker
+
+    now = [0.0]
+    b = Breaker(threshold=3, cooldown_s=120, max_cooldown_s=1800, clock=lambda: now[0])
+    b.failure("x"); b.failure("x")
+    assert b.open_reason() is None  # two failures are not enough
+    b.failure("x")
+    assert b.open_reason() == "x"
+    now[0] = 121
+    assert b.open_reason() is None  # cooldown over: try again
+    for _ in range(3):
+        b.failure("y")
+    assert b.open_reason() == "y" and b.cooldown == 480  # 240 now, doubles again next time
+    now[0] = 121 + 241
+    b.success()
+    assert b.open_reason() is None and b.cooldown == 120
+
+
+def test_one_connection_blip_does_not_poison_the_host(conn, root):
+    import requests
+
+    calls = {"n": 0}
+
+    def flaky(url):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise requests.ConnectionError("blip")
+        return FakeResponse(200, b"%PDF-1.4 " + url.encode(), PDF_HDR)
+
+    f, _ = _fetcher(conn, [("cdx/search", _cdx([])), ("cms.tn.gov.in", flaky)])
+    results = [f.fetch(i).status for i in _items(3)]
+    assert results == ["downloaded"] * 3  # the blip is absorbed by the request retries
+
+
+def test_items_wrongly_failed_by_an_outage_are_retried(conn, root):
+    from ept.corpus.fetch import pending
+
+    old_bug = _item().model_copy(update={"status": "fetch_failed", "fetch_error":
+                                         "live: host unreachable earlier in this run (ConnectionError: ...)"})
+    real_404 = _item().model_copy(update={"status": "fetch_failed", "fetch_error":
+                                          "live: HTTP 404; wayback: no 200 capture"})
+    assert pending(old_bug, force=False) and not pending(real_404, force=False) and pending(real_404, force=True)

@@ -23,7 +23,7 @@ from ept.corpus import catalogue as cat
 from ept.corpus.catalogue import MANUAL_PREFIX, Catalogue, CatalogueItem, doc_id_for_url
 from ept.corpus.wayback import Capture, Wayback, WaybackUnavailable, payload_digest
 from ept.dates import fy_bounds
-from ept.net import FetchError, Http, RobotsDisallowed
+from ept.net import FetchError, Http, RobotsDisallowed, is_transient, is_transient_text
 from ept.runs import Budget, eta, progress
 from ept.schema import DatePrecision, DateSource, Document, Lang, ParseStatus
 
@@ -91,7 +91,7 @@ def update_sidecar(raw_file: Path, **fields: Any) -> dict[str, Any]:
 
 
 class Deferred(FetchError):
-    """Live failed and Wayback was unavailable: retry on a later run, don't mark fetch_failed."""
+    """Not a definitive failure (connection problem, throttling, outage): stays pending for a later run."""
 
 
 @dataclass
@@ -124,33 +124,42 @@ class Fetcher:
         return path.relative_to(self.cfg.root).as_posix()
 
     def _download(self, url: str) -> _Payload:
+        """Live, then the latest Wayback capture. Raises FetchError only when both answered definitively
+        (e.g. 404 and no capture); any connection problem, throttling or outage raises Deferred."""
         attempts: list[str] = []
+        live_final = wayback_final = False
         try:
             data, _ = self.http.get_bytes(url)
             err = payload_error(data, url)
             if err is None:
                 return _Payload(data, "live", attempts=attempts)
             attempts.append(f"live: {err}")
+            live_final = True
         except RobotsDisallowed:
             raise
         except FetchError as e:
             attempts.append(f"live: {e.reason}")
+            live_final = not is_transient(e)
         try:
             latest = Wayback.latest(self.wayback.captures(url))
             if latest is None:
                 attempts.append("wayback: no 200 capture")
+                wayback_final = True
             else:
                 data = self.wayback.fetch_raw(latest)
                 err = payload_error(data, url)
                 if err is None:
                     return _Payload(data, "wayback", self.wayback.raw_url(latest.timestamp, latest.original), attempts)
                 attempts.append(f"wayback {latest.timestamp}: {err}")
+                wayback_final = True
         except WaybackUnavailable as e:
             attempts.append(f"wayback unavailable: {str(e)[:120]}")
-            raise Deferred(url, "; ".join(attempts))
         except FetchError as e:
             attempts.append(f"wayback: {e.reason}")
-        raise FetchError(url, "; ".join(attempts))
+            wayback_final = True
+        if live_final and wayback_final:
+            raise FetchError(url, "; ".join(attempts))
+        raise Deferred(url, "; ".join(attempts))
 
     def _duplicate_of(self, sha: str, doc_id: str) -> Optional[Document]:
         rows = db.query(self.conn, "SELECT * FROM documents WHERE sha256 = ? AND doc_id != ?", (sha, doc_id))
@@ -332,9 +341,13 @@ def in_scope(item: CatalogueItem, cfg: Config, lang: str, term: Optional[str]) -
 
 
 def pending(item: CatalogueItem, force: bool) -> bool:
+    """Not yet fetched. A fetch_failed item is retried with --force, or always if its stored error was
+    transient (items wrongly marked failed by a temporary outage before the fix are retried this way)."""
     if item.status in (cat.DOWNLOADED, cat.DUPLICATE):
         return False
-    return item.status != cat.FETCH_FAILED or force
+    if item.status == cat.FETCH_FAILED:
+        return force or is_transient_text(item.fetch_error or "")
+    return True
 
 
 def sample_key(item: CatalogueItem) -> str:

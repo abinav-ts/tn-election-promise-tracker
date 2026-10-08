@@ -55,6 +55,9 @@ http:
   backoff_s: 2.0
   rate_per_host: 1.0          # requests per second, default for every host
   obey_robots: true
+  host_failures_to_trip: 3    # consecutive failed requests before a host is paused
+  host_cooldown_s: 120        # first pause; doubles on each re-trip
+  host_max_cooldown_s: 1800
   listing_cache_ttl_days: 7   # listing HTML in cache/http is reused for this long
 
 wayback:
