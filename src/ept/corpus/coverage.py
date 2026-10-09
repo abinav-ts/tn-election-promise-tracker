@@ -177,12 +177,18 @@ class Coverage:
         via = Counter(s.get("fetched_from", "?") for s in self.sidecars.values())
         failed = [{"source": i.source, "url": i.url, "error": i.fetch_error} for i in self.items
                   if i.status == FETCH_FAILED]
-        deferred = [{"source": i.source, "url": i.url} for i in self.items
-                    if i.status == "new" and i.fetch_error and "wayback unavailable" in i.fetch_error]
+        # tried but not fetched yet: outages, throttling, downloads over the time limit, quarantined files
+        deferred = [{"source": i.source, "url": i.url, "error": i.fetch_error} for i in self.items
+                    if i.status == "new" and i.fetch_error]
         for f in failed:
             self.gaps.append({"doc_type": None, "source": f["source"], "url": f["url"], "issue": "fetch failed",
                               "detail": f["error"], "suggested_search": "download by hand into _manual/ and add "
                               "a manual_manifest.csv row"})
+        for f in deferred:
+            self.gaps.append({"doc_type": None, "source": f["source"], "url": f["url"],
+                              "issue": "retryable fetch failure (re-run ept crawl)", "detail": f["error"],
+                              "suggested_search": "re-run `python -m ept crawl`; if it keeps failing, download by "
+                                                  "hand into _manual/"})
         superseded = []
         pending = 0
         for doc_id, s in self.sidecars.items():
@@ -335,7 +341,8 @@ def render_md(data: dict[str, Any], cfg: Config) -> str:
 
     fp = data["fetch_path"]
     out.append(f"## {SECTIONS[5]}\n\nFetched via: " + ", ".join(f"{k} {n}" for k, n in fp["via"].items()) +
-               f". Fetch failures: {len(fp['fetch_failed'])}. Deferred (Wayback down): {len(fp['deferred'])}. "
+               f". Fetch failures: {len(fp['fetch_failed'])}. Retryable (outage, time limit, quarantined): "
+               f"{len(fp['deferred'])}. "
                f"Wayback lookups pending: {fp['wayback_lookups_pending']}.\n")
     if fp["superseded_versions"]:
         grouped: dict[str, dict[str, Any]] = {}

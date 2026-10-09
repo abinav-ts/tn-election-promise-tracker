@@ -11,7 +11,7 @@ from ept.corpus.fetch import (
 from ept.corpus.wayback import Wayback, payload_digest
 from ept.net import Http
 from ept.runs import Budget
-from fakes import ERROR_PAGE, PDF, FakeResponse, FakeSession
+from fakes import ERROR_PAGE, PDF, FakeResponse, FakeSession, make_pdf
 
 URL = "https://cms.tn.gov.in/cms_migrated/document/docfiles/hfw_e_pn_2019_20.pdf"
 PDF_HDR = {"Content-Type": "application/pdf"}
@@ -107,10 +107,11 @@ def test_existing_raw_file_is_never_overwritten(conn, root):
     f, session = _fetcher(conn, [(URL, FakeResponse(200, PDF, PDF_HDR)), ("cdx", _cdx([]))])
     raw = f.raw_file("policy_note", doc_id_for_url(URL), ".pdf")
     raw.parent.mkdir(parents=True)
-    raw.write_bytes(b"%PDF-1.4 earlier bytes")
+    earlier = make_pdf("earlier bytes")
+    raw.write_bytes(earlier)
     r = f.fetch(_item())
     assert r.status == "downloaded"
-    assert raw.read_bytes() == b"%PDF-1.4 earlier bytes"
+    assert raw.read_bytes() == earlier
     assert URL not in session.calls  # registered from disk, not re-downloaded
     assert f.fetch(_item()).status == "exists"
 
@@ -149,10 +150,10 @@ def test_limit_selects_the_same_items(conn, root):
 
 
 def test_limit_and_rerun_downloads_zero(conn, root):
-    routes = [("cms.tn.gov.in", FakeResponse(200, b"%PDF-1.4 " + b"x", PDF_HDR)), ("cdx", _cdx([]))]
+    routes = [("cms.tn.gov.in", FakeResponse(200, PDF, PDF_HDR)), ("cdx", _cdx([]))]
     f, _ = _fetcher(conn, routes)
     # distinct bytes per URL so dedup doesn't kick in
-    f.http.session.routes[1] = ("cms.tn.gov.in", lambda u: FakeResponse(200, b"%PDF-1.4 " + u.encode(), PDF_HDR))
+    f.http.session.routes[1] = ("cms.tn.gov.in", lambda u: FakeResponse(200, make_pdf(u), PDF_HDR))
     adapter = _OneShotAdapter(_items(10))
     for expected in (3, 0):
         stats = CrawlStats()
@@ -162,7 +163,7 @@ def test_limit_and_rerun_downloads_zero(conn, root):
 
 
 def test_time_budget_stops_cleanly_and_resumes(conn, root):
-    f, _ = _fetcher(conn, [("cms.tn.gov.in", lambda u: FakeResponse(200, b"%PDF-1.4 " + u.encode(), PDF_HDR)),
+    f, _ = _fetcher(conn, [("cms.tn.gov.in", lambda u: FakeResponse(200, make_pdf(u), PDF_HDR)),
                            ("cdx", _cdx([]))])
     adapter = _OneShotAdapter(_items(4))
     ticks = iter(range(100))
@@ -258,7 +259,7 @@ def test_one_connection_blip_does_not_poison_the_host(conn, root):
         calls["n"] += 1
         if calls["n"] == 1:
             raise requests.ConnectionError("blip")
-        return FakeResponse(200, b"%PDF-1.4 " + url.encode(), PDF_HDR)
+        return FakeResponse(200, make_pdf(url), PDF_HDR)
 
     f, _ = _fetcher(conn, [("cdx/search", _cdx([])), ("cms.tn.gov.in", flaky)])
     results = [f.fetch(i).status for i in _items(3)]
@@ -273,3 +274,102 @@ def test_items_wrongly_failed_by_an_outage_are_retried(conn, root):
     real_404 = _item().model_copy(update={"status": "fetch_failed", "fetch_error":
                                           "live: HTTP 404; wayback: no 200 capture"})
     assert pending(old_bug, force=False) and not pending(real_404, force=False) and pending(real_404, force=True)
+
+
+# --- D-030: download time limit, completeness, truncated Wayback versions ---------------------
+
+def test_download_over_time_limit_is_retryable(conn, root):
+    from ept.net import FetchError, is_transient
+
+    big = make_pdf("slow") + b"\n" * (2 * 2**20)
+    ticks = iter(range(0, 10**6, 100))  # every clock read advances 100 s
+    cfg = get_config()
+    session = FakeSession([("robots.txt", FakeResponse(404)), (URL, FakeResponse(200, big, PDF_HDR))])
+    http = Http(cfg, session=session, sleep=lambda s: None, clock=lambda: next(ticks))
+    with pytest.raises(FetchError) as e:
+        http.get_bytes(URL)
+    assert "download exceeded 600 s" in e.value.reason and is_transient(e.value)
+    f = Fetcher(cfg, http, Wayback(http), conn)
+    session.routes.insert(0, ("cdx/search", _cdx([])))
+    assert f.fetch(_item()).status == "deferred"
+
+
+def test_short_transfer_is_retryable(conn):
+    from ept.net import FetchError, is_transient
+
+    f, _ = _fetcher(conn, [(URL, FakeResponse(200, PDF[:100], {**PDF_HDR, "Content-Length": str(len(PDF))}))])
+    with pytest.raises(FetchError) as e:
+        f.http.get_bytes(URL)
+    assert "incomplete transfer" in e.value.reason and is_transient(e.value)
+
+
+def test_pdf_completeness():
+    from ept.corpus.fetch import pdf_incomplete
+
+    assert pdf_incomplete(PDF) is None
+    assert pdf_incomplete(PDF + b"\x00" * 80_000) is None  # server padding after %%EOF is fine
+    assert pdf_incomplete(PDF[: len(PDF) // 2]).startswith("truncated PDF")
+    assert payload_error(PDF[:-20], URL).startswith("truncated PDF")
+
+
+def test_truncated_newest_capture_falls_back_to_latest_complete(conn, root):
+    good, cut = make_pdf("complete 2024"), make_pdf("newer 2025")[:300]
+    cdx = _cdx([["20240715071113", URL, "200", payload_digest(good), "application/pdf", "1"],
+                ["20250616071210", URL, "200", payload_digest(cut), "application/pdf", "1"]])
+    f, _ = _fetcher(conn, [
+        ("web.archive.org/web/20250616071210id_/", FakeResponse(200, cut, PDF_HDR)),
+        ("web.archive.org/web/20240715071113id_/", FakeResponse(200, good, PDF_HDR)),
+        ("cdx/search", cdx), (URL, FakeResponse(404)),
+    ])
+    r = f.fetch(_item())
+    assert r.status == "downloaded" and r.via == "wayback"
+    doc = db.get(conn, "documents", r.doc_id)
+    assert (root / doc.local_path).read_bytes() == good and "20240715071113" in doc.archive_url
+    wb = read_sidecar(root / doc.local_path)["wayback"]
+    assert wb["kept_first_capture"] == "20240715071113"
+    assert wb["superseded"] == []  # the truncated 2025 capture is not a newer version
+    assert [c["digest"] for c in wb["incomplete_captures"]] == [payload_digest(cut)]
+
+
+def test_no_complete_capture_is_a_fetch_failure(conn):
+    cut = make_pdf("only cut")[:300]
+    cdx = _cdx([["20250616071210", URL, "200", payload_digest(cut), "application/pdf", "1"]])
+    f, _ = _fetcher(conn, [("web.archive.org/web/", FakeResponse(200, cut, PDF_HDR)), ("cdx/search", cdx),
+                           (URL, FakeResponse(404))])
+    r = f.fetch(_item())
+    assert r.status == "fetch_failed" and "none of the 1 newest versions is complete" in r.error
+
+
+def test_verify_raw_quarantines_truncated_files(conn, root):
+    from ept.corpus.fetch import verify_raw
+
+    f, _ = _fetcher(conn, [(URL, FakeResponse(200, PDF, PDF_HDR)), ("cdx", _cdx([]))])
+    cat_ = Catalogue("tn_policy_notes")
+    cat_.add([_item()])
+    cat_.save()
+    r = f.fetch(_item())
+    cat_.update(URL, status="downloaded", doc_id=r.doc_id)
+    cat_.save()
+    raw = root / db.get(conn, "documents", r.doc_id).local_path
+    assert verify_raw(conn, get_config(), {"tn_policy_notes": Catalogue("tn_policy_notes")}) == []
+    raw.write_bytes(PDF[:200])  # simulate a stored truncated file
+    meta = read_sidecar(raw)
+    meta.pop("complete_check")
+    from ept.corpus.fetch import write_sidecar
+    write_sidecar(raw, meta)
+    found = verify_raw(conn, get_config(), {"tn_policy_notes": Catalogue("tn_policy_notes")})
+    assert [x["doc_id"] for x in found] == [r.doc_id] and found[0]["reason"].startswith("truncated PDF")
+    assert not raw.exists() and db.get(conn, "documents", r.doc_id) is None
+    moved = list((root / "data" / "raw" / "evidence" / "_quarantine" / "policy_note").glob("*.pdf"))
+    assert len(moved) == 1 and moved[0].read_bytes() == PDF[:200]  # kept, not deleted
+    item = Catalogue("tn_policy_notes").get(URL)
+    assert item.status == "new" and "quarantined" in item.fetch_error
+    assert f.fetch(item).status == "downloaded" and raw.read_bytes() == PDF  # next crawl fetches it again
+
+
+def test_per_file_progress_line(conn, root, capsys):
+    f, _ = _fetcher(conn, [("cms.tn.gov.in", lambda u: FakeResponse(200, make_pdf(u), PDF_HDR)), ("cdx", _cdx([]))])
+    crawl_source(_OneShotAdapter(_items(2)), f, Catalogue("tn_policy_notes"), lang="en", download=True, term=None,
+                 limit=None, force=False, budget=Budget(None), stats=CrawlStats())
+    lines = [l for l in capsys.readouterr().err.splitlines() if "] test_source " in l and "[" in l]
+    assert len(lines) == 2 and "[1/2] test_source" in lines[0] and " MB " in lines[0] and "s via live" in lines[0]

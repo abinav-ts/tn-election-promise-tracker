@@ -34,6 +34,7 @@ class Paths(_Cfg):
     lang_pairs: str
     tracker_leads: str
     date_review: str
+    quarantine: str
     spotcheck: str
     runs: str
     coverage_md: str
@@ -63,6 +64,8 @@ class Http(_Cfg):
     host_failures_to_trip: int
     host_cooldown_s: float
     host_max_cooldown_s: float
+    max_download_s: float
+    chunk_bytes: int
     listing_cache_ttl_days: float
 
 
@@ -71,6 +74,7 @@ class Wayback(_Cfg):
     cdx_url: str
     raw_template: str
     rate: float
+    max_versions_tried: int
 
 
 class Parse(_Cfg):

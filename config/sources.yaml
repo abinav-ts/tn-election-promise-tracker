@@ -1,7 +1,8 @@
 # Source adapters (spec 01 §2.3). Only ept.config reads this file.
 
-# Order of work (user decision, spec 01 §2.3).
-order: [tn_policy_notes, tnbudget_speeches, governor_addresses, cag_reports, tn_schemes, tn_gos, manual]
+# Crawl order (D-031): live sources first, slow Wayback-only sources last.
+# tn_policy_notes must come before tnbudget_speeches (S3 skips speeches S1 already lists).
+order: [tn_policy_notes, tn_gos, tn_schemes, manual, tnbudget_speeches, governor_addresses, cag_reports]
 
 # Canonical department names keyed by the tn.gov.in dep_id (the same ids are used by the
 # policy-note and GO listings). Names as listed on 2026-10-07.

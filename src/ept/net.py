@@ -37,7 +37,8 @@ def is_transient(error: FetchError) -> bool:
 
 
 TRANSIENT_MARKERS = ("host unreachable", "cooling down", "ConnectionError", "ConnectTimeout", "ReadTimeout",
-                     "Timeout", "HTTP 429", "HTTP 5", "wayback unavailable")
+                     "Timeout", "HTTP 429", "HTTP 5", "wayback unavailable", "download exceeded",
+                     "incomplete transfer", "during download")
 
 
 def is_transient_text(error_text: str) -> bool:
@@ -171,11 +172,30 @@ class Http:
         return self._request(url)
 
     def get_bytes(self, url: str) -> tuple[bytes, str]:
-        """Download a file. Raises FetchError on non-200."""
-        resp = self._request(url)
-        if resp.status_code != 200:
-            raise FetchError(url, f"HTTP {resp.status_code}", resp.status_code)
-        return resp.content, resp.headers.get("Content-Type", "")
+        """Download a file, streamed. Raises FetchError on non-200, when the whole download takes longer
+        than http.max_download_s (a slow trickle never trips the per-read timeout), or when fewer bytes
+        arrive than Content-Length announced. The last two are transient (status None)."""
+        http = self.cfg.settings.http
+        resp = self._request(url, stream=True)
+        try:
+            if resp.status_code != 200:
+                raise FetchError(url, f"HTTP {resp.status_code}", resp.status_code)
+            start = self._clock()
+            buf = bytearray()
+            try:
+                for chunk in resp.iter_content(chunk_size=http.chunk_bytes):
+                    buf += chunk
+                    if self._clock() - start > http.max_download_s:
+                        raise FetchError(url, f"download exceeded {http.max_download_s:.0f} s "
+                                              f"({len(buf)} bytes received)")
+            except requests.RequestException as e:
+                raise FetchError(url, f"{type(e).__name__} during download: {e}"[:300]) from e
+            expected = resp.headers.get("Content-Length")
+            if expected and expected.isdigit() and len(buf) < int(expected):
+                raise FetchError(url, f"incomplete transfer: {len(buf)} of {expected} bytes")
+            return bytes(buf), resp.headers.get("Content-Type", "")
+        finally:
+            resp.close()
 
     def get_listing(self, url: str, use_cache: bool = True) -> str:
         """Listing HTML, cached in cache/http/ for http.listing_cache_ttl_days."""

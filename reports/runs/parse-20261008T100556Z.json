@@ -2,8 +2,8 @@
   "run_id": "parse-20261008T100556Z",
   "stage": "parse",
   "started_at": "2026-10-08T10:05:56+00:00",
-  "finished_at": null,
-  "status": "running",
+  "finished_at": "2026-10-08T17:02:08+00:00",
+  "status": "done",
   "git_commit": "7313dac0e329340af0713e23cb1a274c766cec2b",
   "params": {
     "term": null,
@@ -13,7 +13,18 @@
   },
   "prompt_versions": {},
   "models": {},
-  "counts": {},
+  "counts": {
+    "in_scope": 5604,
+    "to_parse": 5524,
+    "ok": 909,
+    "ocr": 4615,
+    "failed": 0,
+    "tamil": 0,
+    "chunks_written": 45359,
+    "redated": 0,
+    "date_review_rows": 1609,
+    "stopped": null
+  },
   "config": {
     "settings": {
       "paths": {

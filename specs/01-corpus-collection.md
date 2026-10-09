@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-08; build-time amendments D-023–D-026, D-028, D-029). v1.0 approved 2026-10-07 with D-016–D-022 |
+| Status | **APPROVED v1.3** (2026-10-08; build-time amendments D-023–D-026, D-028–D-031). v1.0 approved 2026-10-07 with D-016–D-022 |
 | Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
 | CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept spotcheck`, `python -m ept leads` |
@@ -48,7 +48,7 @@ Probed from Claude's environment on 2026-10-07. Every source uses the same fetch
 | S7 | `manual` | any | `data/raw/evidence/_manual/` + `manual_manifest.csv` (filename, doc_type, department, title, doc_date, date_precision, lang, source_url, note) | For anything that can't be crawled | As given (`date_source=manual`) |
 | L1 | `trackers` (leads only, §4.7) | — (not a document) | e.g. South First's DMK 505-promise analysis; TNM "status check" series on AIADMK 2016 | Live | — |
 
-Order of work (user decision): S1 → S3 → S4 → S5 → S6 → S2 (GOs last, highest volume) → Tamil pass → leads.
+Order of work: originally S1 → S3 → S4 → S5 → S6 → S2 → Tamil pass → leads. **Crawl order since D-031:** S1 → S2 → S6 → S7 → S3 → S4 → S5, i.e. live sources first and the slow Wayback-only sources (S3, S5) last; S1 must precede S3. Then the Tamil pass and leads.
 
 ### 2.4 Not inputs
 - The manifesto PDFs (`data/raw/manifestos/{TERM}_{lang}.pdf`, renamed 2026-10-07) are **not read** in stage 01. Stage 02 registers and parses them.
@@ -103,10 +103,12 @@ Order of work (user decision): S1 → S3 → S4 → S5 → S6 → S2 (GOs last, 
 - `doc_id` = first 16 hex chars of sha1(canonical `source_url`), per §7. `source_url` is always the **original** URL, even when the bytes came from Wayback; `archive_url` then holds the Wayback URL.
 - If one URL served **different files over time** (distinct Wayback digests), keep **only the latest version**, which is treated as the updated document after modifications or revocations (user decision, 2026-10-07). This keeps one document per URL, so the §7 `doc_id` rule needs no change.
   - **Date safety:** the Wayback date fallback for that document uses the first capture **of the kept digest**, not the URL's first capture. The URL's first capture would date the newer file to the older file's timestamp, which is too early and leaks.
-  - Superseded versions are not downloaded. They are listed (URL, digest, capture range) in the coverage report so nothing disappears silently. Known case: `BS_2021_22_*` served the AIADMK interim budget (Feb 2021) and later the DMK revised budget (Aug 2021). Only the revised one is kept.
+  - Superseded versions are not downloaded. They are listed (URL, digest, capture range) in the coverage report so nothing disappears silently.
+  - **A truncated capture is not a newer version (D-030).** Wayback versions are tried newest digest first (at most `wayback.max_versions_tried`); an incomplete one is skipped and recorded in the sidecar (`incomplete_captures`), and the latest complete capture is kept. If none is complete, the item is a fetch failure. Known case: `BS_2021_22_*` served the AIADMK interim budget (Feb 2021) and later the DMK revised budget (Aug 2021). Only the revised one is kept.
 - Content dedup: a download whose sha256 matches an existing document is not stored again. Its URL is added to that document's sidecar as an alias.
 - Manual files: `doc_id = sha1("manual/" + relative_path)`.
 - Raw files are never overwritten. `--force` re-parses; it never re-downloads over an existing file.
+- **Exception (D-030):** a stored PDF that fails the completeness check (§4.3 step 3) is moved, with its sidecar, to `data/raw/evidence/_quarantine/{doc_type}/` (never deleted); its document row and chunks are removed and its catalogue item is reset, so the next crawl fetches a complete copy. Every `ept crawl` run checks stored PDFs once (result cached in the sidecar).
 
 ### 4.3 Crawl (`ept crawl [--source S] [--lang en|ta] [--download/--catalogue-only]`)
 1. **Catalogue.** Each source adapter yields `CatalogueItem`s (url, doc_type, department, title, listing date/FY, lang hint, identifiers) and appends any new ones to `data/interim/catalogue/{source}.jsonl`. The catalogue is cheap, contains HTML listings only, and is always complete for the window.
@@ -115,7 +117,7 @@ Order of work (user decision): S1 → S3 → S4 → S5 → S6 → S2 (GOs last, 
    - lang = requested lang.
    - For GOs, the download-mode rule applies (OQ-2).
    - `--limit N` selects the **first N in-scope items of each source**, in a fixed order (sha1 of the URL), so a small run is spread across departments and years and a re-run touches the same N items (downloads 0). It therefore also caps new downloads at N (D-026).
-3. **Fetch.** Live URL first. On failure (timeout, 4xx/5xx, HTML error page in place of a PDF), use the latest 200 Wayback capture via `https://web.archive.org/web/{ts}id_/{url}`. If both fail **definitively** (an HTTP 4xx or an error page live, and no usable Wayback capture), the item gets `fetch_failed` in the catalogue and appears in the coverage gap list. Connection errors, timeouts, throttling (429) and server errors (5xx), on either side, leave the item pending (`deferred`) for the next run (D-029). A host is paused only after 3 consecutive failed requests, for a cooldown that starts at 2 minutes and doubles up to 30 minutes, then retried.
+3. **Fetch.** Downloads are streamed with a wall-clock limit per file (`http.max_download_s`, default 600 s); a download over the limit, or shorter than its `Content-Length`, is a retryable failure (D-030). A PDF is kept only if it is complete: `%%EOF` in its last KB (after trailing padding) and it opens in PyMuPDF with ≥ 1 page. Live URL first. On failure (timeout, 4xx/5xx, HTML error page in place of a PDF), use the latest 200 Wayback capture via `https://web.archive.org/web/{ts}id_/{url}`. If both fail **definitively** (an HTTP 4xx or an error page live, and no usable Wayback capture), the item gets `fetch_failed` in the catalogue and appears in the coverage gap list. Connection errors, timeouts, throttling (429) and server errors (5xx), on either side, leave the item pending (`deferred`) for the next run (D-029). A host is paused only after 3 consecutive failed requests, for a cooldown that starts at 2 minutes and doubles up to 30 minutes, then retried.
 4. **Register.** Write the raw file and sidecar, then upsert the `documents` row with `parse_status=pending`, sha256, `fetched_at`, `department` (canonicalised via a `dep_id → name` map in `sources.yaml`; unmapped names are kept raw and logged) and `fiscal_year`.
 5. **Wayback first capture.** For every downloaded document, look up the earliest CDX capture of its URL and store it in the sidecar. It is used only as a date fallback (§4.5).
    - The date fallback is the first capture **whose digest equals the kept bytes** (D-018), searched at the document's URL **and** at known pre-migration URLs of the same file (`wayback_legacy` in `sources.yaml`, D-023). A legacy capture with a different digest is never used.

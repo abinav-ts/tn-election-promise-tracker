@@ -12,6 +12,7 @@ paths:
   lang_pairs: data/interim/lang_pairs.csv
   tracker_leads: data/interim/tracker_leads.csv
   date_review: data/interim/date_review.csv
+  quarantine: data/raw/evidence/_quarantine
   spotcheck: data/interim/spotcheck_01.csv
   runs: reports/runs
   coverage_md: reports/coverage_01.md
@@ -58,6 +59,8 @@ http:
   host_failures_to_trip: 3    # consecutive failed requests before a host is paused
   host_cooldown_s: 120        # first pause; doubles on each re-trip
   host_max_cooldown_s: 1800
+  max_download_s: 600         # wall-clock limit for one file download (streamed); over it = retryable failure
+  chunk_bytes: 65536
   listing_cache_ttl_days: 7   # listing HTML in cache/http is reused for this long
 
 wayback:
@@ -65,6 +68,7 @@ wayback:
   cdx_url: https://web.archive.org/cdx/search/cdx
   raw_template: "https://web.archive.org/web/{ts}id_/{url}"
   rate: 0.5                   # requests per second
+  max_versions_tried: 3       # newest distinct digests tried when the latest capture is incomplete (D-030)
 
 parse:
   ocr_min_chars_per_page: 200

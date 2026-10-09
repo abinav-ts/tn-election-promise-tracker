@@ -16,6 +16,13 @@ class FakeResponse:
     def text(self) -> str:
         return self.content.decode(self.encoding or "utf-8", errors="replace")
 
+    def iter_content(self, chunk_size: int = 65536):
+        for i in range(0, len(self.content), chunk_size):
+            yield self.content[i:i + chunk_size]
+
+    def close(self) -> None:
+        pass
+
 
 Handler = Union[FakeResponse, Callable[[str], FakeResponse]]
 
@@ -36,5 +43,14 @@ class FakeSession:
         return FakeResponse(404, b"<html>not found</html>", {"Content-Type": "text/html"})
 
 
-PDF = b"%PDF-1.4\n%fake pdf body\n"
+def make_pdf(text: str = "fake pdf body") -> bytes:
+    """A tiny but complete PDF (one page, ends with %%EOF), distinct per text."""
+    import pymupdf
+
+    doc = pymupdf.open()
+    doc.new_page().insert_text((72, 72), text[:200])
+    return doc.tobytes()
+
+
+PDF = make_pdf()
 ERROR_PAGE = b"<!DOCTYPE html><html><body><h1>Error 404</h1></body></html>"

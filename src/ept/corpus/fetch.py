@@ -11,6 +11,7 @@ import hashlib
 import json
 import logging
 import sqlite3
+import shutil
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -21,6 +22,8 @@ from ept import db
 from ept.config import Config
 from ept.corpus import catalogue as cat
 from ept.corpus.catalogue import MANUAL_PREFIX, Catalogue, CatalogueItem, doc_id_for_url
+import pymupdf
+
 from ept.corpus.wayback import Capture, Wayback, WaybackUnavailable, payload_digest
 from ept.dates import fy_bounds
 from ept.net import FetchError, Http, RobotsDisallowed, is_transient, is_transient_text
@@ -45,13 +48,32 @@ def looks_like_html(data: bytes) -> bool:
     return head.startswith((b"<!doctype html", b"<html", b"<head", b"<?xml")) or b"<html" in head
 
 
+PDF_TAIL_BYTES = 1024  # %%EOF must sit in the last KB, after trailing padding is stripped
+
+
+def pdf_incomplete(data: bytes) -> Optional[str]:
+    """Why PDF bytes look truncated or broken (D-030), or None. Trailing NUL/whitespace padding,
+    which some servers append, is ignored."""
+    if b"%%EOF" not in data.rstrip(b"\x00 \t\r\n\x0c")[-PDF_TAIL_BYTES:]:
+        return f"truncated PDF: no %%EOF at the end ({len(data)} bytes)"
+    try:
+        with pymupdf.open(stream=data, filetype="pdf") as doc:
+            if doc.page_count == 0:
+                return "PDF has no pages"
+    except Exception as e:  # pymupdf raises several types for broken files
+        return f"PDF does not open: {type(e).__name__}"
+    return None
+
+
 def payload_error(data: bytes, url: str) -> Optional[str]:
-    """Why a payload is not the document we asked for, or None if it looks right."""
+    """Why a payload is not the complete document we asked for, or None if it looks right."""
     if not data:
         return "empty response"
     ext = expected_ext(url)
-    if ext == ".pdf" and not data[:1024].lstrip().startswith(b"%PDF") and b"%PDF" not in data[:1024]:
-        return "HTML error page instead of PDF" if looks_like_html(data) else "not a PDF"
+    if ext == ".pdf":
+        if not data[:1024].lstrip().startswith(b"%PDF") and b"%PDF" not in data[:1024]:
+            return "HTML error page instead of PDF" if looks_like_html(data) else "not a PDF"
+        return pdf_incomplete(data)
     if ext == ".html" and not looks_like_html(data):
         return "not HTML"
     return None
@@ -100,6 +122,8 @@ class FetchResult:
     doc_id: Optional[str] = None
     error: Optional[str] = None
     via: Optional[str] = None
+    size: int = 0
+    seconds: float = 0.0
 
 
 @dataclass
@@ -108,6 +132,7 @@ class _Payload:
     via: str  # live | wayback
     archive_url: Optional[str] = None
     attempts: list[str] = field(default_factory=list)
+    rejected: list[dict[str, str]] = field(default_factory=list)  # incomplete Wayback captures skipped
 
 
 class Fetcher:
@@ -140,23 +165,35 @@ class Fetcher:
         except FetchError as e:
             attempts.append(f"live: {e.reason}")
             live_final = not is_transient(e)
+        rejected: list[dict[str, str]] = []
         try:
-            latest = Wayback.latest(self.wayback.captures(url))
-            if latest is None:
+            caps = self.wayback.captures(url)
+            if not caps:
                 attempts.append("wayback: no 200 capture")
                 wayback_final = True
             else:
-                data = self.wayback.fetch_raw(latest)
-                err = payload_error(data, url)
-                if err is None:
-                    return _Payload(data, "wayback", self.wayback.raw_url(latest.timestamp, latest.original), attempts)
-                attempts.append(f"wayback {latest.timestamp}: {err}")
+                # D-018 keeps the newest version, but a truncated capture is not a newer version (D-030):
+                # try distinct digests newest first and keep the first complete one.
+                newest: dict[str, Capture] = {}
+                for c in sorted(caps, key=lambda c: c.timestamp, reverse=True):
+                    newest.setdefault(c.digest, c)
+                tries = list(newest.values())[: self.cfg.settings.wayback.max_versions_tried]
+                for cap in tries:
+                    try:
+                        data = self.wayback.fetch_raw(cap)
+                    except FetchError as e:  # definitive for this capture (e.g. 404); try the next
+                        attempts.append(f"wayback {cap.timestamp}: {e.reason}")
+                        continue
+                    err = payload_error(data, url)
+                    if err is None:
+                        return _Payload(data, "wayback", self.wayback.raw_url(cap.timestamp, cap.original),
+                                        attempts, rejected)
+                    attempts.append(f"wayback {cap.timestamp}: {err}")
+                    rejected.append({"digest": cap.digest, "timestamp": cap.timestamp, "reason": err})
+                attempts.append(f"wayback: none of the {len(tries)} newest versions is complete")
                 wayback_final = True
-        except WaybackUnavailable as e:
+        except WaybackUnavailable as e:  # outage, throttling or a download over the time limit: retry later
             attempts.append(f"wayback unavailable: {str(e)[:120]}")
-        except FetchError as e:
-            attempts.append(f"wayback: {e.reason}")
-            wayback_final = True
         if live_final and wayback_final:
             raise FetchError(url, "; ".join(attempts))
         raise Deferred(url, "; ".join(attempts))
@@ -174,6 +211,7 @@ class Fetcher:
 
         meta = read_sidecar(raw)
         manual = item.url.startswith(MANUAL_PREFIX)
+        seconds = 0.0
         if manual:
             src = self.cfg.path("manual_dir") / item.url[len(MANUAL_PREFIX):]
             raw = self.raw_file(item.doc_type, doc_id, src.suffix.lower())
@@ -181,18 +219,26 @@ class Fetcher:
             if not src.exists():
                 return FetchResult(cat.FETCH_FAILED, doc_id, error=f"manual file missing: {src.name}")
             data, via, archive_url = src.read_bytes(), "manual", None
-        elif raw.exists():  # file stored by an interrupted run: register without re-downloading
-            data = raw.read_bytes()
-            via = meta.get("fetched_from", "live")
-            archive_url = meta.get("archive_url")
         else:
-            try:
-                payload = self._download(item.url)
-            except Deferred as e:
-                return FetchResult("deferred", doc_id, error=e.reason)
-            except FetchError as e:
-                return FetchResult(cat.FETCH_FAILED, doc_id, error=e.reason)
-            data, via, archive_url = payload.data, payload.via, payload.archive_url
+            if raw.exists() and payload_error(raw.read_bytes(), item.url):
+                quarantine(self.cfg, raw, payload_error(raw.read_bytes(), item.url) or "")
+            if raw.exists():  # file stored by an interrupted run: register without re-downloading
+                data = raw.read_bytes()
+                via = meta.get("fetched_from", "live")
+                archive_url = meta.get("archive_url")
+            else:
+                started = time.monotonic()
+                try:
+                    payload = self._download(item.url)
+                except Deferred as e:
+                    return FetchResult("deferred", doc_id, error=e.reason, seconds=time.monotonic() - started)
+                except FetchError as e:
+                    return FetchResult(cat.FETCH_FAILED, doc_id, error=e.reason, seconds=time.monotonic() - started)
+                data, via, archive_url = payload.data, payload.via, payload.archive_url
+                meta = read_sidecar(raw)
+                if payload.rejected:
+                    meta["wayback_rejected"] = payload.rejected
+                seconds = time.monotonic() - started
 
         sha = sha256_bytes(data)
         dup = self._duplicate_of(sha, doc_id)
@@ -201,7 +247,7 @@ class Fetcher:
             aliases = read_sidecar(dup_file).get("aliases", [])
             if item.url not in aliases:
                 update_sidecar(dup_file, aliases=aliases + [item.url])
-            return FetchResult(cat.DUPLICATE, dup.doc_id, via=via)
+            return FetchResult(cat.DUPLICATE, dup.doc_id, via=via, size=len(data), seconds=seconds)
 
         fetched_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
         if not raw.exists():
@@ -227,7 +273,7 @@ class Fetcher:
         self._register(item, doc_id, raw, sha, archive_url, fetched_at, item.listing_date)
         if not manual:
             self.wayback_lookup(raw)
-        return FetchResult(cat.DOWNLOADED, doc_id, via=via)
+        return FetchResult(cat.DOWNLOADED, doc_id, via=via, size=len(data), seconds=seconds)
 
     def _register(self, item: CatalogueItem, doc_id: str, raw: Path, sha: str, archive_url: Optional[str],
                   fetched_at: dt.datetime, listing_date: Optional[dt.date]) -> None:
@@ -272,7 +318,9 @@ class Fetcher:
         kept_digest = meta.get("payload_digest")
         # first capture of the kept bytes, at this URL or at a legacy location of the same file (D-018)
         kept_first: Optional[Capture] = Wayback.first_of_digest(caps + legacy, kept_digest) if kept_digest else None
-        versions = Wayback.versions(caps)
+        # incomplete captures skipped at download time are not "newer versions" (D-030)
+        rejected = {r["digest"] for r in meta.get("wayback_rejected", [])}
+        versions = [v for v in Wayback.versions(caps) if v.digest not in rejected]
         meta["wayback"] = {
             "checked": True,
             "checked_at": dt.date.today().isoformat(),
@@ -284,9 +332,63 @@ class Fetcher:
             "legacy_captures": len(legacy),
             "versions": [v.__dict__ for v in versions],
             "superseded": [v.__dict__ for v in versions if v.digest != kept_digest],
+            "incomplete_captures": meta.get("wayback_rejected", []),
         }
         write_sidecar(raw, meta)
         return True
+
+
+# --- raw-file completeness (D-030) -------------------------------------------
+
+
+def quarantine(cfg: Config, raw: Path, reason: str) -> Path:
+    """Move an incomplete raw file and its sidecar to _quarantine/ (never deleted, never overwritten),
+    so the next crawl can fetch a complete copy into the normal place."""
+    dest_dir = cfg.path("quarantine") / raw.parent.name
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    dest = dest_dir / f"{raw.stem}.{stamp}{raw.suffix}"
+    shutil.move(str(raw), dest)
+    side = sidecar_path(raw)
+    if side.exists():
+        meta = json.loads(side.read_text(encoding="utf-8"))
+        meta["quarantine"] = {"reason": reason, "moved_to": dest.relative_to(cfg.root).as_posix(), "at": stamp}
+        (dest_dir / f"{raw.stem}.{stamp}.meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1),
+                                                                encoding="utf-8")
+        side.unlink()
+    log.warning("quarantined %s: %s", raw.name, reason)
+    return dest
+
+
+def verify_raw(conn: sqlite3.Connection, cfg: Config, catalogues: dict[str, Catalogue]) -> list[dict[str, str]]:
+    """Check every stored PDF once (result cached in its sidecar). Incomplete ones are quarantined, their
+    document and chunks removed, and their catalogue item reset so the crawl fetches them again."""
+    found = []
+    for r in db.query(conn, "SELECT doc_id, local_path, source_url FROM documents WHERE local_path LIKE '%.pdf'"):
+        raw = cfg.root / r["local_path"]
+        if not raw.exists():
+            continue
+        meta = read_sidecar(raw)
+        size = raw.stat().st_size
+        if (meta.get("complete_check") or {}).get("size") == size:
+            continue
+        err = pdf_incomplete(raw.read_bytes())
+        if err is None:
+            meta["complete_check"] = {"size": size, "ok": True}
+            write_sidecar(raw, meta)
+            continue
+        source = (meta.get("listing") or {}).get("source")
+        url = (meta.get("listing") or {}).get("url") or r["source_url"]
+        quarantine(cfg, raw, err)
+        with conn:
+            conn.execute("DELETE FROM chunks WHERE doc_id = ?", (r["doc_id"],))
+            conn.execute("DELETE FROM documents WHERE doc_id = ?", (r["doc_id"],))
+        catalogue = catalogues.get(source)
+        if catalogue is not None and catalogue.get(url) is not None:
+            catalogue.update(url, status=cat.NEW, doc_id=None, fetch_error=f"quarantined (retry): {err}")
+            catalogue.save()
+        found.append({"doc_id": r["doc_id"], "source": source or "?", "reason": err})
+    return found
 
 
 # --- crawl loop -------------------------------------------------------------
@@ -416,6 +518,11 @@ def crawl_source(adapter, fetcher: Fetcher, catalogue: Catalogue, *, lang: str, 
             result = fetcher.fetch(item)
             setattr(stats, result.status, getattr(stats, result.status) + 1)
             counts[result.status] += 1
+            note = "" if result.status == cat.DOWNLOADED else f" {result.status.upper()}"
+            if result.error:
+                note += f": {result.error[:100]}"
+            progress(f"[{n + 1}/{len(todo)}] {adapter.name} {result.doc_id} {result.size / 2**20:.2f} MB "
+                     f"{result.seconds:.0f}s{' via ' + result.via if result.via else ''}{note}")
             if result.status == "deferred":
                 catalogue.update(item.url, fetch_error=result.error)  # stays pending for the next run
                 continue

@@ -6,12 +6,12 @@ from typing import Any, Optional
 
 from ept import db
 from ept.config import get_config
-from ept.corpus.catalogue import Catalogue
-from ept.corpus.fetch import CrawlStats, Fetcher, backfill_wayback, crawl_source
+from ept.corpus.catalogue import Catalogue, load_all
+from ept.corpus.fetch import CrawlStats, Fetcher, backfill_wayback, crawl_source, verify_raw
 from ept.corpus.sources import ADAPTERS
 from ept.corpus.wayback import Wayback
 from ept.net import Http
-from ept.runs import Budget, finish_run, start_run
+from ept.runs import Budget, finish_run, progress, start_run
 
 
 def build_clients(cfg=None, session=None) -> tuple[Http, Wayback]:
@@ -44,6 +44,11 @@ def run_crawl(sources: Optional[list[str]] = None, lang: str = "en", download: O
     stats = CrawlStats()
     per_source: dict[str, Any] = {}
     status = "done"
+    progress("checking stored PDFs for truncation (first run checks every file; later runs only new ones)")
+    quarantined = verify_raw(conn, cfg, load_all(cfg))
+    for q in quarantined:
+        progress(f"quarantined {q['source']} {q['doc_id']}: {q['reason']}; it will be fetched again")
+    per_source["quarantined"] = quarantined
     try:
         for name in names:
             before = dict(stats.as_dict())
