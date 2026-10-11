@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription handoff, `parent_group` meaning, frozen promises, D-035–D-041**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -62,7 +62,12 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 - AIADMK 2011–16 (only if everything else finishes early).
 
 ### 3.1 Language handling
-- **Manifestos:** the official English version is used when one exists; otherwise the Tamil version. Tamil PDFs often use legacy (non-Unicode) fonts that extract as garbage, so any page whose extracted text fails a Tamil-Unicode check is OCR'd with Tesseract (`tam`). Extraction (stage 02) produces each promise's `text` in English, while `source_text` keeps the original-language span verbatim, so every translation can be traced back.
+- **Manifestos:** the official English version is used when one exists; otherwise the Tamil version. Each file's text route is set in its layout profile (`config/manifestos.yaml`, spec 02 §4.2):
+  - `text_layer`: a clean Unicode text layer (DMK-2021 English).
+  - `font_map`: Tamil typed in a **legacy (non-Unicode) font** extracts as garbage, but each glyph maps deterministically to Unicode. Spans in a listed legacy font are converted with the font's mapping table (VANAVIL family, D-035), and fake-bold overprints are removed. This replaces OCR for such files, because the text is typed, not scanned (AIADMK-2016).
+  - `ocr`: image-only pages are OCR'd with Tesseract (`tam`) at native resolution. A quality gate calibrated against font-mapped text sends low-quality pages to **vision transcription** through a Cowork file handoff (§6.4, D-036) (TVK-2026).
+  - Every Tamil page must pass a Tamil-share and orthographic-validity check whatever its route.
+  - Extraction (stage 02) produces each promise's `text` in English, while `source_text` keeps the original-language span verbatim (Unicode), so every translation can be traced back.
 - **Evidence:** English. Tesseract (`eng`) is the fallback for scanned English PDFs. If a needed evidence source turns out to exist only in Tamil, we deal with it in the stage where it comes up.
 - **Tamil evidence candidates (stage 01 result):** `data/interim/lang_pairs.csv` lists 98 Tamil-only documents (30 GOs, 58 scheme pages, 10 CAG reports) and 13 Tamil budget speeches paired with English ones. None is chunked; using any needs a logged decision (D-017).
 
@@ -71,7 +76,9 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 | Term | Meaning |
 |---|---|
 | **Term** | One government tenure, e.g. `DMK-2021`, defined in `config/settings.yaml` |
-| **Promise** | One atomic, independently checkable manifesto commitment (splitting rules: spec 02) |
+| **Promise** | One atomic, independently checkable manifesto commitment (splitting rules: spec 02 §4.5, D-038) |
+| **Unit** | One item as the manifesto presents it (a numbered item, a bullet, a heading + paragraph), the input to promise extraction; a unit yields 0–n promises (spec 02 §4.4) |
+| **Layout profile** | Per-manifesto description of the file's typography (text route, legacy fonts, item markers, page furniture) in `config/manifestos.yaml`; contains no promise content (D-040) |
 | **Indicator** | A checkable condition derived from a promise. A specific promise has one indicator (itself); a vague promise has 2–4 (spec 03) |
 | **Chunk** | A ~300–500-word passage of an evidence document, the unit of retrieval and citation |
 | **Verdict** | Status + realisation date + confidence + cited chunks for one promise |
@@ -103,7 +110,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 | # | Stage | CLI (planned) | Main output |
 |---|---|---|---|
 | 01 | Corpus collection (done) | `ept crawl`, `ept parse`, `ept coverage`, `ept spotcheck`, `ept leads` | `documents`, `chunks`, coverage report, Tamil pairing, tracker leads |
-| 02 | Promise extraction | `ept extract` | `promises` |
+| 02 | Promise extraction | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
 | 03 | Classification & decomposition | `ept classify` | covariates, `indicators` |
 | 04 | Evidence retrieval | `ept index`, `ept retrieve` | `retrievals` |
 | 05 | Judgment | `ept judge`, `ept judge export/import` | `verdicts` |
@@ -123,7 +130,7 @@ All LLM use goes through `ept.llm`, which hides the backend:
 
 The interface handles prompt loading from `prompts/` (each prompt file has a `version:` header), JSON-schema validation with one retry, response caching keyed on backend + model + prompt version + input hash, and a usage log. Temperature 0 wherever the backend allows it.
 
-The exact bulk backend (Gemini free tier vs. Kaggle) is chosen in the spec for stage 02, after a quick quality and rate-limit test.
+**Bulk backend (Q-03, D-037):** the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`, with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
 
 ### 6.2 Strong-judge file handoff (Claude in Cowork)
 1. `ept judge export --run ID` writes batches of ~20 judging tasks to `data/judgments/{run_id}/in/batch_NNN.jsonl`. Each task contains the promise, the indicator, the cutoff date and the supplied chunks (id, title, type, date, text).
@@ -140,6 +147,13 @@ Because of Pro usage limits, Claude judges a subset:
 
 The final verdict for a promise is: human override > strong judge > bulk model. The source of each final verdict is stored and shown on the website.
 
+### 6.4 Manifesto transcription handoff (Claude in Cowork, D-036)
+For manifesto pages that fail the OCR quality gate (spec 02 §4.3). Same pattern as §6.2:
+1. `ept extract transcribe export --term T` writes the gated page images (native resolution) in batches to `data/interim/manifestos/{term}/transcribe/in/`.
+2. In a **fresh** Cowork session, Claude reads only `prompts/transcribe_page.md` and one batch of images, and writes `data/frozen/transcriptions/{term}/page_NNN.txt`. It transcribes exactly what is printed (Unicode Tamil, reading order, no corrections, additions or summaries; `[?]` for unreadable text). **No web search, no other files.** Claude must not fill in text from its own knowledge of the manifesto.
+3. `ept extract transcribe import --term T` validates each file and records its disagreement with Tesseract's output; large disagreements go to the stage 02 spot-check.
+4. Transcriptions are committed and treated as frozen artefacts.
+
 ## 7. Shared data model
 
 Storage: one SQLite file (`data/ept.sqlite`, rebuildable). Pydantic models in `src/ept/schema.py` mirror these tables. **Only this section defines these fields.**
@@ -150,7 +164,7 @@ Storage: one SQLite file (`data/ept.sqlite`, rebuildable). Pydantic models in `s
 
 **`chunks`**: `chunk_id` PK (`{doc_id}-{seq:04d}`) · `doc_id` FK · `seq` · `text` · `page_start` · `page_end` · `doc_date` (copied, for cutoff filtering) · `n_words`
 
-**`promises`**: `promise_id` PK (`{term_id}-{seq:04d}`) · `term_id` FK · `text` (English) · `source_text` (verbatim manifesto span, original language) · `source_lang` (`en` | `ta`) · `section` · `page` · `parent_group` (shared by promises split from one sentence) · covariates defined in spec 03: `sector`, `promise_type`, `specificity` (`specific` | `vague`), `cost_band`, `union_dependent`, `continues_existing`, `headline`, `covariates_version`
+**`promises`**: `promise_id` PK (`{term_id}-{seq:04d}`, contiguous in manifesto order, assigned after deduplication and **frozen** once the term is signed off, D-039) · `term_id` FK · `text` (English) · `source_text` (verbatim manifesto span, original language) · `source_lang` (`en` | `ta`) · `section` (English rendering of the manifesto's section heading) · `page` (PDF page where `source_text` starts) · `parent_group` (the `unit_id` of the manifesto item the promise came from, `{term_id}-U{seq:04d}`; shared by all promises split from one item, D-038) · covariates defined in spec 03: `sector`, `promise_type`, `specificity` (`specific` | `vague`), `cost_band`, `union_dependent`, `continues_existing`, `headline`, `covariates_version`
 
 **`indicators`**: `indicator_id` PK (`{promise_id}-I{n}`) · `promise_id` FK · `text` · `is_self` (bool) · `search_queries` (json)
 
@@ -195,12 +209,16 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 | Strong-judge sessions: no web search, no other files | Handoff protocol §6.2; written in the session instructions |
 | Cutoff runs: no chunk whose `period_end(doc_date, date_precision)` > cutoff (never compare the stored first-of-period date, §9.3); undated chunks excluded | Retrieval filter using `ept.dates.period_end` + unit test (stage 04) |
 | `realisation_date` ≤ the latest `period_end(doc_date, date_precision)` among cited chunks, and ≥ `sworn_in` | Verdict validation (stage 05) |
+| Promise text from manifesto text only: no number or name absent from the source span; few-shot examples invented, never from in-scope manifestos | Verbatim/number/name checks V1–V3 + spot-check (stage 02) |
+| Transcription sessions: only the prompt and page images; no web search, no knowledge-based "corrections" | Handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
+| Promise list frozen per term after sign-off; later knowledge can't reshape it | `data/frozen/promises_{term}.jsonl` + refusal to re-extract (stage 02) |
 | Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + automated name/number check (stage 03) |
 | Gold promises never in prompts or few-shot pools | Overlap test (stage 06) |
 | Backtest fits use training-term rows only | Assertion in modelling code (stage 07) |
 
 ### 9.2 Neutrality
 - The same prompts, rubric, thresholds and code paths for every party. Party names appear in prompts only as data.
+- Manifestos differ in file format (text layer, legacy font, scan), so each has a **layout profile** that describes its typography only (D-040). One generic reader and cutter applies every profile; promise extraction, checks and thresholds are identical for all terms.
 - The website shows evidence beside every status, the method (whitepaper) and the measured accuracy. There are no party rankings or scores.
 - Projections are labelled "projection under historical patterns", with intervals and caveats.
 - **Tracker leads (D-020):** documents found only through third-party trackers carry `discovery = tracker_lead`, so stages 06/07 can report results with and without them. Stage 01 outcome: the six trackers found (4 on DMK-2021, 2 on AIADMK-2016) cite no GO numbers, so **no** document is tagged `tracker_lead`; the comparison is trivial unless trackers are added later. Tracker text is never evidence.
@@ -217,7 +235,7 @@ ISO `YYYY-MM-DD`. Partial dates are stored as the first day of the period plus `
 
 ### 9.4 Reproducibility
 - Each run gets a `run_id` (`{stage}-{UTC timestamp}`). Its config snapshot, git commit, prompt versions and models go to `reports/runs/{run_id}.json`.
-- Raw downloads are immutable. LLM responses are cached. Strong-judge outputs and gold labels are committed.
+- Raw downloads are immutable. LLM responses are cached. Strong-judge outputs, gold labels, manifesto transcriptions and the **frozen promise lists** (`data/frozen/`) are committed. A frozen term is loaded from its snapshot, never re-extracted (D-039), so a lost cache can't change promise IDs.
 - All configurable values (dates, paths, models, thresholds) live in `config/settings.yaml`.
 
 ## 10. Folder structure
@@ -227,7 +245,7 @@ Election-Promise-Tracking/
 ├── specs/              00 (this file); 01–08 written one per stage
 ├── docs/
 │   └── decisions/      decision log, one entry per settled question
-├── config/             settings.yaml, sources.yaml
+├── config/             settings.yaml, sources.yaml, manifestos.yaml (layout profiles), promise_overrides.csv
 ├── prompts/            versioned LLM prompts (.md with version header)
 ├── src/ept/            Python package: one subpackage per stage + config, schema, db, llm
 ├── tests/
@@ -237,7 +255,8 @@ Election-Promise-Tracking/
 │   │   ├── manifestos/ manifesto PDFs (added by the user)
 │   │   ├── evidence/   crawled government documents (+ _manual/ for hand-added files, _quarantine/ for incomplete downloads, D-030)
 │   │   └── trackers/   third-party tracker pages (leads only, never evidence)
-│   ├── interim/        review sheets, intermediate files
+│   ├── interim/        review sheets, intermediate files (incl. manifestos/{term}/ page text, units, transcription inputs)
+│   ├── frozen/         signed-off promise lists + manifesto transcriptions (committed, D-039)
 │   ├── processed/      indexes, fitted models
 │   ├── judgments/      strong-judge batches in/out (committed)
 │   └── gold/           hand labels (committed)
@@ -250,7 +269,7 @@ Election-Promise-Tracking/
 
 ## 11. Tech stack (defaults; a stage spec may change one with a logged reason)
 
-Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · PyMuPDF (+ Tesseract fallback, `eng` + `tam`) · rank_bm25 · sentence-transformers + FAISS · lifelines · pandas · pytest. Website: static HTML/JS (Vite optional) with a charting library, data from exported JSON, hosted on GitHub Pages or Netlify (chosen in spec 08).
+Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · PyMuPDF (+ Tesseract fallback, `eng` + `tam`) · VANAVIL→Unicode table vendored from Open-Tamil `txt2unicode` (D-035) · `google-genai` (bulk backend, D-037) · rank_bm25 · sentence-transformers + FAISS · lifelines · pandas · pytest. Website: static HTML/JS (Vite optional) with a charting library, data from exported JSON, hosted on GitHub Pages or Netlify (chosen in spec 08).
 
 ## 12. Working method
 
@@ -291,6 +310,8 @@ Every stage spec uses this template: Purpose · Inputs · Outputs · Behaviour �
 
 **Never cut:** the leakage rules, the evaluation, the primary (reverse) backtest.
 
+**Status 2026-10-11 (D-041):** the project is about 2 days behind this plan. The user will catch up; **nothing is cut for now**. The cut order applies only if the user decides so later.
+
 ### 12.4 Human spot-checks (D-027)
 Every stage that needs a human check asks for **7–10 items, never more**, chosen as the stage's **most problematic** outputs, not a random sample.
 
@@ -316,7 +337,9 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Free-tier rate limits slow bulk runs | Caching, batching, `--limit` runs; Kaggle as a fallback backend |
 | Pro usage limits slow strong judging | Subset only (§6.3); batches sized to fit one session |
 | Only two completed terms; independence assumption | Promise-level modelling, wide intervals, both backtest directions, limitations stated on the site |
-| Tamil manifestos with legacy fonts | Unicode check → Tesseract `tam` OCR; verbatim `source_text` kept for checking |
+| Tamil manifestos with legacy fonts | Font-map conversion (D-035) with Tamil-share and validity checks; verbatim `source_text` kept for checking |
+| TVK manifesto is a 150-ppi image scan (no text layer) | Tesseract `tam` with a calibrated quality gate; failing pages transcribed by Claude in Cowork (§6.4), cross-checked against OCR |
+| Translation or paraphrase adds outcome knowledge (e.g. a later scheme name) | Number/name checks against the source span; flagged items spot-checked first (spec 02 §5) |
 | 20-day timeline | Day plan + cut order above |
 | Perceived partisanship | §9.2 neutrality rules; evidence shown everywhere |
 
@@ -326,9 +349,9 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 |---|---|---|
 | Q-01 | ✅ Resolved in spec 01 (D-016) | 01 |
 | Q-02 | ✅ Resolved in spec 01 (sources table §2.3) | 01 |
-| Q-03 | Bulk backend: Gemini free tier vs. a Kaggle-hosted open model | 02 |
-| Q-04 | Promise splitting and deduplication rules | 02 |
-| Q-10 | Tamil manifesto handling: OCR quality check and translation-in-extraction prompt (Tesseract `tam` is installed on the Mac, spec 01 OQ-6) | 02 |
+| Q-03 | ✅ Resolved in spec 02: Gemini free tier, model by backend test; Kaggle fallback (D-037) | 02 |
+| Q-04 | ✅ Resolved in spec 02: what counts, splitting S1–S5, drop-later-duplicate with a log, frozen IDs (D-038, D-039) | 02 |
+| Q-10 | ✅ Resolved in spec 02: font mapping for legacy fonts, OCR + gate + Cowork vision for scans, translation inside the extraction call (D-035, D-036) | 02 |
 | Q-05 | Covariate rubrics (sector list, cost bands) | 03 |
 | Q-06 | Embedding model; number of chunks per judgment (affects Claude usage) | 04 |
 | Q-07 | Strong-judge batch size that fits within one Cowork session | 05 |

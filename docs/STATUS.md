@@ -2,14 +2,14 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 6 of 20 (deadline 2026-10-25). **Stage 01 done** (spec 01 v1.5, all 10 acceptance criteria met). Next: stage 02 (promise extraction) in a new conversation.
+**Today's position:** Day 6 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 spec drafted (v0.1, 3 open questions)**; global spec v0.7. Next: answer spec 02 §9 OQ-1–3 → approve → Claude Code builds.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
-| 00 | Global spec + structure | ✅ v0.6 | – | – | – | ✅ |
+| 00 | Global spec + structure | ✅ v0.7 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
-| 02 | Promise extraction | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 02 | Promise extraction | ✏️ draft v0.1 | ☐ | ☐ | ☐ | ☐ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -21,12 +21,15 @@ _Updated at the end of every session. Read this first._
 - [x] Network access (Claude Code now runs on the Mac directly; PyPI, tn.gov.in and Wayback reachable, 2026-10-08).
 - [x] Manifesto PDFs in `data/raw/manifestos/` (renamed to `{TERM}_{lang}.pdf`, 2026-10-07).
 - [x] Full English corpus run in your Mac terminal (spec 01 step 9, D-021), done 2026-10-09/10. To refresh the corpus later: `source .venv/bin/activate`, then `caffeinate -i python -m ept crawl` and `caffeinate -i python -m ept parse`, each re-run until it prints `done`.
-- [ ] Get a free-tier LLM API key (backend chosen in spec 02).
+- [x] Get a free-tier LLM API key (Gemini, obtained 2026-10-11).
+- [ ] Put the key in `.env` in the project root: one line `GEMINI_API_KEY=<your key>` (in Terminal: `cd` to the project, `nano .env`, paste, save; then `chmod 600 .env`). `.env` is gitignored. Don't paste the key into any chat.
+- [ ] Answer spec 02 §9: OQ-1 starting thresholds, OQ-2 vendor the VANAVIL table vs. write our own, OQ-3 Cowork vs. Gemini vision if many TVK pages fail the OCR gate.
+- [ ] Later in stage 02 (build step 2): run the Cowork transcription sessions for any TVK pages the OCR gate rejects (global §6.4).
 
 ## Next step
-Stage 02 (promise extraction): draft spec 02 in **Claude Cowork** (Q-03 bulk backend, Q-04 splitting rules, Q-10 Tamil manifesto OCR + translation). Tesseract `tam` is available on the Mac (OQ-6). The manifestos are in `data/raw/manifestos/`.
+Approve spec 02 (after OQ-1–3), then **Claude Code** builds it from spec 02 §4.11, starting with manifesto text (step 1: show AIADMK pages 1 and 10 converted).
 
-**Schedule:** stage 01 took days 2–6 against a plan of days 2–4, so the project is about 2 days behind the day plan (global §12.3). Watch the cut order (global §12.3) if stage 02–03 also slip.
+**Schedule:** about 2 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). Stage 02 build target: Days 6–7.
 
 ## Facts later stages need (from stage 01; details in global spec v0.6 §3.1, §9.1–§9.3)
 - **Corpus:** `data/ept.sqlite` tables `documents` (9,254) and `chunks` (60,259; 300–500 words, only a document's last chunk shorter). Raw files in `data/raw/evidence/{doc_type}/`, sidecars `{doc_id}.meta.json`, text in `data/interim/text/`.
@@ -68,3 +71,8 @@ Stage 02 (promise extraction): draft spec 02 in **Claude Cowork** (Q-03 bulk bac
   - Acceptance criteria 1–10 all met. Known limitations: Wayback dates are conservative upper bounds (CAG reports often years late); CAG coverage limited to file names with "Tamil"; OCR of rotated tables is noisy; a few GO dates pushed later by OCR year misreads.
 - **2026-10-11 (wrap-up)** — Global spec v0.6: §9.1 cutoff and realisation checks use `period_end`; §9.3 documents what `doc_date` means; §3.1 Tamil candidates; §9.2 tracker-lead outcome; §2 environment; §5 stage 01 CLI; §13 risks and §14 Q-10 updated. STATUS gains a "facts later stages need" section.
 
+- **2026-10-11 — Stage 02 spec drafted (Cowork).**
+  - Manifestos inspected: DMK-2021 English = clean text layer (browser printout of dmk.in; items 1–505, a few misnumbered; header/footer and Tamil sidebar noise). AIADMK-2016 = Tamil in VANAVIL legacy fonts with 4× fake-bold overprint. TVK-2026 = 96 image-only pages at 150 ppi, numbering restarts per section.
+  - Probe: the Open-Tamil VANAVIL table converts AIADMK to clean Unicode Tamil (99.96 % Tamil characters). The `open-tamil` package itself doesn't install on current Python, so the table is vendored (licence question OQ-2).
+  - Decisions D-035–D-041: font mapping replaces OCR for legacy-font Tamil; TVK OCR behind a calibrated gate with Cowork vision fallback; Gemini free tier as bulk backend (model picked by a backend test; free tier is Flash-family only); promise rules (advocacy counts, split only independent parts, lists stay one, drop-later duplicate with a log, `parent_group` = manifesto unit); IDs frozen and committed in `data/frozen/`; one generic reader/cutter with per-file layout profiles; no scope cuts.
+  - Global spec v0.7 (§3.1, §4, §5, §6.1, new §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §12.3 note, §13, §14). CLAUDE.md: transcription-session rules and `.env` handling.
