@@ -7,7 +7,7 @@ _Updated at the end of every session. Read this first._
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
-| 00 | Global spec + structure | ✅ v0.4 | – | – | – | ✅ |
+| 00 | Global spec + structure | ✅ v0.6 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
 | 02 | Promise extraction | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -20,21 +20,22 @@ _Updated at the end of every session. Read this first._
 ## Waiting on the user
 - [x] Network access (Claude Code now runs on the Mac directly; PyPI, tn.gov.in and Wayback reachable, 2026-10-08).
 - [x] Manifesto PDFs in `data/raw/manifestos/` (renamed to `{TERM}_{lang}.pdf`, 2026-10-07).
-- [x] **Full English corpus run in your Mac terminal (spec 01 step 9, D-021)** — done 2026-10-09/10. From the project folder:
-  ```
-  cd ~/Projects/Election-Promise-Tracking
-  source .venv/bin/activate              # venv already exists (Python 3.11); else: python3 -m venv .venv && pip install -e ".[dev]"
-  caffeinate -i python -m ept crawl      # all English sources, ~7,300 GOs + ~1,950 other docs, ~10 GB
-  caffeinate -i python -m ept parse      # OCR-heavy (most GOs are scans)
-  ```
-  - Progress: since 2026-10-08 both commands print a timestamped line every 25 documents (with an ETA) and one when each source starts. A run started before that prints only warnings and the final summary; you can press Ctrl-C and start the same command again to get progress lines (nothing is lost).
-  - Both commands are resumable: if a run is interrupted, or ends with `stopped (...)` / `N deferred: Wayback unavailable`, just run the same command again until it prints `crawl: done` / `parse: done`.
-  - Rough time from the limit-20 run: crawl 4–6 h (Wayback downloads are slow), parse ~10 h (~5 s per OCR'd GO). `caffeinate -i` keeps the Mac awake.
-  - Then tell Claude; Claude runs `ept coverage` and checks the results (step 9).
+- [x] Full English corpus run in your Mac terminal (spec 01 step 9, D-021), done 2026-10-09/10. To refresh the corpus later: `source .venv/bin/activate`, then `caffeinate -i python -m ept crawl` and `caffeinate -i python -m ept parse`, each re-run until it prints `done`.
 - [ ] Get a free-tier LLM API key (backend chosen in spec 02).
 
 ## Next step
 Stage 02 (promise extraction) in a **new conversation**: draft spec 02 (Q-03 bulk backend, Q-04 splitting rules, Q-10 Tamil manifesto OCR + translation). Tesseract `tam` is available on the Mac (OQ-6). The manifestos are in `data/raw/manifestos/`.
+
+**Schedule:** stage 01 took days 2–6 against a plan of days 2–4, so the project is about 2 days behind the day plan (global §12.3). Watch the cut order (global §12.3) if stage 02–03 also slip.
+
+## Facts later stages need (from stage 01; details in global spec v0.6 §3.1, §9.1–§9.3)
+- **Corpus:** `data/ept.sqlite` tables `documents` (9,254) and `chunks` (60,259; 300–500 words, only a document's last chunk shorter). Raw files in `data/raw/evidence/{doc_type}/`, sidecars `{doc_id}.meta.json`, text in `data/interim/text/`.
+- **Cutoffs:** compare `ept.dates.period_end(doc_date, date_precision)` with the cutoff; exclude undated chunks (220 documents).
+- **Date meaning:** listing/issue dates are exact; Wayback and © year dates are upper bounds (late, never early). Review sheet: `data/interim/date_review.csv`.
+- **Evidence pool:** English only. 98 Tamil-only candidates in `data/interim/lang_pairs.csv` (D-017). Manifestos are never chunked.
+- **Tracker leads:** none fetched (no tracker cites GO numbers); with/without-leads comparisons are trivial.
+- **Gaps:** `reports/coverage_01.md` §8 and `coverage_01.json` → `gaps`.
+- **Environment:** Claude Code on the Mac, `.venv/` (Python 3.11), network on; long runs in the user's terminal.
 
 ## Session log
 - **2026-10-06** — Folder structure, global spec v0.3 (reverse backtest, Tamil manifesto handling), CLAUDE.md, STATUS, decision log, git initialised.
@@ -65,4 +66,5 @@ Stage 02 (promise extraction) in a **new conversation**: draft spec 02 (Q-03 bul
   - Tracker leads: 6 trackers found by web search (4 DMK-2021, 2 AIADMK-2016); none cites a GO number, so 0 documents came in through leads (8 references: 6 official home pages, 2 Act names). The with/without-leads comparison in stages 06/07 is therefore trivial unless better trackers turn up.
   - Final corpus: 9,254 documents, 60,259 chunks; 95.6 % dated to the day; 220 undated. Report: `reports/coverage_01.md`.
   - Acceptance criteria 1–10 all met. Known limitations: Wayback dates are conservative upper bounds (CAG reports often years late); CAG coverage limited to file names with "Tamil"; OCR of rotated tables is noisy; a few GO dates pushed later by OCR year misreads.
+- **2026-10-11 (wrap-up)** — Global spec v0.6: §9.1 cutoff and realisation checks use `period_end`; §9.3 documents what `doc_date` means; §3.1 Tamil candidates; §9.2 tracker-lead outcome; §2 environment; §5 stage 01 CLI; §13 risks and §14 Q-10 updated. STATUS gains a "facts later stages need" section.
 

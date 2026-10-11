@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.5 (2026-10-08; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment) |
 | Owner | Abinav (solo), built with Claude (Cowork, Pro plan) |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -43,7 +43,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 | Solo, 20 days | Strict scope (§3), a day plan (§12), a pre-agreed cut order |
 | Claude Pro plan, no paid API | Bulk LLM work runs on a free tier (Gemini free tier and/or open models on Kaggle). Claude in Cowork is the strong judge through a file handoff (§6) |
 | Claude usage limits on Pro | Claude judges a **subset** (§6.3), not every indicator |
-| Network | The user widens Cowork network access (PyPI, source sites, LLM endpoints) so Claude can install, run and test code. Until then, the user runs commands locally |
+| Environment | Since 2026-10-08 Claude Code runs directly on the user's Mac (project venv `.venv/`, Python 3.11, Tesseract with `eng` + `tam`), with network access to PyPI, the source sites and Wayback. Multi-hour runs (e.g. the full crawl) are still run by the user in their own terminal (D-021) |
 | Deliverable is a website | Pipeline runs offline in batch and exports JSON; a static site renders it (§5, stage 08) |
 
 ## 3. Scope
@@ -64,6 +64,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 ### 3.1 Language handling
 - **Manifestos:** the official English version is used when one exists; otherwise the Tamil version. Tamil PDFs often use legacy (non-Unicode) fonts that extract as garbage, so any page whose extracted text fails a Tamil-Unicode check is OCR'd with Tesseract (`tam`). Extraction (stage 02) produces each promise's `text` in English, while `source_text` keeps the original-language span verbatim, so every translation can be traced back.
 - **Evidence:** English. Tesseract (`eng`) is the fallback for scanned English PDFs. If a needed evidence source turns out to exist only in Tamil, we deal with it in the stage where it comes up.
+- **Tamil evidence candidates (stage 01 result):** `data/interim/lang_pairs.csv` lists 98 Tamil-only documents (30 GOs, 58 scheme pages, 10 CAG reports) and 13 Tamil budget speeches paired with English ones. None is chunked; using any needs a logged decision (D-017).
 
 ## 4. Glossary
 
@@ -101,7 +102,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 
 | # | Stage | CLI (planned) | Main output |
 |---|---|---|---|
-| 01 | Corpus collection | `ept crawl`, `ept parse` | `documents`, `chunks`, coverage report |
+| 01 | Corpus collection (done) | `ept crawl`, `ept parse`, `ept coverage`, `ept spotcheck`, `ept leads` | `documents`, `chunks`, coverage report, Tamil pairing, tracker leads |
 | 02 | Promise extraction | `ept extract` | `promises` |
 | 03 | Classification & decomposition | `ept classify` | covariates, `indicators` |
 | 04 | Evidence retrieval | `ept index`, `ept retrieve` | `retrievals` |
@@ -192,8 +193,8 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 |---|---|
 | Judge sees only supplied chunks; uncited E1 verdicts rejected | Prompt wording + import validation (stage 05) |
 | Strong-judge sessions: no web search, no other files | Handoff protocol §6.2; written in the session instructions |
-| Cutoff runs: no chunk with `doc_date` > cutoff; undated chunks excluded | Retrieval filter + unit test (stage 04) |
-| `realisation_date` ≤ latest `doc_date` among cited chunks, and ≥ `sworn_in` | Verdict validation (stage 05) |
+| Cutoff runs: no chunk whose `period_end(doc_date, date_precision)` > cutoff (never compare the stored first-of-period date, §9.3); undated chunks excluded | Retrieval filter using `ept.dates.period_end` + unit test (stage 04) |
+| `realisation_date` ≤ the latest `period_end(doc_date, date_precision)` among cited chunks, and ≥ `sworn_in` | Verdict validation (stage 05) |
 | Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + automated name/number check (stage 03) |
 | Gold promises never in prompts or few-shot pools | Overlap test (stage 06) |
 | Backtest fits use training-term rows only | Assertion in modelling code (stage 07) |
@@ -202,9 +203,17 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 - The same prompts, rubric, thresholds and code paths for every party. Party names appear in prompts only as data.
 - The website shows evidence beside every status, the method (whitepaper) and the measured accuracy. There are no party rankings or scores.
 - Projections are labelled "projection under historical patterns", with intervals and caveats.
+- **Tracker leads (D-020):** documents found only through third-party trackers carry `discovery = tracker_lead`, so stages 06/07 can report results with and without them. Stage 01 outcome: the six trackers found (4 on DMK-2021, 2 on AIADMK-2016) cite no GO numbers, so **no** document is tagged `tracker_lead`; the comparison is trivial unless trackers are added later. Tracker text is never evidence.
 
 ### 9.3 Dates
-ISO `YYYY-MM-DD`. Partial dates are stored as the first day of the period plus `date_precision`. Month-in-term = floor(months since `sworn_in`).
+ISO `YYYY-MM-DD`. Partial dates are stored as the first day of the period plus `date_precision`; comparisons with a cutoff use `ept.dates.period_end` (§9.1). Month-in-term = floor(months since `sworn_in`).
+
+**What a document's `doc_date` means** (set in stage 01, spec 01 §4.5; every later stage relies on it):
+- It is the date from which the document is treated as available. Sources, strongest first: `manual` → `listing` (official listing, e.g. GOs) → `document_text` (issue date in the front matter, or a © year at year precision, D-024) → `filename` → `wayback_capture` → `none`.
+- When both a listing date and a day-precise issue date exist, the **later** one is stored (D-032), so a document is never available before it was issued.
+- `wayback_capture` (first capture of the exact bytes kept, D-018/D-023) and © year dates are **upper bounds**: the document may have been public earlier, so it can appear late in a cutoff run (a recall cost, never a leak).
+- `none` (220 of 9,254 documents) = undated: excluded from every cutoff run, usable only in full-term judging.
+- Every weak or suspicious date is listed in `data/interim/date_review.csv` with a reason.
 
 ### 9.4 Reproducibility
 - Each run gets a `run_id` (`{stage}-{UTC timestamp}`). Its config snapshot, git commit, prompt versions and models go to `reports/runs/{run_id}.json`.
@@ -300,9 +309,10 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 
 | Risk | Mitigation |
 |---|---|
-| Older documents removed from government sites | Wayback Machine; coverage report on day 4 shows gaps early |
+| Older documents removed from government sites | Wayback Machine (incl. pre-migration URLs); manual drop. Stage 01: 193 documents are gone and were never archived; gaps listed in `reports/coverage_01.md` |
 | Judge answers from memory, not evidence | §9.1 rules; citation spot-check |
-| Wrong or missing document dates break cutoffs | Dates required for evidence; date coverage in the corpus report |
+| Wrong or missing document dates break cutoffs | Dates required for evidence; date coverage in the corpus report. Stage 01: 95.6 % dated to the day, 220 undated |
+| Conservative (upper-bound) dates hide evidence at early landmarks | Policy notes and CAG reports are often Wayback-dated months or years late. Stage 04 reports evidence availability per landmark; stage 07 states it as a limitation |
 | Free-tier rate limits slow bulk runs | Caching, batching, `--limit` runs; Kaggle as a fallback backend |
 | Pro usage limits slow strong judging | Subset only (§6.3); batches sized to fit one session |
 | Only two completed terms; independence assumption | Promise-level modelling, wide intervals, both backtest directions, limitations stated on the site |
@@ -318,7 +328,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Q-02 | ✅ Resolved in spec 01 (sources table §2.3) | 01 |
 | Q-03 | Bulk backend: Gemini free tier vs. a Kaggle-hosted open model | 02 |
 | Q-04 | Promise splitting and deduplication rules | 02 |
-| Q-10 | Tamil manifesto handling: OCR quality check and translation-in-extraction prompt | 02 |
+| Q-10 | Tamil manifesto handling: OCR quality check and translation-in-extraction prompt (Tesseract `tam` is installed on the Mac, spec 01 OQ-6) | 02 |
 | Q-05 | Covariate rubrics (sector list, cost bands) | 03 |
 | Q-06 | Embedding model; number of chunks per judgment (affects Claude usage) | 04 |
 | Q-07 | Strong-judge batch size that fits within one Cowork session | 05 |
