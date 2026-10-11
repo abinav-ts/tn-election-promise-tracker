@@ -24,7 +24,7 @@ _Updated at the end of every session. Read this first._
 - [ ] Get a free-tier LLM API key (backend chosen in spec 02).
 
 ## Next step
-Stage 02 (promise extraction) in a **new conversation**: draft spec 02 (Q-03 bulk backend, Q-04 splitting rules, Q-10 Tamil manifesto OCR + translation). Tesseract `tam` is available on the Mac (OQ-6). The manifestos are in `data/raw/manifestos/`.
+Stage 02 (promise extraction): draft spec 02 in **Claude Cowork** (Q-03 bulk backend, Q-04 splitting rules, Q-10 Tamil manifesto OCR + translation). Tesseract `tam` is available on the Mac (OQ-6). The manifestos are in `data/raw/manifestos/`.
 
 **Schedule:** stage 01 took days 2–6 against a plan of days 2–4, so the project is about 2 days behind the day plan (global §12.3). Watch the cut order (global §12.3) if stage 02–03 also slip.
 
@@ -35,7 +35,7 @@ Stage 02 (promise extraction) in a **new conversation**: draft spec 02 (Q-03 bul
 - **Evidence pool:** English only. 98 Tamil-only candidates in `data/interim/lang_pairs.csv` (D-017). Manifestos are never chunked.
 - **Tracker leads:** none fetched (no tracker cites GO numbers); with/without-leads comparisons are trivial.
 - **Gaps:** `reports/coverage_01.md` §8 and `coverage_01.json` → `gaps`.
-- **Environment:** Claude Code on the Mac, `.venv/` (Python 3.11), network on; long runs in the user's terminal.
+- **Workflow:** Claude Cowork drafts each stage spec from the project folder; Claude Code implements it on the Mac (`.venv/`, Python 3.11, network on); long runs in the user's terminal. So stage 02 starts in Cowork (spec 02), then moves to Claude Code.
 
 ## Session log
 - **2026-10-06** — Folder structure, global spec v0.3 (reverse backtest, Tamil manifesto handling), CLAUDE.md, STATUS, decision log, git initialised.

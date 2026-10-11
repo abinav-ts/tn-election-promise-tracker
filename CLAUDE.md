@@ -36,7 +36,9 @@ These run in a **separate, fresh** conversation. In them: read only `prompts/jud
 - Every stage supports `--term`, `--limit`, `--force` and is idempotent.
 
 ## Environment
-- The user's project folder is mounted in the local sandbox; work on files there.
+- **Two tools, one project folder.** Claude Cowork reads the folder (mounted in its sandbox) and drafts specs, STATUS updates and decision-log entries with the user. Claude Code runs directly on the user's Mac in the project folder and implements, tests and runs the code from the approved spec.
+- Claude Code: project venv `.venv/` (Python 3.11), Tesseract with `eng` + `tam`, network on. Multi-hour runs (e.g. a full crawl) are run by the user in their own terminal; Claude Code writes the exact commands into `docs/STATUS.md`.
+- Cowork's sandbox is Linux: if it ever needs to run project code, it uses its own `.venv-linux/`, never the Mac's `.venv/`.
 - Network depends on the user's Claude network settings. If an install or fetch fails with a proxy/403 error, report it; don't work around it. Fallback: write the command and the user runs it in their own terminal.
 
 ## Communication

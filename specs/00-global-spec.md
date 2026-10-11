@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment) |
-| Owner | Abinav (solo), built with Claude (Cowork, Pro plan) |
+| Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
 | Deliverable | A deployed public website: tracker + whitepaper subpage |
@@ -43,7 +43,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 | Solo, 20 days | Strict scope (§3), a day plan (§12), a pre-agreed cut order |
 | Claude Pro plan, no paid API | Bulk LLM work runs on a free tier (Gemini free tier and/or open models on Kaggle). Claude in Cowork is the strong judge through a file handoff (§6) |
 | Claude usage limits on Pro | Claude judges a **subset** (§6.3), not every indicator |
-| Environment | Since 2026-10-08 Claude Code runs directly on the user's Mac (project venv `.venv/`, Python 3.11, Tesseract with `eng` + `tam`), with network access to PyPI, the source sites and Wayback. Multi-hour runs (e.g. the full crawl) are still run by the user in their own terminal (D-021) |
+| Environment | Specs are drafted in Claude Cowork, which reads the project folder. Code is written and run by Claude Code directly on the user's Mac (project venv `.venv/`, Python 3.11, Tesseract with `eng` + `tam`), with network access to PyPI, the source sites and Wayback. Multi-hour runs (e.g. the full crawl) are run by the user in their own terminal (D-021) |
 | Deliverable is a website | Pipeline runs offline in batch and exports JSON; a static site renders it (§5, stage 08) |
 
 ## 3. Scope
