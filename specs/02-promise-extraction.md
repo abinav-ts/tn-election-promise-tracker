@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **DRAFT v0.1** (2026-10-11), awaiting approval. Open questions in §9 |
+| Status | **DRAFT v0.2** (2026-10-11; v0.2 = OQ-1 thresholds accepted, vision fallback = Gemini first / Cowork last, D-042), awaiting approval. Open: §9 OQ-2 (licence) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-041 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-042 (`docs/decisions/log.md`) |
 
 ---
 
@@ -27,7 +27,7 @@ What each file actually is (inspected 2026-10-11) decides how its text is read (
 |---|---|---|---|---|
 | DMK-2021 | `DMK-2021_en.pdf` (official English exists, global §3.1) | 29 | Browser printout of dmk.in. Clean English text layer. 518 numbered lines covering items 1–505 (numbers 18, 80, 136, 251, 441 skipped; 166, 252, 300 printed twice: misnumbering, not missing text). Item 300 holds a 15-entry railway-route sub-list numbered 1–15. Noise: browser header/footer on every page (date, title, URL, `n/29`) and, on some pages, the website's Tamil sidebar menu and party address interleaved with the text | `text_layer` |
 | AIADMK-2016 | `AIADMK-2016_ta.pdf` | 41 | MS Word export, Tamil set in **VANAVIL** legacy fonts (Avvaiyar, Swetha, Valluvar, AvvaiyarBold, Alayarasi). Extracts as Latin-1 garbage. Bold is faked by printing each line 4× at slight offsets. Numbered section headings (`1. … :`), Wingdings bullets for items, and many un-bulleted paragraphs listing **past achievements** | `font_map` |
-| TVK-2026 | `TVK-2026_ta.pdf` | 96 | Image-only scan (one 1240×1752 JPEG per page, **150 ppi**), designed layout with photos and colour bands. Preface pages, then 10 "pillars" grouped under அறம் / பொருள் / இன்பம், sometimes with lettered sub-sections. Numbered red headings, **numbering restarts at 1 in each section**, a paragraph under each. Footer `தமிழக வெற்றிக் கழகம் n` | `ocr` → `vision` fallback |
+| TVK-2026 | `TVK-2026_ta.pdf` | 96 | Image-only scan (one 1240×1752 JPEG per page, **150 ppi**), designed layout with photos and colour bands. Preface pages, then 10 "pillars" grouped under அறம் / பொருள் / இன்பம், sometimes with lettered sub-sections. Numbered red headings, **numbering restarts at 1 in each section**, a paragraph under each. Footer `தமிழக வெற்றிக் கழகம் n`. Provenance of this copy unrecorded; a better official copy may replace it before freezing (§4.3 note) | `ocr` → `vision` fallback |
 
 `DMK-2021_ta.pdf` (73 pp, the same 505 numbered items, legacy fonts `TT3xxt00` that the VANAVIL map also converts) is **not** used for extraction (global §3.1). It is only an optional cross-reference for the DMK item-number coverage check (§4.6).
 
@@ -54,7 +54,7 @@ Evidence documents, chunks, trackers, news, any outcome information, and the mod
 | Manifesto rows | `documents` rows with `doc_type = manifesto` (`doc_id = sha1("manual/" + relative_path)`, `discovery = manual`, `parse_status` `ok` for text layer / font map, `ocr` for OCR / vision, `doc_date` null, `date_source = none`). Never chunked | no (DB) |
 | Page text | `data/interim/manifestos/{term}/pages.jsonl` (page, route used, chars, quality metrics) + `page_NNN.txt` | no |
 | OCR calibration | `data/interim/manifestos/ocr_calibration.json` (§4.3) | no |
-| Vision handoff | `data/interim/manifestos/{term}/transcribe/in/page_NNN.png` (native resolution); outputs `data/frozen/transcriptions/{term}/page_NNN.txt` | out: **yes** |
+| Vision transcriptions | `data/frozen/transcriptions/{term}/page_NNN.txt` (+ route in `pages.jsonl`); Cowork fallback inputs in `data/interim/manifestos/{term}/transcribe/in/` | transcriptions: **yes** |
 | Units | `data/interim/manifestos/{term}/units.jsonl` (`unit_id`, `page_start`, `page_end`, `section`, `marker`, `text`) | no |
 | Promises | `promises` rows (§7) | no (DB) |
 | Dropped pieces | `data/interim/extract_dropped_02.csv` (unit_id, kind, text, source_text, reason) | no |
@@ -94,12 +94,12 @@ TVK has no ground truth, so Tesseract's accuracy at TVK's resolution is **calibr
 2. **Gate:**
    - calibrated CER > `extract.ocr_gate.max_cer` → **every** TVK page goes to vision;
    - otherwise, a TVK page goes to vision if its mean confidence < `extract.ocr_gate.min_conf`, or its validity < `extract.min_validity`.
-3. **Vision transcription = a Cowork file handoff** (global §6.4), mirroring the strong-judge protocol:
-   - `ept extract transcribe export --term T` writes the gated pages' images to `transcribe/in/` in batches of `extract.transcribe_batch` pages.
-   - In a **fresh Cowork session**, Claude reads only `prompts/transcribe_page.md` and that batch's images, and writes one `page_NNN.txt` per image to `data/frozen/transcriptions/{term}/`. The prompt says: transcribe exactly what is printed, in reading order, Tamil in Unicode, keep numbers and headings, no corrections, no additions, no summaries; mark an unreadable stretch `[?]`. No web search, no other files.
-   - `ept extract transcribe import --term T` validates each file (non-empty, Tamil share, validity, the `[?]` count) and uses it as that page's text with route `vision`.
-   - **Cross-check:** for every vision page, the CER between the transcription and Tesseract's output is recorded. A page where the two disagree beyond `extract.vision_disagree_cer` goes into spot-check group b, which guards against a transcription that reads well but isn't what's printed.
-   - Transcriptions are committed and treated as frozen artefacts (they cost Pro usage to regenerate).
+3. **Vision transcription (D-042): Gemini first, Cowork last.**
+   - **Primary: the bulk backend with image input.** `ept extract transcribe --term T` sends each gated page image (native resolution) with `prompts/transcribe_page.md` through `ept.llm` (cached, logged, same retry rules). The prompt says: transcribe exactly what is printed, in reading order, Tamil in Unicode, keep numbers and headings, no corrections, no additions, no summaries; mark an unreadable stretch `[?]`. The output is validated (non-empty, Tamil share, validity, `[?]` count) and used as that page's text with route `vision`.
+   - **Cross-check:** for every vision page the CER between the transcription and Tesseract's output is recorded; a page above `extract.vision_disagree_cer` goes into spot-check group b. This guards against a transcription that reads well but isn't what's printed.
+   - **Last resort: Cowork file handoff** (global §6.4), only for pages whose Gemini transcription still fails validation after `extract.vision.max_attempts`. `ept extract transcribe export` writes those page images to `transcribe/in/`; in a fresh Cowork session Claude reads only `prompts/transcribe_page.md` and the images (no web search, no other files) and writes `page_NNN.txt`; `ept extract transcribe import` validates them the same way.
+   - All accepted transcriptions (either route) are copied to `data/frozen/transcriptions/{term}/page_NNN.txt` and committed, recording which route produced each.
+   - **Better source note:** if an official TVK manifesto copy is found that is born-digital (selectable text) or a scan of ≥ 300 ppi, and it is complete (same sections and promise numbering), it replaces `TVK-2026_ta.pdf` before freezing, with its URL and download date recorded in the profile. A born-digital copy uses route `text_layer` (or `font_map` if in a legacy font), and the OCR gate then doesn't apply. An official English version would be used instead of the Tamil one (global §3.1). Unofficial or partial copies are not used.
 
 ### 4.4 Cutting into units (`ept extract units`)
 A **unit** is a contiguous stretch of page text that the manifesto itself presents as one item. Units exist because:
@@ -210,7 +210,7 @@ One generic cutter reads the profile. Its rules:
 - `extract`:
   - `ocr_lang: tam`, `ocr_psm`, `overprint_px`;
   - `fontmap_min_tamil_share`, `min_validity`;
-  - `calibration_pages`, `ocr_gate.{max_cer,min_conf}`, `vision_disagree_cer`, `transcribe_batch`;
+  - `calibration_pages`, `ocr_gate.{max_cer,min_conf}`, `vision_disagree_cer`, `vision.max_attempts`, `transcribe_batch` (Cowork fallback only);
   - `units_per_call`, `max_promises_per_unit`, `max_text_words`, `common_words`;
   - `dedup.candidate_ratio`;
   - `frozen_terms: []`.
@@ -224,7 +224,7 @@ One generic cutter reads the profile. Its rules:
    - `pages` for DMK (`text_layer`) and AIADMK (`font_map`, with vendored table and overprint removal).
    - Check: the AIADMK page 1 text reads correctly. **Show the user AIADMK pages 1 and 10 converted.** ✔ `stage 02: manifesto text`
 2. TVK `ocr` + calibration + gate. Report the calibration CER, how many pages pass, and how many need vision.
-   - If any pages need vision: `transcribe export`, then **the user runs the Cowork transcription sessions**, then `transcribe import`. ✔
+   - If any pages need vision: `transcribe` through Gemini (needs `_bulk` from step 4, so do step 4 first if pages are gated). Only pages that still fail go to the Cowork fallback (`transcribe export` → user runs the sessions → `transcribe import`). ✔
 3. `units` for all three terms.
    - Check: DMK has 505 main units (+ sub-list kept inside item 300); the furniture/unit character accounting is complete. ✔
 4. `_bulk` + `backend-test` (needs the key in `.env`). Record the choice. ✔ `stage 02: bulk backend`
@@ -244,7 +244,7 @@ Rules from the global warning box that apply to this stage:
 - **Rule 1 (evidence only), applied to extraction:** promises come only from the manifesto text. The model is told to add nothing, and the checks enforce it: V1 (verbatim source), V2 (no number absent from the source), V3 (no name absent from the source). The LLM sees no corpus document, no tracker, no web search, and nothing about outcomes.
 - **Rules 3 and 6 (manifesto-only information, no outcome-derived names):** a translation or paraphrase that slips in a later scheme name, GO number, amount or date (for example, naming the scheme that later delivered a promise) would flow into stage 03 indicators and stage 04 queries. V2/V3 failures for English and V3 flags for Tamil go to the top of the spot-check, and overrides must pass the same checks.
 - **Rule 4 (gold set is test data):** the extraction prompts' few-shot examples are invented, never taken from these manifestos, so no example can coincide with a promise drawn into the gold set in stage 06. The backend-test sample is never used as examples.
-- **Transcription sessions (global §6.4):** Claude reads only the prompt and the page images, no web search, no other files, and transcribes what is printed. It does not "fix" text from its own knowledge of the manifesto. The vision-vs-OCR disagreement check backs this up.
+- **Vision transcription (Gemini or the Cowork fallback, global §6.4):** the model sees only the prompt and the page image, no web search, no other files, and transcribes what is printed. It must not "fix" text from its own knowledge of the manifesto. The vision-vs-OCR disagreement check backs this up.
 - **Neutrality (global §9.2):** one prompt, one cutter, one set of checks and thresholds for every party. The profiles describe file layout only. Party names appear in prompts only as data.
 - **Freezing** stops later knowledge (for example, which promises turned out to be delivered) from reshaping the promise list after the fact.
 
@@ -254,7 +254,7 @@ Rules from the global warning box that apply to this stage:
 2. Every page of the three manifestos has text in `pages.jsonl` with its route recorded.
    - Every Tamil page used has Tamil share ≥ `fontmap_min_tamil_share` and validity ≥ `min_validity`, or is listed in the report with the reason it was accepted.
    - The calibration CER and the gate outcome are reported.
-3. Every vision page has a committed transcription, an import record and a vision-vs-OCR CER.
+3. Every vision page has a committed transcription, its route (Gemini or Cowork) and a vision-vs-OCR CER.
 4. Units account for all page text (units + furniture = 100 % of characters). DMK has one main unit per printed item.
 5. `promises` has rows for all three terms that validate against the §7 model:
    - IDs contiguous from `0001` in document order;
@@ -281,7 +281,7 @@ Rules from the global warning box that apply to this stage:
 | `test_extract_promises.py` | Mock LLM: batching is deterministic; failing unit retried alone; overrides applied and checked; drops logged; cache → 0 calls on re-run |
 | `test_extract_dedup.py` | Candidate threshold; LLM yes → later dropped, no → both kept; IDs contiguous after drops; `parent_group`, `page` |
 | `test_extract_freeze.py` | Freeze writes the snapshot; frozen term loads from it; `--force` refused |
-| `test_extract_transcribe.py` | Export batches; import validation (empty, low Tamil share, `[?]` count); route set to `vision` |
+| `test_extract_transcribe.py` | Mock Gemini transcription accepted/rejected by validation (empty, low Tamil share, `[?]` count); route `vision`; failing page after `max_attempts` → Cowork export; import validation |
 | `test_llm_bulk.py` | `_bulk` with a fake client: JSON mode, 429 backoff not counted as validation retry, quota stop, key never in logs/cache key/run metadata, clear error without the key |
 | `test_extract_spotcheck.py` | Problem-score order a–e; ≤ 3 per term; 7–10 items; empty verdict columns |
 | `test_leakage_02.py` | Prompt few-shot examples share no 8-word run with any manifesto unit; no corpus/tracker path is read by the stage; V2/V3 run on every promise and on overrides |
@@ -295,27 +295,13 @@ Rules from the global warning box that apply to this stage:
 
 ## 9. Open questions (answer before this spec is final)
 
-**Settled 2026-10-11** (logged as D-035–D-041):
+**Settled 2026-10-11** (logged as D-035–D-042):
 - Q-03: Gemini free tier, model chosen by the backend test; Kaggle fallback.
 - Q-04: what counts as a promise, splitting rules S1–S5, drop-later-duplicate with a log, IDs frozen.
-- Q-10: font mapping for legacy-font Tamil, OCR for the scan, Cowork vision fallback.
+- Q-10: font mapping for legacy-font Tamil, OCR for the scan, vision fallback.
 - No cuts despite the 2-day slip.
+- OQ-1: starting thresholds accepted: `fontmap_min_tamil_share` 0.98, `min_validity` 0.98, `ocr_gate.max_cer` 0.05, `ocr_gate.min_conf` 80, `vision_disagree_cer` 0.25, `vision.max_attempts` 2, `units_per_call` 8, `max_promises_per_unit` 5, `max_text_words` 60, `dedup.candidate_ratio` 0.80, `calibration_pages` 5, `transcribe_batch` 10, `llm.bulk.min_v1_pass` 0.90 (revisable after the limit-20 run with a logged reason).
+- OQ-3: vision fallback = Gemini image input first; Cowork handoff only for pages Gemini can't transcribe validly (D-042).
 
 **Open:**
-- **OQ-1 Starting thresholds** (all in `settings.yaml`, revisable after the limit-20 run with a logged reason):
-  - `fontmap_min_tamil_share` 0.98;
-  - `min_validity` 0.98;
-  - `ocr_gate.max_cer` 0.05 (calibrated CER above 5 % sends all of TVK to vision);
-  - `ocr_gate.min_conf` 80;
-  - `vision_disagree_cer` 0.25;
-  - `units_per_call` 8;
-  - `max_promises_per_unit` 5;
-  - `max_text_words` 60;
-  - `dedup.candidate_ratio` 0.80;
-  - `calibration_pages` 5;
-  - `transcribe_batch` 10;
-  - `llm.bulk.min_v1_pass` 0.90.
-
-  OK as starting values?
-- **OQ-2 Font-table licence.** The `open-tamil` package doesn't install on current Python (its setup script fails), so the VANAVIL table would be **vendored** (copied into `src/ept/extract/vanavil_map.py` with attribution). Its metadata is inconsistent: `setup.py` says MIT, the package description says GPLv3. For a course project this is fine either way, but if you plan to publish the repo under a permissive licence, the alternative is to write our own table (the VANAVIL layout is small; about half a day, with tests against the vendored output). Vendor, or write our own?
-- **OQ-3 Vision fallback cost.** Worst case is all 96 TVK pages, about 10 Cowork sessions of 10 pages. If that's too much Pro usage, the alternative is Gemini vision through `ept.llm` (automated, same checks). Cowork as agreed, or Gemini vision if more than N pages are gated?
+- **OQ-2 Licence.** The VANAVIL table files in Open-Tamil (`tamil/txt2unicode/*.py`, by Arulalan T.) carry an explicit **GPL v3-or-later** header; the package's "MIT" metadata doesn't override that. Vendoring keeps that header in `vanavil_map.py` plus a `THIRD_PARTY_NOTICES.md`. Choose the project licence: (a) GPL v3 for the code, no conflict; or (b) MIT for our own files, with a notice that the vendored file is GPL v3 and that the program distributed with it is subject to GPL v3. In both cases data, website text and the whitepaper can carry a separate licence (e.g. CC BY 4.0), because GPL covers code only.

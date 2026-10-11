@@ -27,7 +27,7 @@ A solo course project (Data Science & AI), due 2026-10-25. Extract promises from
 ## Strong-judge sessions (global spec §6.2)
 These run in a **separate, fresh** conversation. In them: read only `prompts/judge_indicator.md` and the assigned batch file; **do not use web search or read other files**; write only the output batch file. Then stop.
 
-## Transcription sessions (global spec §6.4)
+## Transcription sessions (global spec §6.4; last-resort fallback after Gemini vision)
 Same discipline as strong-judge sessions: a **separate, fresh** conversation; read only `prompts/transcribe_page.md` and the assigned batch of page images; **no web search, no other files**; transcribe exactly what is printed (never fill in from memory); write only the `page_NNN.txt` outputs. Then stop.
 
 ## Code conventions

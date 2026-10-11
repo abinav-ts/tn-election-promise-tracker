@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription handoff, `parent_group` meaning, frozen promises, D-035–D-041**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-042**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -65,7 +65,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 - **Manifestos:** the official English version is used when one exists; otherwise the Tamil version. Each file's text route is set in its layout profile (`config/manifestos.yaml`, spec 02 §4.2):
   - `text_layer`: a clean Unicode text layer (DMK-2021 English).
   - `font_map`: Tamil typed in a **legacy (non-Unicode) font** extracts as garbage, but each glyph maps deterministically to Unicode. Spans in a listed legacy font are converted with the font's mapping table (VANAVIL family, D-035), and fake-bold overprints are removed. This replaces OCR for such files, because the text is typed, not scanned (AIADMK-2016).
-  - `ocr`: image-only pages are OCR'd with Tesseract (`tam`) at native resolution. A quality gate calibrated against font-mapped text sends low-quality pages to **vision transcription** through a Cowork file handoff (§6.4, D-036) (TVK-2026).
+  - `ocr`: image-only pages are OCR'd with Tesseract (`tam`) at native resolution. A quality gate calibrated against font-mapped text sends low-quality pages to **vision transcription**: the bulk backend (Gemini) with image input first, the Cowork file handoff (§6.4) only as a last resort (D-036, D-042) (TVK-2026). A better official copy of a manifesto (born-digital or ≥ 300 ppi, complete) replaces the file before its promises are frozen.
   - Every Tamil page must pass a Tamil-share and orthographic-validity check whatever its route.
   - Extraction (stage 02) produces each promise's `text` in English, while `source_text` keeps the original-language span verbatim (Unicode), so every translation can be traced back.
 - **Evidence:** English. Tesseract (`eng`) is the fallback for scanned English PDFs. If a needed evidence source turns out to exist only in Tamil, we deal with it in the stage where it comes up.
@@ -147,8 +147,8 @@ Because of Pro usage limits, Claude judges a subset:
 
 The final verdict for a promise is: human override > strong judge > bulk model. The source of each final verdict is stored and shown on the website.
 
-### 6.4 Manifesto transcription handoff (Claude in Cowork, D-036)
-For manifesto pages that fail the OCR quality gate (spec 02 §4.3). Same pattern as §6.2:
+### 6.4 Manifesto transcription (D-036, D-042)
+Manifesto pages that fail the OCR quality gate (spec 02 §4.3) are transcribed first by the **bulk backend with image input** through `ept.llm` (same prompt, validation and cross-check as below). Only pages whose Gemini transcription still fails validation go to the **Cowork file handoff**, which follows the same pattern as §6.2:
 1. `ept extract transcribe export --term T` writes the gated page images (native resolution) in batches to `data/interim/manifestos/{term}/transcribe/in/`.
 2. In a **fresh** Cowork session, Claude reads only `prompts/transcribe_page.md` and one batch of images, and writes `data/frozen/transcriptions/{term}/page_NNN.txt`. It transcribes exactly what is printed (Unicode Tamil, reading order, no corrections, additions or summaries; `[?]` for unreadable text). **No web search, no other files.** Claude must not fill in text from its own knowledge of the manifesto.
 3. `ept extract transcribe import --term T` validates each file and records its disagreement with Tesseract's output; large disagreements go to the stage 02 spot-check.
@@ -210,7 +210,7 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 | Cutoff runs: no chunk whose `period_end(doc_date, date_precision)` > cutoff (never compare the stored first-of-period date, §9.3); undated chunks excluded | Retrieval filter using `ept.dates.period_end` + unit test (stage 04) |
 | `realisation_date` ≤ the latest `period_end(doc_date, date_precision)` among cited chunks, and ≥ `sworn_in` | Verdict validation (stage 05) |
 | Promise text from manifesto text only: no number or name absent from the source span; few-shot examples invented, never from in-scope manifestos | Verbatim/number/name checks V1–V3 + spot-check (stage 02) |
-| Transcription sessions: only the prompt and page images; no web search, no knowledge-based "corrections" | Handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
+| Vision transcription (Gemini or Cowork fallback): only the prompt and page images; no web search, no knowledge-based "corrections" | Prompt + handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
 | Promise list frozen per term after sign-off; later knowledge can't reshape it | `data/frozen/promises_{term}.jsonl` + refusal to re-extract (stage 02) |
 | Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + automated name/number check (stage 03) |
 | Gold promises never in prompts or few-shot pools | Overlap test (stage 06) |
@@ -338,7 +338,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Pro usage limits slow strong judging | Subset only (§6.3); batches sized to fit one session |
 | Only two completed terms; independence assumption | Promise-level modelling, wide intervals, both backtest directions, limitations stated on the site |
 | Tamil manifestos with legacy fonts | Font-map conversion (D-035) with Tamil-share and validity checks; verbatim `source_text` kept for checking |
-| TVK manifesto is a 150-ppi image scan (no text layer) | Tesseract `tam` with a calibrated quality gate; failing pages transcribed by Claude in Cowork (§6.4), cross-checked against OCR |
+| TVK manifesto is a 150-ppi image scan (no text layer) | Look for a better official copy first; else Tesseract `tam` with a calibrated quality gate, failing pages transcribed by Gemini vision (Cowork as last resort, §6.4), cross-checked against OCR |
 | Translation or paraphrase adds outcome knowledge (e.g. a later scheme name) | Number/name checks against the source span; flagged items spot-checked first (spec 02 §5) |
 | 20-day timeline | Day plan + cut order above |
 | Perceived partisanship | §9.2 neutrality rules; evidence shown everywhere |
@@ -351,7 +351,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Q-02 | ✅ Resolved in spec 01 (sources table §2.3) | 01 |
 | Q-03 | ✅ Resolved in spec 02: Gemini free tier, model by backend test; Kaggle fallback (D-037) | 02 |
 | Q-04 | ✅ Resolved in spec 02: what counts, splitting S1–S5, drop-later-duplicate with a log, frozen IDs (D-038, D-039) | 02 |
-| Q-10 | ✅ Resolved in spec 02: font mapping for legacy fonts, OCR + gate + Cowork vision for scans, translation inside the extraction call (D-035, D-036) | 02 |
+| Q-10 | ✅ Resolved in spec 02: font mapping for legacy fonts, OCR + gate + Gemini vision (Cowork last resort) for scans, translation inside the extraction call (D-035, D-036) | 02 |
 | Q-05 | Covariate rubrics (sector list, cost bands) | 03 |
 | Q-06 | Embedding model; number of chunks per judgment (affects Claude usage) | 04 |
 | Q-07 | Strong-judge batch size that fits within one Cowork session | 05 |

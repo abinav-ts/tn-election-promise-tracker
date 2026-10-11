@@ -2,14 +2,14 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 6 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 spec drafted (v0.1, 3 open questions)**; global spec v0.7. Next: answer spec 02 §9 OQ-1–3 → approve → Claude Code builds.
+**Today's position:** Day 6 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 spec drafted (v0.2, 1 open question: licence)**; global spec v0.7. Next: licence choice + TVK copy search → approve → Claude Code builds.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
 | 00 | Global spec + structure | ✅ v0.7 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
-| 02 | Promise extraction | ✏️ draft v0.1 | ☐ | ☐ | ☐ | ☐ |
+| 02 | Promise extraction | ✏️ draft v0.2 | ☐ | ☐ | ☐ | ☐ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -23,11 +23,13 @@ _Updated at the end of every session. Read this first._
 - [x] Full English corpus run in your Mac terminal (spec 01 step 9, D-021), done 2026-10-09/10. To refresh the corpus later: `source .venv/bin/activate`, then `caffeinate -i python -m ept crawl` and `caffeinate -i python -m ept parse`, each re-run until it prints `done`.
 - [x] Get a free-tier LLM API key (Gemini, obtained 2026-10-11).
 - [ ] Put the key in `.env` in the project root: one line `GEMINI_API_KEY=<your key>` (in Terminal: `cd` to the project, `nano .env`, paste, save; then `chmod 600 .env`). `.env` is gitignored. Don't paste the key into any chat.
-- [ ] Answer spec 02 §9: OQ-1 starting thresholds, OQ-2 vendor the VANAVIL table vs. write our own, OQ-3 Cowork vs. Gemini vision if many TVK pages fail the OCR gate.
-- [ ] Later in stage 02 (build step 2): run the Cowork transcription sessions for any TVK pages the OCR gate rejects (global §6.4).
+- [x] Spec 02 OQ-1 (thresholds) and OQ-3 (Gemini vision first, Cowork last resort, D-042) answered.
+- [ ] Spec 02 OQ-2: choose the code licence (GPL v3, or MIT + notice for the vendored GPL font table).
+- [ ] Look for a better official TVK manifesto copy: selectable text (born-digital) or ≥ 2480 px page width, complete (96 pp, 10 pillars). An official English version would be used instead. Put it in `data/raw/manifestos/` with its URL; don't use unofficial/partial copies.
+- [ ] Only if Gemini can't transcribe some TVK pages: Cowork transcription sessions (global §6.4).
 
 ## Next step
-Approve spec 02 (after OQ-1–3), then **Claude Code** builds it from spec 02 §4.11, starting with manifesto text (step 1: show AIADMK pages 1 and 10 converted).
+Approve spec 02 (after the licence choice; swap in a better TVK copy if found), then **Claude Code** builds it from spec 02 §4.11, starting with manifesto text (step 1: show AIADMK pages 1 and 10 converted).
 
 **Schedule:** about 2 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). Stage 02 build target: Days 6–7.
 
@@ -76,3 +78,4 @@ Approve spec 02 (after OQ-1–3), then **Claude Code** builds it from spec 02 §
   - Probe: the Open-Tamil VANAVIL table converts AIADMK to clean Unicode Tamil (99.96 % Tamil characters). The `open-tamil` package itself doesn't install on current Python, so the table is vendored (licence question OQ-2).
   - Decisions D-035–D-041: font mapping replaces OCR for legacy-font Tamil; TVK OCR behind a calibrated gate with Cowork vision fallback; Gemini free tier as bulk backend (model picked by a backend test; free tier is Flash-family only); promise rules (advocacy counts, split only independent parts, lists stay one, drop-later duplicate with a log, `parent_group` = manifesto unit); IDs frozen and committed in `data/frozen/`; one generic reader/cutter with per-file layout profiles; no scope cuts.
   - Global spec v0.7 (§3.1, §4, §5, §6.1, new §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §12.3 note, §13, §14). CLAUDE.md: transcription-session rules and `.env` handling.
+  - Later: OQ-1 thresholds accepted; vision fallback changed to Gemini first, Cowork last (D-042); the Open-Tamil table files are explicitly GPL v3+ (licence choice pending); user to look for a better TVK copy (spec 02 v0.2).
