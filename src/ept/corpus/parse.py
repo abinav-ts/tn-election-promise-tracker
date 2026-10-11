@@ -240,7 +240,8 @@ def candidates_for(meta: dict[str, Any], today: dt.date) -> list[datefind.Candid
         cands.append(c)
     for key in ("text_candidate", "copyright_candidate"):
         found = (meta.get("dating") or {}).get(key)
-        if found:
+        # a "date" after today cannot be an issue date (e.g. a Tamil-calendar year such as 2078 read as Gregorian)
+        if found and dt.date.fromisoformat(found["date"]) <= today:
             cands.append(datefind.Candidate(**found))
     c = datefind.date_from_filename(meta.get("source_url") or "", today)
     if c:

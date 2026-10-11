@@ -107,3 +107,12 @@ def test_old_sidecars_get_narrowed_mentions_from_saved_text(conn, root):
     assert dating["latest_mention_any"]["date"] == "2021-12-31"
     rows = list(csv.DictReader((root / "data" / "interim" / "date_review.csv").open()))
     assert all("anachronism" not in r["reasons"] for r in rows if r["doc_id"] == doc.doc_id)
+
+
+def test_future_text_date_is_not_an_issue_date(conn, root):
+    from ept.corpus.parse import candidates_for
+
+    meta = {"listing": {"listing_date": "2018-06-25", "discovery": "listing"},
+            "dating": {"text_candidate": {"source": "document_text", "date": "2078-06-25", "precision": "day",
+                                          "evidence": "Dated: 25.06.2078"}}}
+    assert [c.source for c in candidates_for(meta, TODAY)] == ["listing"]

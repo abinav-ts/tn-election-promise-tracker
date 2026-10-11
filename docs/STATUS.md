@@ -2,13 +2,13 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 3 of 20 (deadline 2026-10-25). Stage 01 build steps 1–8 done (spec 01 v1.1, 108 offline tests pass, limit-20 run spot-checked). Next: the full English run in your Mac terminal (step 9).
+**Today's position:** Day 6 of 20 (deadline 2026-10-25). Stage 01 steps 1–9 done: full English corpus collected, parsed and checked. Next: step 10 (Tamil catalogue + pairing, tracker leads), then step 11 (final report, stage commit).
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
 | 00 | Global spec + structure | ✅ v0.4 | – | – | – | ✅ |
-| 01 | Corpus collection | ✅ v1.1 | ◐ steps 1–8 | ✅ 108 | ✅ limit-20 + spot-check | ◐ checkpoints |
+| 01 | Corpus collection | ✅ v1.3 | ◐ steps 1–9 | ✅ 123 | ✅ full English run | ◐ checkpoints |
 | 02 | Promise extraction | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -20,7 +20,7 @@ _Updated at the end of every session. Read this first._
 ## Waiting on the user
 - [x] Network access (Claude Code now runs on the Mac directly; PyPI, tn.gov.in and Wayback reachable, 2026-10-08).
 - [x] Manifesto PDFs in `data/raw/manifestos/` (renamed to `{TERM}_{lang}.pdf`, 2026-10-07).
-- [ ] **Full English corpus run in your Mac terminal (spec 01 step 9, D-021).** From the project folder:
+- [x] **Full English corpus run in your Mac terminal (spec 01 step 9, D-021)** — done 2026-10-09/10. From the project folder:
   ```
   cd ~/Projects/Election-Promise-Tracking
   source .venv/bin/activate              # venv already exists (Python 3.11); else: python3 -m venv .venv && pip install -e ".[dev]"
@@ -34,9 +34,9 @@ _Updated at the end of every session. Read this first._
 - [ ] Get a free-tier LLM API key (decided in spec 02).
 
 ## Next step
-1. You: the full English run above.
-2. Claude (same stage-01 conversation or a new one): `ept coverage` on the full corpus, then step 10 (Tamil catalogue + pairing, tracker leads) and step 11 (final report, spec-vs-build diff, stage commit).
-3. Anachronism check narrowed (D-028); applied automatically when `ept parse` re-dates, no re-OCR needed.
+1. Claude: step 10 — Tamil catalogue + pairing (`ept crawl --lang ta`, catalogue only), then tracker leads (`ept leads`; tracker URLs still to be added to `config/sources.yaml`).
+2. Claude: step 11 — final coverage report, spec-vs-build diff, `stage 01: corpus collection` commit.
+3. Open decisions for the user: see the 2026-10-11 session log entry.
 
 ## Session log
 - **2026-10-06** — Folder structure, global spec v0.3 (reverse backtest, Tamil manifesto handling), CLAUDE.md, STATUS, decision log, git initialised.
@@ -54,4 +54,11 @@ _Updated at the end of every session. Read this first._
 - **2026-10-09** — A Wayback capture hung for 3.5 h; a CAG file (`d3b27b7df46eabaf`) was a truncated 5 MiB capture. Added (D-030): 600 s limit per download (streamed, retryable), PDF completeness check (`%%EOF` + opens), newest *complete* Wayback version kept, stored incomplete PDFs quarantined and re-fetched (checked at the start of every crawl), per-file progress line `[n/N] source doc_id size time`. Crawl order now puts the Wayback-only sources last (D-031). `data/ept.sqlite-wal/-shm` removed from git.
   - Scan of the 5,466 stored PDFs: 2 incomplete — the CAG file above (newest capture cut at 5 MiB; an older complete capture exists) and policy note `2ca1bc0c00d969ae` (`ind_major_e_pn_2023_24.pdf`: the server's own file has no `%%EOF` but matches its Content-Length and opens with 241 pages; no Wayback capture, so under D-030 it becomes a fetch failure — **user to decide** whether to accept such files). A GO with zero padding after `%%EOF` is fine.
   - To do (user): stop the running GO crawl (Ctrl-C) and run `caffeinate -i python -m ept crawl` (quarantines the 2 files, then GOs, scheme pages, CAG last), then `caffeinate -i python -m ept parse`.
+- **2026-10-11 — Full English run checked (step 9, acceptance criterion 9).**
+  - **Totals:** 9,253 documents, 60,197 chunks. 7,062 GOs, 535 policy notes, 92 other (performance budgets, policies), 21 budget speeches, 13 Governor's addresses, 44 CAG reports (34 English, 10 Tamil), 1,486 scheme pages (58 Tamil). Fetched live 7,849, via Wayback 1,404. Parse: 0 failures; 6,652 documents needed OCR on some page (38,305 of 142,631 pages).
+  - **Dating:** 95.6 % at day precision (8,842 / 9,253); 220 undated (excluded from cutoff runs). GOs 100 % listing-dated; policy notes 56 % Wayback, 31 % © year/text, 13 % undated. `date_review.csv`: 3,342 rows.
+  - **Acceptance criteria 3–6 re-verified on the full corpus:** all pass (sha256/ids/sidecars, chunk bounds and dates, no Tamil/manifesto chunks, every weak date in the review sheet).
+  - **Top gaps** (`reports/coverage_01.md` §8): 193 genuine fetch failures (185 GOs + 8 policy notes: 404 and never archived; incl. `ind_major_e_pn_2023_24.pdf`, server copy without `%%EOF`); 125 GO department-year holes; 37 policy-note department-years missing (12 in 2020-21); no revised 2026-27 budget speech yet; no CAG report for 2026 yet.
+  - Fix: a text "issue date" after today (Tamil-calendar years like 2078 read as Gregorian) is ignored.
+  - **Open decisions for the user:** (1) ~6 GOs whose own header date is 9–13 days *after* their listing date: keep the listing date (spec, flagged) or use the later date (more leak-safe)? (2) accept PDFs that lack `%%EOF` but match the server's Content-Length and open (1 case)? (3) tracker URLs for step 10 leads.
 
