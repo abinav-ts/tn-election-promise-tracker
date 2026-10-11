@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-11T03:46:12+00:00",
+ "generated_at": "2026-10-11T03:53:51+00:00",
  "totals": {
   "catalogued": 10257,
   "documents": 9254,
@@ -2009,7 +2009,40 @@
    "scheme_page|en": 1487
   },
   "tamil_pairing": {
-   "status": "not run yet (spec 01 §4.10 step 10)"
+   "status": "ok",
+   "paired": 13,
+   "tamil_only": 98,
+   "by_type_year": {
+    "budget_speech|2016|paired": 3,
+    "budget_speech|2017|paired": 1,
+    "budget_speech|2018|paired": 1,
+    "budget_speech|2019|paired": 1,
+    "budget_speech|2020|paired": 1,
+    "budget_speech|2021|paired": 2,
+    "budget_speech|2022|paired": 1,
+    "budget_speech|2023|paired": 1,
+    "budget_speech|2024|paired": 1,
+    "budget_speech|2025|paired": 1,
+    "cag_report|2024|tamil_only": 4,
+    "cag_report|2025|tamil_only": 5,
+    "cag_report|2026|tamil_only": 1,
+    "go|2017|tamil_only": 4,
+    "go|2018|tamil_only": 8,
+    "go|2019|tamil_only": 2,
+    "go|2020|tamil_only": 3,
+    "go|2021|tamil_only": 1,
+    "go|2022|tamil_only": 6,
+    "go|2023|tamil_only": 1,
+    "go|2024|tamil_only": 2,
+    "go|2025|tamil_only": 2,
+    "go|2026|tamil_only": 1,
+    "scheme_page|2014|tamil_only": 1,
+    "scheme_page|2015|tamil_only": 6,
+    "scheme_page|2016|tamil_only": 21,
+    "scheme_page|2018|tamil_only": 9,
+    "scheme_page|2020|tamil_only": 19,
+    "scheme_page|2021|tamil_only": 2
+   }
   }
  },
  "fetch_path": {
@@ -98585,7 +98618,17 @@
   ]
  },
  "leads": {
-  "status": "not run yet (spec 01 §4.10 step 10)"
+  "status": "ok",
+  "by_term": {
+   "AIADMK-2016": {
+    "trackers": 2
+   },
+   "DMK-2021": {
+    "trackers": 4,
+    "harvested": 8
+   }
+  },
+  "documents_tagged_tracker_lead": 0
  },
  "gaps": [
   {

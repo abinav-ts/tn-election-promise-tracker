@@ -116,3 +116,10 @@ def test_future_text_date_is_not_an_issue_date(conn, root):
             "dating": {"text_candidate": {"source": "document_text", "date": "2078-06-25", "precision": "day",
                                           "evidence": "Dated: 25.06.2078"}}}
     assert [c.source for c in candidates_for(meta, TODAY)] == ["listing"]
+
+
+def test_no_tracker_chunks(conn, root):
+    """Only documents fetched *because of* a lead carry tracker_lead; tracker pages never become documents."""
+    rows = db.query(conn, "SELECT count(*) n FROM chunks c JOIN documents d USING(doc_id) "
+                          "WHERE d.local_path LIKE 'data/raw/trackers/%'")
+    assert rows[0]["n"] == 0

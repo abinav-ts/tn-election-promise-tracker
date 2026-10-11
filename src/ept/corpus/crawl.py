@@ -14,9 +14,9 @@ from ept.net import Http
 from ept.runs import Budget, finish_run, progress, start_run
 
 
-def build_clients(cfg=None, session=None) -> tuple[Http, Wayback]:
+def build_clients(cfg=None, session=None, sleep=None) -> tuple[Http, Wayback]:
     cfg = cfg or get_config()
-    http = Http(cfg, session=session)
+    http = Http(cfg, session=session) if sleep is None else Http(cfg, session=session, sleep=sleep)
     prefixes = tuple(p for s in cfg.sources.sources.values() for p in (s.get("wayback_prefixes") or []))
     legacy = {cur: (olds, list(s.get("wayback_legacy_suffixes") or [""]))
               for s in cfg.sources.sources.values() for cur, olds in (s.get("wayback_legacy") or {}).items()}
@@ -62,6 +62,11 @@ def run_crawl(sources: Optional[list[str]] = None, lang: str = "en", download: O
                 break
         if not stats.stopped and download:
             backfill_wayback(fetcher, budget, stats)
+        if lang == "ta" and not stats.stopped:
+            from ept.corpus.pairing import write_pairs
+
+            per_source["tamil_pairing"] = write_pairs(cfg)
+            progress(f"tamil pairing: {per_source['tamil_pairing']}")
         if wayback.down:
             per_source["wayback_unavailable"] = wayback.down
         if not stats.stopped and stats.deferred:

@@ -207,6 +207,9 @@ class Coverage:
             return {"status": "not run yet (spec 01 §4.10 step 10)"}
         rows = list(csv.DictReader(path.open(encoding="utf-8")))
         by_term: dict[str, Counter] = defaultdict(Counter)
+        trackers_per_term = Counter(tr.get("term_id", "unknown") for tr in self.cfg.sources.trackers)
+        for term, n in trackers_per_term.items():  # terms with trackers but no leads still show, with zeros
+            by_term[term]["trackers"] = n
         for r in rows:
             term = r.get("term_id") or "unknown"
             by_term[term]["harvested"] += 1
@@ -350,14 +353,17 @@ def render_md(data: dict[str, Any], cfg: Config) -> str:
             g = grouped.setdefault(s["doc_id"], {"url": s["url"], "n": 0, "first": s["first"], "last": s["last"]})
             g["n"] += 1
             g["first"], g["last"] = min(g["first"], s["first"]), max(g["last"], s["last"])
-        out.append("Superseded versions (not downloaded, D-018; one row per document, digests in the JSON):\n\n" +
+        top = sorted(grouped.items(), key=lambda kv: -kv[1]["n"])[:50]
+        out.append(f"Superseded versions (not downloaded, D-018): {len(grouped)} documents have older versions. "
+                   "The 50 with the most are listed; all digests are in the JSON.\n\n" +
                    _table(["doc_id", "url", "older versions", "first capture", "last capture"],
-                          [[k, g["url"], g["n"], g["first"], g["last"]] for k, g in grouped.items()]) + "\n")
+                          [[k, g["url"], g["n"], g["first"], g["last"]] for k, g in top]) + "\n")
 
     ld = data["leads"]
     out.append(f"## {SECTIONS[6]}\n\n" + (ld["status"] if ld["status"] != "ok" else _table(
-        ["term", "harvested", "resolved", "fetched"],
-        [[t, c.get("harvested", 0), c.get("resolved", 0), c.get("fetched", 0)] for t, c in ld["by_term"].items()])
+        ["term", "trackers", "references harvested", "resolved", "fetched"],
+        [[t, c.get("trackers", 0), c.get("harvested", 0), c.get("resolved", 0), c.get("fetched", 0)]
+         for t, c in ld["by_term"].items()])
         + f"\n\nDocuments tagged `tracker_lead`: {ld['documents_tagged_tracker_lead']}") + "\n")
 
     gaps = data["gaps"]

@@ -71,9 +71,10 @@ def parse_listing(html: str, page_url: str) -> list[dict]:
 class TnGos(SourceAdapter):
     name = "tn_gos"
 
-    def catalogue(self, budget: Budget, force: bool = False) -> Iterator[CatalogueItem]:
+    def catalogue(self, budget: Budget, force: bool = False, years: Optional[list[int]] = None
+                  ) -> Iterator[CatalogueItem]:
         window = self.cfg.settings.evidence_window
-        years = range(window.start.year, window.end_or_today().year + 1)
+        years = years or list(range(window.start.year, window.end_or_today().year + 1))
         base = self.scfg.get("base_url")
         for dep_id in self.cfg.sources.departments:
             for year in years:

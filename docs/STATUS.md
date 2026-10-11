@@ -2,13 +2,13 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 6 of 20 (deadline 2026-10-25). Stage 01 steps 1–9 done: full English corpus collected, parsed and checked. Next: step 10 (Tamil catalogue + pairing, tracker leads), then step 11 (final report, stage commit).
+**Today's position:** Day 6 of 20 (deadline 2026-10-25). **Stage 01 done** (spec 01 v1.5, all 10 acceptance criteria met). Next: stage 02 (promise extraction) in a new conversation.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
 | 00 | Global spec + structure | ✅ v0.4 | – | – | – | ✅ |
-| 01 | Corpus collection | ✅ v1.3 | ◐ steps 1–9 | ✅ 123 | ✅ full English run | ◐ checkpoints |
+| 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
 | 02 | Promise extraction | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -31,12 +31,10 @@ _Updated at the end of every session. Read this first._
   - Both commands are resumable: if a run is interrupted, or ends with `stopped (...)` / `N deferred: Wayback unavailable`, just run the same command again until it prints `crawl: done` / `parse: done`.
   - Rough time from the limit-20 run: crawl 4–6 h (Wayback downloads are slow), parse ~10 h (~5 s per OCR'd GO). `caffeinate -i` keeps the Mac awake.
   - Then tell Claude; Claude runs `ept coverage` and checks the results (step 9).
-- [ ] Get a free-tier LLM API key (decided in spec 02).
+- [ ] Get a free-tier LLM API key (backend chosen in spec 02).
 
 ## Next step
-1. Claude: step 10 — Tamil catalogue + pairing (`ept crawl --lang ta`, catalogue only), then tracker leads (`ept leads`; tracker URLs still to be added to `config/sources.yaml`).
-2. Claude: step 11 — final coverage report, spec-vs-build diff, `stage 01: corpus collection` commit.
-3. Open decisions for the user: see the 2026-10-11 session log entry.
+Stage 02 (promise extraction) in a **new conversation**: draft spec 02 (Q-03 bulk backend, Q-04 splitting rules, Q-10 Tamil manifesto OCR + translation). Tesseract `tam` is available on the Mac (OQ-6). The manifestos are in `data/raw/manifestos/`.
 
 ## Session log
 - **2026-10-06** — Folder structure, global spec v0.3 (reverse backtest, Tamil manifesto handling), CLAUDE.md, STATUS, decision log, git initialised.
@@ -61,4 +59,10 @@ _Updated at the end of every session. Read this first._
   - **Top gaps** (`reports/coverage_01.md` §8): 193 genuine fetch failures (185 GOs + 8 policy notes: 404 and never archived; incl. `ind_major_e_pn_2023_24.pdf`, server copy without `%%EOF`); 125 GO department-year holes; 37 policy-note department-years missing (12 in 2020-21); no revised 2026-27 budget speech yet; no CAG report for 2026 yet.
   - Fix: a text "issue date" after today (Tamil-calendar years like 2078 read as Gregorian) is ignored.
   - **Open decisions for the user:** (1) ~6 GOs whose own header date is 9–13 days *after* their listing date: keep the listing date (spec, flagged) or use the later date (more leak-safe)? (2) accept PDFs that lack `%%EOF` but match the server's Content-Length and open (1 case)? (3) tracker URLs for step 10 leads.
+- **2026-10-11 — Stage 01 finished (steps 10–11).**
+  - Decisions: D-032 (later of listing/issue date wins; 49 GOs, 7 likely OCR year misreads, never earlier), D-033 (live PDF without `%%EOF` accepted if Content-Length matches; the Industries 2023-24 policy note is back in), D-034 (pairing key with speech subtype; GO-lead targeted fetch = listing re-read, no Wayback step).
+  - Tamil pass (catalogue only): 111 Tamil items, 13 paired (budget speeches), 98 Tamil-only candidates (30 GOs, 58 scheme pages, 10 CAG). The Tamil-language portal itself is not crawled.
+  - Tracker leads: 6 trackers found by web search (4 DMK-2021, 2 AIADMK-2016); none cites a GO number, so 0 documents came in through leads (8 references: 6 official home pages, 2 Act names). The with/without-leads comparison in stages 06/07 is therefore trivial unless better trackers turn up.
+  - Final corpus: 9,254 documents, 60,259 chunks; 95.6 % dated to the day; 220 undated. Report: `reports/coverage_01.md`.
+  - Acceptance criteria 1–10 all met. Known limitations: Wayback dates are conservative upper bounds (CAG reports often years late); CAG coverage limited to file names with "Tamil"; OCR of rotated tables is noisy; a few GO dates pushed later by OCR year misreads.
 

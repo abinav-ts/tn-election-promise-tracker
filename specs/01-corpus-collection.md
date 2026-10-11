@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.4** (2026-10-08; build-time amendments D-023–D-026, D-028–D-033). v1.0 approved 2026-10-07 with D-016–D-022 |
+| Status | **APPROVED v1.5, BUILT** (2026-10-11; build-time amendments D-023–D-026, D-028–D-034). v1.0 approved 2026-10-07 with D-016–D-022 |
 | Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
 | CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept spotcheck`, `python -m ept leads` |
@@ -43,10 +43,10 @@ Probed from Claude's environment on 2026-10-07. Every source uses the same fetch
 | S2 | `tn_gos` | `go` | `www.tn.gov.in/godept_list.php` (38 departments) → `go.php?dep_id=b64(n)&year=b64(YYYY)`. Files are `cms.tn.gov.in/cms_migrated/document/GO/{dept}_{e\|t}_{no}_{MS_}{YYYY}.pdf` | Live, **with holes** (e.g. Health 2017 = 0 GOs, 2022 = 37 vs 2019 = 278) | Listing date (day) |
 | S3 | `tnbudget_speeches` | `budget_speech` | `tnbudget.tn.gov.in` (**live site unreachable**) → Wayback CDX `tnbudget.tn.gov.in/*`. `tnweb_files/BS_{YYYY}_{YY}_{ENG\|TAM}_FINAL.pdf` (2021-22 → 2025-26 seen) | Wayback only. Mostly covered by S1 since D-025; **only the 2020-21 main speech is still missing** | Text ("presented on …") → else Wayback first capture |
 | S4 | `governor_addresses` | `governor_address` | Wayback `tnbudget.tn.gov.in/tnweb_files/Bud_gov_speeches/` has addresses up to ~2009 only. `assembly.tn.gov.in` to be explored | **Covered by S1 since D-025** (Jun 2016 → Jun 2026). A separate adapter is only needed if a gap shows up | Text, filename |
-| S5 | `cag_reports` | `cag_report` | `cag.gov.in` (**live site unreachable**) → Wayback CDX filtered to Tamil Nadu state reports | Wayback only, to be explored | Text (date of signing / laying) |
-| S6 | `tn_schemes` | `scheme_page` | `www.tn.gov.in/schemes.php`, `scheme_list.php?dep_id=b64(n)` | Live (current snapshot only); older versions via Wayback | Wayback first capture (upper bound) |
+| S5 | `cag_reports` | `cag_report` | `cag.gov.in` (**live site unreachable**) → Wayback CDX `cag.gov.in/uploads/download_audit_report/`, file names containing "Tamil"; only full reports (chapter/annexure/index splits, Puducherry and explicit Tamil-language versions excluded) | Wayback only. Built: 44 full reports 2016–2025 (10 detected as Tamil). Reports whose file names don't mention Tamil are missed | Wayback first capture of the kept bytes (reports carry no issue date in their front pages) |
+| S6 | `tn_schemes` | `scheme_page` | Current: `www.tn.gov.in/schemes.php` → `scheme_list.php?dep_id=b64(n)` → `scheme_details.php?id=b64(n)`. Older: the previous portal's `www.tn.gov.in/scheme/data_view/N` pages via Wayback CDX | Built: 132 current (11 departments) + 1,354 archived pages | Wayback first capture only (`text_dating: false`: dates in the text describe the scheme, not the page) |
 | S7 | `manual` | any | `data/raw/evidence/_manual/` + `manual_manifest.csv` (filename, doc_type, department, title, doc_date, date_precision, lang, source_url, note) | For anything that can't be crawled | As given (`date_source=manual`) |
-| L1 | `trackers` (leads only, §4.7) | — (not a document) | e.g. South First's DMK 505-promise analysis; TNM "status check" series on AIADMK 2016 | Live | — |
+| L1 | `trackers` (leads only, §4.7) | — (not a document) | `sources.yaml` → `trackers` (found by web search 2026-10-11): DMK-2021: South First analysis, Pudhiyavan tracker, RG Anand PDF, OnlyVotez; AIADMK-2016: two TNM status-check articles | Live. None cites a GO number: 8 references (6 official home pages, 2 Act names), 0 documents fetched | — |
 
 Order of work: originally S1 → S3 → S4 → S5 → S6 → S2 → Tamil pass → leads. **Crawl order since D-031:** S1 → S2 → S6 → S7 → S3 → S4 → S5, i.e. live sources first and the slow Wayback-only sources (S3, S5) last; S1 must precede S3. Then the Tamil pass and leads.
 
@@ -64,8 +64,9 @@ Order of work: originally S1 → S3 → S4 → S5 → S6 → S2 → Tamil pass �
 | Catalogue (everything discovered, downloaded or not) | `data/interim/catalogue/{source}.jsonl` | no |
 | Extracted text (debug) | `data/interim/text/{doc_id}.txt` with `\f` page breaks | no |
 | DB rows | `documents`, `chunks` in `data/ept.sqlite`; the `terms` table from config | no |
-| Tamil pairing | `data/interim/lang_pairs.csv` (ta_item, en_doc_id\|null, pair_key, status `paired`\|`tamil_only`) | no |
-| Tracker leads | `data/raw/trackers/{sha1}.html` + `data/interim/tracker_leads.csv` | no |
+| Tamil pairing | `data/interim/lang_pairs.csv` (ta_item, ta_doc_id, en_doc_id (empty if none), pair_key, status `paired`\|`tamil_only`, doc_type, year, title) | no |
+| Tracker leads | `data/raw/trackers/{sha1}.{html\|pdf\|js}` + `data/interim/tracker_leads.csv` (lead_id, term_id, tracker, kind `go`\|`act`\|`url`, text, go_series, go_number, go_year, url, status `resolved`\|`fetched`\|`unresolved`\|`not_a_document`\|`noted`, resolved_doc_id) | no |
+| Quarantine | `data/raw/evidence/_quarantine/{doc_type}/` (incomplete PDFs moved aside, D-030) | no |
 | Date-review sheet | `data/interim/date_review.csv` (every doc whose date needs a human; reason column) | no |
 | Spot-check sheet | `data/interim/spotcheck_01.csv` (7–10 worst documents, global §12.4) | no |
 | Coverage report | `reports/coverage_01.md` + `reports/coverage_01.json` | yes |
@@ -169,14 +170,17 @@ Checks (each failure adds a row to `date_review.csv` with a reason):
   - **GO:** (dept, GO number, series, year). Same key, different language tag = a translation.
   - **Budget speech / Governor's address / policy note:** (doc_type, dept, fiscal year).
   - **Otherwise:** (doc_type, dept, `doc_date`). Different dates mean different documents, per the user's suggested test.
+- For speeches, the subtype (`interim`, `revised`, `agriculture`) is part of the FY key, so an interim and a revised speech of one year are not cross-paired (D-034). Documents whose text was detected as Tamil at parse time are included too.
 - Results go to `lang_pairs.csv`. `tamil_only` items are the candidates for later use.
+- Built 2026-10-11: 111 Tamil items, 13 paired (all budget speeches), 98 Tamil-only (30 GOs, 58 scheme pages, 10 CAG reports). The English listings carry few Tamil files; the Tamil-language portal is not crawled.
 - `--catalogue-only` is the default for `--lang ta`. `--download` fetches `tamil_only` items into `data/raw/evidence/` with sidecars, registers them as documents with `parse_status=pending`, and does **not** chunk them.
 - Whether Tamil-only documents ever enter the evidence pool is decided later and needs the §3 amendment (OQ-1).
 
 ### 4.7 Tracker leads (`ept leads`)
 - Inputs: tracker URLs in `sources.yaml` (`trackers:` list). Pages are fetched and stored raw in `data/raw/trackers/`.
 - Extraction is deterministic regex, no LLM. It looks for GO references (`G.O.(Ms)/(D)/(Rt) No. N`, department, date or year), Act or Bill names with years, and official URLs (`*.tn.gov.in`, `cms.tn.gov.in`).
-- Each lead is resolved against the catalogue (dept + GO number + year). Unresolved leads get a targeted fetch: that department and year's GO listing, then Wayback.
+- Each lead is resolved against the catalogue (GO number + year, and series when given). An unresolved GO lead gets a targeted fetch: that year's GO listings are re-read for every department (a tracker rarely names the department), bypassing the listing cache, and a GO found there is fetched and tagged. A Wayback search is not possible from a GO number alone, because GO file names can't be derived from it (D-034).
+- Lead statuses: `resolved` (already in the catalogue), `fetched`, `unresolved`, `not_a_document` (an official home page, not a PDF), `noted` (Act/Bill names, for stage 04).
 - Documents fetched **because of** a lead get `discovery=tracker_lead` (§7 amendment, OQ-1). Everything else gets `listing`, `wayback_cdx` or `manual`.
 - **Not done in stage 01:** promise-level "did we miss promise X" mapping, which needs stage 02 promises. Stage 04 does that gap check using `tracker_leads.csv`.
 - Tracker text (claims, percentages, verdicts) is **never** stored as a document, chunked, or shown to a judge (§5).
@@ -272,6 +276,8 @@ Rules from the global warning box that apply to this stage:
 | `test_chunk.py` | Word bounds; page ranges; no split mid-word; last-chunk exception; deterministic ids; re-chunk replaces only that document's chunks |
 | `test_datefind.py` | Each precedence rank; conflict; anachronism; FY mismatch; fiscal-year-only → NULL |
 | `test_pairing.py` | GO pair; FY pair; date-based pair vs different-date `tamil_only` |
+| `test_coverage.py` | All 8 report sections; JSON gap list has an issue and a suggested search per gap |
+| `test_spotcheck.py` | Ranking by the problem score (failures before weak dates, © year in group b); ≤ 3 per source; empty verdicts |
 | `test_leads.py` | GO-reference regex variants; resolution against the catalogue; tag `tracker_lead` |
 | `test_leakage_01.py` | No manifesto, Tamil or tracker chunks; no `doc_date` derived from FY only; Wayback-dated docs are flagged |
 
@@ -297,7 +303,7 @@ Rules from the global warning box that apply to this stage:
 - OQ-2: (A), all English GOs (D-021).
 - OQ-7: (A), the user runs the full download (D-021).
 
-**Still open:** OQ-6, which is for stage 02 and doesn't block this stage. The original text of each question is kept below for the record.
+**OQ-6 answered by the environment (2026-10-08):** Claude now runs on the user's Mac, where Homebrew Tesseract already has `tam`; stage 02 can OCR Tamil manifestos directly. The original text of each question is kept below for the record.
 
 **OQ-1 — Global spec amendments (needs approval; I edit 00 → v0.4 and log D-016…D-0xx together with this spec's approval).**
 - (a) §3 "Out of scope: Tamil-language evidence" becomes: *Tamil evidence documents are catalogued, paired with English versions and may be downloaded; they enter the evidence pool only by a later logged decision.*

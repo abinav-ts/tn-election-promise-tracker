@@ -226,7 +226,7 @@ Election-Promise-Tracking/
 ├── data/
 │   ├── raw/
 │   │   ├── manifestos/ manifesto PDFs (added by the user)
-│   │   ├── evidence/   crawled government documents (+ _manual/ for hand-added files)
+│   │   ├── evidence/   crawled government documents (+ _manual/ for hand-added files, _quarantine/ for incomplete downloads, D-030)
 │   │   └── trackers/   third-party tracker pages (leads only, never evidence)
 │   ├── interim/        review sheets, intermediate files
 │   ├── processed/      indexes, fitted models

@@ -91,7 +91,9 @@ def leads(
     time_budget: Optional[float] = BudgetOpt,
 ) -> None:
     """Harvest GO references from tracker pages (spec 01 §4.7)."""
-    typer.echo("leads: not implemented yet")
+    from ept.corpus.leads import run_leads
+
+    _report("leads", run_leads(limit=limit, force=force))
 
 
 @app.command()

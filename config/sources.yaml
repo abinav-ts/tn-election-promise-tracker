@@ -97,4 +97,26 @@ sources:
   manual:
     doc_type: null
 
-trackers: []
+# Third-party promise trackers: leads only, never evidence (D-020). Found 2026-10-11 by web search.
+# DMK-2021 has four, AIADMK-2016 two (coverage asymmetry, OQ-3). None cites GO numbers.
+trackers:
+  - name: South First analysis, DMK 394 of 505 promises
+    url: https://thesouthfirst.com/tamilnadu/south-first-analysis-dmk-delivers-394-of-505-poll-promises-women-centric-schemes-lag/
+    term_id: DMK-2021
+  - name: Pudhiyavan DMK manifesto 2021 tracker
+    url: https://dmk-manifesto-2021-tracker.pudhiyavan.com/
+    term_id: DMK-2021
+  - name: RG Anand, DMK manifesto tracker (PDF)
+    url: https://rganand.com/images/publications/DMK_manifesto_tracker.pdf
+    term_id: DMK-2021
+    ext: .pdf
+  - name: OnlyVotez DMK promise tracker (data bundle of the web app)
+    url: https://onlyvotez.byvignesh.com/assets/index-CQsFjt6x.js
+    term_id: DMK-2021
+    ext: .js
+  - name: TNM status check, AIADMK 2016 water and infrastructure promises
+    url: https://www.thenewsminute.com/article/tnm-status-check-aiadmk-s-2016-promises-water-and-infrastructure-145089
+    term_id: AIADMK-2016
+  - name: TNM, AIADMK 2016 social welfare promises
+    url: https://www.thenewsminute.com/article/amma-housing-scheme-free-washing-machine-aiadmk-s-social-welfare-promises-145231
+    term_id: AIADMK-2016
