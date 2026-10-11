@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-11T03:38:30+00:00",
+ "generated_at": "2026-10-11T03:46:12+00:00",
  "totals": {
   "catalogued": 10257,
-  "documents": 9253,
-  "chunks": 60197
+  "documents": 9254,
+  "chunks": 60259
  },
  "by_type_fy": {
   "budget_speech": {
@@ -421,9 +421,9 @@
    },
    "2023-24": {
     "catalogued": 59,
-    "downloaded": 58,
-    "parsed": 58,
-    "chunked": 58
+    "downloaded": 59,
+    "parsed": 59,
+    "chunked": 59
    },
    "2024-25": {
     "catalogued": 57,
@@ -879,10 +879,10 @@
     "2018": 250,
     "2019": 263,
     "2020": 267,
-    "2021": 86,
+    "2021": 85,
     "2022": 34,
     "2023": 44,
-    "2024": 78,
+    "2024": 79,
     "2025": 232,
     "2026": 113
    },
@@ -910,9 +910,9 @@
     "2017": 3,
     "2018": 26,
     "2019": 27,
-    "2020": 23,
+    "2020": 22,
     "2021": 25,
-    "2022": 28,
+    "2022": 29,
     "2023": 10,
     "2024": 7,
     "2025": 12,
@@ -943,10 +943,10 @@
     "2018": 137,
     "2019": 80,
     "2020": 82,
-    "2021": 81,
+    "2021": 80,
     "2022": 43,
     "2023": 12,
-    "2024": 3,
+    "2024": 4,
     "2025": 0,
     "2026": 0
    },
@@ -976,10 +976,10 @@
     "2018": 40,
     "2019": 30,
     "2020": 35,
-    "2021": 70,
+    "2021": 69,
     "2022": 78,
     "2023": 92,
-    "2024": 81,
+    "2024": 82,
     "2025": 43,
     "2026": 18
    },
@@ -1456,12 +1456,12 @@
     "2017": 50,
     "2018": 24,
     "2019": 30,
-    "2020": 44,
+    "2020": 43,
     "2021": 63,
     "2022": 48,
-    "2023": 52,
-    "2024": 65,
-    "2025": 11,
+    "2023": 51,
+    "2024": 66,
+    "2025": 12,
     "2026": 7
    },
    "median": 44,
@@ -1707,10 +1707,10 @@
     "2018": 6,
     "2019": 1,
     "2020": 13,
-    "2021": 12,
+    "2021": 11,
     "2022": 22,
     "2023": 20,
-    "2024": 14,
+    "2024": 15,
     "2025": 2,
     "2026": 0
    },
@@ -1857,7 +1857,8 @@
    "go": {
     "documents": 7062,
     "date_source": {
-     "listing": 7062
+     "listing": 7013,
+     "document_text": 49
     },
     "precision": {
      "day": 7062
@@ -1895,19 +1896,19 @@
     "day_precision_share": 0.533
    },
    "policy_note": {
-    "documents": 535,
+    "documents": 536,
     "date_source": {
      "wayback_capture": 301,
      "document_text": 165,
-     "none": 69
+     "none": 70
     },
     "precision": {
      "day": 301,
      "year": 165,
-     "none": 69
+     "none": 70
     },
-    "undated": 69,
-    "day_precision_share": 0.563
+    "undated": 70,
+    "day_precision_share": 0.562
    },
    "scheme_page": {
     "documents": 1486,
@@ -1923,21 +1924,22 @@
     "day_precision_share": 0.912
    }
   },
-  "undated_total": 220,
-  "date_review_rows": 3342,
+  "undated_total": 221,
+  "date_review_rows": 3343,
   "review_reasons": {
    "dated by Wayback first capture (upper bound)": 1751,
-   "anachronism": 856,
+   "anachronism": 809,
    "conflict": 432,
    "out of window": 315,
    "dated from © year (year precision)": 191,
    "undated": 131,
-   "FY mismatch": 94,
-   "undated (fiscal year only)": 89,
+   "FY mismatch": 108,
+   "undated (fiscal year only)": 90,
+   "issue date in text later than listing date": 49,
    "© year 2022 not used": 22,
    "© year 2021 not used": 18,
+   "© year 2023 not used": 17,
    "© year 2024 not used": 17,
-   "© year 2023 not used": 16,
    "dated from filename": 13,
    "© year 2019 not used": 12,
    "© year 2018 not used": 12,
@@ -1962,13 +1964,13 @@
  },
  "parsing": {
   "status": {
-   "ocr": 6652,
+   "ocr": 6653,
    "ok": 2601
   },
-  "pages": 142631,
-  "ocr_pages": 38305,
-  "ocr_page_share": 0.269,
-  "chunks": 60197,
+  "pages": 142872,
+  "ocr_pages": 38320,
+  "ocr_page_share": 0.268,
+  "chunks": 60259,
   "chunk_words": {
    "min": 2,
    "p10": 329,
@@ -1986,7 +1988,7 @@
    "go|en": 7062,
    "governor_address|en": 13,
    "other|en": 92,
-   "policy_note|en": 535,
+   "policy_note|en": 536,
    "scheme_page|en": 1428,
    "scheme_page|ta": 58
   },
@@ -2012,7 +2014,7 @@
  },
  "fetch_path": {
   "via": {
-   "live": 7849,
+   "live": 7850,
    "wayback": 1404
   },
   "fetch_failed": [
@@ -2950,11 +2952,6 @@
     "source": "tn_policy_notes",
     "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/forest_e_pn_2016_17.pdf",
     "error": "live: HTTP 404; wayback: no 200 capture"
-   },
-   {
-    "source": "tn_policy_notes",
-    "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/ind_major_e_pn_2023_24.pdf",
-    "error": "live: truncated PDF: no %%EOF at the end (7337859 bytes); wayback: no 200 capture"
    },
    {
     "source": "tn_policy_notes",
@@ -101085,14 +101082,6 @@
    "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/forest_e_pn_2016_17.pdf",
    "issue": "fetch failed",
    "detail": "live: HTTP 404; wayback: no 200 capture",
-   "suggested_search": "download by hand into _manual/ and add a manual_manifest.csv row"
-  },
-  {
-   "doc_type": null,
-   "source": "tn_policy_notes",
-   "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/ind_major_e_pn_2023_24.pdf",
-   "issue": "fetch failed",
-   "detail": "live: truncated PDF: no %%EOF at the end (7337859 bytes); wayback: no 200 capture",
    "suggested_search": "download by hand into _manual/ and add a manual_manifest.csv row"
   },
   {

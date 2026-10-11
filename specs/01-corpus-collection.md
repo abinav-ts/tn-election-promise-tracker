@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.3** (2026-10-08; build-time amendments D-023–D-026, D-028–D-031). v1.0 approved 2026-10-07 with D-016–D-022 |
+| Status | **APPROVED v1.4** (2026-10-08; build-time amendments D-023–D-026, D-028–D-033). v1.0 approved 2026-10-07 with D-016–D-022 |
 | Global spec | `specs/00-global-spec.md` v0.4 (amended with this spec). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 2 (spec + foundation), Days 3–4 (crawl, parse, coverage) |
 | CLI | `python -m ept crawl`, `python -m ept parse`, `python -m ept coverage`, `python -m ept spotcheck`, `python -m ept leads` |
@@ -117,7 +117,7 @@ Order of work: originally S1 → S3 → S4 → S5 → S6 → S2 → Tamil pass �
    - lang = requested lang.
    - For GOs, the download-mode rule applies (OQ-2).
    - `--limit N` selects the **first N in-scope items of each source**, in a fixed order (sha1 of the URL), so a small run is spread across departments and years and a re-run touches the same N items (downloads 0). It therefore also caps new downloads at N (D-026).
-3. **Fetch.** Downloads are streamed with a wall-clock limit per file (`http.max_download_s`, default 600 s); a download over the limit, or shorter than its `Content-Length`, is a retryable failure (D-030). A PDF is kept only if it is complete: `%%EOF` in its last KB (after trailing padding) and it opens in PyMuPDF with ≥ 1 page. Live URL first. On failure (timeout, 4xx/5xx, HTML error page in place of a PDF), use the latest 200 Wayback capture via `https://web.archive.org/web/{ts}id_/{url}`. If both fail **definitively** (an HTTP 4xx or an error page live, and no usable Wayback capture), the item gets `fetch_failed` in the catalogue and appears in the coverage gap list. Connection errors, timeouts, throttling (429) and server errors (5xx), on either side, leave the item pending (`deferred`) for the next run (D-029). A host is paused only after 3 consecutive failed requests, for a cooldown that starts at 2 minutes and doubles up to 30 minutes, then retried.
+3. **Fetch.** Downloads are streamed with a wall-clock limit per file (`http.max_download_s`, default 600 s); a download over the limit, or shorter than its `Content-Length`, is a retryable failure (D-030). A PDF is kept only if it is complete: `%%EOF` in its last KB (after trailing padding) and it opens in PyMuPDF with ≥ 1 page. Exception (D-033): a **live** PDF without `%%EOF` is accepted when every byte the server announced (`Content-Length`) arrived and it opens with ≥ 1 page; the sidecar records this. It never applies to Wayback captures. Live URL first. On failure (timeout, 4xx/5xx, HTML error page in place of a PDF), use the latest 200 Wayback capture via `https://web.archive.org/web/{ts}id_/{url}`. If both fail **definitively** (an HTTP 4xx or an error page live, and no usable Wayback capture), the item gets `fetch_failed` in the catalogue and appears in the coverage gap list. Connection errors, timeouts, throttling (429) and server errors (5xx), on either side, leave the item pending (`deferred`) for the next run (D-029). A host is paused only after 3 consecutive failed requests, for a cooldown that starts at 2 minutes and doubles up to 30 minutes, then retried.
 4. **Register.** Write the raw file and sidecar, then upsert the `documents` row with `parse_status=pending`, sha256, `fetched_at`, `department` (canonicalised via a `dep_id → name` map in `sources.yaml`; unmapped names are kept raw and logged) and `fiscal_year`.
 5. **Wayback first capture.** For every downloaded document, look up the earliest CDX capture of its URL and store it in the sidecar. It is used only as a date fallback (§4.5).
    - The date fallback is the first capture **whose digest equals the kept bytes** (D-018), searched at the document's URL **and** at known pre-migration URLs of the same file (`wayback_legacy` in `sources.yaml`, D-023). A legacy capture with a different digest is never used.
@@ -160,6 +160,8 @@ Checks (each failure adds a row to `date_review.csv` with a reason):
 - **FY mismatch:** the date falls outside the document's listed fiscal year (± 3 months).
 
 `doc_date` is **never** invented from a fiscal year alone (§5).
+
+**Later date wins (D-032).** When a document has both a listing date (rank 2) and a **day-precise** issue date in its own text (rank 3), the later of the two is stored, so a document is never treated as available before it was issued. The conflict check still flags them if they differ by more than `date.conflict_days`. A text "date" after the run date is never an issue date. Known effect: an OCR misread of the year (e.g. 2021 read as 2024) can push a GO later; that never leaks, and the conflict stays flagged for review.
 
 ### 4.6 Tamil crawler and pairing (`ept crawl --lang ta`)
 - Runs **after** the English pass and uses the same adapters (S1–S6), filtered to Tamil.

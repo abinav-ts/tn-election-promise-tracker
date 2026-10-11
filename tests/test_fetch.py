@@ -373,3 +373,20 @@ def test_per_file_progress_line(conn, root, capsys):
                  limit=None, force=False, budget=Budget(None), stats=CrawlStats())
     lines = [l for l in capsys.readouterr().err.splitlines() if "] test_source " in l and "[" in l]
     assert len(lines) == 2 and "[1/2] test_source" in lines[0] and " MB " in lines[0] and "s via live" in lines[0]
+
+
+def test_live_pdf_without_eof_accepted_when_length_matches(conn, root):
+    from ept.corpus.fetch import verify_raw
+
+    no_eof = make_pdf("server copy")
+    no_eof = no_eof[: no_eof.rfind(b"%%EOF")]  # opens (repaired) but has no %%EOF
+    hdr = {**PDF_HDR, "Content-Length": str(len(no_eof))}
+    f, _ = _fetcher(conn, [(URL, FakeResponse(200, no_eof, hdr)), ("cdx", _cdx([]))])
+    r = f.fetch(_item())
+    assert r.status == "downloaded"
+    raw = root / db.get(conn, "documents", r.doc_id).local_path
+    assert "D-033" in read_sidecar(raw)["complete_check"]["note"]
+    assert verify_raw(conn, get_config(), {}) == []  # not quarantined later
+    # without a Content-Length to compare, the same bytes are rejected
+    f2, _ = _fetcher(conn, [(URL + "?x", FakeResponse(200, no_eof, PDF_HDR)), ("cdx", _cdx([]))])
+    assert f2.fetch(_item(url=URL + "?x")).status == "fetch_failed"

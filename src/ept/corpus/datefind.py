@@ -219,6 +219,14 @@ def resolve(
         dating.reasons.insert(0, "undated (fiscal year only)" if fiscal_year else "undated")
         return dating
     best = cands[0]
+    if DateSource(best.source) is DateSource.listing:
+        # D-032: if the document's own day-precise issue date is later than its listing date, the later one wins
+        # (a document cannot be available before it was issued)
+        text_dates = [c for c in cands if c.kind != "copyright" and DateSource(c.source) is DateSource.document_text
+                      and c.precision == DatePrecision.day.value and c.d > best.d]
+        if text_dates:
+            best = max(text_dates, key=lambda c: period_end(c.d, c.precision))
+            reasons.append(f"issue date in text later than listing date: using {best.date}")
     doc_date, precision = best.d, best.precision
     source = DateSource(best.source)
     if best.kind == "copyright":

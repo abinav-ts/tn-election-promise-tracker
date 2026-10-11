@@ -44,7 +44,7 @@ def test_filename_dates():
 
 
 def test_precedence_ranks():
-    cands = [C("wayback_capture", "2021-09-01"), C("filename", "2021-08-14"), C("document_text", "2021-08-13"),
+    cands = [C("wayback_capture", "2021-09-01"), C("filename", "2021-08-14"), C("document_text", "2021-08-09"),
              C("listing", "2021-08-12"), C("manual", "2021-08-11")]
     for expected in ["manual", "listing", "document_text", "filename", "wayback_capture"]:
         r = resolve(cands, fiscal_year="2021-22", latest_mentioned=None, **KW)
@@ -63,10 +63,10 @@ def test_review_flags_for_weak_sources():
 
 
 def test_conflict():
-    r = resolve([C("listing", "2021-08-13"), C("document_text", "2021-09-30")], fiscal_year=None,
+    r = resolve([C("listing", "2021-09-30"), C("document_text", "2021-08-13")], fiscal_year=None,
                 latest_mentioned=None, **KW)
     assert r.source == "listing" and any(x.startswith("conflict") for x in r.reasons)
-    r = resolve([C("listing", "2021-08-13"), C("document_text", "2021-08-15")], fiscal_year=None,
+    r = resolve([C("listing", "2021-08-15"), C("document_text", "2021-08-13")], fiscal_year=None,
                 latest_mentioned=None, **KW)
     assert not r.reasons
 
@@ -162,3 +162,27 @@ def test_copyright_guard_still_uses_every_mention():
     r = resolve([_cr(2016)], fiscal_year="2016-17", latest_mentioned=None,
                 latest_any=C("text_mention", "2017-03-31"), **KW)
     assert r.source == "none" and any("© year 2016 not used" in x for x in r.reasons)
+
+
+def test_later_of_listing_and_text_date_wins():
+    r = resolve([C("listing", "2024-10-10"), C("document_text", "2024-10-23")], fiscal_year=None,
+                latest_mentioned=None, **KW)
+    assert r.source == "document_text" and r.doc_date == D(2024, 10, 23)
+    assert any("later than listing" in x for x in r.reasons) and any(x.startswith("conflict") for x in r.reasons)
+    # GO header earlier than the listing (the usual case): the listing date stays
+    r = resolve([C("listing", "2022-12-06"), C("document_text", "2022-10-19")], fiscal_year=None,
+                latest_mentioned=None, **KW)
+    assert r.source == "listing" and r.doc_date == D(2022, 12, 6)
+    # a few days later, no conflict, still the later date
+    r = resolve([C("listing", "2021-05-10"), C("document_text", "2021-05-12")], fiscal_year=None,
+                latest_mentioned=None, **KW)
+    assert r.doc_date == D(2021, 5, 12)
+    # the © year never overrides a listing date
+    r = resolve([C("listing", "2021-05-10"), _cr(2021)], fiscal_year="2021-22", latest_mentioned=None, **KW)
+    assert r.source == "listing"
+
+
+def test_month_only_text_date_does_not_override_listing():
+    r = resolve([C("listing", "2024-06-28"), C("document_text", "2024-06-01", "month")], fiscal_year=None,
+                latest_mentioned=None, **KW)
+    assert r.source == "listing" and r.doc_date == D(2024, 6, 28)

@@ -171,7 +171,7 @@ class Http:
         """GET with robots, rate limit and retries. 4xx responses are returned, not raised."""
         return self._request(url)
 
-    def get_bytes(self, url: str) -> tuple[bytes, str]:
+    def get_bytes(self, url: str) -> tuple[bytes, dict[str, str]]:
         """Download a file, streamed. Raises FetchError on non-200, when the whole download takes longer
         than http.max_download_s (a slow trickle never trips the per-read timeout), or when fewer bytes
         arrive than Content-Length announced. The last two are transient (status None)."""
@@ -193,7 +193,7 @@ class Http:
             expected = resp.headers.get("Content-Length")
             if expected and expected.isdigit() and len(buf) < int(expected):
                 raise FetchError(url, f"incomplete transfer: {len(buf)} of {expected} bytes")
-            return bytes(buf), resp.headers.get("Content-Type", "")
+            return bytes(buf), dict(resp.headers)
         finally:
             resp.close()
 

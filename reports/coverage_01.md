@@ -1,8 +1,8 @@
 # Coverage report — stage 01
 
-_Generated 2026-10-11T03:38:30+00:00 by `ept coverage`._
+_Generated 2026-10-11T03:46:12+00:00 by `ept coverage`._
 
-Totals: 10257 catalogued items, 9253 documents, 60197 chunks.
+Totals: 10257 catalogued items, 9254 documents, 60259 chunks.
 
 ## 1. Documents by type and fiscal year
 
@@ -15,7 +15,7 @@ Each cell: catalogued (in scope, English) / downloaded / parsed / chunked.
 | go | 441/416/416/416 | 663/649/649/649 | 993/935/935/935 | 806/767/767/767 | 852/837/837/837 | 777/767/767/767 | 788/767/767/767 | 558/549/549/549 | 700/685/685/685 | 592/585/585/585 | 105/105/105/105 | 0/0/0/0 |
 | governor_address | 2/2/2/2 | 1/1/1/1 | 1/1/1/1 | 1/1/1/1 | 1/1/1/1 | 2/2/2/2 | 1/1/1/1 | 1/1/1/1 | 1/1/1/1 | 1/1/1/1 | 1/1/1/1 | 0/0/0/0 |
 | other | 7/7/7/7 | 10/10/10/10 | 12/12/12/12 | 11/11/11/11 | 7/7/7/7 | 7/7/7/7 | 10/10/10/10 | 5/5/5/5 | 11/11/11/11 | 7/7/7/7 | 5/5/5/5 | 0/0/0/0 |
-| policy_note | 48/45/45/45 | 40/40/40/40 | 42/42/42/42 | 42/41/41/41 | 29/29/29/29 | 54/52/52/52 | 57/56/56/56 | 59/58/58/58 | 57/57/57/57 | 60/60/60/60 | 55/55/55/55 | 0/0/0/0 |
+| policy_note | 48/45/45/45 | 40/40/40/40 | 42/42/42/42 | 42/41/41/41 | 29/29/29/29 | 54/52/52/52 | 57/56/56/56 | 59/59/59/59 | 57/57/57/57 | 60/60/60/60 | 55/55/55/55 | 0/0/0/0 |
 | scheme_page | 0/291/291/270 | 0/54/54/54 | 0/53/53/44 | 0/22/22/22 | 0/23/23/4 | 0/13/13/11 | 0/217/217/217 | 0/228/228/228 | 0/160/160/160 | 0/0/0/0 | 0/0/0/0 | 1487/131/131/131 |
 
 ## 2. GOs by department and calendar year
@@ -34,10 +34,10 @@ Each cell: listed / downloaded. **Bold** = hole (empty, or below 25% of the depa
 | Environment, Climate Change and Forests Department | **0/0** | 5/3 | **3/3** | 4/4 | **0/0** | 36/34 | 24/24 | 46/44 | 111/107 | 68/68 | 13/13 |
 | Finance Department | 32/30 | 74/74 | 50/49 | 49/47 | 65/65 | 30/29 | 59/58 | 41/39 | 19/19 | 23/23 | 18/18 |
 | Handlooms, Handicrafts, Textiles and Khadi Department | **0/0** | **0/0** | **0/0** | 3/3 | 5/5 | 5/5 | 5/5 | 4/4 | 2/2 | 1/1 | 1/1 |
-| Health and Family Welfare Department | 26/17 | **0/0** | 259/250 | 287/263 | 280/267 | 88/86 | 36/34 | 45/44 | 86/78 | 238/232 | 114/113 |
-| Higher Education Department | **0/0** | 4/3 | 28/26 | 28/27 | 23/23 | 26/25 | 28/28 | 10/10 | 7/7 | 12/12 | 15/15 |
-| Highways and Minor Ports Department | 4/4 | 11/10 | 139/137 | 83/80 | 85/82 | 82/81 | 46/43 | 12/12 | 3/3 | **0/0** | **0/0** |
-| Home, Prohibition and Excise Department | 12/11 | 13/13 | 40/40 | 30/30 | 35/35 | 70/70 | 80/78 | 94/92 | 84/81 | 43/43 | 18/18 |
+| Health and Family Welfare Department | 26/17 | **0/0** | 259/250 | 287/263 | 280/267 | 88/85 | 36/34 | 45/44 | 86/79 | 238/232 | 114/113 |
+| Higher Education Department | **0/0** | 4/3 | 28/26 | 28/27 | 23/22 | 26/25 | 28/29 | 10/10 | 7/7 | 12/12 | 15/15 |
+| Highways and Minor Ports Department | 4/4 | 11/10 | 139/137 | 83/80 | 85/82 | 82/80 | 46/43 | 12/12 | 3/4 | **0/0** | **0/0** |
+| Home, Prohibition and Excise Department | 12/11 | 13/13 | 40/40 | 30/30 | 35/35 | 70/69 | 80/78 | 94/92 | 84/82 | 43/43 | 18/18 |
 | Housing and Urban Development Department | **2/2** | 13/13 | 14/14 | 15/14 | 10/10 | 23/23 | 53/53 | 10/10 | 18/18 | 16/16 | 9/9 |
 | Human Resources Management Department | 5/5 | 19/18 | 24/22 | 13/12 | 27/26 | 19/19 | 15/15 | 6/5 | **1/1** | 8/8 | 6/6 |
 | Industries, Investment Promotion & Commerce Department | **0/0** | 2/2 | 2/2 | 3/3 | 12/12 | 14/14 | 34/34 | 6/6 | 2/2 | **0/0** | **0/0** |
@@ -51,47 +51,47 @@ Each cell: listed / downloaded. **Bold** = hole (empty, or below 25% of the depa
 | Public Department | 28/26 | 17/17 | 5/5 | 8/7 | 6/6 | 15/15 | 10/10 | 12/12 | 12/12 | 10/10 | 11/11 |
 | Public Works Department | **0/0** | 2/2 | **0/0** | 2/2 | **0/0** | 1/1 | 4/3 | **0/0** | **0/0** | **0/0** | **0/0** |
 | Revenue and Disaster Management Department | 5/5 | 9/7 | 3/3 | 10/10 | 35/35 | 42/42 | 21/20 | 3/3 | 2/2 | **1/1** | **0/0** |
-| Rural Development and Panchayat Raj Department | 14/10 | 50/50 | 27/24 | 30/30 | 44/44 | 63/63 | 48/48 | 52/52 | 66/65 | 12/11 | **7/7** |
+| Rural Development and Panchayat Raj Department | 14/10 | 50/50 | 27/24 | 30/30 | 44/43 | 63/63 | 48/48 | 52/51 | 66/66 | 12/12 | **7/7** |
 | School Education Department | **0/0** | 2/2 | 16/16 | 7/7 | 1/1 | 4/3 | 4/4 | 2/2 | 1/1 | 21/21 | **0/0** |
 | Social Justice Department | **0/0** | **0/0** | 4/4 | 8/6 | 1/1 | 4/3 | 4/4 | 5/5 | 3/3 | **0/0** | **0/0** |
 | Social Welfare and Women Empowerment Department | 12/11 | 29/29 | 29/29 | 12/12 | 1/1 | 2/2 | 4/4 | 1/1 | 3/3 | 1/1 | **0/0** |
 | Special Programme Implementation | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | 1/1 | **0/0** | **0/0** | 1/1 | **0/0** |
 | Tamil Dev. and Information Department | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** | **0/0** |
 | Tourism, Culture and Special Initiatives Department | **0/0** | **0/0** | **0/0** | 2/1 | **0/0** | 6/6 | 1/1 | **0/0** | 2/2 | 3/3 | 1/1 |
-| Transport Department | **0/0** | **1/1** | 9/6 | **1/1** | 13/13 | 12/12 | 22/22 | 20/20 | 14/14 | **2/2** | **0/0** |
+| Transport Department | **0/0** | **1/1** | 9/6 | **1/1** | 13/13 | 12/11 | 22/22 | 20/20 | 14/15 | **2/2** | **0/0** |
 | Water Resources Department | **0/0** | **1/1** | **0/0** | **0/0** | **1/1** | 8/7 | 108/104 | 61/60 | 121/121 | 68/68 | 24/24 |
 | Welfare of Differently Abled Persons | 16/15 | 32/30 | 11/9 | 2/2 | 5/5 | 7/7 | 9/9 | 3/3 | **0/0** | 2/2 | 2/2 |
 | Youth Welfare and Sports Development Department | 6/6 | 1/1 | 11/11 | 6/6 | 1/1 | 1/1 | 4/4 | **0/0** | **0/0** | **0/0** | **0/0** |
 
 ## 3. Dating
 
-Undated documents (excluded from cutoff runs): 220. Rows in `date_review.csv`: 3342.
+Undated documents (excluded from cutoff runs): 221. Rows in `date_review.csv`: 3343.
 
 | doc_type | docs | date_source | precision | undated |
 |---|---|---|---|---|
 | budget_speech | 21 | document_text 67%, wayback_capture 24%, none 10% | day 90%, none 10% | 2 |
 | cag_report | 44 | wayback_capture 100% | day 100% | 0 |
-| go | 7062 | listing 100% | day 100% | 0 |
+| go | 7062 | listing 99%, document_text 1% | day 100% | 0 |
 | governor_address | 13 | filename 92%, none 8% | day 92%, none 8% | 1 |
 | other | 92 | wayback_capture 50%, document_text 30%, none 18%, filename 1% | day 53%, year 28%, none 18% | 17 |
-| policy_note | 535 | wayback_capture 56%, document_text 31%, none 13% | day 56%, year 31%, none 13% | 69 |
+| policy_note | 536 | wayback_capture 56%, document_text 31%, none 13% | day 56%, year 31%, none 13% | 70 |
 | scheme_page | 1486 | wayback_capture 91%, none 9% | day 91%, none 9% | 131 |
 
-Review reasons: dated by Wayback first capture (upper bound) (1751); anachronism (856); conflict (432); out of window (315); dated from © year (year precision) (191); undated (131); FY mismatch (94); undated (fiscal year only) (89); © year 2022 not used (22); © year 2021 not used (18); © year 2024 not used (17); © year 2023 not used (16); dated from filename (13); © year 2019 not used (12); © year 2018 not used (12); © year 2025 not used (11); © year 2017 not used (8); © year 2016 not used (8); © year 2020 not used (7); © year 1971 not used (2); © year 2005 not used (2); © year 1957 not used (2); © year 2000 not used (1); © year 1973 not used (1); © year 1939 not used (1); © year 1948 not used (1); © year 2012 not used (1); © year 2008 not used (1); © year 1995 not used (1); © year 1961 not used (1); © year 2013 not used (1); © year 1963 not used (1)
+Review reasons: dated by Wayback first capture (upper bound) (1751); anachronism (809); conflict (432); out of window (315); dated from © year (year precision) (191); undated (131); FY mismatch (108); undated (fiscal year only) (90); issue date in text later than listing date (49); © year 2022 not used (22); © year 2021 not used (18); © year 2023 not used (17); © year 2024 not used (17); dated from filename (13); © year 2019 not used (12); © year 2018 not used (12); © year 2025 not used (11); © year 2017 not used (8); © year 2016 not used (8); © year 2020 not used (7); © year 1971 not used (2); © year 2005 not used (2); © year 1957 not used (2); © year 2000 not used (1); © year 1973 not used (1); © year 1939 not used (1); © year 1948 not used (1); © year 2012 not used (1); © year 2008 not used (1); © year 1995 not used (1); © year 1961 not used (1); © year 2013 not used (1); © year 1963 not used (1)
 
 ## 4. Parsing
 
-Status: ocr 6652, ok 2601. OCR pages: 38305 of 142631 (0.269). Chunks: 60197; words per chunk: {'min': 2, 'p10': 329, 'median': 404, 'p90': 450, 'max': 500}.
+Status: ocr 6653, ok 2601. OCR pages: 38320 of 142872 (0.268). Chunks: 60259; words per chunk: {'min': 2, 'p10': 329, 'median': 404, 'p90': 450, 'max': 500}.
 
 ## 5. Language
 
-Documents by type and detected language: budget_speech|en 21, cag_report|en 34, cag_report|ta 10, go|en 7062, governor_address|en 13, other|en 92, policy_note|en 535, scheme_page|en 1428, scheme_page|ta 58.
+Documents by type and detected language: budget_speech|en 21, cag_report|en 34, cag_report|ta 10, go|en 7062, governor_address|en 13, other|en 92, policy_note|en 536, scheme_page|en 1428, scheme_page|ta 58.
 
 Tamil pairing: not run yet (spec 01 §4.10 step 10).
 
 ## 6. Fetch path
 
-Fetched via: live 7849, wayback 1404. Fetch failures: 193. Retryable (outage, time limit, quarantined): 0. Wayback lookups pending: 0.
+Fetched via: live 7850, wayback 1404. Fetch failures: 192. Retryable (outage, time limit, quarantined): 0. Wayback lookups pending: 0.
 
 Superseded versions (not downloaded, D-018; one row per document, digests in the JSON):
 
@@ -1274,7 +1274,7 @@ not run yet (spec 01 §4.10 step 10)
 
 ## 8. Gap list
 
-359 gaps (go 125, fetch 193, budget_speech 1, policy_note 39, cag_report 1). Full list with suggested searches in `coverage_01.json` → `gaps`. Non-GO gaps:
+358 gaps (go 125, fetch 192, budget_speech 1, policy_note 39, cag_report 1). Full list with suggested searches in `coverage_01.json` → `gaps`. Non-GO gaps:
 
 | type | department/source | period | issue | suggested search |
 |---|---|---|---|---|
@@ -1463,7 +1463,6 @@ not run yet (spec 01 §4.10 step 10)
 |  | tn_gos |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |
 |  | tn_gos |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |
 |  | tn_gos |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |
-|  | tn_policy_notes |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |
 |  | tn_policy_notes |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |
 |  | tn_policy_notes |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |
 |  | tn_policy_notes |  | fetch failed | download by hand into _manual/ and add a manual_manifest.csv row |

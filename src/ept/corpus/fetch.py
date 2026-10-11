@@ -65,6 +65,14 @@ def pdf_incomplete(data: bytes) -> Optional[str]:
     return None
 
 
+def opens_with_pages(data: bytes) -> bool:
+    try:
+        with pymupdf.open(stream=data, filetype="pdf") as doc:
+            return doc.page_count > 0
+    except Exception:
+        return False
+
+
 def payload_error(data: bytes, url: str) -> Optional[str]:
     """Why a payload is not the complete document we asked for, or None if it looks right."""
     if not data:
@@ -133,6 +141,7 @@ class _Payload:
     archive_url: Optional[str] = None
     attempts: list[str] = field(default_factory=list)
     rejected: list[dict[str, str]] = field(default_factory=list)  # incomplete Wayback captures skipped
+    note: Optional[str] = None
 
 
 class Fetcher:
@@ -154,10 +163,15 @@ class Fetcher:
         attempts: list[str] = []
         live_final = wayback_final = False
         try:
-            data, _ = self.http.get_bytes(url)
+            data, headers = self.http.get_bytes(url)
             err = payload_error(data, url)
             if err is None:
                 return _Payload(data, "live", attempts=attempts)
+            # D-033: the server's own file lacks %%EOF, but all announced bytes arrived and it opens
+            if (err.startswith("truncated PDF") and str(len(data)) == headers.get("Content-Length")
+                    and opens_with_pages(data)):
+                return _Payload(data, "live", attempts=attempts,
+                                note="accepted without %%EOF: size matches Content-Length and it opens (D-033)")
             attempts.append(f"live: {err}")
             live_final = True
         except RobotsDisallowed:
@@ -236,6 +250,8 @@ class Fetcher:
                     return FetchResult(cat.FETCH_FAILED, doc_id, error=e.reason, seconds=time.monotonic() - started)
                 data, via, archive_url = payload.data, payload.via, payload.archive_url
                 meta = read_sidecar(raw)
+                if payload.note:
+                    meta["complete_check"] = {"size": len(data), "ok": True, "note": payload.note}
                 if payload.rejected:
                     meta["wayback_rejected"] = payload.rejected
                 seconds = time.monotonic() - started
