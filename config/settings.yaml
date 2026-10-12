@@ -133,7 +133,7 @@ extract:
   calibration_pages: 5
   calibration_ppi: 150        # TVK's scan resolution
   ocr_gate:
-    max_cer: 0.05
+    max_cer: 0.02             # D-048 (was 0.05): calibration is optimistic; passing TVK pages still had visible errors
     min_conf: 80
   vision_disagree_cer: 0.25
   vision:

@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-047 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-048 (`docs/decisions/log.md`) |
 
 ---
 
@@ -303,7 +303,7 @@ Rules from the global warning box that apply to this stage:
 - Q-04: what counts as a promise, splitting rules S1–S5, drop-later-duplicate with a log, IDs frozen.
 - Q-10: font mapping for legacy-font Tamil, OCR for the scan, vision fallback.
 - No cuts despite the 2-day slip.
-- OQ-1: starting thresholds accepted: `fontmap_min_tamil_share` 0.98, `min_validity` 0.98, `ocr_gate.max_cer` 0.05, `ocr_gate.min_conf` 80, `vision_disagree_cer` 0.25, `vision.max_attempts` 2, `units_per_call` 8, `max_promises_per_unit` 5, `max_text_words` 60, `dedup.candidate_ratio` 0.80, `calibration_pages` 5, `transcribe_batch` 10, `llm.bulk.min_v1_pass` 0.90 (revisable after the limit-20 run with a logged reason).
+- OQ-1: starting thresholds accepted: `fontmap_min_tamil_share` 0.98, `min_validity` 0.98, `ocr_gate.max_cer` 0.05 (lowered to 0.02 after step 2, D-048), `ocr_gate.min_conf` 80, `vision_disagree_cer` 0.25, `vision.max_attempts` 2, `units_per_call` 8, `max_promises_per_unit` 5, `max_text_words` 60, `dedup.candidate_ratio` 0.80, `calibration_pages` 5, `transcribe_batch` 10, `llm.bulk.min_v1_pass` 0.90 (revisable after the limit-20 run with a logged reason).
 - OQ-3: vision fallback = Gemini image input first; Cowork handoff only for pages Gemini can't transcribe validly (D-042).
 
 - OQ-2: the code is licensed **GPL v3-or-later** (D-043), matching the vendored Open-Tamil font table, so there is no licence conflict. Licences for the data, website text and whitepaper (GPL covers code only) are decided in stage 08.
