@@ -1,0 +1,55 @@
+# Manifesto layout profiles (spec 02 §2.2, D-040).
+# Typography only: file, language, text route, fonts, page furniture, item markers, heading style.
+# No promise content. One generic reader (`ept extract pages`) and cutter (`ept extract units`) apply them all.
+# Furniture and heading patterns are regexes matched against a whole line (after whitespace collapse).
+
+profiles:
+  DMK-2021:
+    file: DMK-2021_en.pdf
+    lang: en
+    route: text_layer
+    title: DMK election manifesto 2021 (English, dmk.in browser printout)
+    text_column_x: 120          # main text starts at x≈124; the website sidebar/address sits at x≈39–75
+    drop_tamil_lines: true      # the website's Tamil menu and party name
+    furniture:
+      - '\d{1,2}/\d{1,2}/\d{2}, \d{1,2}:\d{2} [AP]M'      # browser header: print date
+      - 'DMK ELECTION MANIFESTO 2021 - ENGLISH'           # browser header: page title
+      - 'https://dmk\.in/\S*'                             # browser footer: URL
+      - '\d{1,2}/29'                                      # browser footer: page n/29
+    heading:
+      bold_line: true           # sub-headings are lines set entirely in Arial Bold
+    item_marker:
+      kind: running_number
+      pattern: '(\d{1,3})\.(?:\s|$)'
+
+  AIADMK-2016:
+    file: AIADMK-2016_ta.pdf
+    lang: ta
+    route: font_map
+    title: AIADMK election manifesto 2016 (Tamil, VANAVIL legacy fonts)
+    legacy_fonts: [VANAVIL-Avvaiyar, VANAVIL-Swetha, VANAVIL-Valluvar, VANAVIL-AvvaiyarBold, VANAVIL-Alayarasi]
+    bullet_fonts: [Wingdings]
+    bullet_marker: "•"
+    furniture:
+      - 'அஇஅதிமுக தேர்தல் அறிக்கை'                         # running header line 1
+      - 'தமிழ் நாடு சட்டமன்றப் பொதுத் தேர்தல் - 2016'        # running header line 2
+      - '\d{1,2}'                                          # page number
+    heading:
+      pattern: '\d{1,2}\.\s.*:'                            # numbered section heading ending in a colon
+    item_marker:
+      kind: bullet
+      pattern: '•\s*'
+
+  TVK-2026:
+    file: TVK-2026_ta.pdf
+    lang: ta
+    route: ocr
+    title: TVK election manifesto 2026 (Tamil, image-only scan, 150 ppi)
+    source_note: No born-digital or >= 300 ppi official copy found (searched 2026-10-12, spec 02 §4.3).
+    furniture:
+      - 'தமிழக வெற்றிக் கழகம்\s*\d{0,3}'                    # footer with page number
+    heading:
+      pattern: null             # set in build step 5 after reading the OCR/vision text
+    item_marker:
+      kind: section_number
+      pattern: '(\d{1,2})[.)]?\s'

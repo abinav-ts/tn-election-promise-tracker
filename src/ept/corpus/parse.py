@@ -349,7 +349,10 @@ def run_parse(term: Optional[str] = None, limit: Optional[int] = None, force: bo
                              "chunks_written": 0, "redated": 0, "date_review_rows": 0, "stopped": None}
     try:
         # `--limit N` = the first N documents (doc_id order), so a re-run touches the same documents
-        docs = [d for d in db.select_models(conn, "documents", "local_path IS NOT NULL ORDER BY doc_id")
+        # manifestos are read by stage 02 (`ept extract pages`), never here (D-022)
+        docs = [d for d in db.select_models(conn, "documents",
+                                            "local_path IS NOT NULL AND doc_type != ? ORDER BY doc_id",
+                                            (DocType.manifesto.value,))
                 if in_term(d, cfg, term)]
         if limit is not None:
             docs = docs[:limit]

@@ -9,7 +9,7 @@ import datetime as dt
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 import yaml
 from pydantic import BaseModel, ConfigDict
@@ -44,6 +44,18 @@ class Paths(_Cfg):
     llm_usage_log: str
     llm_fixtures: str
     http_cache: str
+    # stage 02 (spec 02 §4.10)
+    manifestos_raw: str
+    manifesto_profiles: str
+    manifesto_interim: str
+    frozen: str
+    promise_overrides: str
+    extract_dropped: str
+    extract_failures: str
+    promise_dedup: str
+    extraction_md: str
+    extraction_json: str
+    backend_test_md: str
 
 
 class EvidenceWindow(_Cfg):
@@ -124,10 +136,61 @@ class Go(_Cfg):
     download_mode: str
 
 
+class OcrGate(_Cfg):
+    max_cer: float
+    min_conf: float
+
+
+class VisionCfg(_Cfg):
+    max_attempts: int
+    max_unreadable: int
+
+
+class DedupCfg(_Cfg):
+    candidate_ratio: float
+
+
+class Extract(_Cfg):
+    """Spec 02 §4.10."""
+
+    ocr_lang: str
+    ocr_psm: int
+    ocr_timeout_s: float
+    overprint_px: float
+    line_tol_px: float
+    space_gap_px: float
+    fontmap_min_tamil_share: float
+    min_validity: float
+    calibration_pages: int
+    calibration_ppi: int
+    ocr_gate: OcrGate
+    vision_disagree_cer: float
+    vision: VisionCfg
+    transcribe_batch: int
+    max_number_jump: int
+    units_per_call: int
+    max_promises_per_unit: int
+    max_text_words: int
+    common_words: list[str]
+    dedup: DedupCfg
+    frozen_terms: list[str]
+
+
+class BulkCfg(_Cfg):
+    api_key_env: str
+    candidates: list[str]
+    rpm: Optional[float] = None
+    rpd: Optional[int] = None
+    min_v1_pass: float
+    backoff_s: float
+    max_backoff_s: float
+
+
 class Llm(_Cfg):
     retries: int
     temperature: float
     models: dict[str, Optional[str]]
+    bulk: BulkCfg
 
 
 class Settings(_Cfg):
@@ -145,6 +208,7 @@ class Settings(_Cfg):
     progress: ProgressCfg
     spotcheck: SpotcheckCfg
     go: Go
+    extract: Extract
     llm: Llm
 
 
@@ -169,6 +233,39 @@ class Sources(BaseModel):
     trackers: list[dict[str, Any]] = []
 
 
+class ItemMarker(_Cfg):
+    """How the manifesto marks a new item (spec 02 §4.4 rule 3)."""
+
+    kind: Literal["running_number", "bullet", "section_number"]
+    pattern: str  # regex matched at line start; group 1 = the number (number kinds)
+
+
+class Heading(_Cfg):
+    """How a section heading looks: a line regex, and/or a line set entirely in bold."""
+
+    pattern: Optional[str] = None
+    bold_line: bool = False
+
+
+class ManifestoProfile(_Cfg):
+    """One manifesto's typography (spec 02 §2.2, D-040). No promise content."""
+
+    file: str
+    lang: Literal["en", "ta"]
+    route: Literal["text_layer", "font_map", "ocr"]
+    title: str
+    legacy_fonts: list[str] = []
+    bullet_fonts: list[str] = []
+    bullet_marker: str = "•"
+    text_column_x: Optional[float] = None  # text_layer: blocks starting left of this are sidebar
+    drop_tamil_lines: bool = False  # text_layer in an English manifesto: Tamil-script lines are sidebar
+    furniture: list[str] = []  # regexes for whole lines that are page furniture
+    heading: Heading = Heading()
+    item_marker: ItemMarker
+    skip_pages: list[int] = []  # 1-based; cover/contents, listed in the report
+    source_note: Optional[str] = None
+
+
 class Config:
     """Settings + sources, with paths resolved against the project root."""
 
@@ -179,6 +276,14 @@ class Config:
 
     def path(self, key: str) -> Path:
         return self.root / getattr(self.settings.paths, key)
+
+    def spotcheck_path(self, stage: str) -> Path:
+        return self.root / self.settings.paths.spotcheck.format(stage=stage)
+
+    def profiles(self) -> dict[str, ManifestoProfile]:
+        """config/manifestos.yaml, keyed by term_id."""
+        data = _read_yaml(self.path("manifesto_profiles"))
+        return {term: ManifestoProfile.model_validate(p) for term, p in (data.get("profiles") or {}).items()}
 
     def term(self, term_id: str) -> Term:
         for t in self.settings.terms:

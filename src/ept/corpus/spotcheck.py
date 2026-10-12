@@ -212,7 +212,7 @@ def run_spotcheck() -> dict[str, Any]:
     s = cfg.settings.spotcheck
     conn = db.connect()
     chosen = select(build(conn, cfg), s.max_items, s.per_source)
-    path = cfg.path("spotcheck")
+    path = cfg.spotcheck_path("01")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS)

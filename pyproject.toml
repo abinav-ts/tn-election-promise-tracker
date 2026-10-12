@@ -1,11 +1,13 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]  # PEP 639 SPDX licence string
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ept"
 version = "0.1.0"
 description = "Tamil Nadu election promise tracker"
+license = "GPL-3.0-or-later"  # D-043
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 requires-python = ">=3.10"
 dependencies = [
     "typer>=0.9",
@@ -15,6 +17,7 @@ dependencies = [
     "beautifulsoup4>=4.12",
     "lxml>=4.9",
     "pymupdf>=1.23",
+    "rapidfuzz>=3",
 ]
 
 [project.optional-dependencies]

@@ -105,3 +105,21 @@ def spotcheck() -> None:
     typer.echo(f"spotcheck: {out['rows']} rows -> {out['path']}")
     if out["below_minimum"]:
         typer.echo("spotcheck: fewer flagged documents than the minimum; all flagged ones are listed")
+
+
+# --- stage 02: promise extraction (spec 02) --------------------------------
+
+extract_app = typer.Typer(no_args_is_help=True, help="Promise extraction (spec 02)")
+app.add_typer(extract_app, name="extract")
+
+
+@extract_app.command("pages")
+def extract_pages(
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """Page text for each manifesto by its profile's route (spec 02 §4.2)."""
+    from ept.extract.pages import run_pages
+
+    _report("extract pages", run_pages(term=term, limit=limit, force=force))

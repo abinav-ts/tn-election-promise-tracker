@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.1** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from step 1, D-046) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-044 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-046 (`docs/decisions/log.md`) |
 
 ---
 
@@ -25,7 +25,7 @@ What each file actually is (inspected 2026-10-11) decides how its text is read (
 
 | Term | File used | Pages | What it is | Text route |
 |---|---|---|---|---|
-| DMK-2021 | `DMK-2021_en.pdf` (official English exists, global §3.1) | 29 | Browser printout of dmk.in. Clean English text layer. 518 numbered lines covering items 1–505 (numbers 18, 80, 136, 251, 441 skipped; 166, 252, 300 printed twice: misnumbering, not missing text). Item 300 holds a 15-entry railway-route sub-list numbered 1–15. Noise: browser header/footer on every page (date, title, URL, `n/29`) and, on some pages, the website's Tamil sidebar menu and party address interleaved with the text | `text_layer` |
+| DMK-2021 | `DMK-2021_en.pdf` (official English exists, global §3.1) | 29 | Browser printout of dmk.in. Clean English text layer. 518 numbered lines covering items 1–505: **503 main items** (numbers 80, 136, 251, 441 not printed; 166 and 252 printed twice: misnumbering, not missing text) plus a 15-entry railway-route sub-list numbered 1–15 inside **item 442**. One wrapped line of item 42 starts with "300." (the amount "Rs 300."), which is not an item marker (counts verified on the file 2026-10-12, D-045). Noise: browser header/footer on every page (date, title, URL, `n/29`) and, on some pages, the website's Tamil sidebar menu and party address interleaved with the text | `text_layer` |
 | AIADMK-2016 | `AIADMK-2016_ta.pdf` | 41 | MS Word export, Tamil set in **VANAVIL** legacy fonts (Avvaiyar, Swetha, Valluvar, AvvaiyarBold, Alayarasi). Extracts as Latin-1 garbage. Bold is faked by printing each line 4× at slight offsets. Numbered section headings (`1. … :`), Wingdings bullets for items, and many un-bulleted paragraphs listing **past achievements** | `font_map` |
 | TVK-2026 | `TVK-2026_ta.pdf` | 96 | Image-only scan (one 1240×1752 JPEG per page, **150 ppi**), designed layout with photos and colour bands. Preface pages, then 10 "pillars" grouped under அறம் / பொருள் / இன்பம், sometimes with lettered sub-sections. Numbered red headings, **numbering restarts at 1 in each section**, a paragraph under each. Footer `தமிழக வெற்றிக் கழகம் n`. The user searched for a better free official copy on 2026-10-12 and found none, so OCR is the route (§4.3 note still allows a swap before freezing) | `ocr` → `vision` fallback |
 
@@ -81,13 +81,14 @@ The route comes from the profile. Every page records its route and quality metri
 - **`text_layer`** (DMK-2021): PyMuPDF text by blocks and lines. Remove lines matching the profile's furniture patterns. Remove the sidebar: blocks left of the profile's text-column x-position, and any Tamil-script line in an English manifesto (the menu and the party name).
 - **`font_map`** (AIADMK-2016, D-035):
   1. Read spans with their font names. Spans whose font is in the profile's legacy-font list are converted with the VANAVIL table. Other spans (Arial, Helvetica, Verdana: real English words such as "(hub and spoke model)", digits) are kept as they are. Wingdings bullets become a bullet marker.
-  2. **Overprint removal:** a span whose text equals an earlier span within `extract.overprint_px` on the same line is dropped (the fake-bold copies).
-  3. Spans are re-joined into lines by position, so a word split across spans is mended.
+  2. **Overprint removal:** a glyph equal to an already-kept glyph (same character and font) within `extract.overprint_px` of it is dropped (the fake-bold copies). Done per glyph, not per span, because the copies are not always split into identical spans (D-046).
+  3. Glyphs are re-joined into lines by baseline (`extract.line_tol_px`) and x position; a gap wider than `extract.space_gap_px` without a space glyph becomes a space; each run of legacy-font glyphs is converted as one string, so a word split across spans is mended.
   4. Unicode NFC.
   - Probe on the real file (2026-10-11): after conversion, 99.96 % of non-space, non-digit characters in legacy-font spans are Tamil; the few leftovers are quotes and isolated Latin letters.
 - **`ocr`** (TVK-2026): Tesseract `tam` (`extract.ocr_lang`) on each page image at its **native resolution** (no upsampling of a 150-ppi scan), PSM from config. Records mean word confidence per page.
 - **Quality metrics per Tamil page** (all routes): Tamil share of letters; **orthographic validity** = share of Tamil words that don't start with a dependent vowel sign or a pulli and don't hold two vowel signs in a row (legacy-map and OCR errors produce these); for `ocr`, mean confidence.
-- **`font_map` gate:** a page with Tamil share < `extract.fontmap_min_tamil_share` or validity < `extract.min_validity` is flagged (spot-check problem group b). A flagged font-map page falls back to `ocr`, then to `vision` (§4.3).
+- **`font_map` gate:** a page whose **converted legacy-font text** has Tamil share < `extract.fontmap_min_tamil_share`, or whose page text has validity < `extract.min_validity`, is flagged (spot-check problem group b). A flagged font-map page falls back to `ocr`, then to `vision` (§4.3). The page-level Tamil share is recorded too; a page below the threshold only because of English words printed in a Latin font (e.g. "Wi-Fi", "Amma Banking Card") is accepted and listed in the report with that reason (acceptance criterion 2) (D-046).
+- **`text_layer` extras (D-046):** icon-font glyphs (Unicode private-use characters) are dropped and counted; a line left of the text column that matches a furniture pattern (browser header/footer) is kept for the cutter, so it is counted as furniture, not sidebar.
 
 ### 4.3 OCR quality gate and vision fallback (D-036)
 TVK has no ground truth, so Tesseract's accuracy at TVK's resolution is **calibrated** on AIADMK, where the font map gives near-ground-truth:
@@ -113,7 +114,7 @@ One generic cutter reads the profile. Its rules:
 1. Join the term's pages in order, keeping page offsets.
 2. A **section heading** (profile pattern; for TVK, also the pillar band and lettered sub-headings) starts a new section. The heading text becomes the `section` of the following units.
 3. An **item marker** starts a new unit:
-   - `running_number` (DMK): `N.` at line start where N continues the main sequence. A number that resets below the running count opens a sub-list and stays inside the current unit (DMK item 300). Order follows position on the page, not the printed number.
+   - `running_number` (DMK): `N.` at line start where N continues the main sequence: N equals the previous main number (a misnumbered duplicate) or exceeds it by at most `extract.max_number_jump` (skipped numbers). A number that resets below the running count opens a sub-list and stays inside the current unit (DMK item 442). A larger forward jump is not a marker (the wrapped "Rs 300." line in item 42). Order follows position on the page, not the printed number (D-045).
    - `bullet` (AIADMK): the bullet marker. An un-bulleted paragraph between bullets is its own unit, so nothing is lost; the LLM classifies it (usually `achievement`).
    - `section_number` (TVK): `N` at the start of a heading line where N continues the section's own count from 1.
 4. If no marker is found on a page (OCR can lose the white-on-red number boxes), the page's text after the last unit becomes one unit marked `page_block`. The LLM still returns verbatim spans from it, so correctness doesn't depend on the marker.
@@ -142,7 +143,7 @@ One generic cutter reads the profile. Its rules:
   - **S3. Don't split:**
     - a means from its goal ("a high-level committee will be formed to draft a State Education Policy" is one promise);
     - conditions or eligibility;
-    - a list of places or items under one action (DMK item 300's 15 rail routes are **one** promise);
+    - a list of places or items under one action (DMK item 442's 15 rail routes are **one** promise);
     - explanation and justification.
   - **S4.** Pieces split from one unit may share the same `source_text`.
   - **S5.** A unit yielding more than `extract.max_promises_per_unit` promises is allowed but flagged (spot-check group d).
@@ -165,7 +166,7 @@ One generic cutter reads the profile. Its rules:
 3. On **yes**, the later piece (in document order) is dropped and logged in `promise_dedup.csv` (D-038). On **no**, both are kept; pairs with very high similarity but a **no** go to spot-check group e.
    - Known case: DMK items 498 and 500 (Sri Lanka in the Citizenship Act amendment).
 4. **IDs are assigned only after deduplication:** `promise_id = {term}-{seq:04d}`, contiguous, in document order (unit order, then piece order). `parent_group` = the `unit_id` the promise came from (global §7 as amended). `page` = the page where its `source_text` starts. `section` = `section_en`. `source_lang` = the profile's language.
-5. **DMK coverage check:** every printed item number 1–505 (from the running-number markers, misnumbered ones by position) maps to ≥ 1 promise, or to a logged drop/dedup reason. Gaps are failures in the report.
+5. **DMK coverage check:** every main item (503 markers; misnumbered ones by position) maps to ≥ 1 promise, or to a logged drop/dedup reason. The numbers 80, 136, 251, 441 are not printed and are reported as explained gaps ("number not printed"), found automatically as holes in the marker sequence. Any other gap is a failure in the report (D-045).
 
 ### 4.7 Report and spot-check
 - **`reports/extraction_02.md`:**
@@ -209,10 +210,10 @@ One generic cutter reads the profile. Its rules:
 - `paths`: `manifestos_raw`, `manifesto_profiles` (`config/manifestos.yaml`), `manifesto_interim`, `frozen` (`data/frozen`), `promise_overrides`, `extract_dropped`, `extract_failures`, `promise_dedup`, `extraction_md/json`, `backend_test_md`.
 - `spotcheck` becomes a template `data/interim/spotcheck_{stage}.csv` (stage 01 keeps its file).
 - `extract`:
-  - `ocr_lang: tam`, `ocr_psm`, `overprint_px`;
+  - `ocr_lang: tam`, `ocr_psm`, `ocr_timeout_s`, `overprint_px`, `line_tol_px`, `space_gap_px`;
   - `fontmap_min_tamil_share`, `min_validity`;
-  - `calibration_pages`, `ocr_gate.{max_cer,min_conf}`, `vision_disagree_cer`, `vision.max_attempts`, `transcribe_batch` (Cowork fallback only);
-  - `units_per_call`, `max_promises_per_unit`, `max_text_words`, `common_words`;
+  - `calibration_pages`, `calibration_ppi` (150, TVK's resolution), `ocr_gate.{max_cer,min_conf}`, `vision_disagree_cer`, `vision.{max_attempts,max_unreadable}` (most `[?]` marks a valid transcription may hold; starting value 5), `transcribe_batch` (Cowork fallback only);
+  - `max_number_jump` (3, D-045), `units_per_call`, `max_promises_per_unit`, `max_text_words`, `common_words`;
   - `dedup.candidate_ratio`;
   - `frozen_terms: []`.
 - `llm`:
@@ -228,7 +229,7 @@ One generic cutter reads the profile. Its rules:
 3. **`_bulk`** (D-044): the Gemini client in `ept.llm` with throttle, backoff, quota stop and key handling, plus image input. Offline tests with a fake client, then **one** live smoke call (needs the key in `.env`). ✔ `stage 02: bulk backend`
 4. **Vision transcription**, only if step 2 gated any pages: `transcribe` with `llm.models.vision`. Pages that still fail after `extract.vision.max_attempts` go to the Cowork fallback (`transcribe export` → the user runs the sessions → `transcribe import`). ✔
 5. `units` for all three terms.
-   - Check: DMK has 505 main units (+ sub-list kept inside item 300); the furniture/unit character accounting is complete. ✔
+   - Check: DMK has 503 main units (+ sub-list kept inside item 442; the four unprinted numbers reported as explained gaps, D-045); the furniture/unit character accounting is complete. ✔
 6. **`backend-test`** on the real units (8 DMK, 6 AIADMK, 6 TVK). Record the choice in `llm.models.bulk` and the free-tier limits in `llm.bulk.rpm/rpd`. ✔
 7. `promises` + `checks` + `dedup` + IDs, then `--limit 20` per term. Then `report` + `spotcheck`. **Human spot-check (7–10 items).** ✔ `stage 02: limit-20 run`
 8. Full run (fits in normal sessions; ≈ 1,000–1,300 units ÷ `units_per_call`), report, coverage check, then a **fresh spot-check list** over the full output. Fix, re-run the affected units, `freeze` each term. STATUS, spec-vs-build diff, deviations logged. ✔ `stage 02: promise extraction`
@@ -265,7 +266,7 @@ Rules from the global warning box that apply to this stage:
    - `page` within the file;
    - covariate fields null.
 6. Every promise passes V1, V2 and V4. English-source promises pass V3. Every Tamil-source V3 flag was in the spot-check pool. Zero unresolved failures.
-7. The DMK coverage check maps items 1–505 with no unexplained gap. Every dedup drop is in `promise_dedup.csv`.
+7. The DMK coverage check maps all 503 main items with no unexplained gap (80, 136, 251, 441: not printed). Every dedup drop is in `promise_dedup.csv`.
 8. A second identical run makes 0 backend calls and produces identical rows. `--term`, `--limit`, `--force` work. A frozen term can't be re-extracted.
 9. `reports/backend_test_02.md` exists, `llm.models.bulk` is set by its rule, and the free-tier limits are recorded.
 10. `reports/extraction_02.md/json` and run metadata exist.

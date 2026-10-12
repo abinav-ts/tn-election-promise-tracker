@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-044; approved with spec 02 v1.0/v1.1 on 2026-10-12**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -269,7 +269,7 @@ Election-Promise-Tracking/
 
 ## 11. Tech stack (defaults; a stage spec may change one with a logged reason)
 
-Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · PyMuPDF (+ Tesseract fallback, `eng` + `tam`) · VANAVIL→Unicode table vendored from Open-Tamil `txt2unicode` (GPL v3+, D-035) · `google-genai` (bulk backend, D-037) · rank_bm25 · sentence-transformers + FAISS · lifelines · pandas · pytest. **Licence:** code under GNU GPL v3-or-later (`LICENSE`, `THIRD_PARTY_NOTICES.md`; D-043); licences for data, website text and whitepaper are decided in spec 08. Website: static HTML/JS (Vite optional) with a charting library, data from exported JSON, hosted on GitHub Pages or Netlify (chosen in spec 08).
+Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · PyMuPDF (+ Tesseract fallback, `eng` + `tam`) · VANAVIL→Unicode table vendored from Open-Tamil `txt2unicode` (GPL v3+, D-035) · `google-genai` (bulk backend, D-037) · rapidfuzz (CER and token-set similarity, D-046) · rank_bm25 · sentence-transformers + FAISS · lifelines · pandas · pytest. **Licence:** code under GNU GPL v3-or-later (`LICENSE`, `THIRD_PARTY_NOTICES.md`; D-043); licences for data, website text and whitepaper are decided in spec 08. Website: static HTML/JS (Vite optional) with a charting library, data from exported JSON, hosted on GitHub Pages or Netlify (chosen in spec 08).
 
 ## 12. Working method
 

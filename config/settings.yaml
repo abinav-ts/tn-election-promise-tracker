@@ -13,7 +13,7 @@ paths:
   tracker_leads: data/interim/tracker_leads.csv
   date_review: data/interim/date_review.csv
   quarantine: data/raw/evidence/_quarantine
-  spotcheck: data/interim/spotcheck_01.csv
+  spotcheck: data/interim/spotcheck_{stage}.csv   # template; stage 01 keeps spotcheck_01.csv
   runs: reports/runs
   coverage_md: reports/coverage_01.md
   coverage_json: reports/coverage_01.json
@@ -22,6 +22,18 @@ paths:
   llm_usage_log: reports/llm_usage.jsonl
   llm_fixtures: tests/fixtures/llm
   http_cache: cache/http
+  # stage 02 (spec 02 §4.10)
+  manifestos_raw: data/raw/manifestos
+  manifesto_profiles: config/manifestos.yaml
+  manifesto_interim: data/interim/manifestos
+  frozen: data/frozen
+  promise_overrides: config/promise_overrides.csv
+  extract_dropped: data/interim/extract_dropped_02.csv
+  extract_failures: data/interim/extract_failures_02.csv
+  promise_dedup: data/interim/promise_dedup.csv
+  extraction_md: reports/extraction_02.md
+  extraction_json: reports/extraction_02.json
+  backend_test_md: reports/backend_test_02.md
 
 # Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
 terms:
@@ -108,10 +120,52 @@ spotcheck:                    # global spec §12.4 (D-027)
 go:
   download_mode: all          # D-021: all English GOs in the window
 
+# Spec 02 §4.10; starting values from spec 02 §9 OQ-1 (revisable with a logged reason).
+extract:
+  ocr_lang: tam
+  ocr_psm: 3                  # Tesseract page segmentation mode (3 = fully automatic)
+  ocr_timeout_s: 180
+  overprint_px: 1.0           # font_map: same glyph within this distance = fake-bold copy
+  line_tol_px: 2.0            # font_map: baselines within this distance form one line
+  space_gap_px: 1.5           # font_map: a wider gap between glyphs (no space glyph) becomes a space
+  fontmap_min_tamil_share: 0.98
+  min_validity: 0.98
+  calibration_pages: 5
+  calibration_ppi: 150        # TVK's scan resolution
+  ocr_gate:
+    max_cer: 0.05
+    min_conf: 80
+  vision_disagree_cer: 0.25
+  vision:
+    max_attempts: 2
+    max_unreadable: 5         # most "[?]" marks a valid transcription may contain
+  transcribe_batch: 10        # Cowork fallback only
+  max_number_jump: 3          # running/section numbers: a jump larger than this is not an item marker (D-045)
+  units_per_call: 8
+  max_promises_per_unit: 5
+  max_text_words: 60
+  common_words: [Union, Government, Central, State, States, India, Indian, Tamil, Nadu, Rs, Rupees, Crore,
+                 Lakh, Lakhs, Act, Constitution, Assembly, Parliament, District, Districts, Department, Scheme,
+                 English, Hindi, Chief, Minister, Ministry, Board, Corporation, Council, Committee, Commission,
+                 Court, High, Supreme, National, Policy, January, February, March, April, May, June, July,
+                 August, September, October, November, December]
+  dedup:
+    candidate_ratio: 0.80
+  frozen_terms: []
+
 llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)
   temperature: 0
   models:
-    bulk: null                # chosen in spec 02
+    bulk: null                # set by `ept extract backend-test` (spec 02 §4.8)
+    vision: gemini-3.8-flash  # manifesto page transcription, fixed in advance (D-044)
     strong: claude-cowork
     mock: mock
+  bulk:                       # Gemini API free tier (D-037)
+    api_key_env: GEMINI_API_KEY
+    candidates: [gemini-3.8-flash, gemini-3.5-flash-lite]
+    rpm: null                 # free-tier limits of the chosen model, from AI Studio (backend test)
+    rpd: null
+    min_v1_pass: 0.90
+    backoff_s: 5
+    max_backoff_s: 120
