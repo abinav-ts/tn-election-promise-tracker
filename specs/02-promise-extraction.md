@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **DRAFT v0.2** (2026-10-11; v0.2 = OQ-1 thresholds accepted, vision fallback = Gemini first / Cowork last, D-042), awaiting approval. Open: §9 OQ-2 (licence) |
+| Status | **APPROVED v1.0** (2026-10-12; all open questions answered: v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-042 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-043 (`docs/decisions/log.md`) |
 
 ---
 
@@ -27,7 +27,7 @@ What each file actually is (inspected 2026-10-11) decides how its text is read (
 |---|---|---|---|---|
 | DMK-2021 | `DMK-2021_en.pdf` (official English exists, global §3.1) | 29 | Browser printout of dmk.in. Clean English text layer. 518 numbered lines covering items 1–505 (numbers 18, 80, 136, 251, 441 skipped; 166, 252, 300 printed twice: misnumbering, not missing text). Item 300 holds a 15-entry railway-route sub-list numbered 1–15. Noise: browser header/footer on every page (date, title, URL, `n/29`) and, on some pages, the website's Tamil sidebar menu and party address interleaved with the text | `text_layer` |
 | AIADMK-2016 | `AIADMK-2016_ta.pdf` | 41 | MS Word export, Tamil set in **VANAVIL** legacy fonts (Avvaiyar, Swetha, Valluvar, AvvaiyarBold, Alayarasi). Extracts as Latin-1 garbage. Bold is faked by printing each line 4× at slight offsets. Numbered section headings (`1. … :`), Wingdings bullets for items, and many un-bulleted paragraphs listing **past achievements** | `font_map` |
-| TVK-2026 | `TVK-2026_ta.pdf` | 96 | Image-only scan (one 1240×1752 JPEG per page, **150 ppi**), designed layout with photos and colour bands. Preface pages, then 10 "pillars" grouped under அறம் / பொருள் / இன்பம், sometimes with lettered sub-sections. Numbered red headings, **numbering restarts at 1 in each section**, a paragraph under each. Footer `தமிழக வெற்றிக் கழகம் n`. Provenance of this copy unrecorded; a better official copy may replace it before freezing (§4.3 note) | `ocr` → `vision` fallback |
+| TVK-2026 | `TVK-2026_ta.pdf` | 96 | Image-only scan (one 1240×1752 JPEG per page, **150 ppi**), designed layout with photos and colour bands. Preface pages, then 10 "pillars" grouped under அறம் / பொருள் / இன்பம், sometimes with lettered sub-sections. Numbered red headings, **numbering restarts at 1 in each section**, a paragraph under each. Footer `தமிழக வெற்றிக் கழகம் n`. The user searched for a better free official copy on 2026-10-12 and found none, so OCR is the route (§4.3 note still allows a swap before freezing) | `ocr` → `vision` fallback |
 
 `DMK-2021_ta.pdf` (73 pp, the same 505 numbered items, legacy fonts `TT3xxt00` that the VANAVIL map also converts) is **not** used for extraction (global §3.1). It is only an optional cross-reference for the DMK item-number coverage check (§4.6).
 
@@ -48,7 +48,8 @@ Evidence documents, chunks, trackers, news, any outcome information, and the mod
 | Output | Path | Committed |
 |---|---|---|
 | Stage package | `src/ept/extract/{pages,fontmap,ocr_gate,units,transcribe,promises,checks,dedup,report,spotcheck,freeze}.py`; `_bulk` in `src/ept/llm.py` | yes |
-| Vendored font table | `src/ept/extract/vanavil_map.py` (VANAVIL → Unicode table from Open-Tamil 1.1 `txt2unicode`, with attribution and licence header; §9 OQ-2) | yes |
+| Vendored font table | `src/ept/extract/vanavil_map.py` (VANAVIL → Unicode table from Open-Tamil 1.1 `txt2unicode` by Arulalan T., GPL v3-or-later; original copyright and licence header kept) | yes |
+| Licence files | `LICENSE` (GNU GPL v3 full text, the project's code licence, D-043); `THIRD_PARTY_NOTICES.md` (Open-Tamil `txt2unicode`: author, source, version, licence) | yes |
 | Config | `config/manifestos.yaml`, `config/promise_overrides.csv`, new keys in `settings.yaml` | yes |
 | Prompts | `prompts/extract_promises.md`, `prompts/dedup_check.md`, `prompts/transcribe_page.md` | yes |
 | Manifesto rows | `documents` rows with `doc_type = manifesto` (`doc_id = sha1("manual/" + relative_path)`, `discovery = manual`, `parse_status` `ok` for text layer / font map, `ocr` for OCR / vision, `doc_date` null, `date_source = none`). Never chunked | no (DB) |
@@ -220,7 +221,7 @@ One generic cutter reads the profile. Its rules:
 - Proposed starting values are in §9 OQ-1.
 
 ### 4.11 Build order (for Claude Code; commit at each ✔)
-1. Settings, `manifestos.yaml`, register the manifestos in `documents`.
+1. `LICENSE` (GPL v3) + `THIRD_PARTY_NOTICES.md`; `pyproject.toml` gets `license = "GPL-3.0-or-later"`. Settings, `manifestos.yaml`, register the manifestos in `documents`.
    - `pages` for DMK (`text_layer`) and AIADMK (`font_map`, with vendored table and overprint removal).
    - Check: the AIADMK page 1 text reads correctly. **Show the user AIADMK pages 1 and 10 converted.** ✔ `stage 02: manifesto text`
 2. TVK `ocr` + calibration + gate. Report the calibration CER, how many pages pass, and how many need vision.
@@ -303,5 +304,7 @@ Rules from the global warning box that apply to this stage:
 - OQ-1: starting thresholds accepted: `fontmap_min_tamil_share` 0.98, `min_validity` 0.98, `ocr_gate.max_cer` 0.05, `ocr_gate.min_conf` 80, `vision_disagree_cer` 0.25, `vision.max_attempts` 2, `units_per_call` 8, `max_promises_per_unit` 5, `max_text_words` 60, `dedup.candidate_ratio` 0.80, `calibration_pages` 5, `transcribe_batch` 10, `llm.bulk.min_v1_pass` 0.90 (revisable after the limit-20 run with a logged reason).
 - OQ-3: vision fallback = Gemini image input first; Cowork handoff only for pages Gemini can't transcribe validly (D-042).
 
-**Open:**
-- **OQ-2 Licence.** The VANAVIL table files in Open-Tamil (`tamil/txt2unicode/*.py`, by Arulalan T.) carry an explicit **GPL v3-or-later** header; the package's "MIT" metadata doesn't override that. Vendoring keeps that header in `vanavil_map.py` plus a `THIRD_PARTY_NOTICES.md`. Choose the project licence: (a) GPL v3 for the code, no conflict; or (b) MIT for our own files, with a notice that the vendored file is GPL v3 and that the program distributed with it is subject to GPL v3. In both cases data, website text and the whitepaper can carry a separate licence (e.g. CC BY 4.0), because GPL covers code only.
+- OQ-2: the code is licensed **GPL v3-or-later** (D-043), matching the vendored Open-Tamil font table, so there is no licence conflict. Licences for the data, website text and whitepaper (GPL covers code only) are decided in stage 08.
+- TVK copy: no better free official copy found (2026-10-12); `TVK-2026_ta.pdf` goes through OCR with the gate and Gemini vision fallback.
+
+**Open:** none.
