@@ -1,0 +1,355 @@
+{
+ "terms": [
+  "DMK-2021",
+  "AIADMK-2016",
+  "TVK-2026"
+ ],
+ "per_term": {
+  "DMK-2021": {
+   "pages": 29,
+   "pages_by_route": {
+    "text_layer": 29
+   },
+   "pages_awaiting_vision": [],
+   "units": {
+    "term": "DMK-2021",
+    "units": 510,
+    "by_marker": {
+     "front_matter": 1,
+     "running_number": 505,
+     "paragraph": 4
+    },
+    "page_chars": 98413,
+    "unit_chars": 95754,
+    "furniture_chars": 2659,
+    "accounted": true,
+    "main_numbers": 505,
+    "duplicate_numbers": [
+     252
+    ],
+    "number_gaps": [
+     251
+    ],
+    "sub_list_units": [
+     "DMK-2021-U0447"
+    ]
+   },
+   "promises_step": {},
+   "promises": 0,
+   "dropped_by_kind": {},
+   "dedup_pairs": 0,
+   "dedup_drops": 0,
+   "failures": {
+    "unresolved": 0,
+    "resolved": {},
+    "by_rule": {}
+   },
+   "quality": {
+    "tamil_share": {
+     "n": 0
+    },
+    "validity": {
+     "n": 0
+    },
+    "ocr_conf": {
+     "n": 0
+    },
+    "vision_pages": 0,
+    "vision_cer": {
+     "n": 0
+    },
+    "vision_disagree": [],
+    "accepted_below_threshold": []
+   },
+   "coverage": {},
+   "coverage_status": {},
+   "per_section": [],
+   "longest": [],
+   "shortest": []
+  },
+  "AIADMK-2016": {
+   "pages": 41,
+   "pages_by_route": {
+    "font_map": 41
+   },
+   "pages_awaiting_vision": [],
+   "units": {
+    "term": "AIADMK-2016",
+    "units": 333,
+    "by_marker": {
+     "front_matter": 1,
+     "bullet": 265,
+     "paragraph": 67
+    },
+    "page_chars": 44496,
+    "unit_chars": 42004,
+    "furniture_chars": 2492,
+    "accounted": true,
+    "main_numbers": 0,
+    "duplicate_numbers": [],
+    "number_gaps": [],
+    "sub_list_units": []
+   },
+   "promises_step": {},
+   "promises": 0,
+   "dropped_by_kind": {},
+   "dedup_pairs": 0,
+   "dedup_drops": 0,
+   "failures": {
+    "unresolved": 0,
+    "resolved": {},
+    "by_rule": {}
+   },
+   "quality": {
+    "tamil_share": {
+     "n": 41,
+     "min": 0.9245,
+     "median": 1.0
+    },
+    "validity": {
+     "n": 41,
+     "min": 1.0,
+     "median": 1.0
+    },
+    "ocr_conf": {
+     "n": 0
+    },
+    "vision_pages": 0,
+    "vision_cer": {
+     "n": 0
+    },
+    "vision_disagree": [],
+    "accepted_below_threshold": [
+     {
+      "page": 26,
+      "tamil_share": 0.975,
+      "reason": "English words printed in a Latin font (D-046)"
+     },
+     {
+      "page": 32,
+      "tamil_share": 0.9596,
+      "reason": "English words printed in a Latin font (D-046)"
+     },
+     {
+      "page": 40,
+      "tamil_share": 0.9245,
+      "reason": "English words printed in a Latin font (D-046)"
+     }
+    ]
+   },
+   "coverage": {},
+   "coverage_status": {},
+   "per_section": [],
+   "longest": [],
+   "shortest": []
+  },
+  "TVK-2026": {
+   "pages": 96,
+   "pages_by_route": {
+    "vision": 16,
+    "ocr": 80
+   },
+   "pages_awaiting_vision": [
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96
+   ],
+   "units": {},
+   "promises_step": {},
+   "promises": 0,
+   "dropped_by_kind": {},
+   "dedup_pairs": 0,
+   "dedup_drops": 0,
+   "failures": {
+    "unresolved": 0,
+    "resolved": {},
+    "by_rule": {}
+   },
+   "quality": {
+    "tamil_share": {
+     "n": 96,
+     "min": 0.9567,
+     "median": 1.0
+    },
+    "validity": {
+     "n": 96,
+     "min": 0.9778,
+     "median": 1.0
+    },
+    "ocr_conf": {
+     "n": 95,
+     "min": 0.0,
+     "median": 83.7
+    },
+    "vision_pages": 16,
+    "vision_cer": {
+     "n": 16,
+     "min": 0.0149,
+     "median": 0.0442
+    },
+    "vision_disagree": [
+     1,
+     8
+    ],
+    "accepted_below_threshold": [
+     {
+      "page": 14,
+      "tamil_share": 0.9621,
+      "reason": "English words on the page (D-051): AI, AR, Augmented, Hologram, Reality, VR, Virtual"
+     },
+     {
+      "page": 16,
+      "tamil_share": 0.9567,
+      "reason": "English words on the page (D-051): AR, Augmented, Biking, Festival, Kayaking, Mountain, Nilgris, Reality"
+     }
+    ]
+   },
+   "coverage": {},
+   "coverage_status": {},
+   "per_section": [],
+   "longest": [],
+   "shortest": []
+  }
+ },
+ "calibration": {
+  "pages": [
+   {
+    "page": 1,
+    "cer": 0.0428,
+    "mean_conf": 84.02,
+    "ref_chars": 1380
+   },
+   {
+    "page": 11,
+    "cer": 0.0295,
+    "mean_conf": 90.26,
+    "ref_chars": 1221
+   },
+   {
+    "page": 21,
+    "cer": 0.039,
+    "mean_conf": 89.03,
+    "ref_chars": 1333
+   },
+   {
+    "page": 31,
+    "cer": 0.0206,
+    "mean_conf": 91.05,
+    "ref_chars": 1308
+   },
+   {
+    "page": 41,
+    "cer": 0.0118,
+    "mean_conf": 91.71,
+    "ref_chars": 844
+   }
+  ],
+  "cer": 0.0302,
+  "ppi": 150,
+  "lang": "tam",
+  "psm": 3,
+  "reference_term": "AIADMK-2016",
+  "note": "Optimistic: the reference pages are black text on white; scanned pages with colour bands and photos will OCR worse."
+ },
+ "gate_max_cer": 0.02,
+ "llm": {
+  "smoke_test / gemini-3.8-flash": {
+   "calls": 1,
+   "cache_hits": 0,
+   "failed": 0
+  },
+  "transcribe_page / gemini-3.8-flash": {
+   "calls": 19,
+   "cache_hits": 2,
+   "failed": 0
+  },
+  "extract_promises / gemini-3.5-flash-lite": {
+   "calls": 2,
+   "cache_hits": 0,
+   "failed": 0
+  }
+ },
+ "limitations": [
+  "DMK bold headings mix topic headings and single-item titles; an item without its own title inherits the previous bold heading as `section` (typography can't tell them apart).",
+  "TVK-2026 is deferred (D-053): its transcription runs daily within the free quota; units, extraction and freeze follow before stage 07.",
+  "Tamil-source V3 checks are flags, not failures: transliterated names can't be matched mechanically."
+ ],
+ "note": "Frozen terms: none."
+}

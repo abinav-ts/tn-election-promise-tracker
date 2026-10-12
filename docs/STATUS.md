@@ -2,14 +2,14 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 7 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 spec approved (v1.1)**; global spec v0.7. Next: Claude Code builds stage 02 from spec 02 §4.11.
+**Today's position:** Day 8 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 being built (spec v1.2, D-044–D-053):** steps 1–5 done for DMK and AIADMK, step 6 (backend test) half done; TVK deferred within stage 02 (D-053). Free-tier Gemini quota (~20 requests/day per model) is now the main schedule constraint.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
 | 00 | Global spec + structure | ✅ v0.7 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
-| 02 | Promise extraction | ✅ v1.1 | ☐ | ☐ | ☐ | ☐ |
+| 02 | Promise extraction | ✅ v1.2 | ◐ steps 1–5 (+6 half) | ✅ 191 | ☐ | ◐ checkpoints |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -22,22 +22,25 @@ _Updated at the end of every session. Read this first._
 - [x] Manifesto PDFs in `data/raw/manifestos/` (renamed to `{TERM}_{lang}.pdf`, 2026-10-07).
 - [x] Full English corpus run in your Mac terminal (spec 01 step 9, D-021), done 2026-10-09/10. To refresh the corpus later: `source .venv/bin/activate`, then `caffeinate -i python -m ept crawl` and `caffeinate -i python -m ept parse`, each re-run until it prints `done`.
 - [x] Get a free-tier LLM API key (Gemini, obtained 2026-10-11).
-- [ ] Put the key in `.env` in the project root: one line `GEMINI_API_KEY=<your key>` (in Terminal: `cd` to the project, `nano .env`, paste, save; then `chmod 600 .env`). `.env` is gitignored. Don't paste the key into any chat.
+- [x] Key in `.env` (present 2026-10-13; smoke call OK).
 - [x] Spec 02 OQ-1 (thresholds) and OQ-3 (Gemini vision first, Cowork last resort, D-042) answered.
 - [x] Spec 02 OQ-2: code licence = GPL v3 (D-043).
 - [x] Searched for a better official TVK copy (2026-10-12): none free; OCR route stays.
-- [ ] **Run the TVK vision transcription in your terminal (~22 min, 96 Gemini calls; D-048 sends every page):**
+- [ ] **Every day after the Gemini quota reset (midnight Pacific = 12:30 IST), in your terminal:**
   ```
   cd ~/Projects/Election-Promise-Tracking && source .venv/bin/activate
-  caffeinate -i python -m ept extract transcribe --term TVK-2026
+  python -m ept extract backend-test                         # ONLY on 2026-10-13: 2 calls on gemini-3.8-flash, then writes reports/backend_test_02.md
+  caffeinate -i python -m ept extract transcribe --term TVK-2026   # TVK pages, up to the day's quota (~20); stops cleanly
+  git add data/frozen/transcriptions && git commit -m "stage 02: TVK transcriptions (daily)"
   ```
-  Safe to stop and re-run: accepted pages are committed files in `data/frozen/transcriptions/TVK-2026/` and are reused; `stopped (…quota…)` means re-run tomorrow. It ends with `gemini_ok=…, failed=…`; any `failed` pages go to the Cowork fallback.
+  The transcription is safe to stop and re-run (accepted pages are committed files and are reused). 16/96 TVK pages done on 2026-10-13; ~4 more days. Pages that still fail after Gemini go to the Cowork fallback (I'll say exactly what to run).
+- [ ] Read the free-tier limits for `gemini-3.5-flash-lite` (and `gemini-3.8-flash`) in AI Studio (requests per minute and per day) and tell Claude Code: they go into `llm.bulk.rpm/rpd` and decide a backend-test tie.
 - [ ] Only if some TVK pages still fail after Gemini: Cowork transcription sessions (global §6.4).
 
 ## Next step
-Open **Claude Code** in the project folder and have it build stage 02 from `specs/02-promise-extraction.md` §4.11. Step 1 adds `LICENSE`/`THIRD_PARTY_NOTICES.md` and the manifesto text, and stops to show you AIADMK pages 1 and 10 converted. Make sure `.env` holds `GEMINI_API_KEY` before step 3 (Gemini client; build order per D-044).
+Stage 02, step 6 → 7 (Claude Code): after you run `ept extract backend-test` (above), show the report and the chosen model (mandatory pause). Then `promises` + `dedup` + `report` + `spotcheck` on `--limit 20` per term (DMK, AIADMK) and the 7–10-item spot-check sheet (mandatory pause). Then the full DMK + AIADMK run (~35–45 calls), fresh spot-check, freeze on your word. TVK catch-up (units → extraction → spot-check → freeze) once all 96 pages are transcribed, before stage 07.
 
-**Schedule:** about 2 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). Stage 02 build target: Days 7–8.
+**Schedule:** about 3 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). **Risk:** the free-tier quota (~20 requests/day per model, D-050) also limits stages 03–05; stage 05 bulk judging in particular must be designed around it (heavy batching, a smaller judged set) or the cut order may be needed.
 
 ## Facts later stages need (from stage 01; details in global spec v0.6 §3.1, §9.1–§9.3)
 - **Corpus:** `data/ept.sqlite` tables `documents` (9,254) and `chunks` (60,259; 300–500 words, only a document's last chunk shorter). Raw files in `data/raw/evidence/{doc_type}/`, sidecars `{doc_id}.meta.json`, text in `data/interim/text/`.
@@ -87,3 +90,13 @@ Open **Claude Code** in the project folder and have it build stage 02 from `spec
   - Later: OQ-1 thresholds accepted; vision fallback changed to Gemini first, Cowork last (D-042); the Open-Tamil table files are explicitly GPL v3+ (licence choice pending); user to look for a better TVK copy (spec 02 v0.2).
 - **2026-10-12** — Spec 02 approved (v1.0): code licence GPL v3 (D-043); no better TVK copy found, so OCR + gate + Gemini vision fallback. Hand-over to Claude Code for the build.
   - Build order fixed (D-044, spec 02 v1.1): Gemini client and vision transcription before units, backend test on real TVK units; vision model `gemini-3.8-flash`.
+- **2026-10-12/13 — Stage 02 build (Claude Code), steps 1–5 + backend test half.**
+  - Step 1 `cba1c9c`: LICENSE (GPL v3), THIRD_PARTY_NOTICES, vendored VANAVIL table; pages for DMK (29, text layer) and AIADMK (41, font map, glyph-level overprint removal). AIADMK legacy-font Tamil share 1.0 and validity 1.0 on all pages; pages 26/32/40 below 0.98 page share only from real English words (D-046).
+  - Step 2 `733c5c8`: TVK OCR (Tesseract `tam`, native 1240×1752 scans) + calibration on AIADMK at 150 ppi: CER 0.030. Spec gate passed 79/96 pages, but those pages still had systematic errors and garbled headings → every page to Gemini vision (D-048).
+  - Step 3 `e50f844`: Gemini client in `ept.llm` (image input, JSON schema mode, throttle, backoff, quota stop; key via `.env`, never logged); smoke call OK (D-049).
+  - Step 4 `9e4a45c`…`02f94cd`: vision transcription built; 16/96 TVK pages transcribed and committed before the daily quota (≈20 requests/day per model) ran out. Free-tier "stretched" plan (D-050: units_per_call 25, dedup pairs batched, per-model quota on Pacific days); English words allowed in vision pages (D-051).
+  - Step 5 `3aa610e`: units. DMK 505 main units (only 251 unprinted, 252 printed twice; rail sub-list in item 442) after dropping clipped page-break copies; this corrects my D-045 reading (D-052). AIADMK 265 bullets + 67 paragraphs + 1 front matter. Character accounting complete for both.
+  - TVK deferred within stage 02 (D-053): stage 02 closes with DMK + AIADMK frozen; TVK catch-up before stage 07.
+  - Step 6/7 code `5323319`+: extraction prompt (invented few-shots; no 8-word overlap with any manifesto), checks V1–V4, promises, dedup + IDs + coverage, report, spot-check, freeze. Backend test half: `gemini-3.5-flash-lite` V1 1.000, V2 1.000, 23 promises from 20 units (10 DMK + 10 AIADMK), 9.6 s/call; `gemini-3.8-flash` waits for its quota reset.
+  - Known limitation: DMK bold headings mix topics and item titles, so an untitled item inherits the previous title as `section`.
+

@@ -205,3 +205,39 @@ def extract_promises(
     from ept.extract.promises import run_promises
 
     _report("extract promises", run_promises(term=term, limit=limit, force=force))
+
+
+@extract_app.command("dedup")
+def extract_dedup(
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """Within-term duplicates, then promise IDs and the promises table (spec 02 §4.6)."""
+    from ept.extract.dedup import run_dedup
+
+    _report("extract dedup", run_dedup(term=term, limit=limit, force=force))
+
+
+@extract_app.command("report")
+def extract_report(term: Optional[str] = TermOpt) -> None:
+    """reports/extraction_02.md + .json (spec 02 §4.7)."""
+    from ept.extract.report import run_report
+
+    typer.echo(f"extract report: {run_report(term)}")
+
+
+@extract_app.command("spotcheck")
+def extract_spotcheck(term: Optional[str] = TermOpt) -> None:
+    """The 7–10 most problematic items -> data/interim/spotcheck_02.csv (global §12.4)."""
+    from ept.extract.spotcheck import run_spotcheck
+
+    typer.echo(f"extract spotcheck: {run_spotcheck(term)}")
+
+
+@extract_app.command("freeze")
+def extract_freeze(term: str = typer.Option(..., "--term")) -> None:
+    """Freeze a signed-off term: data/frozen/promises_{term}.jsonl (spec 02 §4.9). Only when the user says so."""
+    from ept.extract.freeze import run_freeze
+
+    typer.echo(f"extract freeze: {run_freeze(term)}")
