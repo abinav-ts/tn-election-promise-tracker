@@ -142,6 +142,9 @@ extract:
   transcribe_batch: 10        # Cowork fallback only
   indent_tol_px: 3.0          # cutter: a line within this distance of a profile x position is "at" it
   max_number_jump: 3          # running/section numbers: a jump larger than this is not an item marker (D-045)
+  backend_test:                # spec 02 §4.8 sample (D-053: 10 DMK + 10 AIADMK)
+    seed: 20261013
+    per_term: {DMK-2021: 10, AIADMK-2016: 10}
   units_per_call: 25          # D-050 (was 8): free-tier quota of ~20 requests/day per model
   max_promises_per_unit: 5
   max_text_words: 60

@@ -151,6 +151,11 @@ class DedupCfg(_Cfg):
     pairs_per_call: int
 
 
+class BackendTestCfg(_Cfg):
+    seed: int
+    per_term: dict[str, int]
+
+
 class Extract(_Cfg):
     """Spec 02 §4.10."""
 
@@ -170,6 +175,7 @@ class Extract(_Cfg):
     transcribe_batch: int
     max_number_jump: int
     indent_tol_px: float
+    backend_test: BackendTestCfg
     units_per_call: int
     max_promises_per_unit: int
     max_text_words: int

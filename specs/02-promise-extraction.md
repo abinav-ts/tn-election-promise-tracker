@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052; TVK deferred within stage 02, backend-test sample 10 DMK + 10 AIADMK, D-053) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-052 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-053 (`docs/decisions/log.md`) |
 
 ---
 
@@ -194,7 +194,7 @@ One generic cutter reads the profile. Its rules:
   - On a spent daily quota, the run stops cleanly and resumes from the cache the next day.
   - The key is read from `GEMINI_API_KEY` (loaded from `.env` by `ept.config`). It is never printed, logged, written to run metadata or included in the cache key. A missing key gives a clear error naming `.env`.
 - **`ept extract backend-test`:**
-  - A fixed sample of 20 units (8 DMK, 6 AIADMK, 6 TVK, chosen by a seeded draw; never used as few-shot examples).
+  - A fixed sample of 20 units (10 DMK, 10 AIADMK, chosen by a seeded draw, `extract.backend_test.{seed, per_term}`; never used as few-shot examples). TVK units are not in the sample because TVK is deferred (D-053; was 8/6/6).
   - Run through each candidate in `llm.bulk.candidates` (free-tier Flash-family models listed by Google as of 2026-10-09: `gemini-3.8-flash`, `gemini-3.5-flash-lite`).
   - Measures: JSON valid first time, V1/V2/V3 pass rates, promises per unit, seconds per call, 429 count.
   - **Choice rule:** the highest V1 pass rate wins, ties to the larger daily quota. If no candidate reaches `llm.bulk.min_v1_pass` on the sample, stop and ask the user (the Kaggle fallback).
@@ -230,7 +230,7 @@ One generic cutter reads the profile. Its rules:
 4. **Vision transcription**, only if step 2 gated any pages: `transcribe` with `llm.models.vision`. Pages that still fail after `extract.vision.max_attempts` go to the Cowork fallback (`transcribe export` → the user runs the sessions → `transcribe import`). ✔
 5. `units` for all three terms.
    - Check: DMK has 505 main units (+ sub-list kept inside item 442; 251 reported as an explained gap, D-052); the furniture/unit character accounting is complete. ✔
-6. **`backend-test`** on the real units (8 DMK, 6 AIADMK, 6 TVK). Record the choice in `llm.models.bulk` and the free-tier limits in `llm.bulk.rpm/rpd`. ✔
+6. **`backend-test`** on the real units (10 DMK, 10 AIADMK, D-053). Record the choice in `llm.models.bulk` and the free-tier limits in `llm.bulk.rpm/rpd`. ✔
 7. `promises` + `checks` + `dedup` + IDs, then `--limit 20` per term. Then `report` + `spotcheck`. **Human spot-check (7–10 items).** ✔ `stage 02: limit-20 run`
 8. Full run (fits in normal sessions; ≈ 1,000–1,300 units ÷ `units_per_call`), report, coverage check, then a **fresh spot-check list** over the full output. Fix, re-run the affected units, `freeze` each term. STATUS, spec-vs-build diff, deviations logged. ✔ `stage 02: promise extraction`
 
@@ -271,7 +271,7 @@ Rules from the global warning box that apply to this stage:
 9. `reports/backend_test_02.md` exists, `llm.models.bulk` is set by its rule, and the free-tier limits are recorded.
 10. `reports/extraction_02.md/json` and run metadata exist.
 11. The spot-check (7–10 items) is done. Every `wrong` item has a root cause and is fixed or logged as a limitation; no more than half `wrong`.
-12. All three terms are frozen: `data/frozen/promises_{term}.jsonl` committed.
+12. DMK-2021 and AIADMK-2016 are frozen: `data/frozen/promises_{term}.jsonl` committed. **TVK-2026 is deferred (D-053):** its remaining vision transcription (run daily within the free quota), units, extraction, spot-check and freeze form a catch-up step that must be done before stage 07's projection; until then stage 02 is closed for DMK and AIADMK only, and STATUS tracks the TVK catch-up.
 
 ## 7. Tests (offline; fixtures in `tests/fixtures/manifestos/`)
 

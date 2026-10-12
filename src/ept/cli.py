@@ -128,15 +128,20 @@ def extract_pages(
 @extract_app.command("backend-test")
 def extract_backend_test(
     smoke: bool = typer.Option(False, "--smoke", help="Only one live call to check the key and model"),
-    model: Optional[str] = typer.Option(None, "--model", help="Model for --smoke (default llm.models.vision)"),
+    model: Optional[list[str]] = typer.Option(None, "--model",
+                                              help="Only these candidates (partial run; never sets the choice)"),
 ) -> None:
     """Choose the bulk model on a fixed 20-unit sample (spec 02 §4.8)."""
-    from ept.extract.backend_test import run_smoke
+    from ept.extract.backend_test import run_backend_test, run_smoke
 
     if smoke:
-        typer.echo(f"backend-test --smoke: {run_smoke(model)}")
+        typer.echo(f"backend-test --smoke: {run_smoke(model[0] if model else None)}")
         return
-    raise typer.Exit("the full backend test is built in spec 02 step 6")
+    out = run_backend_test(model or None)
+    for r in out["results"]:
+        typer.echo(f"  {r['model']}: V1 {r['v1_pass']}, V2 {r['v2_pass']}, promises {r['promises']}, "
+                   f"JSON 1st {r['json_valid_first']}, {r['seconds_per_call']} s/call")
+    typer.echo(f"backend-test: winner={out['winner']} stopped={out['stopped']} (reports/backend_test_02.md)")
 
 
 transcribe_app = typer.Typer(help="Vision transcription of gated manifesto pages (spec 02 §4.3)")
@@ -188,3 +193,15 @@ def extract_units(
         typer.echo(f"  {t}: {stats.pop(t)}")
     typer.echo(f"  skipped: {stats.pop('skipped')}")
     _report("extract units", stats)
+
+
+@extract_app.command("promises")
+def extract_promises(
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """Units -> checked promise pieces through the bulk model (spec 02 §4.5)."""
+    from ept.extract.promises import run_promises
+
+    _report("extract promises", run_promises(term=term, limit=limit, force=force))
