@@ -141,7 +141,7 @@ extract:
     max_unreadable: 5         # most "[?]" marks a valid transcription may contain
   transcribe_batch: 10        # Cowork fallback only
   max_number_jump: 3          # running/section numbers: a jump larger than this is not an item marker (D-045)
-  units_per_call: 8
+  units_per_call: 25          # D-050 (was 8): free-tier quota of ~20 requests/day per model
   max_promises_per_unit: 5
   max_text_words: 60
   common_words: [Union, Government, Central, State, States, India, Indian, Tamil, Nadu, Rs, Rupees, Crore,
@@ -151,6 +151,7 @@ extract:
                  August, September, October, November, December]
   dedup:
     candidate_ratio: 0.80
+    pairs_per_call: 20          # D-050: candidate pairs batched into one call
   frozen_terms: []
 
 llm:
@@ -165,7 +166,10 @@ llm:
     api_key_env: GEMINI_API_KEY
     candidates: [gemini-3.8-flash, gemini-3.5-flash-lite]
     rpm: 5                    # provisional, conservative; set to the chosen model's free-tier limits from AI Studio
-    rpd: null                 # (backend test, spec 02 §4.8)
+    rpd:                      # requests per day, per model (free tier; D-050)
+      gemini-3.8-flash: 20    # observed 2026-10-13: the 21st request of the day got a per-day 429
+      gemini-3.5-flash-lite: null   # unknown until read from AI Studio
+    quota_tz: America/Los_Angeles   # Gemini daily quotas reset at midnight Pacific
     min_v1_pass: 0.90
     backoff_s: 5
     max_backoff_s: 120

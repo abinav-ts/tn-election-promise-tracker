@@ -34,6 +34,19 @@ def tamil_share(text: str) -> float:
     return tamil_ratio(text)
 
 
+_LATIN_WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9.\-/&']*")
+
+
+def latin_words(text: str) -> list[str]:
+    return sorted(set(_LATIN_WORD_RE.findall(text)))
+
+
+def tamil_share_non_latin(text: str) -> float:
+    """Tamil share after removing Basic Latin words: real English words printed on a Tamil page are text,
+    not a transcription error (D-051); stray symbols or other scripts still count against it."""
+    return tamil_ratio(_LATIN_WORD_RE.sub(" ", text))
+
+
 def word_is_valid(word: str) -> bool:
     if not word or word[0] in _VOWEL_SIGNS or word[0] == _PULLI:
         return False

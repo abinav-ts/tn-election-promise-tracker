@@ -148,6 +148,7 @@ class VisionCfg(_Cfg):
 
 class DedupCfg(_Cfg):
     candidate_ratio: float
+    pairs_per_call: int
 
 
 class Extract(_Cfg):
@@ -180,7 +181,8 @@ class BulkCfg(_Cfg):
     api_key_env: str
     candidates: list[str]
     rpm: Optional[float] = None
-    rpd: Optional[int] = None
+    rpd: dict[str, Optional[int]] = {}  # per model; free-tier quotas are per model (D-050)
+    quota_tz: str  # the provider's daily-quota clock
     min_v1_pass: float
     backoff_s: float
     max_backoff_s: float

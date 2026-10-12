@@ -99,12 +99,14 @@ def test_daily_quota_stops_cleanly(live):
 def test_rpd_limit_stops_before_calling(live, monkeypatch):
     from ept.config import get_config
 
-    get_config().settings.llm.bulk.rpd = 1
+    get_config().settings.llm.bulk.rpd = {"m": 1, "other": None}
     c = _client(['{"answer": "a"}', '{"answer": "b"}'])
     c.complete_json("t_bulk", {"q": "1"}, Out, model="m")
     with pytest.raises(QuotaExhausted):
         c.complete_json("t_bulk", {"q": "2"}, Out, model="m")
     assert len(c._gemini.models.requests) == 1
+    c.complete_json("t_bulk", {"q": "2"}, Out, model="other")  # quotas are per model
+    assert len(c._gemini.models.requests) == 2
 
 
 def test_validation_retry_then_ok(live):

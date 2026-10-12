@@ -22,6 +22,7 @@ import re
 import time
 from dataclasses import dataclass
 from typing import Any, Callable, Iterable, Optional, TypeVar
+from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, ValidationError
 
@@ -155,26 +156,32 @@ class LLMClient:
             self._gemini = genai.Client(api_key=key)
         return self._gemini
 
-    def _throttle(self) -> None:
+    def _throttle(self, model: str) -> None:
         bulk = self.cfg.settings.llm.bulk
-        if bulk.rpd is not None and self._calls_today() >= bulk.rpd:
-            raise QuotaExhausted(f"llm.bulk.rpd = {bulk.rpd} calls already made today; re-run tomorrow")
+        limit = bulk.rpd.get(model)
+        if limit is not None and self._calls_today(model) >= limit:
+            raise QuotaExhausted(f"llm.bulk.rpd[{model}] = {limit} requests already made today "
+                                 f"({bulk.quota_tz} day); re-run after the reset")
         if bulk.rpm and self._last_bulk_call is not None:
             wait = 60.0 / bulk.rpm - (self._clock() - self._last_bulk_call)
             if wait > 0:
                 self._sleep(wait)
         self._last_bulk_call = self._clock()
 
-    def _calls_today(self) -> int:
+    def _calls_today(self, model: str) -> int:
+        """Requests sent to `model` since the provider's last daily reset (from the usage log)."""
         path = self.cfg.path("llm_usage_log")
         if not path.exists():
             return 0
-        today = dt.datetime.now(dt.timezone.utc).date().isoformat()
+        tz = ZoneInfo(self.cfg.settings.llm.bulk.quota_tz)
+        today = dt.datetime.now(tz).date()
         n = 0
         with path.open(encoding="utf-8") as f:
             for line in f:
                 rec = json.loads(line)
-                if rec.get("backend") == "bulk" and not rec.get("cache_hit") and rec.get("ts", "")[:10] == today:
+                if rec.get("backend") != "bulk" or rec.get("cache_hit") or rec.get("model") != model:
+                    continue
+                if dt.datetime.fromisoformat(rec["ts"]).astimezone(tz).date() == today:
                     n += rec.get("attempts", 0) + rec.get("http_retries", 0)
         return n
 
@@ -193,7 +200,7 @@ class LLMClient:
         contents = [types.Part.from_bytes(data=i.data, mime_type=i.mime_type) for i in spec.images] + [rendered]
         delay = bulk.backoff_s
         while True:
-            self._throttle()
+            self._throttle(spec.model)
             try:
                 resp = self._gemini_client().models.generate_content(model=spec.model, contents=contents,
                                                                      config=config)
@@ -254,8 +261,8 @@ class LLMClient:
         attempts = 0
         for attempt in range(self.cfg.settings.llm.retries + 1):
             attempts += 1
-            self.calls += 1
             raw = self._backends[effective](prompt, text_in, attempt, spec)
+            self.calls += 1
             try:
                 result = out_model.model_validate(_parse_json(raw))
             except (json.JSONDecodeError, ValidationError) as e:

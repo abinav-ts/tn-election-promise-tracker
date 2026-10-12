@@ -58,6 +58,8 @@ def test_validate_rules(root):
     assert any("tamil_share" in p for p in validate("This page is English only", cfg))
     assert any("[?]" in p for p in validate(GOOD + " [?]" * 6, cfg))
     assert any("validity" in p for p in validate("ொப ்த ொக", cfg))
+    # D-051: real English words on a Tamil page don't fail the Tamil-share rule
+    assert validate(GOOD + " AR/VR Augmented Reality Mountain Biking Kayaking", cfg) == []
 
 
 def test_gemini_page_accepted_route_vision(scan_term):

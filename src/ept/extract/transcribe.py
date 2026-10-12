@@ -53,9 +53,9 @@ def validate(text: str, cfg: Config) -> list[str]:
     if not text.strip() or not text.replace(UNREADABLE, "").strip():
         problems.append("empty")
         return problems
-    share = ocr_gate.tamil_share(text)
+    share = ocr_gate.tamil_share_non_latin(text)  # D-051: English words on the page are allowed and listed
     if share < ex.fontmap_min_tamil_share:
-        problems.append(f"tamil_share {share:.3f} < {ex.fontmap_min_tamil_share}")
+        problems.append(f"tamil_share (non-Latin) {share:.3f} < {ex.fontmap_min_tamil_share}")
     valid = ocr_gate.validity(text)
     if valid < ex.min_validity:
         problems.append(f"validity {valid:.3f} < {ex.min_validity}")
@@ -108,7 +108,8 @@ def apply_to_page(cfg: Config, term_id: str, rec: dict[str, Any], lines: list[st
     ocr_text = ocr_path.read_text(encoding="utf-8") if ocr_path.exists() else ""
     rec.update(route="vision", vision_route=route_detail, chars=nonspace_len(text), lines=len(lines),
                tamil_share=round(ocr_gate.tamil_share(text), 4), validity=round(ocr_gate.validity(text), 4),
-               vision_cer=round(ocr_gate.cer(ocr_text, text), 4), unreadable=text.count(UNREADABLE))
+               vision_cer=round(ocr_gate.cer(ocr_text, text), 4), unreadable=text.count(UNREADABLE),
+               latin_words=ocr_gate.latin_words(text))
     rec["flags"] = [f for f in rec.get("flags", []) if not f.startswith("vision")]
     if rec["vision_cer"] > cfg.settings.extract.vision_disagree_cer:
         rec["flags"].append(f"vision_cer {rec['vision_cer']} > {cfg.settings.extract.vision_disagree_cer}")

@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-049 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-051 (`docs/decisions/log.md`) |
 
 ---
 
@@ -97,7 +97,7 @@ TVK has no ground truth, so Tesseract's accuracy at TVK's resolution is **calibr
    - calibrated CER > `extract.ocr_gate.max_cer` → **every** TVK page goes to vision;
    - otherwise, a TVK page goes to vision if its mean confidence < `extract.ocr_gate.min_conf`, or its validity < `extract.min_validity`.
 3. **Vision transcription (D-042): Gemini first, Cowork last.**
-   - **Primary: the bulk backend with image input.** `ept extract transcribe --term T` sends each gated page image, using the model in `llm.models.vision` (D-044), (native resolution) with `prompts/transcribe_page.md` through `ept.llm` (cached, logged, same retry rules). The prompt says: transcribe exactly what is printed, in reading order, Tamil in Unicode, keep numbers and headings, no corrections, no additions, no summaries; mark an unreadable stretch `[?]`. The output is validated (non-empty, Tamil share, validity, `[?]` count) and used as that page's text with route `vision`.
+   - **Primary: the bulk backend with image input.** `ept extract transcribe --term T` sends each gated page image, using the model in `llm.models.vision` (D-044), (native resolution) with `prompts/transcribe_page.md` through `ept.llm` (cached, logged, same retry rules). The prompt says: transcribe exactly what is printed, in reading order, Tamil in Unicode, keep numbers and headings, no corrections, no additions, no summaries; mark an unreadable stretch `[?]`. The output is validated (non-empty, Tamil share of the letters outside Basic-Latin words (real English words printed on the page are allowed and listed in the report, D-051), validity, `[?]` count) and used as that page's text with route `vision`.
    - **Cross-check:** for every vision page the CER between the transcription and Tesseract's output is recorded; a page above `extract.vision_disagree_cer` goes into spot-check group b. This guards against a transcription that reads well but isn't what's printed.
    - **Last resort: Cowork file handoff** (global §6.4), only for pages whose Gemini transcription still fails validation after `extract.vision.max_attempts`. `ept extract transcribe export` writes those page images to `transcribe/in/`; in a fresh Cowork session Claude reads only `prompts/transcribe_page.md` and the images (no web search, no other files) and writes `page_NNN.txt`; `ept extract transcribe import` validates them the same way.
    - All accepted transcriptions (either route) are copied to `data/frozen/transcriptions/{term}/page_NNN.txt` and committed, recording which route produced each.
@@ -162,7 +162,7 @@ One generic cutter reads the profile. Its rules:
 
 ### 4.6 Deduplication and IDs (`ept extract dedup`)
 1. Within each term, compare every pair of promise texts by token-set similarity. Pairs ≥ `extract.dedup.candidate_ratio` are candidates.
-2. Each candidate pair goes to the bulk model with `dedup_check.md` ("are these the same commitment: same action, same beneficiaries, same amount?" → yes/no + one line).
+2. Candidate pairs go to the bulk model with `dedup_check.md` ("are these the same commitment: same action, same beneficiaries, same amount?" → yes/no + one line per pair), `extract.dedup.pairs_per_call` pairs per call (D-050).
 3. On **yes**, the later piece (in document order) is dropped and logged in `promise_dedup.csv` (D-038). On **no**, both are kept; pairs with very high similarity but a **no** go to spot-check group e.
    - Known case: DMK items 498 and 500 (Sri Lanka in the Citizenship Act amendment).
 4. **IDs are assigned only after deduplication:** `promise_id = {term}-{seq:04d}`, contiguous, in document order (unit order, then piece order). `parent_group` = the `unit_id` the promise came from (global §7 as amended). `page` = the page where its `source_text` starts. `section` = `section_en`. `source_lang` = the profile's language.
@@ -214,11 +214,11 @@ One generic cutter reads the profile. Its rules:
   - `fontmap_min_tamil_share`, `min_validity`;
   - `calibration_pages`, `calibration_ppi` (150, TVK's resolution), `ocr_gate.{max_cer,min_conf}`, `vision_disagree_cer`, `vision.{max_attempts,max_unreadable}` (most `[?]` marks a valid transcription may hold; starting value 5), `transcribe_batch` (Cowork fallback only);
   - `max_number_jump` (3, D-045), `units_per_call`, `max_promises_per_unit`, `max_text_words`, `common_words`;
-  - `dedup.candidate_ratio`;
+  - `dedup.{candidate_ratio, pairs_per_call}` (20, D-050);
   - `frozen_terms: []`.
 - `llm`:
   - `models.bulk` (set by the backend test), `models.vision` (`gemini-3.8-flash`, the stronger free-tier candidate; fixed before the backend test because transcription must run first, D-044);
-  - `bulk.{api_key_env: GEMINI_API_KEY, candidates, rpm, rpd, min_v1_pass, backoff_s, max_backoff_s, timeout_s}` (`rpm` starts at a conservative 5 until the chosen model's AI Studio limits are recorded, D-049).
+  - `bulk.{api_key_env: GEMINI_API_KEY, candidates, rpm, rpd (per model, D-050), quota_tz, min_v1_pass, backoff_s, max_backoff_s, timeout_s}` (`rpm` starts at a conservative 5 until the chosen model's AI Studio limits are recorded, D-049).
 - Proposed starting values are in §9 OQ-1.
 
 ### 4.11 Build order (for Claude Code; commit at each ✔)
@@ -303,7 +303,7 @@ Rules from the global warning box that apply to this stage:
 - Q-04: what counts as a promise, splitting rules S1–S5, drop-later-duplicate with a log, IDs frozen.
 - Q-10: font mapping for legacy-font Tamil, OCR for the scan, vision fallback.
 - No cuts despite the 2-day slip.
-- OQ-1: starting thresholds accepted: `fontmap_min_tamil_share` 0.98, `min_validity` 0.98, `ocr_gate.max_cer` 0.05 (lowered to 0.02 after step 2, D-048), `ocr_gate.min_conf` 80, `vision_disagree_cer` 0.25, `vision.max_attempts` 2, `units_per_call` 8, `max_promises_per_unit` 5, `max_text_words` 60, `dedup.candidate_ratio` 0.80, `calibration_pages` 5, `transcribe_batch` 10, `llm.bulk.min_v1_pass` 0.90 (revisable after the limit-20 run with a logged reason).
+- OQ-1: starting thresholds accepted: `fontmap_min_tamil_share` 0.98, `min_validity` 0.98, `ocr_gate.max_cer` 0.05 (lowered to 0.02 after step 2, D-048), `ocr_gate.min_conf` 80, `vision_disagree_cer` 0.25, `vision.max_attempts` 2, `units_per_call` 8 (raised to 25, D-050), `max_promises_per_unit` 5, `max_text_words` 60, `dedup.candidate_ratio` 0.80, `calibration_pages` 5, `transcribe_batch` 10, `llm.bulk.min_v1_pass` 0.90 (revisable after the limit-20 run with a logged reason).
 - OQ-3: vision fallback = Gemini image input first; Cowork handoff only for pages Gemini can't transcribe validly (D-042).
 
 - OQ-2: the code is licensed **GPL v3-or-later** (D-043), matching the vendored Open-Tamil font table, so there is no licence conflict. Licences for the data, website text and whitepaper (GPL covers code only) are decided in stage 08.
