@@ -76,7 +76,7 @@ def gate_page(calibrated_cer: float, mean_conf: Optional[float], page_validity: 
 
 # --- Tesseract -------------------------------------------------------------
 
-_ZERO_WIDTH = dict.fromkeys(map(ord, "\u200B\u200C\u200D\uFEFF"))
+ZERO_WIDTH = dict.fromkeys(map(ord, "\u200B\u200C\u200D\uFEFF"))
 
 
 class OcrUnavailable(RuntimeError):
@@ -110,7 +110,7 @@ def parse_tsv(tsv: str) -> OcrResult:
         cols = row.split("\t")
         if len(cols) < 12 or cols[0] != "5":
             continue
-        word = unicodedata.normalize("NFC", cols[11].translate(_ZERO_WIDTH)).strip()
+        word = unicodedata.normalize("NFC", cols[11].translate(ZERO_WIDTH)).strip()
         if not word:
             continue
         lines.setdefault((int(cols[2]), int(cols[3]), int(cols[4])), []).append(word)

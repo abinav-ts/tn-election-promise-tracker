@@ -137,3 +137,38 @@ def extract_backend_test(
         typer.echo(f"backend-test --smoke: {run_smoke(model)}")
         return
     raise typer.Exit("the full backend test is built in spec 02 step 6")
+
+
+transcribe_app = typer.Typer(help="Vision transcription of gated manifesto pages (spec 02 §4.3)")
+extract_app.add_typer(transcribe_app, name="transcribe")
+
+
+@transcribe_app.callback(invoke_without_command=True)
+def extract_transcribe(
+    ctx: typer.Context,
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """Transcribe gated pages with Gemini vision (llm.models.vision)."""
+    if ctx.invoked_subcommand is not None:
+        return
+    from ept.extract.transcribe import run_transcribe
+
+    _report("extract transcribe", run_transcribe(term=term, limit=limit, force=force))
+
+
+@transcribe_app.command("export")
+def extract_transcribe_export(term: str = typer.Option(..., "--term")) -> None:
+    """Write page images Gemini couldn't transcribe validly, for a Cowork session (global §6.4)."""
+    from ept.extract.transcribe import run_export
+
+    typer.echo(f"transcribe export: {run_export(term)}")
+
+
+@transcribe_app.command("import")
+def extract_transcribe_import(term: str = typer.Option(..., "--term")) -> None:
+    """Validate Cowork transcriptions and make them the page text."""
+    from ept.extract.transcribe import run_import
+
+    typer.echo(f"transcribe import: {run_import(term)}")

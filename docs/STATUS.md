@@ -26,7 +26,13 @@ _Updated at the end of every session. Read this first._
 - [x] Spec 02 OQ-1 (thresholds) and OQ-3 (Gemini vision first, Cowork last resort, D-042) answered.
 - [x] Spec 02 OQ-2: code licence = GPL v3 (D-043).
 - [x] Searched for a better official TVK copy (2026-10-12): none free; OCR route stays.
-- [ ] Only if Gemini can't transcribe some TVK pages: Cowork transcription sessions (global §6.4).
+- [ ] **Run the TVK vision transcription in your terminal (~22 min, 96 Gemini calls; D-048 sends every page):**
+  ```
+  cd ~/Projects/Election-Promise-Tracking && source .venv/bin/activate
+  caffeinate -i python -m ept extract transcribe --term TVK-2026
+  ```
+  Safe to stop and re-run: accepted pages are committed files in `data/frozen/transcriptions/TVK-2026/` and are reused; `stopped (…quota…)` means re-run tomorrow. It ends with `gemini_ok=…, failed=…`; any `failed` pages go to the Cowork fallback.
+- [ ] Only if some TVK pages still fail after Gemini: Cowork transcription sessions (global §6.4).
 
 ## Next step
 Open **Claude Code** in the project folder and have it build stage 02 from `specs/02-promise-extraction.md` §4.11. Step 1 adds `LICENSE`/`THIRD_PARTY_NOTICES.md` and the manifesto text, and stops to show you AIADMK pages 1 and 10 converted. Make sure `.env` holds `GEMINI_API_KEY` before step 3 (Gemini client; build order per D-044).

@@ -159,11 +159,13 @@ def read_records(cfg: Config, term_id: str) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
-def write_records(cfg: Config, term_id: str, records: list[PageRecord], sha: str) -> None:
+def write_records(cfg: Config, term_id: str, records: list[Any], sha: str) -> None:
+    """Records are PageRecords or dicts read back from pages.jsonl (extra keys such as vision_* kept)."""
     path = term_dir(cfg, term_id) / "pages.jsonl"
     with path.open("w", encoding="utf-8") as f:
         for r in records:
-            f.write(json.dumps({**asdict(r), "source_sha256": sha}, ensure_ascii=False) + "\n")
+            row = asdict(r) if isinstance(r, PageRecord) else dict(r)
+            f.write(json.dumps({**row, "source_sha256": sha}, ensure_ascii=False) + "\n")
 
 
 def read_page_text(cfg: Config, term_id: str, page: int) -> str:
@@ -300,13 +302,21 @@ def run_pages(term: Optional[str] = None, limit: Optional[int] = None, force: bo
                 calibration = load_or_calibrate(cfg, profiles, force=force and profile.route == "ocr")
                 stats["calibration_cer"] = calibration["cer"]
             records = extract_term_pages(cfg, term_id, profile, calibration)
+            if any(r.to_vision for r in records):  # committed transcriptions are the page text (§4.3)
+                from ept.extract.transcribe import apply_committed
+
+                rows = [asdict(r) for r in records]
+                stats["vision_from_committed"] = apply_committed(cfg, term_id, rows)
+                records = rows
             write_records(cfg, term_id, records, sha)
-            status = "ocr" if any(r.route in ("ocr", "vision") for r in records) else "ok"
+            routes = {r.route if isinstance(r, PageRecord) else r["route"] for r in records}
+            status = "ocr" if routes & {"ocr", "vision"} else "ok"
             db.upsert(conn, manifesto_document(cfg, term_id, profile, status))
             stats["terms"] += 1
             stats["pages"] += len(records)
-            stats["flagged"] += sum(1 for r in records if r.flags)
-            stats["to_vision"] = stats.get("to_vision", 0) + sum(1 for r in records if r.to_vision)
+            rows = [asdict(r) if isinstance(r, PageRecord) else r for r in records]
+            stats["flagged"] += sum(1 for r in rows if r["flags"])
+            stats["to_vision"] = stats.get("to_vision", 0) + sum(1 for r in rows if r["to_vision"])
     finally:
         finish_run(run_id, stats)
         conn.close()
