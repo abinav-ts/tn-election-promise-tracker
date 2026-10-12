@@ -164,8 +164,9 @@ llm:
   bulk:                       # Gemini API free tier (D-037)
     api_key_env: GEMINI_API_KEY
     candidates: [gemini-3.8-flash, gemini-3.5-flash-lite]
-    rpm: null                 # free-tier limits of the chosen model, from AI Studio (backend test)
-    rpd: null
+    rpm: 5                    # provisional, conservative; set to the chosen model's free-tier limits from AI Studio
+    rpd: null                 # (backend test, spec 02 §4.8)
     min_v1_pass: 0.90
     backoff_s: 5
     max_backoff_s: 120
+    timeout_s: 300            # one request (image pages included)

@@ -123,3 +123,17 @@ def extract_pages(
     from ept.extract.pages import run_pages
 
     _report("extract pages", run_pages(term=term, limit=limit, force=force))
+
+
+@extract_app.command("backend-test")
+def extract_backend_test(
+    smoke: bool = typer.Option(False, "--smoke", help="Only one live call to check the key and model"),
+    model: Optional[str] = typer.Option(None, "--model", help="Model for --smoke (default llm.models.vision)"),
+) -> None:
+    """Choose the bulk model on a fixed 20-unit sample (spec 02 §4.8)."""
+    from ept.extract.backend_test import run_smoke
+
+    if smoke:
+        typer.echo(f"backend-test --smoke: {run_smoke(model)}")
+        return
+    raise typer.Exit("the full backend test is built in spec 02 step 6")

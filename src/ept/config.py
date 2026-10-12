@@ -184,6 +184,7 @@ class BulkCfg(_Cfg):
     min_v1_pass: float
     backoff_s: float
     max_backoff_s: float
+    timeout_s: float
 
 
 class Llm(_Cfg):
@@ -313,6 +314,33 @@ def load_config(root: Optional[Path] = None) -> Config:
     settings = Settings.model_validate(_read_yaml(root / "config" / "settings.yaml"))
     sources = Sources.model_validate(_read_yaml(root / "config" / "sources.yaml"))
     return Config(root, settings, sources)
+
+
+class MissingSecret(RuntimeError):
+    pass
+
+
+def _dotenv(path: Path) -> dict[str, str]:
+    """KEY=VALUE lines of a .env file (comments, blank lines and `export ` prefixes ignored)."""
+    out: dict[str, str] = {}
+    if not path.exists():
+        return out
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.removeprefix("export ").partition("=")
+        out[key.strip()] = value.strip().strip("'\"")
+    return out
+
+
+def get_secret(name: str, root: Optional[Path] = None) -> str:
+    """An API key from the environment, else from the project's `.env` (gitignored). Never printed or logged."""
+    value = os.environ.get(name) or _dotenv(Path(root or project_root()) / ".env").get(name)
+    if not value:
+        raise MissingSecret(f"{name} is not set: add a line `{name}=<your key>` to .env in the project root "
+                            "(then `chmod 600 .env`)")
+    return value
 
 
 @lru_cache(maxsize=None)

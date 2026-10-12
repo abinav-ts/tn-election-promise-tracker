@@ -1,0 +1,1 @@
+{"ts": "2026-10-12T20:46:46+00:00", "prompt": "smoke_test", "version": "1.0", "backend": "bulk", "model": "gemini-3.8-flash", "cache_key": "2bdd35adda6597d1", "cache_hit": false, "attempts": 1, "ok": true, "input_chars": 102, "output_chars": 29, "http_retries": 0, "seconds": 6.62}

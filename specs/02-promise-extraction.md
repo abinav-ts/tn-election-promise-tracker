@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-048 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-049 (`docs/decisions/log.md`) |
 
 ---
 
@@ -47,11 +47,11 @@ Evidence documents, chunks, trackers, news, any outcome information, and the mod
 
 | Output | Path | Committed |
 |---|---|---|
-| Stage package | `src/ept/extract/{pages,fontmap,ocr_gate,units,transcribe,promises,checks,dedup,report,spotcheck,freeze}.py`; `_bulk` in `src/ept/llm.py` | yes |
+| Stage package | `src/ept/extract/{pages,fontmap,ocr_gate,units,transcribe,promises,checks,dedup,report,spotcheck,freeze,backend_test}.py`; `_bulk` in `src/ept/llm.py`; `get_secret` (`.env` reader) in `src/ept/config.py` (D-049) | yes |
 | Vendored font table | `src/ept/extract/vanavil_map.py` (VANAVIL → Unicode table from Open-Tamil 1.1 `txt2unicode` by Arulalan T., GPL v3-or-later; original copyright and licence header kept) | yes |
 | Licence files | `LICENSE` (GNU GPL v3 full text, the project's code licence, D-043); `THIRD_PARTY_NOTICES.md` (Open-Tamil `txt2unicode`: author, source, version, licence) | yes |
 | Config | `config/manifestos.yaml`, `config/promise_overrides.csv`, new keys in `settings.yaml` | yes |
-| Prompts | `prompts/extract_promises.md`, `prompts/dedup_check.md`, `prompts/transcribe_page.md` | yes |
+| Prompts | `prompts/extract_promises.md`, `prompts/dedup_check.md`, `prompts/transcribe_page.md`, `prompts/smoke_test.md` (step 3 smoke call, no project data, D-049) | yes |
 | Manifesto rows | `documents` rows with `doc_type = manifesto` (`doc_id = sha1("manual/" + relative_path)`, `discovery = manual`, `parse_status` `ok` for text layer / font map, `ocr` for OCR / vision, `doc_date` null, `date_source = none`). Never chunked | no (DB) |
 | Page text | `data/interim/manifestos/{term}/pages.jsonl` (page, route used, chars, quality metrics) + `page_NNN.txt` | no |
 | OCR calibration | `data/interim/manifestos/ocr_calibration.json` (§4.3) | no |
@@ -218,7 +218,7 @@ One generic cutter reads the profile. Its rules:
   - `frozen_terms: []`.
 - `llm`:
   - `models.bulk` (set by the backend test), `models.vision` (`gemini-3.8-flash`, the stronger free-tier candidate; fixed before the backend test because transcription must run first, D-044);
-  - `bulk.{api_key_env: GEMINI_API_KEY, candidates, rpm, rpd, min_v1_pass, backoff_s, max_backoff_s}`.
+  - `bulk.{api_key_env: GEMINI_API_KEY, candidates, rpm, rpd, min_v1_pass, backoff_s, max_backoff_s, timeout_s}` (`rpm` starts at a conservative 5 until the chosen model's AI Studio limits are recorded, D-049).
 - Proposed starting values are in §9 OQ-1.
 
 ### 4.11 Build order (for Claude Code; commit at each ✔)

@@ -75,10 +75,10 @@ def test_usage_log_written(root):
     assert lines[0]["prompt"] == "t_ok" and lines[0]["version"] == "1.0" and lines[0]["backend"] == "mock"
 
 
-def test_real_backends_are_stubs(root, monkeypatch):
+def test_unset_bulk_model_and_strong_stub(root, monkeypatch):
     _prompt(root, "t_ok")
     monkeypatch.setenv("EPT_LLM_MOCK", "0")
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(ValueError, match="backend-test"):
         LLMClient().complete_json("t_ok", {"q": "a"}, Out, backend="bulk")
     with pytest.raises(NotImplementedError, match="handoff"):
         LLMClient().complete_json("t_ok", {"q": "a"}, Out, backend="strong")
