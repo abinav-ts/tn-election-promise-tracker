@@ -2,14 +2,14 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 7 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 spec approved (v1.0)**; global spec v0.7. Next: Claude Code builds stage 02 from spec 02 §4.11.
+**Today's position:** Day 7 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 spec approved (v1.1)**; global spec v0.7. Next: Claude Code builds stage 02 from spec 02 §4.11.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
 | 00 | Global spec + structure | ✅ v0.7 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
-| 02 | Promise extraction | ✅ v1.0 | ☐ | ☐ | ☐ | ☐ |
+| 02 | Promise extraction | ✅ v1.1 | ☐ | ☐ | ☐ | ☐ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -29,7 +29,7 @@ _Updated at the end of every session. Read this first._
 - [ ] Only if Gemini can't transcribe some TVK pages: Cowork transcription sessions (global §6.4).
 
 ## Next step
-Open **Claude Code** in the project folder and have it build stage 02 from `specs/02-promise-extraction.md` §4.11. Step 1 adds `LICENSE`/`THIRD_PARTY_NOTICES.md` and the manifesto text, and stops to show you AIADMK pages 1 and 10 converted. Make sure `.env` holds `GEMINI_API_KEY` before step 4 (backend test).
+Open **Claude Code** in the project folder and have it build stage 02 from `specs/02-promise-extraction.md` §4.11. Step 1 adds `LICENSE`/`THIRD_PARTY_NOTICES.md` and the manifesto text, and stops to show you AIADMK pages 1 and 10 converted. Make sure `.env` holds `GEMINI_API_KEY` before step 3 (Gemini client; build order per D-044).
 
 **Schedule:** about 2 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). Stage 02 build target: Days 7–8.
 
@@ -80,3 +80,4 @@ Open **Claude Code** in the project folder and have it build stage 02 from `spec
   - Global spec v0.7 (§3.1, §4, §5, §6.1, new §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §12.3 note, §13, §14). CLAUDE.md: transcription-session rules and `.env` handling.
   - Later: OQ-1 thresholds accepted; vision fallback changed to Gemini first, Cowork last (D-042); the Open-Tamil table files are explicitly GPL v3+ (licence choice pending); user to look for a better TVK copy (spec 02 v0.2).
 - **2026-10-12** — Spec 02 approved (v1.0): code licence GPL v3 (D-043); no better TVK copy found, so OCR + gate + Gemini vision fallback. Hand-over to Claude Code for the build.
+  - Build order fixed (D-044, spec 02 v1.1): Gemini client and vision transcription before units, backend test on real TVK units; vision model `gemini-3.8-flash`.

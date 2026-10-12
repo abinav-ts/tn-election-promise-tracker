@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-043; approved with spec 02 v1.0 on 2026-10-12**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-044; approved with spec 02 v1.0/v1.1 on 2026-10-12**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -130,7 +130,7 @@ All LLM use goes through `ept.llm`, which hides the backend:
 
 The interface handles prompt loading from `prompts/` (each prompt file has a `version:` header), JSON-schema validation with one retry, response caching keyed on backend + model + prompt version + input hash, and a usage log. Temperature 0 wherever the backend allows it.
 
-**Bulk backend (Q-03, D-037):** the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`, with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
+**Bulk backend (Q-03, D-037):** the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`; manifesto-page transcription uses a separate `llm.models.vision` (D-044), with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
 
 ### 6.2 Strong-judge file handoff (Claude in Cowork)
 1. `ept judge export --run ID` writes batches of ~20 judging tasks to `data/judgments/{run_id}/in/batch_NNN.jsonl`. Each task contains the promise, the indicator, the cutoff date and the supplied chunks (id, title, type, date, text).

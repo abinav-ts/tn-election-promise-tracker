@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.0** (2026-10-12; all open questions answered: v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found) |
+| Status | **APPROVED v1.1** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-043 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-044 (`docs/decisions/log.md`) |
 
 ---
 
@@ -96,7 +96,7 @@ TVK has no ground truth, so Tesseract's accuracy at TVK's resolution is **calibr
    - calibrated CER > `extract.ocr_gate.max_cer` → **every** TVK page goes to vision;
    - otherwise, a TVK page goes to vision if its mean confidence < `extract.ocr_gate.min_conf`, or its validity < `extract.min_validity`.
 3. **Vision transcription (D-042): Gemini first, Cowork last.**
-   - **Primary: the bulk backend with image input.** `ept extract transcribe --term T` sends each gated page image (native resolution) with `prompts/transcribe_page.md` through `ept.llm` (cached, logged, same retry rules). The prompt says: transcribe exactly what is printed, in reading order, Tamil in Unicode, keep numbers and headings, no corrections, no additions, no summaries; mark an unreadable stretch `[?]`. The output is validated (non-empty, Tamil share, validity, `[?]` count) and used as that page's text with route `vision`.
+   - **Primary: the bulk backend with image input.** `ept extract transcribe --term T` sends each gated page image, using the model in `llm.models.vision` (D-044), (native resolution) with `prompts/transcribe_page.md` through `ept.llm` (cached, logged, same retry rules). The prompt says: transcribe exactly what is printed, in reading order, Tamil in Unicode, keep numbers and headings, no corrections, no additions, no summaries; mark an unreadable stretch `[?]`. The output is validated (non-empty, Tamil share, validity, `[?]` count) and used as that page's text with route `vision`.
    - **Cross-check:** for every vision page the CER between the transcription and Tesseract's output is recorded; a page above `extract.vision_disagree_cer` goes into spot-check group b. This guards against a transcription that reads well but isn't what's printed.
    - **Last resort: Cowork file handoff** (global §6.4), only for pages whose Gemini transcription still fails validation after `extract.vision.max_attempts`. `ept extract transcribe export` writes those page images to `transcribe/in/`; in a fresh Cowork session Claude reads only `prompts/transcribe_page.md` and the images (no web search, no other files) and writes `page_NNN.txt`; `ept extract transcribe import` validates them the same way.
    - All accepted transcriptions (either route) are copied to `data/frozen/transcriptions/{term}/page_NNN.txt` and committed, recording which route produced each.
@@ -216,7 +216,7 @@ One generic cutter reads the profile. Its rules:
   - `dedup.candidate_ratio`;
   - `frozen_terms: []`.
 - `llm`:
-  - `models.bulk`;
+  - `models.bulk` (set by the backend test), `models.vision` (`gemini-3.8-flash`, the stronger free-tier candidate; fixed before the backend test because transcription must run first, D-044);
   - `bulk.{api_key_env: GEMINI_API_KEY, candidates, rpm, rpd, min_v1_pass, backoff_s, max_backoff_s}`.
 - Proposed starting values are in §9 OQ-1.
 
@@ -224,13 +224,14 @@ One generic cutter reads the profile. Its rules:
 1. `LICENSE` (GPL v3) + `THIRD_PARTY_NOTICES.md`; `pyproject.toml` gets `license = "GPL-3.0-or-later"`. Settings, `manifestos.yaml`, register the manifestos in `documents`.
    - `pages` for DMK (`text_layer`) and AIADMK (`font_map`, with vendored table and overprint removal).
    - Check: the AIADMK page 1 text reads correctly. **Show the user AIADMK pages 1 and 10 converted.** ✔ `stage 02: manifesto text`
-2. TVK `ocr` + calibration + gate. Report the calibration CER, how many pages pass, and how many need vision.
-   - If any pages need vision: `transcribe` through Gemini (needs `_bulk` from step 4, so do step 4 first if pages are gated). Only pages that still fail go to the Cowork fallback (`transcribe export` → user runs the sessions → `transcribe import`). ✔
-3. `units` for all three terms.
+2. TVK `ocr` + calibration + gate. Report the calibration CER, how many pages pass, and how many need vision. ✔
+3. **`_bulk`** (D-044): the Gemini client in `ept.llm` with throttle, backoff, quota stop and key handling, plus image input. Offline tests with a fake client, then **one** live smoke call (needs the key in `.env`). ✔ `stage 02: bulk backend`
+4. **Vision transcription**, only if step 2 gated any pages: `transcribe` with `llm.models.vision`. Pages that still fail after `extract.vision.max_attempts` go to the Cowork fallback (`transcribe export` → the user runs the sessions → `transcribe import`). ✔
+5. `units` for all three terms.
    - Check: DMK has 505 main units (+ sub-list kept inside item 300); the furniture/unit character accounting is complete. ✔
-4. `_bulk` + `backend-test` (needs the key in `.env`). Record the choice. ✔ `stage 02: bulk backend`
-5. `promises` + `checks` + `dedup` + IDs, then `--limit 20` per term. Then `report` + `spotcheck`. **Human spot-check (7–10 items).** ✔ `stage 02: limit-20 run`
-6. Full run (fits in normal sessions; ≈ 1,000–1,300 units ÷ `units_per_call`), report, coverage check, then a **fresh spot-check list** over the full output. Fix, re-run the affected units, `freeze` each term. STATUS, spec-vs-build diff, deviations logged. ✔ `stage 02: promise extraction`
+6. **`backend-test`** on the real units (8 DMK, 6 AIADMK, 6 TVK). Record the choice in `llm.models.bulk` and the free-tier limits in `llm.bulk.rpm/rpd`. ✔
+7. `promises` + `checks` + `dedup` + IDs, then `--limit 20` per term. Then `report` + `spotcheck`. **Human spot-check (7–10 items).** ✔ `stage 02: limit-20 run`
+8. Full run (fits in normal sessions; ≈ 1,000–1,300 units ÷ `units_per_call`), report, coverage check, then a **fresh spot-check list** over the full output. Fix, re-run the affected units, `freeze` each term. STATUS, spec-vs-build diff, deviations logged. ✔ `stage 02: promise extraction`
 
 Stop and ask the user if:
 - any manifesto turns out to contain text the profile routes can't read;
