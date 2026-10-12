@@ -30,7 +30,7 @@ from ept.extract.freeze import check_writable, is_frozen
 from ept.runs import finish_run, progress, start_run
 from ept.schema import Document
 
-_TAMIL_RE = re.compile(r"[஀-௿]")
+_TAMIL_RE = re.compile(r"[\u0B80-\u0BFF]")
 _BOLD_FLAG = 16
 
 
@@ -57,6 +57,9 @@ class PageRecord:
     ocr_conf: Optional[float]
     flags: list[str]
     skipped: bool = False
+    to_vision: bool = False
+    gate_reasons: list[str] = field(default_factory=list)
+    vision_cer: Optional[float] = None  # vision vs Tesseract (set by `transcribe`)
 
 
 def nonspace_len(text: str) -> int:
@@ -109,6 +112,13 @@ def text_layer_page(page: pymupdf.Page, profile: ManifestoProfile) -> PageText:
     return out
 
 
+def ocr_page(page: pymupdf.Page, cfg: Config, ppi: Optional[int] = None, runner=None) -> PageText:
+    """Tesseract on the page's own scan at native resolution (no upsampling); a render at `ppi` otherwise."""
+    ex = cfg.settings.extract
+    res = ocr_gate.ocr_image(ocr_gate.page_image(page, ppi), ex.ocr_lang, ex.ocr_psm, ex.ocr_timeout_s, runner)
+    return PageText(lines=res.lines, ocr_conf=res.mean_conf)
+
+
 def font_map_page(page: pymupdf.Page, profile: ManifestoProfile, cfg: Config) -> PageText:
     ex = cfg.settings.extract
     lines, counts = fontmap.page_lines(page, profile.legacy_fonts, profile.bullet_fonts, profile.bullet_marker,
@@ -138,8 +148,8 @@ def fontmap_flags(legacy_share: Optional[float], valid: Optional[float], cfg: Co
     return flags
 
 
-def write_page(folder: Path, n: int, text: PageText) -> None:
-    (folder / f"page_{n:03d}.txt").write_text("\n".join(text.lines) + "\n", encoding="utf-8")
+def write_page(folder: Path, n: int, text: PageText, suffix: str = "") -> None:
+    (folder / f"page_{n:03d}{suffix}.txt").write_text("\n".join(text.lines) + "\n", encoding="utf-8")
 
 
 def read_records(cfg: Config, term_id: str) -> list[dict[str, Any]]:
@@ -177,28 +187,87 @@ def manifesto_document(cfg: Config, term_id: str, profile: ManifestoProfile, par
 # --- run ------------------------------------------------------------------
 
 
-def extract_term_pages(cfg: Config, term_id: str, profile: ManifestoProfile) -> list[PageRecord]:
+def calibration_path(cfg: Config) -> Path:
+    return cfg.path("manifesto_interim") / "ocr_calibration.json"
+
+
+def load_or_calibrate(cfg: Config, profiles: dict[str, ManifestoProfile], force: bool = False,
+                      runner=None) -> dict[str, Any]:
+    """Spec 02 §4.3 step 1: Tesseract CER at TVK's resolution, measured on font-mapped pages."""
+    path = calibration_path(cfg)
+    if path.exists() and not force:
+        return json.loads(path.read_text(encoding="utf-8"))
+    ref_term = next((t for t, p in profiles.items() if p.route == "font_map"), None)
+    if ref_term is None or not read_records(cfg, ref_term):
+        raise RuntimeError("OCR calibration needs a font_map manifesto with pages extracted first")
+    ex = cfg.settings.extract
+    profile = profiles[ref_term]
+    pdf = pymupdf.open(manifesto_path(cfg, profile))
+    pages = ocr_gate.calibration_pages(pdf.page_count, ex.calibration_pages, profile.skip_pages)
+    ref = {n: read_page_text(cfg, ref_term, n) for n in pages}
+    result = ocr_gate.calibrate(pdf, ref, pages, ppi=ex.calibration_ppi, lang=ex.ocr_lang, psm=ex.ocr_psm,
+                                timeout_s=ex.ocr_timeout_s, runner=runner)
+    result["reference_term"] = ref_term
+    result["note"] = ("Optimistic: the reference pages are black text on white; scanned pages with colour "
+                      "bands and photos will OCR worse.")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+    return result
+
+
+def _ocr_record(cfg: Config, n: int, text: PageText, calibrated_cer: float, route: str = "ocr",
+                flags: Optional[list[str]] = None) -> PageRecord:
+    ex = cfg.settings.extract
+    joined = "\n".join(text.lines)
+    share, valid = quality(joined, "ta")
+    gate = ocr_gate.gate_page(calibrated_cer, text.ocr_conf, valid, max_cer=ex.ocr_gate.max_cer,
+                              min_conf=ex.ocr_gate.min_conf, min_validity=ex.min_validity)
+    return PageRecord(page=n, route=route, chars=nonspace_len(joined), lines=len(text.lines), heading_lines=[],
+                      removed_chars=0, tamil_share=share, legacy_tamil_share=None, validity=valid,
+                      ocr_conf=text.ocr_conf, flags=flags or [], to_vision=gate.to_vision,
+                      gate_reasons=list(gate.reasons))
+
+
+def extract_term_pages(cfg: Config, term_id: str, profile: ManifestoProfile,
+                       calibration: Optional[dict[str, Any]] = None, runner=None) -> list[PageRecord]:
     folder = term_dir(cfg, term_id)
     folder.mkdir(parents=True, exist_ok=True)
     doc = pymupdf.open(manifesto_path(cfg, profile))
+    ex = cfg.settings.extract
     records = []
     for page in doc:
         n = page.number + 1
+        if profile.route == "ocr":
+            text = ocr_page(page, cfg, runner=runner)
+            write_page(folder, n, text)
+            write_page(folder, n, text, suffix=".ocr")  # kept for the vision cross-check (§4.3)
+            rec = _ocr_record(cfg, n, text, calibration["cer"])
+            rec.skipped = n in profile.skip_pages
+            records.append(rec)
+            continue
         if profile.route == "text_layer":
             text = text_layer_page(page, profile)
-        elif profile.route == "font_map":
-            text = font_map_page(page, profile, cfg)
         else:
-            raise NotImplementedError(f"route {profile.route} is built in spec 02 step 2")
+            text = font_map_page(page, profile, cfg)
         joined = "\n".join(text.lines)
         share, valid = quality(joined, profile.lang)
         legacy_share = None if text.legacy_text is None else round(ocr_gate.tamil_share(text.legacy_text), 4)
         flags = fontmap_flags(legacy_share, valid, cfg) if profile.route == "font_map" else []
+        if flags:  # §4.2: a flagged font-map page falls back to OCR (rendered), then to vision
+            ocr_text = ocr_page(page, cfg, ppi=ex.calibration_ppi, runner=runner)
+            write_page(folder, n, ocr_text)
+            write_page(folder, n, ocr_text, suffix=".ocr")
+            rec = _ocr_record(cfg, n, ocr_text, calibration["cer"] if calibration else 1.0,
+                              flags=[f"font_map fallback: {f}" for f in flags])
+            rec.legacy_tamil_share, rec.removed_chars = legacy_share, text.removed_chars
+            rec.skipped = n in profile.skip_pages
+            records.append(rec)
+            continue
         write_page(folder, n, text)
         records.append(PageRecord(page=n, route=profile.route, chars=nonspace_len(joined), lines=len(text.lines),
                                   heading_lines=text.heading_lines, removed_chars=text.removed_chars,
-                                  tamil_share=share, legacy_tamil_share=legacy_share, validity=valid, ocr_conf=text.ocr_conf, flags=flags,
-                                  skipped=n in profile.skip_pages))
+                                  tamil_share=share, legacy_tamil_share=legacy_share, validity=valid,
+                                  ocr_conf=text.ocr_conf, flags=flags, skipped=n in profile.skip_pages))
     return records
 
 
@@ -206,7 +275,8 @@ def run_pages(term: Optional[str] = None, limit: Optional[int] = None, force: bo
     """`--limit` doesn't apply: units need whole files (spec 02 §4.1)."""
     cfg = get_config()
     profiles = cfg.profiles()
-    terms = [term] if term else list(profiles)
+    order = {"text_layer": 0, "font_map": 1, "ocr": 2}  # calibration needs font-mapped pages first
+    terms = [term] if term else sorted(profiles, key=lambda t: order[profiles[t].route])
     run_id = start_run("extract-pages", {"term": term, "limit": limit, "force": force})
     conn = db.connect()
     db.init_schema(conn)
@@ -225,13 +295,18 @@ def run_pages(term: Optional[str] = None, limit: Optional[int] = None, force: bo
                 stats["skipped_done"] += 1
                 continue
             progress(f"pages: {term_id} ({profile.route})")
-            records = extract_term_pages(cfg, term_id, profile)
+            calibration = None
+            if profile.route == "ocr" or profile.route == "font_map" and calibration_path(cfg).exists():
+                calibration = load_or_calibrate(cfg, profiles, force=force and profile.route == "ocr")
+                stats["calibration_cer"] = calibration["cer"]
+            records = extract_term_pages(cfg, term_id, profile, calibration)
             write_records(cfg, term_id, records, sha)
             status = "ocr" if any(r.route in ("ocr", "vision") for r in records) else "ok"
             db.upsert(conn, manifesto_document(cfg, term_id, profile, status))
             stats["terms"] += 1
             stats["pages"] += len(records)
             stats["flagged"] += sum(1 for r in records if r.flags)
+            stats["to_vision"] = stats.get("to_vision", 0) + sum(1 for r in records if r.to_vision)
     finally:
         finish_run(run_id, stats)
         conn.close()

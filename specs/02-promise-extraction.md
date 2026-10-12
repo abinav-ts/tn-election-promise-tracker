@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from step 1, D-046) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-046 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-047 (`docs/decisions/log.md`) |
 
 ---
 
@@ -92,7 +92,7 @@ The route comes from the profile. Every page records its route and quality metri
 
 ### 4.3 OCR quality gate and vision fallback (D-036)
 TVK has no ground truth, so Tesseract's accuracy at TVK's resolution is **calibrated** on AIADMK, where the font map gives near-ground-truth:
-1. Render `extract.calibration_pages` AIADMK pages as images at 150 ppi, OCR them with Tesseract `tam`, and compute the character error rate (CER) against the font-mapped text of the same pages. Written to `ocr_calibration.json`. (AIADMK is black text on white; TVK has colour bands and photos, so this is an optimistic estimate, and the report says so.)
+1. Render `extract.calibration_pages` AIADMK pages as images at 150 ppi, OCR them with Tesseract `tam`, and compute the character error rate (CER) against the font-mapped text of the same pages. Pages are evenly spaced through the file (1, 11, 21, 31, 41 for 5 of 41); the CER is pooled (total edits ÷ total reference characters). Zero-width joiners that Tesseract inserts after the pulli are removed from all OCR text; the OCR text of every page is kept as `page_NNN.ocr.txt` for the vision cross-check (D-047). Written to `ocr_calibration.json`. (AIADMK is black text on white; TVK has colour bands and photos, so this is an optimistic estimate, and the report says so.)
 2. **Gate:**
    - calibrated CER > `extract.ocr_gate.max_cer` → **every** TVK page goes to vision;
    - otherwise, a TVK page goes to vision if its mean confidence < `extract.ocr_gate.min_conf`, or its validity < `extract.min_validity`.

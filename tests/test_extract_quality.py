@@ -40,3 +40,41 @@ def test_gate_low_confidence_or_validity():
     assert gate_page(0.03, 70.0, 0.99, **GATE).to_vision
     assert gate_page(0.03, 90.0, 0.90, **GATE).to_vision
     assert gate_page(0.03, None, 0.99, **GATE).to_vision
+
+
+TSV = "\n".join([
+    "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext",
+    "1\t1\t0\t0\t0\t0\t0\t0\t100\t100\t-1\t",
+    "5\t1\t1\t1\t1\t1\t0\t0\t10\t10\t90\tதமிழ்‌",
+    "5\t1\t1\t1\t1\t2\t0\t0\t10\t10\t70\tநாடு",
+    "5\t1\t1\t1\t2\t1\t0\t0\t10\t10\t80\t2026",
+    "5\t1\t2\t1\t1\t1\t0\t0\t10\t10\t-1\t ",
+])
+
+
+def test_parse_tsv_lines_conf_and_zero_width():
+    from ept.extract.ocr_gate import parse_tsv
+
+    res = parse_tsv(TSV)
+    assert res.lines == ["தமிழ் நாடு", "2026"]  # ZWNJ after the pulli removed
+    assert res.mean_conf == 80.0
+
+
+def test_calibration_pages_even_and_deterministic():
+    from ept.extract.ocr_gate import calibration_pages
+
+    assert calibration_pages(41, 5) == [1, 11, 21, 31, 41]
+    assert calibration_pages(41, 5, skip=[1]) == [2, 12, 22, 31, 41]
+    assert calibration_pages(3, 5) == [1, 2, 3]
+
+
+def test_calibrate_with_fake_ocr():
+    import pymupdf
+
+    from ept.extract.ocr_gate import calibrate
+
+    pdf = pymupdf.open()
+    pdf.new_page()
+    fake = lambda image, lang, psm, timeout: TSV  # noqa: E731
+    out = calibrate(pdf, {1: "தமிழ் நாடு\n2026"}, [1], ppi=150, lang="tam", psm=3, timeout_s=10, runner=fake)
+    assert out["cer"] == 0.0 and out["pages"][0]["mean_conf"] == 80.0
