@@ -8,7 +8,8 @@ Problem groups, in priority order:
   d. split outliers (> max_promises_per_unit) and dropped pieces whose source carries a
      commitment marker (may be missed promises);
   e. dedup decisions near the threshold.
-At most `spotcheck.per_source` items per term; 7–10 items; verdict/note left empty.
+At most `extract.spotcheck.per_term` items per term and `per_term_group` per term and group (D-054);
+7–10 items; verdict/note left empty.
 """
 
 from __future__ import annotations
@@ -147,16 +148,18 @@ def build(cfg: Config, conn, terms: list[str]) -> list[Item]:
     return items
 
 
-def select(items: list[Item], max_items: int, per_term: int) -> list[Item]:
+def select(items: list[Item], max_items: int, per_term: int, per_term_group: int) -> list[Item]:
     ranked = sorted(items, key=lambda it: (GROUPS.index(it.group), -it.score, it.item_id))
-    out, per, seen = [], {}, set()
+    out, per, per_group, seen = [], {}, {}, set()
     for it in ranked:
         key = (it.unit_id, it.group)
-        if per.get(it.term, 0) >= per_term or key in seen:
+        if (per.get(it.term, 0) >= per_term or per_group.get((it.term, it.group), 0) >= per_term_group
+                or key in seen):
             continue
         out.append(it)
         seen.add(key)
         per[it.term] = per.get(it.term, 0) + 1
+        per_group[(it.term, it.group)] = per_group.get((it.term, it.group), 0) + 1
         if len(out) == max_items:
             break
     return out
@@ -168,7 +171,8 @@ def run_spotcheck(term: Optional[str] = None) -> dict[str, Any]:
     profiles = cfg.profiles()
     terms = [term] if term else [t for t in profiles if read_units(cfg, t)]
     conn = db.connect()
-    chosen = select(build(cfg, conn, terms), s.max_items, s.per_source)
+    caps = cfg.settings.extract.spotcheck
+    chosen = select(build(cfg, conn, terms), s.max_items, caps.per_term, caps.per_term_group)
     conn.close()
     units = {t: {u.unit_id: u for u in read_units(cfg, t)} for t in terms}
     path = cfg.spotcheck_path("02")

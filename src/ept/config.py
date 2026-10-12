@@ -156,6 +156,11 @@ class BackendTestCfg(_Cfg):
     per_term: dict[str, int]
 
 
+class ExtractSpotcheck(_Cfg):
+    per_term: int
+    per_term_group: int
+
+
 class Extract(_Cfg):
     """Spec 02 §4.10."""
 
@@ -176,6 +181,7 @@ class Extract(_Cfg):
     max_number_jump: int
     indent_tol_px: float
     backend_test: BackendTestCfg
+    spotcheck: ExtractSpotcheck
     units_per_call: int
     max_promises_per_unit: int
     max_text_words: int

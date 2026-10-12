@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052; TVK deferred within stage 02, backend-test sample 10 DMK + 10 AIADMK, D-053) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052; TVK deferred within stage 02, backend-test sample 10 DMK + 10 AIADMK, D-053; spot-check caps 5 per term / 3 per term-group, D-054) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-053 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-054 (`docs/decisions/log.md`) |
 
 ---
 
@@ -176,7 +176,7 @@ One generic cutter reads the profile. Its rules:
   4. promises per section;
   5. the 10 longest and 10 shortest promises;
   6. the LLM calls and cache hits.
-- **Spot-check** (`ept extract spotcheck` → `spotcheck_02.csv`, 7–10 items, at most 3 per term, global §12.4). Problem score, groups in priority order:
+- **Spot-check** (`ept extract spotcheck` → `spotcheck_02.csv`, 7–10 items, global §12.4; with TVK deferred only two terms remain, so stage 02 allows at most 5 items per term and at most 3 per term from one problem group, D-054). Problem score, groups in priority order:
   - a. a check failure resolved by an override or a prompt revision, or a coverage gap;
   - b. promises from the weakest pages: lowest validity or OCR confidence, flagged font-map pages, the largest vision-vs-OCR disagreement;
   - c. a V3 `names_to_check` flag (possible model-memory leak, §5);
