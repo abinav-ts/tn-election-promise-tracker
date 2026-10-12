@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051) |
+| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-051 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-052 (`docs/decisions/log.md`) |
 
 ---
 
@@ -25,7 +25,7 @@ What each file actually is (inspected 2026-10-11) decides how its text is read (
 
 | Term | File used | Pages | What it is | Text route |
 |---|---|---|---|---|
-| DMK-2021 | `DMK-2021_en.pdf` (official English exists, global §3.1) | 29 | Browser printout of dmk.in. Clean English text layer. 518 numbered lines covering items 1–505: **503 main items** (numbers 80, 136, 251, 441 not printed; 166 and 252 printed twice: misnumbering, not missing text) plus a 15-entry railway-route sub-list numbered 1–15 inside **item 442**. One wrapped line of item 42 starts with "300." (the amount "Rs 300."), which is not an item marker (counts verified on the file 2026-10-12, D-045). Noise: browser header/footer on every page (date, title, URL, `n/29`) and, on some pages, the website's Tamil sidebar menu and party address interleaved with the text | `text_layer` |
+| DMK-2021 | `DMK-2021_en.pdf` (official English exists, global §3.1) | 29 | Browser printout of dmk.in. Clean English text layer. **505 main items** numbered 1–505 (251 not printed; 252 printed twice for two different items; 80, 136 and 441 printed without a space after the dot, e.g. "80.Government"), plus a 15-entry railway-route sub-list numbered 1–15 inside **item 442**. One wrapped line of item 42 starts with "300." (the amount "Rs 300."), which is not an item marker. The browser cut some lines at page breaks: a line clipped at the bottom of a page (ending below y≈1164.5) is printed again in full at the top of the next page; the clipped copy is dropped and counted (`clip_bottom_y` in the profile). An earlier reading (D-045) mistook these copies and the missing spaces for misnumbering; corrected in D-052 (verified on the file 2026-10-13). Noise: browser header/footer on every page (date, title, URL, `n/29`) and, on some pages, the website's Tamil sidebar menu and party address interleaved with the text | `text_layer` |
 | AIADMK-2016 | `AIADMK-2016_ta.pdf` | 41 | MS Word export, Tamil set in **VANAVIL** legacy fonts (Avvaiyar, Swetha, Valluvar, AvvaiyarBold, Alayarasi). Extracts as Latin-1 garbage. Bold is faked by printing each line 4× at slight offsets. Numbered section headings (`1. … :`), Wingdings bullets for items, and many un-bulleted paragraphs listing **past achievements** | `font_map` |
 | TVK-2026 | `TVK-2026_ta.pdf` | 96 | Image-only scan (one 1240×1752 JPEG per page, **150 ppi**), designed layout with photos and colour bands. Preface pages, then 10 "pillars" grouped under அறம் / பொருள் / இன்பம், sometimes with lettered sub-sections. Numbered red headings, **numbering restarts at 1 in each section**, a paragraph under each. Footer `தமிழக வெற்றிக் கழகம் n`. The user searched for a better free official copy on 2026-10-12 and found none, so OCR is the route (§4.3 note still allows a swap before freezing) | `ocr` → `vision` fallback |
 
@@ -114,7 +114,7 @@ One generic cutter reads the profile. Its rules:
 1. Join the term's pages in order, keeping page offsets.
 2. A **section heading** (profile pattern; for TVK, also the pillar band and lettered sub-headings) starts a new section. The heading text becomes the `section` of the following units.
 3. An **item marker** starts a new unit:
-   - `running_number` (DMK): `N.` at line start where N continues the main sequence: N equals the previous main number (a misnumbered duplicate) or exceeds it by at most `extract.max_number_jump` (skipped numbers). A number that resets below the running count opens a sub-list and stays inside the current unit (DMK item 442). A larger forward jump is not a marker (the wrapped "Rs 300." line in item 42). Order follows position on the page, not the printed number (D-045).
+   - `running_number` (DMK): `N.` (or `N.Text`, or a bare `N` line) at line start where N continues the main sequence: N equals the previous main number (a misnumbered duplicate) or exceeds it by at most `extract.max_number_jump` (a skipped number). A number that resets below the running count opens a sub-list and stays inside the current unit (DMK item 442). A larger forward jump is not a marker (the wrapped "Rs 300." line in item 42). Order follows position on the page, not the printed number (D-045, D-052).
    - `bullet` (AIADMK): the bullet marker. An un-bulleted paragraph between bullets is its own unit, so nothing is lost; the LLM classifies it (usually `achievement`).
    - `section_number` (TVK): `N` at the start of a heading line where N continues the section's own count from 1.
 4. If no marker is found on a page (OCR can lose the white-on-red number boxes), the page's text after the last unit becomes one unit marked `page_block`. The LLM still returns verbatim spans from it, so correctness doesn't depend on the marker.
@@ -166,7 +166,7 @@ One generic cutter reads the profile. Its rules:
 3. On **yes**, the later piece (in document order) is dropped and logged in `promise_dedup.csv` (D-038). On **no**, both are kept; pairs with very high similarity but a **no** go to spot-check group e.
    - Known case: DMK items 498 and 500 (Sri Lanka in the Citizenship Act amendment).
 4. **IDs are assigned only after deduplication:** `promise_id = {term}-{seq:04d}`, contiguous, in document order (unit order, then piece order). `parent_group` = the `unit_id` the promise came from (global §7 as amended). `page` = the page where its `source_text` starts. `section` = `section_en`. `source_lang` = the profile's language.
-5. **DMK coverage check:** every main item (503 markers; misnumbered ones by position) maps to ≥ 1 promise, or to a logged drop/dedup reason. The numbers 80, 136, 251, 441 are not printed and are reported as explained gaps ("number not printed"), found automatically as holes in the marker sequence. Any other gap is a failure in the report (D-045).
+5. **DMK coverage check:** every main item (505 markers; misnumbered ones by position) maps to ≥ 1 promise, or to a logged drop/dedup reason. Number 251 is not printed and is reported as an explained gap ("number not printed"), found automatically as a hole in the marker sequence. Any other gap is a failure in the report (D-052).
 
 ### 4.7 Report and spot-check
 - **`reports/extraction_02.md`:**
@@ -213,7 +213,7 @@ One generic cutter reads the profile. Its rules:
   - `ocr_lang: tam`, `ocr_psm`, `ocr_timeout_s`, `overprint_px`, `line_tol_px`, `space_gap_px`;
   - `fontmap_min_tamil_share`, `min_validity`;
   - `calibration_pages`, `calibration_ppi` (150, TVK's resolution), `ocr_gate.{max_cer,min_conf}`, `vision_disagree_cer`, `vision.{max_attempts,max_unreadable}` (most `[?]` marks a valid transcription may hold; starting value 5), `transcribe_batch` (Cowork fallback only);
-  - `max_number_jump` (3, D-045), `units_per_call`, `max_promises_per_unit`, `max_text_words`, `common_words`;
+  - `max_number_jump` (3, D-045), `indent_tol_px` (3; paragraph indents in the profile, D-052), `units_per_call`, `max_promises_per_unit`, `max_text_words`, `common_words`;
   - `dedup.{candidate_ratio, pairs_per_call}` (20, D-050);
   - `frozen_terms: []`.
 - `llm`:
@@ -229,7 +229,7 @@ One generic cutter reads the profile. Its rules:
 3. **`_bulk`** (D-044): the Gemini client in `ept.llm` with throttle, backoff, quota stop and key handling, plus image input. Offline tests with a fake client, then **one** live smoke call (needs the key in `.env`). ✔ `stage 02: bulk backend`
 4. **Vision transcription**, only if step 2 gated any pages: `transcribe` with `llm.models.vision`. Pages that still fail after `extract.vision.max_attempts` go to the Cowork fallback (`transcribe export` → the user runs the sessions → `transcribe import`). ✔
 5. `units` for all three terms.
-   - Check: DMK has 503 main units (+ sub-list kept inside item 442; the four unprinted numbers reported as explained gaps, D-045); the furniture/unit character accounting is complete. ✔
+   - Check: DMK has 505 main units (+ sub-list kept inside item 442; 251 reported as an explained gap, D-052); the furniture/unit character accounting is complete. ✔
 6. **`backend-test`** on the real units (8 DMK, 6 AIADMK, 6 TVK). Record the choice in `llm.models.bulk` and the free-tier limits in `llm.bulk.rpm/rpd`. ✔
 7. `promises` + `checks` + `dedup` + IDs, then `--limit 20` per term. Then `report` + `spotcheck`. **Human spot-check (7–10 items).** ✔ `stage 02: limit-20 run`
 8. Full run (fits in normal sessions; ≈ 1,000–1,300 units ÷ `units_per_call`), report, coverage check, then a **fresh spot-check list** over the full output. Fix, re-run the affected units, `freeze` each term. STATUS, spec-vs-build diff, deviations logged. ✔ `stage 02: promise extraction`
@@ -266,7 +266,7 @@ Rules from the global warning box that apply to this stage:
    - `page` within the file;
    - covariate fields null.
 6. Every promise passes V1, V2 and V4. English-source promises pass V3. Every Tamil-source V3 flag was in the spot-check pool. Zero unresolved failures.
-7. The DMK coverage check maps all 503 main items with no unexplained gap (80, 136, 251, 441: not printed). Every dedup drop is in `promise_dedup.csv`.
+7. The DMK coverage check maps all 505 main items with no unexplained gap (251: not printed). Every dedup drop is in `promise_dedup.csv`.
 8. A second identical run makes 0 backend calls and produces identical rows. `--term`, `--limit`, `--force` work. A frozen term can't be re-extracted.
 9. `reports/backend_test_02.md` exists, `llm.models.bulk` is set by its rule, and the free-tier limits are recorded.
 10. `reports/extraction_02.md/json` and run metadata exist.

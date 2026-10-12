@@ -169,6 +169,7 @@ class Extract(_Cfg):
     vision: VisionCfg
     transcribe_batch: int
     max_number_jump: int
+    indent_tol_px: float
     units_per_call: int
     max_promises_per_unit: int
     max_text_words: int
@@ -250,6 +251,13 @@ class Heading(_Cfg):
     bold_line: bool = False
 
 
+class Paragraph(_Cfg):
+    """Indent typography for un-marked paragraphs between items (x positions in PDF points)."""
+
+    hanging_x: float  # continuation lines of a marked item sit here
+    indent_x: float  # the first line of an un-marked paragraph is indented to here
+
+
 class ManifestoProfile(_Cfg):
     """One manifesto's typography (spec 02 §2.2, D-040). No promise content."""
 
@@ -262,9 +270,11 @@ class ManifestoProfile(_Cfg):
     bullet_marker: str = "•"
     text_column_x: Optional[float] = None  # text_layer: blocks starting left of this are sidebar
     drop_tamil_lines: bool = False  # text_layer in an English manifesto: Tamil-script lines are sidebar
+    clip_bottom_y: Optional[float] = None  # text_layer: lines ending below this were cut by the page break
     furniture: list[str] = []  # regexes for whole lines that are page furniture
     heading: Heading = Heading()
     item_marker: ItemMarker
+    paragraph: Optional[Paragraph] = None
     skip_pages: list[int] = []  # 1-based; cover/contents, listed in the report
     source_note: Optional[str] = None
 

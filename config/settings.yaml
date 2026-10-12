@@ -140,6 +140,7 @@ extract:
     max_attempts: 2
     max_unreadable: 5         # most "[?]" marks a valid transcription may contain
   transcribe_batch: 10        # Cowork fallback only
+  indent_tol_px: 3.0          # cutter: a line within this distance of a profile x position is "at" it
   max_number_jump: 3          # running/section numbers: a jump larger than this is not an item marker (D-045)
   units_per_call: 25          # D-050 (was 8): free-tier quota of ~20 requests/day per model
   max_promises_per_unit: 5

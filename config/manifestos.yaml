@@ -11,6 +11,8 @@ profiles:
     title: DMK election manifesto 2021 (English, dmk.in browser printout)
     text_column_x: 120          # main text starts at x≈124; the website sidebar/address sits at x≈39–75
     drop_tamil_lines: true      # the website's Tamil menu and party name
+    clip_bottom_y: 1164.5       # a line ending below this is cut off by the browser's page break and printed
+                                # again in full at the top of the next page (D-052); normal last lines end <= 1163
     furniture:
       - '\d{1,2}/\d{1,2}/\d{2}, \d{1,2}:\d{2} [AP]M'      # browser header: print date
       - 'DMK ELECTION MANIFESTO 2021 - ENGLISH'           # browser header: page title
@@ -20,7 +22,7 @@ profiles:
       bold_line: true           # sub-headings are lines set entirely in Arial Bold
     item_marker:
       kind: running_number
-      pattern: '(\d{1,3})\.(?:\s|$)'
+      pattern: '(\d{1,3})(?:\.(?:\s|$|(?=[A-Za-z]))|$)'   # "12. Text", "80.Text", or a bare "247" line
 
   AIADMK-2016:
     file: AIADMK-2016_ta.pdf
@@ -38,7 +40,10 @@ profiles:
       pattern: '\d{1,2}\.\s.*:'                            # numbered section heading ending in a colon
     item_marker:
       kind: bullet
-      pattern: '•\s*'
+      pattern: '•\s'
+    paragraph:
+      hanging_x: 126            # bullet continuation lines
+      indent_x: 117             # first line of an un-bulleted paragraph (often past achievements)
 
   TVK-2026:
     file: TVK-2026_ta.pdf

@@ -38,6 +38,7 @@ _BOLD_FLAG = 16
 class PageText:
     lines: list[str]
     heading_lines: list[int] = field(default_factory=list)  # indices into `lines` (typographic headings)
+    line_x: list[float] = field(default_factory=list)  # left x of each line (indent rules in the cutter)
     removed_chars: int = 0  # sidebar / overprint characters dropped here (non-space)
     ocr_conf: Optional[float] = None
     legacy_text: Optional[str] = None  # font_map: converted legacy-font runs only
@@ -51,6 +52,7 @@ class PageRecord:
     lines: int
     heading_lines: list[int]
     removed_chars: int
+    line_x: list[float]
     tamil_share: Optional[float]
     legacy_tamil_share: Optional[float]  # font_map: Tamil share of the converted legacy-font text (the gate)
     validity: Optional[float]
@@ -101,14 +103,17 @@ def text_layer_page(page: pymupdf.Page, profile: ManifestoProfile) -> PageText:
                 continue
             if any(f.fullmatch(text) for f in furniture):  # kept; the cutter counts it as furniture
                 out.lines.append(text)
+                out.line_x.append(round(line["bbox"][0], 1))
                 continue
-            if left or (profile.drop_tamil_lines and _TAMIL_RE.search(text)):
+            clipped = profile.clip_bottom_y is not None and line["bbox"][3] > profile.clip_bottom_y
+            if left or clipped or (profile.drop_tamil_lines and _TAMIL_RE.search(text)):
                 out.removed_chars += nonspace_len(text)
                 continue
             visible = [s for s in line["spans"] if s["text"].strip()]
             if profile.heading.bold_line and visible and all(s["flags"] & _BOLD_FLAG for s in visible):
                 out.heading_lines.append(len(out.lines))
             out.lines.append(text)
+            out.line_x.append(round(line["bbox"][0], 1))
     return out
 
 
@@ -123,7 +128,8 @@ def font_map_page(page: pymupdf.Page, profile: ManifestoProfile, cfg: Config) ->
     ex = cfg.settings.extract
     lines, counts = fontmap.page_lines(page, profile.legacy_fonts, profile.bullet_fonts, profile.bullet_marker,
                                        ex.overprint_px, ex.line_tol_px, ex.space_gap_px)
-    return PageText(lines=[ln.text for ln in lines], removed_chars=counts["overprint_dropped"],
+    return PageText(lines=[ln.text for ln in lines], line_x=[round(ln.x0, 1) for ln in lines],
+                    removed_chars=counts["overprint_dropped"],
                     legacy_text="\n".join(ln.legacy_text for ln in lines if ln.legacy_text))
 
 
@@ -225,7 +231,7 @@ def _ocr_record(cfg: Config, n: int, text: PageText, calibrated_cer: float, rout
     gate = ocr_gate.gate_page(calibrated_cer, text.ocr_conf, valid, max_cer=ex.ocr_gate.max_cer,
                               min_conf=ex.ocr_gate.min_conf, min_validity=ex.min_validity)
     return PageRecord(page=n, route=route, chars=nonspace_len(joined), lines=len(text.lines), heading_lines=[],
-                      removed_chars=0, tamil_share=share, legacy_tamil_share=None, validity=valid,
+                      removed_chars=0, line_x=[], tamil_share=share, legacy_tamil_share=None, validity=valid,
                       ocr_conf=text.ocr_conf, flags=flags or [], to_vision=gate.to_vision,
                       gate_reasons=list(gate.reasons))
 
@@ -268,7 +274,7 @@ def extract_term_pages(cfg: Config, term_id: str, profile: ManifestoProfile,
         write_page(folder, n, text)
         records.append(PageRecord(page=n, route=profile.route, chars=nonspace_len(joined), lines=len(text.lines),
                                   heading_lines=text.heading_lines, removed_chars=text.removed_chars,
-                                  tamil_share=share, legacy_tamil_share=legacy_share, validity=valid,
+                                  line_x=text.line_x, tamil_share=share, legacy_tamil_share=legacy_share, validity=valid,
                                   ocr_conf=text.ocr_conf, flags=flags, skipped=n in profile.skip_pages))
     return records
 

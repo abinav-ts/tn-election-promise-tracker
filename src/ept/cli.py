@@ -172,3 +172,19 @@ def extract_transcribe_import(term: str = typer.Option(..., "--term")) -> None:
     from ept.extract.transcribe import run_import
 
     typer.echo(f"transcribe import: {run_import(term)}")
+
+
+@extract_app.command("units")
+def extract_units(
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """Cut page text into units by the layout profile (spec 02 §4.4)."""
+    from ept.extract.units import run_units
+
+    stats = run_units(term=term, limit=limit, force=force)
+    for t in [k for k, v in stats.items() if isinstance(v, dict) and k != "skipped"]:
+        typer.echo(f"  {t}: {stats.pop(t)}")
+    typer.echo(f"  skipped: {stats.pop('skipped')}")
+    _report("extract units", stats)
