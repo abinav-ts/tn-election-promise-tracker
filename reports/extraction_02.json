@@ -35,27 +35,37 @@
     ]
    },
    "promises_step": {
-    "units": 20,
-    "promises": 27,
-    "dropped": 15,
-    "unresolved_failures": 0,
-    "resolved_failures": 0,
-    "retried_units": 0,
-    "split_outliers": [],
+    "units": 510,
+    "promises": 670,
+    "dropped": 278,
+    "unresolved_failures": 1,
+    "resolved_failures": 32,
+    "retried_units": 19,
+    "split_outliers": [
+     "DMK-2021-U0447"
+    ],
     "v3_flags": 0
    },
-   "promises": 27,
+   "promises": 666,
    "dropped_by_kind": {
-    "other": 12,
-    "criticism": 2,
-    "achievement": 1
+    "other": 195,
+    "criticism": 50,
+    "achievement": 29,
+    "values": 4
    },
-   "dedup_pairs": 0,
-   "dedup_drops": 0,
+   "dedup_pairs": 39,
+   "dedup_drops": 4,
    "failures": {
-    "unresolved": 0,
-    "resolved": {},
-    "by_rule": {}
+    "unresolved": 1,
+    "resolved": {
+     "retry alone": 32
+    },
+    "by_rule": {
+     "V2": 1,
+     "V1": 19,
+     "V3": 12,
+     "V4": 1
+    }
    },
    "quality": {
     "tamil_share": {
@@ -75,21 +85,263 @@
     "accepted_below_threshold": []
    },
    "coverage": {
-    "main_items": 19,
-    "not_printed": [],
-    "unexplained": []
+    "main_items": 505,
+    "not_printed": [
+     251
+    ],
+    "unexplained": [
+     294
+    ]
    },
    "coverage_status": {
-    "promise": 18,
-    "dropped": 1
+    "promise": 501,
+    "dropped": 2,
+    "dedup": 1,
+    "unexplained": 1
    },
    "per_section": [
     [
-     "Elevating the status of Tamil as Classical language",
+     "Fishermen Welfare",
+     30
+    ],
+    [
+     "Incentivising programme for palm jaggery production",
+     28
+    ],
+    [
+     "Dindigul-Cumbum-Koodalur Rail track",
+     19
+    ],
+    [
+     "Conservation of Chennai Rivers at a cost of 5000 crore rupees",
+     18
+    ],
+    [
+     "New Ministry for Mines and Minerals",
+     18
+    ],
+    [
+     "Handloom Weavers Welfare",
+     16
+    ],
+    [
+     "100% literacy in Tamil Nadu",
+     13
+    ],
+    [
+     "Police Commission",
+     13
+    ],
+    [
+     "Monthly payment of Electricity Bills",
+     12
+    ],
+    [
+     "Public Distribution System",
+     11
+    ],
+    [
+     "Financial Assistance to Village Temple Priests",
+     11
+    ],
+    [
+     "Subsidies to Women in Agriculture",
+     10
+    ],
+    [
+     "Labour Welfare",
+     10
+    ],
+    [
+     "Adi Dravidar and Tribal Welfare",
+     10
+    ],
+    [
+     "Special scheme to install Drinking Water pipes in villages",
+     10
+    ],
+    [
+     "Agriculture and Farmer Welfare",
+     9
+    ],
+    [
+     "Minimum Support Price for all food products",
+     9
+    ],
+    [
+     "People’s Welfare- Corona Death Compensation",
+     9
+    ],
+    [
+     "Environment",
+     9
+    ],
+    [
+     "Release of 7 convicts in Rajiv Gandhi Murder Case",
+     9
+    ],
+    [
+     "Agricultural Co-operative Societies to purchase farm machineries and equipments under a govt Guarantee / scheme",
      8
     ],
     [
+     "Free of cost sanitary napkins for government school and college students",
+     8
+    ],
+    [
+     "Employment",
+     8
+    ],
+    [
+     "Industrial Growth",
+     8
+    ],
+    [
+     "Welfare of Persons with Disabilities (PWD)",
+     8
+    ],
+    [
+     "3 advanced & modern hospitals in Chennai",
+     8
+    ],
+    [
+     "Road Traffic",
+     8
+    ],
+    [
+     "Art and Culture",
+     8
+    ],
+    [
+     "Construction Sector",
+     8
+    ],
+    [
+     "Elevating the status of Tamil as Classical language",
+     7
+    ],
+    [
+     "Cyber Police Stations to address cyber crimes against women",
+     7
+    ],
+    [
+     "Sanitation Workers’ Welfare",
+     7
+    ],
+    [
+     "Review of increased rents in municipality shops",
+     7
+    ],
+    [
+     "Appointment of Anganwadi and Midday Meal Workers",
+     7
+    ],
+    [
+     "Welfare of Journalists and Media Persons",
+     7
+    ],
+    [
+     "New Advanced Speciality Hospitals",
+     7
+    ],
+    [
+     "Sports",
+     7
+    ],
+    [
+     "Reservation in Private Sector",
+     6
+    ],
+    [
+     "Trader’s Welfare",
+     6
+    ],
+    [
+     "House Site Patta",
+     6
+    ],
+    [
+     "Dravidian Movement Dheerargal Kottam",
+     6
+    ],
+    [
+     "Rural Development",
+     6
+    ],
+    [
+     "Ministry for New Schemes Implementation",
+     6
+    ],
+    [
+     "100 day NREGA will be extended to 150 days",
+     5
+    ],
+    [
+     "Women and Child Welfare Schemes",
+     5
+    ],
+    [
+     "Welfare of Senior Citizens",
+     5
+    ],
+    [
+     "Welfare of Children",
+     5
+    ],
+    [
+     "Kalaignar Canteens in 500 locations",
+     5
+    ],
+    [
+     "New Districts",
+     5
+    ],
+    [
+     "Judiciary",
+     5
+    ],
+    [
+     "Welfare of Cattle",
+     5
+    ],
+    [
      "State Rights",
+     4
+    ],
+    [
+     "Transparent District Administration",
+     4
+    ],
+    [
+     "New Ministry for Water Resources",
+     4
+    ],
+    [
+     "Build Check Dams at a cost 2000 crore rupees",
+     4
+    ],
+    [
+     "Employment and Skill Training",
+     4
+    ],
+    [
+     "Youth Welfare",
+     4
+    ],
+    [
+     "Cancer screening test for Women",
+     4
+    ],
+    [
+     "Raise income ceiling for OBCs Creamy Layer to Rs 25 lakhs",
+     4
+    ],
+    [
+     "Welfare of Minorities (Marginal Communities)",
+     4
+    ],
+    [
+     "Development of Chennai Transport Corporation",
      4
     ],
     [
@@ -101,7 +353,51 @@
      3
     ],
     [
-     "Citizenship for Eelam Tamils",
+     "Horticultural University in Krishnagiri",
+     3
+    ],
+    [
+     "Ban on NEET Examination",
+     3
+    ],
+    [
+     "5.50 lakh jobs in Government Departments",
+     3
+    ],
+    [
+     "Additional 20,000 MW Power Generation",
+     3
+    ],
+    [
+     "Tourism",
+     3
+    ],
+    [
+     "Anjugam Ammaiyar Ninaivu Intercaste Marriage Assistance Scheme",
+     3
+    ],
+    [
+     "Self- help groups / p g / p",
+     3
+    ],
+    [
+     "Governance / Grievance Redressal in 100 days",
+     3
+    ],
+    [
+     "Police Department",
+     3
+    ],
+    [
+     "Cable car service between Pazhani- Kodaikanal hills",
+     3
+    ],
+    [
+     "Regularisation of Bus fare",
+     3
+    ],
+    [
+     "Metro Rail",
      3
     ],
     [
@@ -109,7 +405,111 @@
      2
     ],
     [
+     "Citizenship for Eelam Tamils",
+     2
+    ],
+    [
      "Administrative Reforms (Lok Ayukta)",
+     2
+    ],
+    [
+     "Corruption-free Administration",
+     2
+    ],
+    [
+     "Subsidy for poor farmers to procure electric motors",
+     2
+    ],
+    [
+     "Additional Support Price for Paddy and sugarcane",
+     2
+    ],
+    [
+     "Turmeric Research Institute Erode",
+     2
+    ],
+    [
+     "Aruvaal Mooku Drainage Scheme to prevent flooding in Cuddalore",
+     2
+    ],
+    [
+     "Conservation of Public Trusts and Charities- employment opportunities for 25000",
+     2
+    ],
+    [
+     "Industrial Waste treatment Facility",
+     2
+    ],
+    [
+     "Welfare of Widowed Women",
+     2
+    ],
+    [
+     "Rs 24,000 for pregnant women",
+     2
+    ],
+    [
+     "MSME loans to 1 lakh women",
+     2
+    ],
+    [
+     "Old Pension Scheme",
+     2
+    ],
+    [
+     "Equal Wage for Equal Employment",
+     2
+    ],
+    [
+     "Welfare of Transgender People",
+     2
+    ],
+    [
+     "Forest Commission",
+     2
+    ],
+    [
+     "Grievance Hearings in all Assembly Constituencies",
+     2
+    ],
+    [
+     "Samathuvapuram (Equality villages)",
+     2
+    ],
+    [
+     "Consecration of Temples",
+     2
+    ],
+    [
+     "Vallalar Samarasa Sanmarga Sangam",
+     2
+    ],
+    [
+     "Tourism Development in temple cities (sacred land)",
+     2
+    ],
+    [
+     "Air Traffic",
+     2
+    ],
+    [
+     "Archaeological Excavation",
+     2
+    ],
+    [
+     "Disaster Management",
+     2
+    ],
+    [
+     "Self Help Groups",
+     2
+    ],
+    [
+     "Ex-Army Personnel",
+     2
+    ],
+    [
+     "Selection Malpractices in TNPSC",
      2
     ],
     [
@@ -119,110 +519,302 @@
     [
      "Tamil Official Language Section",
      1
+    ],
+    [
+     "Probing Former Chief Minister Jayalalithaa’s death",
+     1
+    ],
+    [
+     "Tamil Nadu Government Debt",
+     1
+    ],
+    [
+     "Reformation of PSU",
+     1
+    ],
+    [
+     "Ban on genetic modification technology",
+     1
+    ],
+    [
+     "Special financial assistance to incentivise date palm tree in Tuticorin, Vellore, Karur and Dharmapuri / districts",
+     1
+    ],
+    [
+     "Ban on borewells in hilly regions",
+     1
+    ],
+    [
+     "Water Management / Cauvery- Kuntaru Link Project",
+     1
+    ],
+    [
+     "Thamirabarani- Karumeni- Nambiaru Link Project",
+     1
+    ],
+    [
+     "Build Kannika Sluice Gates to benefit 40,000 acres of agri land in Nellai, Thoothukudi, Virudhunagar / region",
+     1
+    ],
+    [
+     "Cauvery, Vaigai and Thamirabarani Riverfront Management",
+     1
+    ],
+    [
+     "Conversion of Groundbridges to High-level Bridges",
+     1
+    ],
+    [
+     "Conservation of lakes and ponds Scheme at 10,000 crore budget, under the direct supervision of Chief / Minister",
+     1
+    ],
+    [
+     "Sethusamudram Shipping Canal Project",
+     1
+    ],
+    [
+     "Katchatheevu",
+     1
+    ],
+    [
+     "Education - Higher Education - Education Loan",
+     1
+    ],
+    [
+     "School Education",
+     1
+    ],
+    [
+     "Right to Skill Training Act",
+     1
+    ],
+    [
+     "Electricity",
+     1
+    ],
+    [
+     "Udangudi & Cheyyur Power Projects",
+     1
+    ],
+    [
+     "Women Welfare",
+     1
+    ],
+    [
+     "Welfare of Backward and Most Backward Communities",
+     1
+    ],
+    [
+     "Teachers and Government Employee Welfare",
+     1
+    ],
+    [
+     "Relief for Affected Teachers",
+     1
+    ],
+    [
+     "Pension for temple employees",
+     1
+    ],
+    [
+     "Social Security Benefits",
+     1
+    ],
+    [
+     "Reservation",
+     1
+    ],
+    [
+     "Jallikattu",
+     1
+    ],
+    [
+     "Legislative Assembly / Legislative Council",
+     1
+    ],
+    [
+     "Live Telecast",
+     1
+    ],
+    [
+     "Convening the Legislative Assembly for minimum 100 days",
+     1
+    ],
+    [
+     "Drinking Water",
+     1
+    ],
+    [
+     "Hindu Religious & Charitable Endowments / Cable car services for hill temples",
+     1
+    ],
+    [
+     "Appointment of Temple priests",
+     1
+    ],
+    [
+     "Pilgrimage Subsidies",
+     1
+    ],
+    [
+     "Harbor / Chennai Port- Thiruvottriyur Seabridge",
+     1
+    ],
+    [
+     "Transportation Facilities",
+     1
+    ],
+    [
+     "Rail Traffic / Goods train rail path",
+     1
+    ],
+    [
+     "Creation of New Airports",
+     1
+    ],
+    [
+     "CCTV Monitoring",
+     1
+    ],
+    [
+     "False cases will be withdrawn",
+     1
+    ],
+    [
+     "Property tax",
+     1
+    ],
+    [
+     "Privatisation of Railways",
+     1
+    ],
+    [
+     "Privatisation of Banking Sector",
+     1
+    ],
+    [
+     "Privatisation of LIC",
+     1
+    ],
+    [
+     "Tamil language mandatory in Schools",
+     1
+    ],
+    [
+     "Cooking gas cylinder (100 rupees subsidy)",
+     1
+    ],
+    [
+     "Petrol and Diesel Price",
+     1
+    ],
+    [
+     "Milk Price",
+     1
     ]
    ],
    "longest": [
     [
+     "DMK-2021-0431",
+     57,
+     "Form an independent Commission including members from Labor Welfare Department and Police Department to administer the welfare of journalists including revise the Press regulations; to provide skills training; to settle disputes between the management and workers; settle disputes between public, press and police; to decide pension related disputes; and to increase the amount of family welfare fund."
+    ],
+    [
+     "DMK-2021-0602",
+     54,
+     "Construct a Dravidian Movement Dheerargal Kottam in Chennai in honor of tall leaders of the\nDravidian movement including Dr C Natesanar, Sir P Theyagarayar, Dr TM Nair who have fought for social justice\nand equality for all in our state, because of which we have developed as one of the top states in India."
+    ],
+    [
+     "DMK-2021-0044",
+     49,
+     "Create Agricultural Development Councils with farmer representatives to resolve conflicts in the agricultural sector, to plan new beneficial schemes for farmers and to fix a minimum support price (MSP) for farmer produce including but not limited to- bananas, turmeric, tapioca, dals, chilli, millets, tea, oil seeds, horticultural products, etc."
+    ],
+    [
      "DMK-2021-0022",
-     37,
-     "Advise the current Govt of Sri Lanka to proceed with a referendum, taking into consideration the will of the people while making amendments in its Constitution so that Eelam Tamils can have equal civil and political rights."
+     46,
+     "Urge the Central Govt to make necessary laws to grant Indian citizenship to the Tamil refugees from Sri Lanka that have been living in refugee camps for the last 30 years or so, and to also make arrangements for those willing to return to Sri Lanka."
     ],
     [
-     "DMK-2021-0023",
-     33,
-     "Urge the Central Govt to make necessary laws to grant Indian citizenship to the Tamil refugees from Sri Lanka that have been living in refugee camps for the last 30 years or so."
+     "DMK-2021-0251",
+     44,
+     "Appoint 25000 women as community welfare workers who will act as liaison officers/ advocates that strengthen the capacity of govt officials to engage with citizens and ease communication between govt and the people, working in villages under the supervision of Block Development Officers (BDO)."
     ],
     [
-     "DMK-2021-0020",
-     29,
-     "Urge the Central govt to appeal to the international community to constitute an independent judicial body to investigate various human rights violations, war crimes, genocides faced by Sri Lanka."
+     "DMK-2021-0125",
+     43,
+     "Set-up a State level Water Management Scheme with a budget of 10,000 crore under the Chief Minister’s Monitorable Target to improve the livelihood of farmers, conserve the specified water bodies, build canals to store and distribute water, and support irrigation in all districts."
     ],
     [
-     "DMK-2021-0019",
-     26,
-     "Establish a separate wing to develop Tamil as official language to improve the usage of Tamil language across all departments starting from Secretariat to Councillor Office."
+     "DMK-2021-0090",
+     41,
+     "Govt Cooperative societies will support the livelihood of cottage industry workers and self-help groups through a direct procurement programme in Salem, Peravurani and Pattukottai districts, where coir products are mostly manufactured by micro and cottage industry workers, and women self-help groups."
     ],
     [
-     "DMK-2021-0027",
-     25,
-     "Pass Right to Services Act to streamline the public distribution services including provision of community certificate, birth/death certificate, income certificate, residential certificate, pension benefits, etc."
+     "DMK-2021-0114",
+     41,
+     "Provide special financial assistance including subsidies to people who come forward to cultivate date palm trees (rich in iron) in the districts of Tuticorin, Vellore, Karur and Dharmapuri where the soil is found to be highly conducive to date palm cultivation."
     ],
     [
-     "DMK-2021-0010",
-     24,
-     "Urge the Central Government to expedite this process and propel the Central govt to construct such courts in Tamil Nadu for the Southern Region."
+     "DMK-2021-0119",
+     41,
+     "Establish a new Ministry for Water Resources to work alongside the Public Works Department to study the cause and impact of recent natural calamities including floods, drought, and such like; how to optimise the water resources and distribution across the state."
     ],
     [
-     "DMK-2021-0008",
-     23,
-     "Urge Tamil shall to be declared as co-official language in all central government offices including firms, and national banks located in Tamil Nadu."
-    ],
-    [
-     "DMK-2021-0006",
-     22,
-     "Urge the Union Govt to take necessary steps to legally declare all existing state languages as official languages of India including Tamil."
-    ],
-    [
-     "DMK-2021-0007",
-     22,
-     "Urge the Central Government to conduct all state level competitive examinations including govt jobs, in the official languages of the respective States."
-    ],
-    [
-     "DMK-2021-0011",
-     22,
-     "Take efforts to revive the Central Institute of Classical Tamil, Chennai established under Kalaignar’s regime, and to make it an autonomous institution."
+     "DMK-2021-0246",
+     41,
+     "Pass Right to Skill Training Act to provide skill training and to ensure a job or self-employment opportunity for children who were abandoned by their parents, abandoned transgender people, persons with special needs who are unable to go to regular school."
     ]
    ],
    "shortest": [
     [
-     "DMK-2021-0005",
+     "DMK-2021-0505",
+     3,
+     "Appoint more personnel."
+    ],
+    [
+     "DMK-2021-0554",
+     3,
+     "Revise bus fares."
+    ],
+    [
+     "DMK-2021-0223",
      4,
-     "Fight against Hindi imposition."
+     "Revive English research centres."
     ],
     [
-     "DMK-2021-0014",
-     6,
-     "Refurbish 'Semmozhi Poonga' in Anna Salai."
+     "DMK-2021-0441",
+     4,
+     "Revive Kalaignar Kaapeetu Thittam."
     ],
     [
-     "DMK-2021-0016",
-     7,
-     "Translate important and world-famous books in Tamil."
+     "DMK-2021-0499",
+     4,
+     "Streamline their promotion cycles."
     ],
     [
-     "DMK-2021-0017",
-     7,
-     "Translate Classic Tamil books in other languages."
+     "DMK-2021-0100",
+     5,
+     "Revive and upgrade the Institute."
     ],
     [
-     "DMK-2021-0015",
-     8,
-     "Set up Semmozhi Park in all Municipal Corporations."
+     "DMK-2021-0139",
+     5,
+     "Desilt and restore Pechiparai dam."
     ],
     [
-     "DMK-2021-0003",
-     9,
-     "Formulate a separate State Education Policy for Tamil Nadu."
+     "DMK-2021-0197",
+     5,
+     "Ensure disbursement of discount subsidy."
     ],
     [
-     "DMK-2021-0026",
-     9,
-     "Take steps to revive Lok Ayukta and its operations."
+     "DMK-2021-0404",
+     5,
+     "Provide minimum pension and gratuity."
     ],
     [
-     "DMK-2021-0001",
-     10,
-     "Fight for restoration of the lost rights of the state."
-    ],
-    [
-     "DMK-2021-0013",
-     10,
-     "Take necessary steps to institute Tamil Chairs in International Universities."
-    ],
-    [
-     "DMK-2021-0024",
-     10,
-     "Make arrangements for those willing to return to Sri Lanka."
+     "DMK-2021-0500",
+     5,
+     "Fill police department vacancies annually."
     ]
    ]
   },
@@ -250,23 +842,24 @@
     "sub_list_units": []
    },
    "promises_step": {
-    "units": 20,
-    "promises": 18,
-    "dropped": 7,
+    "units": 333,
+    "promises": 322,
+    "dropped": 142,
     "unresolved_failures": 0,
     "resolved_failures": 0,
     "retried_units": 0,
     "split_outliers": [],
-    "v3_flags": 0
+    "v3_flags": 78
    },
-   "promises": 18,
+   "promises": 312,
    "dropped_by_kind": {
-    "other": 2,
-    "achievement": 4,
-    "criticism": 1
+    "other": 46,
+    "achievement": 93,
+    "criticism": 1,
+    "values": 2
    },
-   "dedup_pairs": 0,
-   "dedup_drops": 0,
+   "dedup_pairs": 36,
+   "dedup_drops": 10,
    "failures": {
     "unresolved": 0,
     "resolved": {},
@@ -313,60 +906,284 @@
    "coverage_status": {},
    "per_section": [
     [
-     "1. Agricultural development and farmers' welfare :",
-     18
+     "1. Agricultural development and farmer welfare :",
+     43
+    ],
+    [
+     "3. Animal husbandry, fisheries and fishermen welfare :",
+     15
+    ],
+    [
+     "36. Micro, Small and Medium Enterprises Development :",
+     14
+    ],
+    [
+     "17. Weaver Welfare :",
+     13
+    ],
+    [
+     "30. Information Technology Services :",
+     13
+    ],
+    [
+     "2. River Water and Water Resources :",
+     11
+    ],
+    [
+     "13. Welfare of Adi Dravidars and Tribals :",
+     11
+    ],
+    [
+     "15. Welfare of Minorities :",
+     11
+    ],
+    [
+     "3. Animal Husbandry, Fisheries and Fishermen Welfare :",
+     9
+    ],
+    [
+     "32. Social Welfare Schemes :",
+     9
+    ],
+    [
+     "33. Rural Development Schemes :",
+     9
+    ],
+    [
+     "2. River water and water source :",
+     8
+    ],
+    [
+     "10. Health for all :",
+     8
+    ],
+    [
+     "8. School Education Development:",
+     7
+    ],
+    [
+     "13. Welfare of Adi Dravidars and Tribal People :",
+     7
+    ],
+    [
+     "49. Employment opportunities for one person per household :",
+     7
+    ],
+    [
+     "26. Tamil Language Development:",
+     6
+    ],
+    [
+     "34. Urban Development Schemes :",
+     6
+    ],
+    [
+     "10. Health for All:",
+     5
+    ],
+    [
+     "11. Self-sufficiency in electricity :",
+     5
+    ],
+    [
+     "23. Construction of Roads and Bridges:",
+     5
+    ],
+    [
+     "24. Housing Facilities:",
+     5
+    ],
+    [
+     "35. Industrial Development :",
+     5
+    ],
+    [
+     "41. Prohibition policy :",
+     5
+    ],
+    [
+     "9. Higher Education Development:",
+     4
+    ],
+    [
+     "14. Welfare of Backward Classes, Most Backward Classes, Denotified Communities :",
+     4
+    ],
+    [
+     "18. Potter Labour Welfare :",
+     4
+    ],
+    [
+     "25. Transport Development:",
+     4
+    ],
+    [
+     "38. Chennai Metro Rail Project :",
+     4
+    ],
+    [
+     "43. Rural Economic Development Activities :",
+     4
+    ],
+    [
+     "46. Government Employee Welfare :",
+     4
+    ],
+    [
+     "47. Labour Welfare :",
+     4
+    ],
+    [
+     "49. Employment for one person per household :",
+     4
+    ],
+    [
+     "6. Revenue Department Schemes :",
+     3
+    ],
+    [
+     "16. Forest Wealth :",
+     3
+    ],
+    [
+     "21. Merchant Welfare :",
+     3
+    ],
+    [
+     "37. Peaceful Tamil Nadu :",
+     3
+    ],
+    [
+     "5. Disaster Hardship Reduction Scheme :",
+     2
+    ],
+    [
+     "20. Differently Abled Welfare :",
+     2
+    ],
+    [
+     "28. Spiritual Services in Temples:",
+     2
+    ],
+    [
+     "40. Sri Lankan Tamils :",
+     2
+    ],
+    [
+     "42. Lokayukta Institution :",
+     2
+    ],
+    [
+     "44. New Granite Policy :",
+     2
+    ],
+    [
+     "50. Amma Banking Card :",
+     2
+    ],
+    [
+     "4. Uzhavar Security Scheme :",
+     1
+    ],
+    [
+     "7. Protection of poor and ordinary people from price rise:",
+     1
+    ],
+    [
+     "12. Free electricity supply scheme :",
+     1
+    ],
+    [
+     "19. Salt Pan Labour Welfare :",
+     1
+    ],
+    [
+     "22. Simplifying Registration :",
+     1
+    ],
+    [
+     "22. Simplification of Registration:",
+     1
+    ],
+    [
+     "27. Top Place in Tourism:",
+     1
+    ],
+    [
+     "29. Sports Development Scheme:",
+     1
+    ],
+    [
+     "29. Sports Development Scheme :",
+     1
+    ],
+    [
+     "31. Free Cellphone Providing Scheme :",
+     1
+    ],
+    [
+     "39. Vision Plan - 2023 :",
+     1
+    ],
+    [
+     "45. Mineral Sand Policy :",
+     1
+    ],
+    [
+     "48. Advocate Welfare :",
+     1
     ]
    ],
    "longest": [
     [
-     "AIADMK-2016-0010",
-     26,
-     "Continue to implement the scheme of providing 100 percent subsidy for small and marginal farmers and 75 percent subsidy for other farmers for micro irrigation projects."
+     "AIADMK-2016-0312",
+     58,
+     "Provide interest-free loans up to 1,000 rupees payable in easy installments to ensure financial service and to repay loans obtained from private lenders at high interest, structured to be repaid at the level of 10 rupees per week, and provide Amma Banking Card service to use for all bank transactions, paying all fees, and getting all government services."
     ],
     [
-     "AIADMK-2016-0002",
-     21,
-     "Provide crop loans to the extent of 40,000 crores through cooperative banks in the 5 year period from 2016 to 2021."
+     "AIADMK-2016-0308",
+     41,
+     "Increase the financial assistance provided under the scheme of giving financial assistance to unemployed youth registered in employment office to 300 rupees for those who completed 10th standard, 400 rupees for those who completed 12th standard, and 600 rupees for graduates."
     ],
     [
-     "AIADMK-2016-0001",
-     18,
-     "Waive all crop loans, medium-term loans and long-term loans payable by small and marginal farmers to cooperative banks."
+     "AIADMK-2016-0275",
+     36,
+     "Take appropriate action against those responsible for the genocide of Sri Lankan Tamils and continuously take measures to ensure that Sri Lankan Tamils live with full freedom and self-respect, and to achieve a separate Tamil Eelam."
     ],
     [
-     "AIADMK-2016-0003",
-     13,
-     "Continue to provide full interest subsidy to farmers who repay loans on time."
+     "AIADMK-2016-0300",
+     36,
+     "Provide skill development trainings to young men and young women to pave the way for them to get jobs and self-employ themselves, and set up training centers for this purpose in panchayat unions and urban areas."
     ],
     [
-     "AIADMK-2016-0013",
-     13,
-     "Reclaim waste lands, create water source systems, and find ways to cultivate crops."
+     "AIADMK-2016-0306",
+     30,
+     "Provide trainings to 10 lakh persons through industries and take action for them to get jobs in those same companies, with the government itself bearing the cost for this training."
     ],
     [
-     "AIADMK-2016-0004",
-     12,
-     "Implement schemes to increase agricultural production and protect the welfare of farmers."
+     "AIADMK-2016-0145",
+     29,
+     "Provide loan assistance at low interest through Tamil Nadu Backward Classes Economic Development Corporation for backward classes, most backward classes and denotified communities to start small businesses and trade."
     ],
     [
-     "AIADMK-2016-0015",
-     12,
-     "Ensure timely availability of quality inputs for horticulture and hill crop cultivation."
+     "AIADMK-2016-0225",
+     29,
+     "Provide 1 liter of Aavin milk fortified with Vitamin A, Vitamin D, and iron at a low price of Rs 25 to nurture the welfare of women and children."
     ],
     [
-     "AIADMK-2016-0017",
-     11,
-     "Ensure that horticultural farmers get a good price for their produce."
+     "AIADMK-2016-0307",
+     28,
+     "Establish 'Amma Two Wheeler Repair Training Centre' in all panchayat unions and provide short term training, and provide assistance to start self-employment for those who received this training."
     ],
     [
-     "AIADMK-2016-0014",
-     10,
-     "Continue to implement the sustained and sustainable sugarcane production scheme."
+     "AIADMK-2016-0029",
+     27,
+     "Implement a new special scheme at a cost of 800 crore rupees to cut down and remove old and pest-attacked coconut trees and plant new coconut saplings."
     ],
     [
-     "AIADMK-2016-0016",
-     10,
-     "Increase the revolving fund as needed and expand its service."
+     "AIADMK-2016-0150",
+     27,
+     "Take appropriate action after receiving the report regarding the demand to increase the reservation provided for backward Muslims, which has been sent to the Backward Classes Commission."
     ]
    ],
    "shortest": [
@@ -376,160 +1193,139 @@
      "Expand this scheme."
     ],
     [
+     "AIADMK-2016-0030",
+     3,
+     "Promote organic farming."
+    ],
+    [
+     "AIADMK-2016-0055",
+     3,
+     "Complete these works."
+    ],
+    [
+     "AIADMK-2016-0056",
+     3,
+     "Execute this project."
+    ],
+    [
+     "AIADMK-2016-0057",
+     3,
+     "Fulfill these works."
+    ],
+    [
+     "AIADMK-2016-0062",
+     3,
+     "Implement this project."
+    ],
+    [
+     "AIADMK-2016-0079",
+     3,
+     "Implement this scheme."
+    ],
+    [
+     "AIADMK-2016-0081",
+     3,
+     "Continue these schemes."
+    ],
+    [
+     "AIADMK-2016-0172",
+     3,
+     "Implement sericulture schemes."
+    ],
+    [
      "AIADMK-2016-0012",
      4,
-     "Further expand this scheme."
-    ],
-    [
-     "AIADMK-2016-0008",
-     5,
-     "Achieve self-sufficiency in pulse production."
-    ],
-    [
-     "AIADMK-2016-0007",
-     7,
-     "Continue to implement the agricultural mechanization scheme."
-    ],
-    [
-     "AIADMK-2016-0005",
-     8,
-     "Provide quality seeds to farmers at subsidized prices."
-    ],
-    [
-     "AIADMK-2016-0006",
-     8,
-     "Expand farm women groups and increase agricultural production."
-    ],
-    [
-     "AIADMK-2016-0009",
-     8,
-     "Continue to provide subsidies for purchasing farm machinery."
-    ],
-    [
-     "AIADMK-2016-0011",
-     9,
-     "Take action to increase the income of rainfed farmers."
-    ],
-    [
-     "AIADMK-2016-0014",
-     10,
-     "Continue to implement the sustained and sustainable sugarcane production scheme."
-    ],
-    [
-     "AIADMK-2016-0016",
-     10,
-     "Increase the revolving fund as needed and expand its service."
+     "Expand this scheme further."
     ]
    ]
   },
   "TVK-2026": {
    "pages": 96,
    "pages_by_route": {
-    "vision": 16,
-    "ocr": 80
+    "vision": 96
    },
-   "pages_awaiting_vision": [
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
-    33,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40,
-    41,
-    42,
-    43,
-    44,
-    45,
-    46,
-    47,
-    48,
-    49,
-    50,
-    51,
-    52,
-    53,
-    54,
-    55,
-    56,
-    57,
-    58,
-    59,
-    60,
-    61,
-    62,
-    63,
-    64,
-    65,
-    66,
-    67,
-    68,
-    69,
-    70,
-    71,
-    72,
-    73,
-    74,
-    75,
-    76,
-    77,
-    78,
-    79,
-    80,
-    81,
-    82,
-    83,
-    84,
-    85,
-    86,
-    87,
-    88,
-    89,
-    90,
-    91,
-    92,
-    93,
-    94,
-    95,
-    96
-   ],
-   "units": {},
-   "promises_step": {},
-   "promises": 0,
-   "dropped_by_kind": {},
-   "dedup_pairs": 0,
+   "pages_awaiting_vision": [],
+   "units": {
+    "term": "TVK-2026",
+    "units": 326,
+    "by_marker": {
+     "front_matter": 7,
+     "section_number": 319
+    },
+    "page_chars": 137693,
+    "unit_chars": 133564,
+    "furniture_chars": 4129,
+    "accounted": true,
+    "main_numbers": 319,
+    "duplicate_numbers": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "number_gaps": [],
+    "sub_list_units": []
+   },
+   "promises_step": {
+    "units": 326,
+    "promises": 692,
+    "dropped": 454,
+    "unresolved_failures": 2,
+    "resolved_failures": 18,
+    "retried_units": 16,
+    "split_outliers": [
+     "TVK-2026-U0027",
+     "TVK-2026-U0052",
+     "TVK-2026-U0235",
+     "TVK-2026-U0242",
+     "TVK-2026-U0243",
+     "TVK-2026-U0244",
+     "TVK-2026-U0245",
+     "TVK-2026-U0246",
+     "TVK-2026-U0251",
+     "TVK-2026-U0254",
+     "TVK-2026-U0317"
+    ],
+    "v3_flags": 322
+   },
+   "promises": 692,
+   "dropped_by_kind": {
+    "other": 390,
+    "values": 20,
+    "criticism": 38,
+    "achievement": 6
+   },
+   "dedup_pairs": 19,
    "dedup_drops": 0,
    "failures": {
-    "unresolved": 0,
-    "resolved": {},
-    "by_rule": {}
+    "unresolved": 2,
+    "resolved": {
+     "retry alone": 18
+    },
+    "by_rule": {
+     "V1": 13,
+     "V2": 7
+    }
    },
    "quality": {
     "tamil_share": {
      "n": 96,
-     "min": 0.9567,
-     "median": 1.0
+     "min": 0.8986,
+     "median": 0.9978
     },
     "validity": {
      "n": 96,
-     "min": 0.9778,
+     "min": 1.0,
      "median": 1.0
     },
     "ocr_conf": {
@@ -537,15 +1333,17 @@
      "min": 0.0,
      "median": 83.7
     },
-    "vision_pages": 16,
+    "vision_pages": 96,
     "vision_cer": {
-     "n": 16,
+     "n": 96,
      "min": 0.0149,
-     "median": 0.0442
+     "median": 0.0675
     },
     "vision_disagree": [
      1,
-     8
+     8,
+     35,
+     73
     ],
     "accepted_below_threshold": [
      {
@@ -557,14 +1355,548 @@
       "page": 16,
       "tamil_share": 0.9567,
       "reason": "English words on the page (D-051): AR, Augmented, Biking, Festival, Kayaking, Mountain, Nilgris, Reality"
+     },
+     {
+      "page": 42,
+      "tamil_share": 0.9764,
+      "reason": "English words on the page (D-051): B., Centres, Excellence, Hometown, Sports, Work, from"
+     },
+     {
+      "page": 43,
+      "tamil_share": 0.9328,
+      "reason": "English words on the page (D-051): Diving, Kayaking, Multi-Sport, Scuba, Snorkelling, Stadium, Surfing, Wind-Surfing"
+     },
+     {
+      "page": 45,
+      "tamil_share": 0.9609,
+      "reason": "English words on the page (D-051): Agro-meteorological, Coconut, Corporation, Farming, MSP, Nadu, Organic, Processing"
+     },
+     {
+      "page": 49,
+      "tamil_share": 0.978,
+      "reason": "English words on the page (D-051): C., Mission, Mission-mode, Special, programme"
+     },
+     {
+      "page": 54,
+      "tamil_share": 0.9606,
+      "reason": "English words on the page (D-051): A., Engineering, Learning, Maths, Outcomes, STEM, Science, Technology"
+     },
+     {
+      "page": 57,
+      "tamil_share": 0.9227,
+      "reason": "English words on the page (D-051): AI, AR, Augmented, C., EV, Emerging, Institute, Learning"
+     },
+     {
+      "page": 58,
+      "tamil_share": 0.968,
+      "reason": "English words on the page (D-051): A., EnterpriseTNPlan, Industry, Maps, SIPCOT, Transformation"
+     },
+     {
+      "page": 59,
+      "tamil_share": 0.9519,
+      "reason": "English words on the page (D-051): B., Charges, Fixed, MSME, MSMEs, Mission, Peak-hour, Rooftop"
+     },
+     {
+      "page": 60,
+      "tamil_share": 0.9547,
+      "reason": "English words on the page (D-051): AI, C, Fund, MSME, Register, Scheme, Supplier, Tamilnadu"
+     },
+     {
+      "page": 62,
+      "tamil_share": 0.9259,
+      "reason": "English words on the page (D-051): AI, AI-, Centres, Cluster, Compute, D., Deep-Tech, Excellence"
+     },
+     {
+      "page": 64,
+      "tamil_share": 0.953,
+      "reason": "English words on the page (D-051): Board, Bus, Cheese, Commerce, Design, EV, Eco-Tourism, Home"
+     },
+     {
+      "page": 65,
+      "tamil_share": 0.9756,
+      "reason": "English words on the page (D-051): Aerospace, DRDO, EV, HAL, ISO/BRC, Park"
+     },
+     {
+      "page": 66,
+      "tamil_share": 0.8986,
+      "reason": "English words on the page (D-051): AI, Aerospace, Battery, Capability, Centres, Certification, Co-working, Control"
+     },
+     {
+      "page": 69,
+      "tamil_share": 0.9715,
+      "reason": "English words on the page (D-051): AI, Capital, Deep-Tech, F., FinTech, Fund, Venture"
+     },
+     {
+      "page": 70,
+      "tamil_share": 0.955,
+      "reason": "English words on the page (D-051): Charging, Cloud, Corridor, EV, Fast, FinTech, G., PLI"
+     },
+     {
+      "page": 71,
+      "tamil_share": 0.9365,
+      "reason": "English words on the page (D-051): AVGC, Creative, Drone, Economy, Extended, Fund, IP, MSME"
+     },
+     {
+      "page": 75,
+      "tamil_share": 0.9709,
+      "reason": "English words on the page (D-051): Ecosystem, Happiness, Happy, IVF, Mission, Nadu, Tamil"
+     },
+     {
+      "page": 78,
+      "tamil_share": 0.9757,
+      "reason": "English words on the page (D-051): Mission-mode"
+     },
+     {
+      "page": 79,
+      "tamil_share": 0.9579,
+      "reason": "English words on the page (D-051): A., AT&C, TANGEDCO, feeders, kW, kW-, overloaded"
+     },
+     {
+      "page": 83,
+      "tamil_share": 0.9757,
+      "reason": "English words on the page (D-051): Clusters, D., Industry, Logistics, MSMEs, Village"
+     },
+     {
+      "page": 84,
+      "tamil_share": 0.9733,
+      "reason": "English words on the page (D-051): Climate-Resilient, Master, Nadu, Plan, Tamil"
+     },
+     {
+      "page": 88,
+      "tamil_share": 0.9792,
+      "reason": "English words on the page (D-051): Act, C., Protection, State, Whistleblower"
+     },
+     {
+      "page": 92,
+      "tamil_share": 0.9404,
+      "reason": "English words on the page (D-051): AI, Aerospace, Authority, EVs, Investment, Management, PSUs, Paper"
      }
     ]
    },
    "coverage": {},
    "coverage_status": {},
-   "per_section": [],
-   "longest": [],
-   "shortest": []
+   "per_section": [
+    [
+     "Aram 01 / C. Tourism",
+     30
+    ],
+    [
+     "Aram 01 / A. Protection of Tamil Nadu's finances and state rights",
+     27
+    ],
+    [
+     "Topic 05 / C. Water Management and Agricultural Innovations.",
+     24
+    ],
+    [
+     "Topic 07 / E. District Balanced Development Scheme",
+     24
+    ],
+    [
+     "Item 07 / G. Guiding Tamil Nadu",
+     24
+    ],
+    [
+     "Aram 01 / B. Tamil Language - Culture - Tradition",
+     23
+    ],
+    [
+     "Item 04 / A. Employment and Skill Development",
+     23
+    ],
+    [
+     "Item 05 / A. Farmers' Welfare",
+     21
+    ],
+    [
+     "Item 07 / E. District Balanced Growth Plan",
+     21
+    ],
+    [
+     "A. School Education",
+     20
+    ],
+    [
+     "Happiness 08 / A. World-class medical treatment for all families",
+     20
+    ],
+    [
+     "Topic 05 / B.Fishermen Welfare",
+     19
+    ],
+    [
+     "Subject 07 / E. District Balanced Growth Scheme",
+     19
+    ],
+    [
+     "Happiness 08 / B. Protecting the Future of Tamil Nadu; Concerns on Environment, Forests, and Climate Change",
+     17
+    ],
+    [
+     "Joy 09 / D. Urban Development",
+     15
+    ],
+    [
+     "Item 04 / B. Tamil Nadu Stands Tall in Sports",
+     14
+    ],
+    [
+     "Joy 10 / D. Law and Order and Justice",
+     14
+    ],
+    [
+     "Aram 02 / G. Weaver Welfare",
+     13
+    ],
+    [
+     "Aram 02 / I. Police Welfare",
+     12
+    ],
+    [
+     "Item 03 / B. Women's Economic Security",
+     12
+    ],
+    [
+     "Joy 10 / A. Government for the 21st Century; Our government will have honesty, accountability, transparency and public welfare as its primary focus.",
+     12
+    ],
+    [
+     "Dharma 02 / D. Senior Citizens Welfare",
+     11
+    ],
+    [
+     "B. Higher Education",
+     11
+    ],
+    [
+     "Topic 07 / A. Industrial Development - The Golden Decade of Tamil Nadu",
+     11
+    ],
+    [
+     "Item 07 / E. District Balanced Growth Scheme - Western Zone (Coimbatore, Tiruppur, Erode, Salem, Namakkal, Karur, Dharmapuri, Krishnagiri)",
+     11
+    ],
+    [
+     "Topic 07 / B. Micro, Small and Medium Enterprises Renaissance",
+     10
+    ],
+    [
+     "Topic 07 / C .Investment Attraction Scheme",
+     10
+    ],
+    [
+     "Joy 09 / B. Modern Infrastructure",
+     10
+    ],
+    [
+     "Dharma 02 / C. Minority Welfare",
+     9
+    ],
+    [
+     "Dharma 02 / M. Driver Welfare",
+     9
+    ],
+    [
+     "Item 03 / C. Uncompromising Women's Protection",
+     9
+    ],
+    [
+     "Item 03 / D. Women's Health and Wellness",
+     9
+    ],
+    [
+     "Item 05 / D. Animal Husbandry and Dairy Products Development",
+     9
+    ],
+    [
+     "Topic 07 / D. Artificial Intelligence Capital Tamil Nadu",
+     9
+    ],
+    [
+     "Joy 09 / A. Electricity and Green Energy",
+     9
+    ],
+    [
+     "Joy 09 / C. Rural Development",
+     8
+    ],
+    [
+     "Dharma 02 / B. Adi Dravidar and Tribal Welfare",
+     7
+    ],
+    [
+     "Joy 10 / B. Citizens are the Guides of the Government",
+     7
+    ],
+    [
+     "A. People's Rights",
+     6
+    ],
+    [
+     "Dharma 02 / L. Sanitation Workers Welfare",
+     6
+    ],
+    [
+     "Topic 07 / F. India's Start-up Capital",
+     6
+    ],
+    [
+     "Aram 02 / A. People's Rights",
+     5
+    ],
+    [
+     "Aram 02 / H. Government Employee Welfare",
+     5
+    ],
+    [
+     "Joy 10 / C. Zero Tolerance Against Corruption",
+     5
+    ],
+    [
+     "Joy 10 / E. Five Special Schemes Budget",
+     5
+    ],
+    [
+     "Joy 10 / F. Economic Sovereignty; We will increase revenue, prevent losses, and build new resources.",
+     5
+    ],
+    [
+     "Dharma 02 / J. Teacher Welfare",
+     4
+    ],
+    [
+     "Dharma 02 / S. Palm Climbers and Salt Pan Workers Welfare",
+     4
+    ],
+    [
+     "Item 05 / A.Farmers Welfare",
+     4
+    ],
+    [
+     "Item 05 / B. Fishermen's Welfare",
+     4
+    ],
+    [
+     "C. Training for Competitive Exams",
+     4
+    ],
+    [
+     "Topic 07 / C. Investment Attraction Scheme",
+     4
+    ],
+    [
+     "B. Modern Infrastructure",
+     4
+    ],
+    [
+     "Joy 10 / F. Economic Sovereignty; We will boost revenue, prevent loss, and build new resources.",
+     4
+    ],
+    [
+     "B. Tamil Language - Culture - Heritage",
+     3
+    ],
+    [
+     "Dharma 02 / E. Differently-Abled Welfare",
+     3
+    ],
+    [
+     "Aram 02 / F. Transgender Welfare",
+     3
+    ],
+    [
+     "Dharma 02 / K. Anganwadi Worker-Asha Worker Welfare",
+     3
+    ],
+    [
+     "Dharma 02 / N. Gig Worker Welfare",
+     3
+    ],
+    [
+     "Dharma 02 / O. Street Vendors Welfare",
+     3
+    ],
+    [
+     "Dharma 02 / P. Journalists and Media Workers Welfare",
+     3
+    ],
+    [
+     "Why is TVK here?",
+     2
+    ],
+    [
+     "Dharma 02 / A. People's Rights",
+     2
+    ],
+    [
+     "Aram 02 / B. Adi Dravidar and Tribal Welfare",
+     2
+    ],
+    [
+     "Aram 02 / C. Minority Welfare",
+     2
+    ],
+    [
+     "Aram 02 / E. Welfare of Differently Abled Persons",
+     2
+    ],
+    [
+     "Aram 02 / J. Teacher Welfare",
+     2
+    ],
+    [
+     "Aram 02 / Q. Welfare of Advocates and Legal Advisors",
+     2
+    ],
+    [
+     "Dharma 02 / R. Construction Workers Welfare",
+     2
+    ],
+    [
+     "Item 03 / A. Women's Welfare and Protection Organization",
+     2
+    ],
+    [
+     "Item 05 / C. Water Management and Agricultural Innovations.",
+     2
+    ],
+    [
+     "Item 06 / A. School Education",
+     2
+    ],
+    [
+     "A. Industrial Development - The Golden Decade of Tamil Nadu",
+     2
+    ],
+    [
+     "Item 07 / D. Artificial Intelligence Capital Tamil Nadu",
+     2
+    ],
+    [
+     "Joy 08 / B. Saving the future of Tamil Nadu; Concerns regarding environment, forests and climate change",
+     2
+    ],
+    [
+     "Joy 10 / F. Economic Sovereignty; We will increase revenue, prevent loss, build new resources.",
+     2
+    ],
+    [
+     "Dharma 02 / Q. Lawyers and Legal Consultants Welfare",
+     1
+    ],
+    [
+     "Topic 05 / D.Livestock and Dairy Products Development",
+     1
+    ],
+    [
+     "Happiness 08 / A. World-class healthcare for all families",
+     1
+    ]
+   ],
+   "longest": [
+    [
+     "TVK-2026-0335",
+     60,
+     "Include other major projects such as the Anaimalaiyar - Nallar linkage project (Tiruppur/Coimbatore), Erthalav - Pulikarai linkage project (Dharmapuri), construction of check dams and barrage dams in the Cauvery and Thirumanimutharu parts of Namakkal district, Upper Vaipar and Mudangiyar river restoration (Virudhunagar/Rajapalayam), Ramnathi - Jambunathi linkage canal project (Tenkasi/Alangulam), and Tamirabarani - Karumeniyar - Nambiyar linkage project (Tirunelveli/Thoothukudi) in this."
+    ],
+    [
+     "TVK-2026-0022",
+     45,
+     "Exert genuine and emotional pressure on the Union government to take appropriate measures to recover and retain the traditional fishing rights of Indian and Tamil Nadu fishermen in the Gulf of Mannar in accordance with the Katchatheevu agreement between the Indian and Sri Lankan governments."
+    ],
+    [
+     "TVK-2026-0037",
+     43,
+     "Provide opportunities for registered folk artists to showcase their artistic skills in government festivals and events to ensure they get at least one hundred days of employment a year, and grant financial assistance of 15 thousand rupees to help them purchase necessary instruments."
+    ],
+    [
+     "TVK-2026-0576",
+     43,
+     "Create an integrated disaster management office in all 38 districts, flood prevention infrastructure in 5 coastal cities including Chennai, and dedicated disaster management offices for heatwaves in all 38 districts to undertake tasks ranging from predicting local heatwaves to conducting immediate medical check-ups."
+    ],
+    [
+     "TVK-2026-0599",
+     43,
+     "Reduce the electricity bill of 30 lakh urban apartment residents by replacing 18 thousand old transformers, reducing AT&C losses from 16% to 10% through a time-of-day tariff system, and collecting residential tariff instead of the currently charged commercial tariff in apartment common areas."
+    ],
+    [
+     "TVK-2026-0094",
+     42,
+     "Distribute iron and folic acid-fortified rice, vitamin A and vitamin D-enriched cooking oil, and fortified wheat flour to everyone through ration shops to prevent public suffering from anemia, vitamin A, and B-12 deficiencies, thereby creating a healthy Tamil Nadu without nutritional deficiencies."
+    ],
+    [
+     "TVK-2026-0355",
+     42,
+     "Take measures to increase the production of A2 milk obtained exclusively from our native cows through Aavin, to increase the production of food products made from it such as ghee, cheese, and ice cream, and to market them in a quality manner."
+    ],
+    [
+     "TVK-2026-0680",
+     42,
+     "Tabulate the Education and Medicine Equal Opportunity Budget for eliminating quality differences between educational institutions and hospitals in towns and villages, immediately filling teacher, doctor, and nurse vacancies, world-class education for all children, and world-class medicine for all members of the public."
+    ],
+    [
+     "TVK-2026-0270",
+     41,
+     "Provide cash prizes of 6 crore rupees to Tamil Nadu athletes who win a gold medal in the Olympic games, 4 crore rupees for those who win a silver medal, and 3 crore rupees for those who win a bronze medal."
+    ],
+    [
+     "TVK-2026-0552",
+     41,
+     "Provide incentives and subsidies along with infrastructure facilities for ten years to those investing for Thoothukudi to serve as a green ammonia filling centre for international ships, as part of the plan to make Thoothukudi the premier port in South Asia."
+    ]
+   ],
+   "shortest": [
+    [
+     "TVK-2026-0480",
+     5,
+     "Establish a silk tourism route."
+    ],
+    [
+     "TVK-2026-0571",
+     5,
+     "Issue government-recognized Siddha Reformation Certificates."
+    ],
+    [
+     "TVK-2026-0692",
+     5,
+     "Change that state of affairs."
+    ],
+    [
+     "TVK-2026-0132",
+     6,
+     "Open exclusive schools for special children."
+    ],
+    [
+     "TVK-2026-0178",
+     6,
+     "Use modern machines for these tasks."
+    ],
+    [
+     "TVK-2026-0438",
+     6,
+     "Undertake the following initiatives in it."
+    ],
+    [
+     "TVK-2026-0473",
+     6,
+     "Provide ISO/BRC certificates for leather products."
+    ],
+    [
+     "TVK-2026-0588",
+     6,
+     "Provide immediate compensation for crop losses."
+    ],
+    [
+     "TVK-2026-0077",
+     7,
+     "Create Tamil Nadu's first caravan tourism policy."
+    ],
+    [
+     "TVK-2026-0111",
+     7,
+     "Establish skill development centers in each district."
+    ]
+   ]
   }
  },
  "calibration": {
@@ -620,8 +1952,13 @@
    "failed": 0
   },
   "extract_promises / gemini-3.5-flash-lite": {
-   "calls": 7,
-   "cache_hits": 6,
+   "calls": 96,
+   "cache_hits": 47,
+   "failed": 0
+  },
+  "dedup_check / gemini-3.5-flash-lite": {
+   "calls": 5,
+   "cache_hits": 0,
    "failed": 0
   }
  },
