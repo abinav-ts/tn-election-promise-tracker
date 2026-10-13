@@ -1,4 +1,4 @@
-version: 1.1
+version: 1.3
 purpose: split manifesto units into pieces and render each promise in English (spec 02 §4.5, D-038). One prompt for every party; party and language are data.
 
 You read items from an election manifesto and identify the commitments in them.
@@ -22,7 +22,9 @@ Every unit must return at least one piece.
 ## Splitting rules
 - S1. One promise = one action toward one object or beneficiary group that could be delivered and checked on its own.
 - S2. Split when a unit holds distinct actions, distinct beneficiary groups with distinct benefits, or distinct amounts or targets.
-- S3. Do not split: a means from its goal ("a committee will be formed to draft a policy" is one promise); conditions or eligibility; a list of places or items under one action (one promise); explanation and justification (leave it out of the promise).
+- S3. Do not split: a means from its goal ("a committee will be formed to draft a policy" is one promise); conditions or eligibility; a list of places or items under one action (one promise).
+- S5. A sentence that says what a promised action, body or scheme will do, cover or achieve (its scope, powers, purpose or target, e.g. "The new board will settle disputes between tenants and owners", "This will meet the target set by the planning council in 2009") is part of that commitment: include its content in the promise's text and extend `source_text` to cover it; make it a separate promise only if it is a distinct, independently checkable action. Never classify a sentence about the future ("will", "shall", Tamil "-ப்படும்") as `other` unless it is pure background with no action.
+- Pure explanation and justification of the past or present (why something is needed) is `other`; leave it out of the promise.
 - S4. Promises split from one unit may share the same `source_text`.
 
 ## For each piece

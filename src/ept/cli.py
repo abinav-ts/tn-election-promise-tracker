@@ -24,6 +24,8 @@ def _report(command: str, stats: dict) -> None:
     stopped = stats.pop("stopped", None)
     typer.echo(f"{command}: " + ", ".join(f"{k}={v}" for k, v in stats.items() if not isinstance(v, dict)))
     typer.echo(f"{command}: stopped ({stopped}); re-run to continue" if stopped else f"{command}: done")
+    if stopped and command.startswith("extract"):
+        raise typer.Exit(2)  # stage 02: a quota stop must not let a chained `&&` step run on partial output
 
 
 @app.command("init-db")

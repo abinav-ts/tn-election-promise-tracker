@@ -26,19 +26,19 @@ _Updated at the end of every session. Read this first._
 - [x] Spec 02 OQ-1 (thresholds) and OQ-3 (Gemini vision first, Cowork last resort, D-042) answered.
 - [x] Spec 02 OQ-2: code licence = GPL v3 (D-043).
 - [x] Searched for a better official TVK copy (2026-10-12): none free; OCR route stays.
-- [ ] **Every day after the Gemini quota reset (midnight Pacific = 12:30 IST), in your terminal:**
+- [ ] **Full DMK + AIADMK extraction run (now; ~20 min, ~45–55 calls on gemini-3.5-flash-lite, 50/day):**
   ```
   cd ~/Projects/Election-Promise-Tracking && source .venv/bin/activate
-  python -m ept extract backend-test                         # ONLY on 2026-10-13: 2 calls on gemini-3.8-flash, then writes reports/backend_test_02.md
-  caffeinate -i python -m ept extract transcribe --term TVK-2026   # TVK pages, up to the day's quota (~20); stops cleanly
-  git add data/frozen/transcriptions && git commit -m "stage 02: TVK transcriptions (daily)"
+  caffeinate -i python -m ept extract promises && python -m ept extract dedup && python -m ept extract report && python -m ept extract spotcheck
   ```
-  The transcription is safe to stop and re-run (accepted pages are committed files and are reused). 16/96 TVK pages done on 2026-10-13; ~4 more days. Pages that still fail after Gemini go to the Cowork fallback (I'll say exactly what to run).
-- [ ] Read the free-tier limits for `gemini-3.5-flash-lite` (and `gemini-3.8-flash`) in AI Studio (requests per minute and per day) and tell Claude Code: they go into `llm.bulk.rpm/rpd` and decide a backend-test tie.
+  If it prints `stopped (… quota …)` (exit code 2, the chain stops), re-run the same line after the reset (midnight Pacific = 12:30 IST); finished batches come from the cache. Then tell Claude Code: it reviews the report and the fresh 7–10-item spot-check sheet with you.
+- [ ] Optional, for the record only: after 12:30 IST, `python -m ept extract backend-test` adds gemini-3.8-flash's row to `reports/backend_test_02.md` (2 calls; the choice is already flash-lite, D-055).
+- [ ] TVK catch-up before stage 07 (D-053, D-057): 80 pages via fresh Claude subagents, then units → extraction → spot-check → freeze.
+- [x] Free-tier limits: gemini-3.5-flash-lite 15 rpm / 50 rpd (user, 2026-10-13); gemini-3.8-flash 20 rpd (observed).
 - [ ] Only if some TVK pages still fail after Gemini: Cowork transcription sessions (global §6.4).
 
 ## Next step
-Stage 02, step 6 → 7 (Claude Code): after you run `ept extract backend-test` (above), show the report and the chosen model (mandatory pause). Then `promises` + `dedup` + `report` + `spotcheck` on `--limit 20` per term (DMK, AIADMK) and the 7–10-item spot-check sheet (mandatory pause). Then the full DMK + AIADMK run (~35–45 calls), fresh spot-check, freeze on your word. TVK catch-up (units → extraction → spot-check → freeze) once all 96 pages are transcribed, before stage 07.
+Stage 02: the limit-20 spot-check passed (6 ok, 2 flagged → 1 fixed by prompt v1.3, 1 judged background on review; D-058). Run the full DMK + AIADMK extraction (command above), then Claude Code reviews the report, the coverage check (DMK: only 251 may be missing) and the fresh full-run spot-check with you; fix, then `ept extract freeze --term DMK-2021` / `--term AIADMK-2016` on your word. Then stage 03 in a new conversation (spec from Cowork first; plan for the ~50/day quota).
 
 **Schedule:** about 3 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). **Risk:** the free-tier quota (~20 requests/day per model, D-050) also limits stages 03–05; stage 05 bulk judging in particular must be designed around it (heavy batching, a smaller judged set) or the cut order may be needed.
 
@@ -99,4 +99,5 @@ Stage 02, step 6 → 7 (Claude Code): after you run `ept extract backend-test` (
   - TVK deferred within stage 02 (D-053): stage 02 closes with DMK + AIADMK frozen; TVK catch-up before stage 07.
   - Step 6/7 code `5323319`+: extraction prompt (invented few-shots; no 8-word overlap with any manifesto), checks V1–V4, promises, dedup + IDs + coverage, report, spot-check, freeze. Backend test half: `gemini-3.5-flash-lite` V1 1.000, V2 1.000, 23 promises from 20 units (10 DMK + 10 AIADMK), 9.6 s/call; `gemini-3.8-flash` waits for its quota reset.
   - Known limitation: DMK bold headings mix topics and item titles, so an untitled item inherits the previous title as `section`.
+  - Limit-20 run on gemini-3.5-flash-lite (D-055): 40 units → 44–45 promises, 0 unresolved failures; spot-check 8 items: 6 ok, 2 wrong → prompt v1.2/v1.3 rule S5 (D-058). TVK transcription via fresh subagents approved but deferred (D-057).
 
