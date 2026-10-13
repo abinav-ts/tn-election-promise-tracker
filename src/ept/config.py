@@ -261,6 +261,7 @@ class Heading(_Cfg):
 
     pattern: Optional[str] = None
     bold_line: bool = False
+    wrap_max_chars: Optional[int] = None  # a short non-marker line right after a heading continues it
 
 
 class Paragraph(_Cfg):
@@ -287,6 +288,9 @@ class ManifestoProfile(_Cfg):
     heading: Heading = Heading()
     item_marker: ItemMarker
     paragraph: Optional[Paragraph] = None
+    running_header_lines: Optional[int] = None  # leading lines repeated at the top of pages = running header
+    running_header_in_section: Optional[int] = None  # how many running-header lines go into `section`
+    page_number_lines: Optional[int] = None  # a bare number among a page's last N lines = page number
     skip_pages: list[int] = []  # 1-based; cover/contents, listed in the report
     source_note: Optional[str] = None
 

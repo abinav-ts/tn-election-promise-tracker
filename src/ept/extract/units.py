@@ -112,6 +112,9 @@ class Cutter:
         cur: Optional[_Open] = None
         heading: list[PageLine] = []  # pending heading block
         section: Optional[str] = None
+        running: Optional[str] = None  # current running-header text (e.g. a pillar title), part of `section`
+        lettered: Optional[str] = None  # the last heading block's text
+        page_role = self._page_roles(lines)  # id(line) -> "running" | "page_number"
         furniture_chars = 0
         numbers: list[int] = []
         prev_num = 0
@@ -127,16 +130,34 @@ class Cutter:
             return u
 
         for ln in lines:
-            if self.is_furniture(ln):
+            role = page_role.get(id(ln))
+            if role == "running":  # repeated page header: furniture, but its text names the section
                 furniture_chars += nonspace_len(ln.text)
+                block = page_role[("running_text", ln.page)]
+                if block != running:
+                    running = block
+                    section = " / ".join(x for x in (running, lettered) if x)
+                continue
+            if self.is_furniture(ln) or role == "page_number":
+                furniture_chars += nonspace_len(ln.text)
+                continue
+            wrap = self.p.heading.wrap_max_chars
+            if heading and wrap and len(ln.text) <= wrap and self._marker_number(ln, prev_num) is False \
+                    and not self.is_heading(ln):  # second line of a wrapped heading
+                heading.append(ln)
+                lettered = " ".join(h.text for h in heading)
+                section = " / ".join(x for x in (running, lettered) if x)
                 continue
             if self.is_heading(ln):
                 if not heading:
                     cur = None
-                    if self.kind == "section_number":
+                    repeated = lettered is not None and lettered.startswith(ln.text)  # continuation page
+                    if self.kind == "section_number" and not repeated:
                         prev_num = 0
                 heading.append(ln)
-                section = " / ".join(h.text for h in heading)
+                if not (len(heading) == 1 and lettered is not None and lettered.startswith(ln.text)):
+                    lettered = " / ".join(h.text for h in heading)
+                section = " / ".join(x for x in (running, lettered) if x)
                 started = True
                 continue
             num = self._marker_number(ln, prev_num)
@@ -170,6 +191,37 @@ class Cutter:
         if heading:  # a trailing heading block with nothing after it
             units.append(_Open(marker="paragraph", lines=heading, section=section))
         return units, furniture_chars, numbers
+
+    def _page_roles(self, lines: list[PageLine]) -> dict[Any, Any]:
+        """Running headers (`running_header_lines`): the leading lines of a page that also lead at least one
+        other page. Page numbers (`page_number_lines`): a bare number among a page's last lines."""
+        roles: dict[Any, Any] = {}
+        pages: dict[int, list[PageLine]] = {}
+        for ln in lines:
+            pages.setdefault(ln.page, []).append(ln)
+        n_head, n_num = self.p.running_header_lines, self.p.page_number_lines
+        if n_head:
+            seen: dict[str, set[int]] = {}
+            for pg, pls in pages.items():
+                for ln in pls[:n_head]:
+                    seen.setdefault(ln.text, set()).add(pg)
+            for pg, pls in pages.items():
+                block = []
+                for k, ln in enumerate(pls[:n_head]):
+                    # a bare number belongs to the header only as its second line (the number under the label)
+                    number_ok = k == 1 or self._marker_number(ln, None) is False
+                    if len(seen[ln.text]) < 2 or self.is_heading(ln) or not number_ok:
+                        break
+                    roles[id(ln)] = "running"
+                    block.append(ln.text)
+                keep = self.p.running_header_in_section or len(block)
+                roles[("running_text", pg)] = " ".join(block[:keep]) or None
+        if n_num:
+            for pls in pages.values():
+                for ln in pls[-n_num:]:
+                    if re.fullmatch(r"\d{1,3}", ln.text) and id(ln) not in roles:
+                        roles[id(ln)] = "page_number"
+        return roles
 
     def _marker_number(self, ln: PageLine, prev: Optional[int]):
         """False if not an item marker; None for a bullet; the number for numbered markers.

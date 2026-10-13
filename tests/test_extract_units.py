@@ -21,7 +21,7 @@ AIADMK = ManifestoProfile.model_validate({
 })
 TVK = ManifestoProfile.model_validate({
     "file": "x.pdf", "lang": "ta", "route": "ocr", "title": "t", "furniture": [r"தமிழக வெற்றிக் கழகம்\s*\d{0,3}"],
-    "heading": {"pattern": r"[A-Z]\.\s.*"}, "item_marker": {"kind": "section_number", "pattern": r"(\d{1,2})[.)]?\s"},
+    "heading": {"pattern": r"[A-Z]\.\s.*"}, "item_marker": {"kind": "section_number", "pattern": r"(\d{1,2})(?:[.)]?\s|$)"},
 })
 
 
@@ -102,3 +102,21 @@ def test_text_layer_sidebar_clip_and_furniture(root):
     assert out.heading_lines == [1]
     assert out.removed_chars == nonspace_len("Anna Arivalayam, Chennai") + nonspace_len("2. Clipped copy")
     assert out.lines.index("Heading Line") == 1
+
+
+def test_running_header_page_number_wrapped_and_repeated_heading(cfg):
+    profile = TVK.model_copy(update={"running_header_lines": 5, "running_header_in_section": 2,
+                                     "page_number_lines": 2,
+                                     "heading": TVK.heading.model_copy(update={"wrap_max_chars": 40})})
+    lines = [
+        L(1, "அறம்"), L(1, "01"), L(1, "தலைப்பு"), L(1, "A. முதல் பிரிவு நீண்ட"), L(1, "தலைப்பு வரி"),
+        L(1, "1"), L(1, "முதல் உருப்படி"), L(1, "தமிழக வெற்றிக் கழகம்"), L(1, "7"),
+        L(2, "அறம்"), L(2, "01"), L(2, "தலைப்பு"), L(2, "A. முதல் பிரிவு நீண்ட"), L(2, "2"), L(2, "இரண்டாம்"),
+        L(2, "10"), L(2, "தமிழக வெற்றிக் கழகம்"), L(2, "8"),
+    ]
+    units, numbers = cut(profile, lines, cfg)
+    assert [u.marker for u in units] == ["section_number", "section_number"]
+    assert numbers == [1, 2]  # the repeated heading on page 2 doesn't reset numbering; "10" there is no item
+    assert units[0].section == "அறம் 01 / A. முதல் பிரிவு நீண்ட தலைப்பு வரி"
+    assert units[0].text.startswith("A. முதல் பிரிவு நீண்ட\nதலைப்பு வரி\n1")
+    assert "7" not in units[0].text.split("\n")  # page number is furniture

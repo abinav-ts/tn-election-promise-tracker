@@ -52,9 +52,13 @@ profiles:
     title: TVK election manifesto 2026 (Tamil, image-only scan, 150 ppi)
     source_note: No born-digital or >= 300 ppi official copy found (searched 2026-10-12, spec 02 §4.3).
     furniture:
-      - 'தமிழக வெற்றிக் கழகம்\s*\d{0,3}'                    # footer with page number
+      - 'தமிழக வெற்றிக் கழகம்\s*\d{0,3}'                    # footer (party name, page number on OCR pages)
+    running_header_lines: 5     # page top: group word, pillar number, pillar title (+ sub-title), repeated per page
+    running_header_in_section: 2  # group word + pillar number (the title lines vary between facing pages)
+    page_number_lines: 2        # the page number sits next to the footer, on its own line
     heading:
-      pattern: null             # set in build step 5 after reading the OCR/vision text
+      pattern: '[A-Z]\s?\.\s?\S.*'                       # lettered sub-section heading, e.g. "C. ..."; resets numbering
+      wrap_max_chars: 40          # its wrapped second line ("- பண்பாடு")
     item_marker:
       kind: section_number
-      pattern: '(\d{1,2})[.)]?\s'
+      pattern: '(\d{1,2})(?:[.)]?\s|$)'                     # "1 heading" (one line) or a bare "1" line
