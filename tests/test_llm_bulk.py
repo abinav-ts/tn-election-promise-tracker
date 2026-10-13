@@ -149,3 +149,10 @@ def test_rpm_throttle_spaces_calls(live):
     c.complete_json("t_bulk", {"q": "1"}, Out, model="m")
     c.complete_json("t_bulk", {"q": "2"}, Out, model="m")
     assert sleeps == [pytest.approx(10.0)]
+
+
+def test_cache_hit_keeps_original_call_stats(live):
+    c = _client(["not json", '{"answer": "ok"}'])
+    c.complete_json("t_bulk", {"q": "x"}, Out, model="m")
+    c.complete_json("t_bulk", {"q": "x"}, Out, model="m")
+    assert c.last.cache_hit and c.last.attempts == 2 and not c.last.first_valid

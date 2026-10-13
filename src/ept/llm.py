@@ -249,7 +249,10 @@ class LLMClient:
         if cache_file.exists():
             cached = json.loads(cache_file.read_text(encoding="utf-8"))
             result = out_model.model_validate(cached["parsed"])
-            self.last.cache_hit = True
+            stats = cached.get("stats", {})  # the original call's measurements (the backend test reads them)
+            self.last = CallStats(cache_hit=True, attempts=stats.get("attempts", 0),
+                                  first_valid=stats.get("first_valid", False), seconds=stats.get("seconds", 0.0),
+                                  http_retries=stats.get("http_retries", 0))
             self._log(prompt, effective, model_name, key, cache_hit=True, attempts=0, ok=True, rendered=rendered)
             return result
 
@@ -272,15 +275,17 @@ class LLMClient:
                     f"Return only JSON valid against this schema:\n{schema}"
                 )
                 continue
+            self.last.attempts, self.last.first_valid = attempts, attempts == 1
+            self.last.seconds = round(self._clock() - started, 2)
             cache_file.parent.mkdir(parents=True, exist_ok=True)
             cache_file.write_text(
                 json.dumps({"prompt": prompt.name, "version": prompt.version, "backend": effective,
-                            "model": model_name, "raw": raw, "parsed": result.model_dump(mode="json")},
+                            "model": model_name, "raw": raw, "parsed": result.model_dump(mode="json"),
+                            "stats": {"attempts": attempts, "first_valid": attempts == 1,
+                                      "seconds": self.last.seconds, "http_retries": self.last.http_retries}},
                            ensure_ascii=False, indent=1),
                 encoding="utf-8",
             )
-            self.last.attempts, self.last.first_valid = attempts, attempts == 1
-            self.last.seconds = round(self._clock() - started, 2)
             self._log(prompt, effective, model_name, key, cache_hit=False, attempts=attempts, ok=True,
                       rendered=rendered, output_chars=len(raw))
             return result

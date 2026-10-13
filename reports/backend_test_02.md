@@ -4,7 +4,7 @@ Run 2026-10-13. Sample: DMK-2021 10, AIADMK-2016 10 units (seed 20261013); call 
 
 | Model | Calls | JSON valid 1st | Units missing | Promises | Promises/unit | V1 pass | V2 pass | V3 clean | s/call | 429/5xx backoffs |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `gemini-3.5-flash-lite` | 2 | 0/2 | 0 | 23 | 1.15 | 1.000 | 1.000 | 0.913 | 0.0 | 0 |
+| `gemini-3.5-flash-lite` | 2 | 2/2 | 0 | 23 | 1.15 | 1.000 | 1.000 | 0.913 | 9.6 | 0 |
 
 Per term (V1 pass): `gemini-3.5-flash-lite` DMK-2021 1.0 (12 promises), AIADMK-2016 1.0 (11 promises)
 
