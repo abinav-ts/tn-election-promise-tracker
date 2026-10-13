@@ -175,7 +175,7 @@ llm:
     rpm: 5                    # provisional, conservative; set to the chosen model's free-tier limits from AI Studio
     rpd:                      # requests per day, per model (free tier; D-050)
       gemini-3.8-flash: 20    # observed 2026-10-13: the 21st request of the day got a per-day 429
-      gemini-3.5-flash-lite: null   # unknown until read from AI Studio
+      gemini-3.5-flash-lite: 50     # AI Studio free tier, read by the user 2026-10-13 (15 rpm)
     quota_tz: America/Los_Angeles   # Gemini daily quotas reset at midnight Pacific
     min_v1_pass: 0.90
     backoff_s: 5
