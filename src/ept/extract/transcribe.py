@@ -222,17 +222,19 @@ def apply_committed(cfg: Config, term_id: str, records: list[dict[str, Any]]) ->
 # --- Cowork fallback (global §6.4) ------------------------------------------
 
 
-def pending_cowork(records: list[dict[str, Any]]) -> list[int]:
+def pending_cowork(records: list[dict[str, Any]], all_pending: bool = False) -> list[int]:
+    """Gated pages Gemini couldn't transcribe validly; with `all_pending`, every gated page not yet
+    transcribed (D-057: Claude transcribes the rest in fresh sessions)."""
     return [r["page"] for r in records if r.get("to_vision") and r.get("route") != "vision"
-            and r.get("vision_route") == "pending_cowork"]
+            and (all_pending or r.get("vision_route") == "pending_cowork")]
 
 
-def run_export(term: str) -> dict[str, Any]:
+def run_export(term: str, all_pending: bool = False) -> dict[str, Any]:
     """Write the page images that Gemini could not transcribe validly, in batches, for a Cowork session."""
     cfg = get_config()
     check_writable(cfg, term, "transcribe export")
     profile = cfg.profiles()[term]
-    pages = pending_cowork(read_records(cfg, term))
+    pages = pending_cowork(read_records(cfg, term), all_pending)
     pdf = pymupdf.open(manifesto_path(cfg, profile))
     root = term_dir(cfg, term) / "transcribe" / "in"
     size = cfg.settings.extract.transcribe_batch
@@ -247,8 +249,12 @@ def run_export(term: str) -> dict[str, Any]:
     return {"pages": len(pages), "batches": batches, "write_to": frozen_dir(cfg, term).relative_to(cfg.root).as_posix()}
 
 
-def run_import(term: str) -> dict[str, Any]:
-    """Validate Cowork's page_NNN.txt files (same rules as Gemini) and make them the page text."""
+def run_import(term: str, source: Optional[Path] = None, route: str = "cowork", model: str = "claude-cowork",
+               all_pending: bool = False) -> dict[str, Any]:
+    """Validate Claude's page_NNN.txt files (same rules as Gemini) and make them the page text.
+
+    `source`: folder holding the page_NNN.txt files (searched recursively); default the committed
+    transcription folder, where a Cowork session writes them (global §6.4). Accepted files are copied there."""
     cfg = get_config()
     check_writable(cfg, term, "transcribe import")
     profile = cfg.profiles()[term]
@@ -257,10 +263,14 @@ def run_import(term: str) -> dict[str, Any]:
     prompt_version = load_prompt(PROMPT, cfg).version
     stats: dict[str, Any] = {"pending": 0, "imported": 0, "rejected": {}, "missing": []}
     for rec in records:
-        if rec["page"] not in pending_cowork([rec]):
+        if rec["page"] not in pending_cowork([rec], all_pending):
             continue
         stats["pending"] += 1
-        text = read_transcription(cfg, term, rec["page"])
+        if source is None:
+            text = read_transcription(cfg, term, rec["page"])
+        else:
+            found = sorted(Path(source).rglob(f"page_{rec['page']:03d}.txt"))
+            text = found[0].read_text(encoding="utf-8") if found else None
         if text is None:
             stats["missing"].append(rec["page"])
             continue
@@ -269,10 +279,11 @@ def run_import(term: str) -> dict[str, Any]:
         if problems:
             stats["rejected"][rec["page"]] = problems
             continue
-        index[rec["page"]] = {"page": rec["page"], "route": "cowork", "model": "claude-cowork",
+        save_transcription(cfg, term, rec["page"], lines)
+        index[rec["page"]] = {"page": rec["page"], "route": route, "model": model,
                               "prompt_version": prompt_version, "attempts": 1,
                               "accepted_at": dt.date.today().isoformat()}
-        apply_to_page(cfg, term, rec, lines, "cowork")
+        apply_to_page(cfg, term, rec, lines, route)
         stats["imported"] += 1
     write_index(cfg, term, index)
     write_records(cfg, term, records, file_sha256(manifesto_path(cfg, profile)))

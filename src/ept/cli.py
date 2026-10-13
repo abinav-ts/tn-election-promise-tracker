@@ -164,19 +164,30 @@ def extract_transcribe(
 
 
 @transcribe_app.command("export")
-def extract_transcribe_export(term: str = typer.Option(..., "--term")) -> None:
-    """Write page images Gemini couldn't transcribe validly, for a Cowork session (global §6.4)."""
+def extract_transcribe_export(
+    term: str = typer.Option(..., "--term"),
+    all_pending: bool = typer.Option(False, "--all-pending", help="Every gated page not yet transcribed (D-057)"),
+) -> None:
+    """Write page images Gemini couldn't transcribe validly, for a fresh Claude session (global §6.4)."""
     from ept.extract.transcribe import run_export
 
-    typer.echo(f"transcribe export: {run_export(term)}")
+    typer.echo(f"transcribe export: {run_export(term, all_pending)}")
 
 
 @transcribe_app.command("import")
-def extract_transcribe_import(term: str = typer.Option(..., "--term")) -> None:
-    """Validate Cowork transcriptions and make them the page text."""
+def extract_transcribe_import(
+    term: str = typer.Option(..., "--term"),
+    source: Optional[str] = typer.Option(None, "--from", help="Folder with page_NNN.txt (default: committed folder)"),
+    route: str = typer.Option("cowork", "--route", help="cowork | claude_subagent (D-057)"),
+    model: str = typer.Option("claude-cowork", "--model", help="Model that wrote the transcriptions"),
+    all_pending: bool = typer.Option(False, "--all-pending", help="Every gated page not yet transcribed"),
+) -> None:
+    """Validate Claude transcriptions (same rules as Gemini) and make them the page text."""
+    from pathlib import Path
+
     from ept.extract.transcribe import run_import
 
-    typer.echo(f"transcribe import: {run_import(term)}")
+    typer.echo(f"transcribe import: {run_import(term, Path(source) if source else None, route, model, all_pending)}")
 
 
 @extract_app.command("units")
