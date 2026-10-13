@@ -78,6 +78,9 @@ def test_usage_log_written(root):
 def test_unset_bulk_model_and_strong_stub(root, monkeypatch):
     _prompt(root, "t_ok")
     monkeypatch.setenv("EPT_LLM_MOCK", "0")
+    from ept.config import get_config
+
+    get_config().settings.llm.models["bulk"] = None
     with pytest.raises(ValueError, match="backend-test"):
         LLMClient().complete_json("t_ok", {"q": "a"}, Out, backend="bulk")
     with pytest.raises(NotImplementedError, match="handoff"):

@@ -34,9 +34,22 @@
      "DMK-2021-U0447"
     ]
    },
-   "promises_step": {},
-   "promises": 0,
-   "dropped_by_kind": {},
+   "promises_step": {
+    "units": 20,
+    "promises": 27,
+    "dropped": 15,
+    "unresolved_failures": 0,
+    "resolved_failures": 0,
+    "retried_units": 0,
+    "split_outliers": [],
+    "v3_flags": 0
+   },
+   "promises": 27,
+   "dropped_by_kind": {
+    "other": 12,
+    "criticism": 2,
+    "achievement": 1
+   },
    "dedup_pairs": 0,
    "dedup_drops": 0,
    "failures": {
@@ -61,11 +74,157 @@
     "vision_disagree": [],
     "accepted_below_threshold": []
    },
-   "coverage": {},
-   "coverage_status": {},
-   "per_section": [],
-   "longest": [],
-   "shortest": []
+   "coverage": {
+    "main_items": 19,
+    "not_printed": [],
+    "unexplained": []
+   },
+   "coverage_status": {
+    "promise": 18,
+    "dropped": 1
+   },
+   "per_section": [
+    [
+     "Elevating the status of Tamil as Classical language",
+     8
+    ],
+    [
+     "State Rights",
+     4
+    ],
+    [
+     "Language Policy",
+     3
+    ],
+    [
+     "Eelam Tamil’s Welfare",
+     3
+    ],
+    [
+     "Citizenship for Eelam Tamils",
+     3
+    ],
+    [
+     "Tamil language in Central govt Offices",
+     2
+    ],
+    [
+     "Administrative Reforms (Lok Ayukta)",
+     2
+    ],
+    [
+     "Tamil as language of the Madras High Court",
+     1
+    ],
+    [
+     "Tamil Official Language Section",
+     1
+    ]
+   ],
+   "longest": [
+    [
+     "DMK-2021-0022",
+     37,
+     "Advise the current Govt of Sri Lanka to proceed with a referendum, taking into consideration the will of the people while making amendments in its Constitution so that Eelam Tamils can have equal civil and political rights."
+    ],
+    [
+     "DMK-2021-0023",
+     33,
+     "Urge the Central Govt to make necessary laws to grant Indian citizenship to the Tamil refugees from Sri Lanka that have been living in refugee camps for the last 30 years or so."
+    ],
+    [
+     "DMK-2021-0020",
+     29,
+     "Urge the Central govt to appeal to the international community to constitute an independent judicial body to investigate various human rights violations, war crimes, genocides faced by Sri Lanka."
+    ],
+    [
+     "DMK-2021-0019",
+     26,
+     "Establish a separate wing to develop Tamil as official language to improve the usage of Tamil language across all departments starting from Secretariat to Councillor Office."
+    ],
+    [
+     "DMK-2021-0027",
+     25,
+     "Pass Right to Services Act to streamline the public distribution services including provision of community certificate, birth/death certificate, income certificate, residential certificate, pension benefits, etc."
+    ],
+    [
+     "DMK-2021-0010",
+     24,
+     "Urge the Central Government to expedite this process and propel the Central govt to construct such courts in Tamil Nadu for the Southern Region."
+    ],
+    [
+     "DMK-2021-0008",
+     23,
+     "Urge Tamil shall to be declared as co-official language in all central government offices including firms, and national banks located in Tamil Nadu."
+    ],
+    [
+     "DMK-2021-0006",
+     22,
+     "Urge the Union Govt to take necessary steps to legally declare all existing state languages as official languages of India including Tamil."
+    ],
+    [
+     "DMK-2021-0007",
+     22,
+     "Urge the Central Government to conduct all state level competitive examinations including govt jobs, in the official languages of the respective States."
+    ],
+    [
+     "DMK-2021-0011",
+     22,
+     "Take efforts to revive the Central Institute of Classical Tamil, Chennai established under Kalaignar’s regime, and to make it an autonomous institution."
+    ]
+   ],
+   "shortest": [
+    [
+     "DMK-2021-0005",
+     4,
+     "Fight against Hindi imposition."
+    ],
+    [
+     "DMK-2021-0014",
+     6,
+     "Refurbish 'Semmozhi Poonga' in Anna Salai."
+    ],
+    [
+     "DMK-2021-0016",
+     7,
+     "Translate important and world-famous books in Tamil."
+    ],
+    [
+     "DMK-2021-0017",
+     7,
+     "Translate Classic Tamil books in other languages."
+    ],
+    [
+     "DMK-2021-0015",
+     8,
+     "Set up Semmozhi Park in all Municipal Corporations."
+    ],
+    [
+     "DMK-2021-0003",
+     9,
+     "Formulate a separate State Education Policy for Tamil Nadu."
+    ],
+    [
+     "DMK-2021-0026",
+     9,
+     "Take steps to revive Lok Ayukta and its operations."
+    ],
+    [
+     "DMK-2021-0001",
+     10,
+     "Fight for restoration of the lost rights of the state."
+    ],
+    [
+     "DMK-2021-0013",
+     10,
+     "Take necessary steps to institute Tamil Chairs in International Universities."
+    ],
+    [
+     "DMK-2021-0024",
+     10,
+     "Make arrangements for those willing to return to Sri Lanka."
+    ]
+   ]
   },
   "AIADMK-2016": {
    "pages": 41,
@@ -90,9 +249,22 @@
     "number_gaps": [],
     "sub_list_units": []
    },
-   "promises_step": {},
-   "promises": 0,
-   "dropped_by_kind": {},
+   "promises_step": {
+    "units": 20,
+    "promises": 18,
+    "dropped": 7,
+    "unresolved_failures": 0,
+    "resolved_failures": 0,
+    "retried_units": 0,
+    "split_outliers": [],
+    "v3_flags": 0
+   },
+   "promises": 18,
+   "dropped_by_kind": {
+    "other": 2,
+    "achievement": 4,
+    "criticism": 1
+   },
    "dedup_pairs": 0,
    "dedup_drops": 0,
    "failures": {
@@ -139,9 +311,116 @@
    },
    "coverage": {},
    "coverage_status": {},
-   "per_section": [],
-   "longest": [],
-   "shortest": []
+   "per_section": [
+    [
+     "1. Agricultural development and farmers' welfare :",
+     18
+    ]
+   ],
+   "longest": [
+    [
+     "AIADMK-2016-0010",
+     26,
+     "Continue to implement the scheme of providing 100 percent subsidy for small and marginal farmers and 75 percent subsidy for other farmers for micro irrigation projects."
+    ],
+    [
+     "AIADMK-2016-0002",
+     21,
+     "Provide crop loans to the extent of 40,000 crores through cooperative banks in the 5 year period from 2016 to 2021."
+    ],
+    [
+     "AIADMK-2016-0001",
+     18,
+     "Waive all crop loans, medium-term loans and long-term loans payable by small and marginal farmers to cooperative banks."
+    ],
+    [
+     "AIADMK-2016-0003",
+     13,
+     "Continue to provide full interest subsidy to farmers who repay loans on time."
+    ],
+    [
+     "AIADMK-2016-0013",
+     13,
+     "Reclaim waste lands, create water source systems, and find ways to cultivate crops."
+    ],
+    [
+     "AIADMK-2016-0004",
+     12,
+     "Implement schemes to increase agricultural production and protect the welfare of farmers."
+    ],
+    [
+     "AIADMK-2016-0015",
+     12,
+     "Ensure timely availability of quality inputs for horticulture and hill crop cultivation."
+    ],
+    [
+     "AIADMK-2016-0017",
+     11,
+     "Ensure that horticultural farmers get a good price for their produce."
+    ],
+    [
+     "AIADMK-2016-0014",
+     10,
+     "Continue to implement the sustained and sustainable sugarcane production scheme."
+    ],
+    [
+     "AIADMK-2016-0016",
+     10,
+     "Increase the revolving fund as needed and expand its service."
+    ]
+   ],
+   "shortest": [
+    [
+     "AIADMK-2016-0018",
+     3,
+     "Expand this scheme."
+    ],
+    [
+     "AIADMK-2016-0012",
+     4,
+     "Further expand this scheme."
+    ],
+    [
+     "AIADMK-2016-0008",
+     5,
+     "Achieve self-sufficiency in pulse production."
+    ],
+    [
+     "AIADMK-2016-0007",
+     7,
+     "Continue to implement the agricultural mechanization scheme."
+    ],
+    [
+     "AIADMK-2016-0005",
+     8,
+     "Provide quality seeds to farmers at subsidized prices."
+    ],
+    [
+     "AIADMK-2016-0006",
+     8,
+     "Expand farm women groups and increase agricultural production."
+    ],
+    [
+     "AIADMK-2016-0009",
+     8,
+     "Continue to provide subsidies for purchasing farm machinery."
+    ],
+    [
+     "AIADMK-2016-0011",
+     9,
+     "Take action to increase the income of rainfed farmers."
+    ],
+    [
+     "AIADMK-2016-0014",
+     10,
+     "Continue to implement the sustained and sustainable sugarcane production scheme."
+    ],
+    [
+     "AIADMK-2016-0016",
+     10,
+     "Increase the revolving fund as needed and expand its service."
+    ]
+   ]
   },
   "TVK-2026": {
    "pages": 96,
@@ -341,8 +620,8 @@
    "failed": 0
   },
   "extract_promises / gemini-3.5-flash-lite": {
-   "calls": 2,
-   "cache_hits": 0,
+   "calls": 7,
+   "cache_hits": 6,
    "failed": 0
   }
  },

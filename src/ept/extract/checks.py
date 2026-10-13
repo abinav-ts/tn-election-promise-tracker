@@ -15,14 +15,17 @@ import re
 import unicodedata
 from dataclasses import dataclass, field
 
-_ZERO_WIDTH = dict.fromkeys(map(ord, "​‌‍﻿"))
+_ZERO_WIDTH = dict.fromkeys(map(ord, "\u200B\u200C\u200D\uFEFF"))
+# typographic quotes count as plain ones (D-056): "Kalaignar\u2019s" copied as "Kalaignar's" is still verbatim
+_QUOTES = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201A": "'", "\u201B": "'", "\u201C": '"',
+                         "\u201D": '"', "\u201E": '"', "\u00B4": "'", "`": "'"})
 _DIGITS_RE = re.compile(r"[0-9]+(?:\.[0-9]+)?")
 _THOUSANDS_RE = re.compile(r"(?<=[0-9]),(?=[0-9])")
 _CAP_RE = re.compile(r"\b[A-Z][A-Za-z'\-]*")
 
 
 def norm(text: str) -> str:
-    return " ".join(unicodedata.normalize("NFC", text).translate(_ZERO_WIDTH).split())
+    return " ".join(unicodedata.normalize("NFC", text).translate(_ZERO_WIDTH).translate(_QUOTES).split())
 
 
 def digit_groups(text: str) -> list[str]:
@@ -61,7 +64,7 @@ def names_to_check(text: str, unit_text: str, common_words: set[str]) -> list[st
     for start, tok in tokens:
         if start == len(text) - len(text.lstrip()):  # sentence-initial
             continue
-        word = tok.strip("'-")
+        word = re.sub(r"'s$", "", norm(tok)).strip("'-")
         if word in common_words or word.lower() in unit_lower:
             continue
         if word not in out:

@@ -165,7 +165,7 @@ llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)
   temperature: 0
   models:
-    bulk: null                # set by `ept extract backend-test` (spec 02 §4.8)
+    bulk: gemini-3.5-flash-lite                # set by `ept extract backend-test` (spec 02 §4.8)
     vision: gemini-3.8-flash  # manifesto page transcription, fixed in advance (D-044)
     strong: claude-cowork
     mock: mock

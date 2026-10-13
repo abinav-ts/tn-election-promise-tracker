@@ -7,7 +7,10 @@ Problem groups, in priority order:
   c. a V3 `names_to_check` flag (possible model-memory leak);
   d. split outliers (> max_promises_per_unit) and dropped pieces whose source carries a
      commitment marker (may be missed promises);
-  e. dedup decisions near the threshold.
+  e. dedup decisions near the threshold;
+  f. outliers, used to fill the sheet to 7 when a–e are fewer (global §12.4, D-056): promise text
+     with an unresolved referent ("this scheme"), a V2 warning (a source number missing from the
+     text), the longest and shortest promise texts.
 At most `extract.spotcheck.per_term` items per term and `per_term_group` per term and group (D-054);
 7–10 items; verdict/note left empty.
 """
@@ -27,7 +30,8 @@ from ept.extract.units import read_units
 
 COLUMNS = ["item_id", "term", "group", "why_flagged", "what_to_check", "pdf_page", "unit_text", "extracted",
            "verdict", "note"]
-GROUPS = "abcde"
+GROUPS = "abcdef"
+_REFERENT = re.compile(r"\b(this|these|those|the said|the above)\b", re.I)  # demonstratives pointing outside
 _EN_COMMIT = re.compile(r"\b(will|shall)\b", re.I)
 _TA_COMMIT = re.compile("ப்படும்")
 
@@ -145,6 +149,28 @@ def build(cfg: Config, conn, terms: list[str]) -> list[Item]:
                               "Same commitment (action, beneficiaries, amount)?", r["dropped_unit_id"],
                               units[r["dropped_unit_id"]].page_start if r["dropped_unit_id"] in units else None,
                               f"kept {r['kept_id']}: {r['kept_text']} || other: {r['dropped_text']}"))
+        # f. outliers (fill)
+        by_text = {(pc["unit_id"], pc["text"]): pc for pc in pieces}
+        words = sorted(promises, key=lambda p: len(p["text"].split()))
+        extremes = {p["promise_id"]: "shortest" for p in words[:2]} | {p["promise_id"]: "longest" for p in words[-2:]}
+        for p in promises:
+            reasons, score = [], 0.0
+            ref = _REFERENT.findall(p["text"])
+            if ref:
+                reasons.append(f"refers to something not named in the text ({', '.join(sorted(set(ref)))})")
+                score += 2
+            pc = by_text.get((p["parent_group"], p["text"]), {})
+            if pc.get("warnings"):
+                reasons.append("; ".join(pc["warnings"]))
+                score += 1
+            if p["promise_id"] in extremes:
+                reasons.append(f"{extremes[p['promise_id']]} promise text ({len(p['text'].split())} words)")
+                score += 0.5
+            if reasons:
+                items.append(Item(p["promise_id"], term, "f", score, "; ".join(reasons),
+                                  "Is the promise self-contained, complete and faithful to the unit?",
+                                  p["parent_group"], p["page"], f"{p['promise_id']}: {p['text']} | source: "
+                                  f"{p['source_text']}"))
     return items
 
 

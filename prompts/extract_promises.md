@@ -1,4 +1,4 @@
-version: 1.0
+version: 1.1
 purpose: split manifesto units into pieces and render each promise in English (spec 02 §4.5, D-038). One prompt for every party; party and language are data.
 
 You read items from an election manifesto and identify the commitments in them.
@@ -28,7 +28,7 @@ Every unit must return at least one piece.
 ## For each piece
 - `source_text`: the shortest contiguous span copied EXACTLY from the unit text (same script, same spelling, same punctuation; do not translate, correct or join separate parts) that contains the piece.
 - `text`:
-  - for a `promise`: ONE English sentence starting with a base verb ("Provide …", "Establish …", "Urge the Union government to …"). Keep the unit's own amounts, units, names and places. Write numbers exactly as they appear in the source (digits stay digits; do not turn words into digits or digits into words; do not convert units). Transliterate Tamil names into English letters. Add nothing that is not in the source.
+  - for a `promise`: ONE English sentence starting with a base verb ("Provide …", "Establish …", "Urge the Union government to …"). It must be understandable on its own: if the commitment points to something described elsewhere in the unit ("this scheme", "these centres", "it"), name that thing in the text using the unit's own words, and extend `source_text` so it also covers those words. Keep the unit's own amounts, units, names and places. Write numbers exactly as they appear in the source (digits stay digits; do not turn words into digits or digits into words; do not convert units). Transliterate Tamil names into English letters. Add nothing that is not in the source.
   - for other kinds: a short English gloss (may be empty).
 
 For each unit also give `section_en`: an English rendering of the unit's `section` (null if the unit has no section).
@@ -51,6 +51,11 @@ Output: {"unit_id": "EX-U0003", "section_en": "3. Library facilities", "pieces":
  {"kind": "other", "text": "Heading", "source_text": "3. நூலக வசதி :"},
  {"kind": "promise", "text": "Establish modern libraries in all village panchayats.", "source_text": "அனைத்து ஊராட்சிகளிலும் நவீன நூலகங்கள் அமைக்கப்படும்"},
  {"kind": "achievement", "text": "120 libraries were opened in the last five years.", "source_text": "கடந்த ஐந்து ஆண்டுகளில் 120 நூலகங்கள் திறக்கப்பட்டுள்ளன."}]}
+
+Unit: {"unit_id": "EX-U0005", "section": null, "text": "• The village bakery scheme started in 2014 now runs in 300 villages. It will be extended to every district."}
+Output: {"unit_id": "EX-U0005", "section_en": null, "pieces": [
+ {"kind": "achievement", "text": "The village bakery scheme runs in 300 villages.", "source_text": "The village bakery scheme started in 2014 now runs in 300 villages."},
+ {"kind": "promise", "text": "Extend the village bakery scheme to every district.", "source_text": "The village bakery scheme started in 2014 now runs in 300 villages. It will be extended to every district."}]}
 
 Unit: {"unit_id": "EX-U0004", "section": "Clean Towns", "text": "20. An expert task force will be formed to prepare a plan to make every town in the state free of flooding by the end of the term."}
 Output: {"unit_id": "EX-U0004", "section_en": "Clean Towns", "pieces": [

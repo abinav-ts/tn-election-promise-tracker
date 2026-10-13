@@ -45,7 +45,7 @@ def test_gate_low_confidence_or_validity():
 TSV = "\n".join([
     "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext",
     "1\t1\t0\t0\t0\t0\t0\t0\t100\t100\t-1\t",
-    "5\t1\t1\t1\t1\t1\t0\t0\t10\t10\t90\tதமிழ்‌",
+    "5\t1\t1\t1\t1\t1\t0\t0\t10\t10\t90\tதமிழ்\u200C",
     "5\t1\t1\t1\t1\t2\t0\t0\t10\t10\t70\tநாடு",
     "5\t1\t1\t1\t2\t1\t0\t0\t10\t10\t80\t2026",
     "5\t1\t2\t1\t1\t1\t0\t0\t10\t10\t-1\t ",

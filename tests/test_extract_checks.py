@@ -13,8 +13,9 @@ def test_v1_whitespace_and_nfc():
     unit = "12. Free bus travel will be\nprovided   to women."
     assert check_v1("Free bus travel will be provided to women", unit)
     assert check_v1("கொள்கை", "புதிய கொள்கை")  # NFC-equal
-    assert check_v1("தமிழ்‌ நாடு", "தமிழ் நாடு")  # zero-width joiner ignored
+    assert check_v1("தமிழ்\u200C நாடு", "தமிழ் நாடு")  # zero-width joiner ignored
     assert not check_v1("Free bus travel for women", unit)
+    assert check_v1("under Kalaignar's regime", "established under Kalaignar\u2019s regime")  # D-056
     assert not check_v1("   ", unit)
 
 
@@ -36,6 +37,7 @@ def test_v3_english_failure_tamil_flag():
     r = chk("Build a new bus terminus in Madurai.", "மதுரையில் புதிய பேருந்து நிலையம் அமைக்கப்படும்", tamil_unit, "ta")
     assert r.ok and r.v3_flag and r.names_to_check == ["Madurai"]
     assert chk("Urge the Union Government to act.", "act", "act").ok  # common words, sentence-initial
+    assert chk("Revive the institute set up in Kalaignar's regime.", "x", "under Kalaignar\u2019s regime x").ok
 
 
 def test_v4_shape():
