@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052; TVK deferred within stage 02, backend-test sample 10 DMK + 10 AIADMK, D-053; spot-check caps 5 per term / 3 per term-group, D-054; bulk model gemini-3.5-flash-lite, D-055; limit-20 clarifications, D-056; S5 scope sentences, prompt v1.3, D-058; TVK catch-up pulled forward, running-header/page-number cutter options, D-059) |
+| Status | **BUILT and FROZEN 2026-10-15** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695 promises; build deviations D-044–D-062). **APPROVED v1.2** (2026-10-12; v0.2 = OQ-1 thresholds, Gemini-first vision fallback D-042; v1.0 = code licence GPL v3 D-043, no better TVK copy found; v1.1 = build order split so `_bulk` and vision transcription come before units and the backend test, separate vision model, D-044; v1.2 = DMK numbering facts corrected from the file, D-045; build clarifications from steps 1–2, D-046, D-047; `ocr_gate.max_cer` 0.02 so every TVK page goes to vision, D-048; step 3 clarifications, D-049; free-tier quota plan, D-050; vision Tamil share on non-Latin letters, D-051; DMK facts re-corrected and cutter clarifications, D-052; TVK deferred within stage 02, backend-test sample 10 DMK + 10 AIADMK, D-053; spot-check caps 5 per term / 3 per term-group, D-054; bulk model gemini-3.5-flash-lite, D-055; limit-20 clarifications, D-056; S5 scope sentences, prompt v1.3, D-058; TVK catch-up pulled forward, running-header/page-number cutter options, D-059) |
 | Global spec | `specs/00-global-spec.md` v0.7 (amended with this spec: §3.1, §4, §5, §6.1, §6.4, §7 wording, §9.1, §9.2, §9.4, §10, §11, §13, §14). This spec references §7/§8 and redefines nothing |
 | Day plan | Day 5 in the plan; built Days 6–7 (the user is catching up; no cuts, D-041) |
 | CLI | `python -m ept extract [pages\|units\|transcribe\|promises\|dedup\|report\|spotcheck\|freeze\|backend-test]` |
 | Resolves | Q-03 (bulk backend), Q-04 (splitting and deduplication), Q-10 (Tamil manifesto handling) |
-| Decisions | D-035–D-059 (`docs/decisions/log.md`) |
+| Decisions | D-035–D-062 (`docs/decisions/log.md`) |
 
 ---
 

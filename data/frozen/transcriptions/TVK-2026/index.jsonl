@@ -18,7 +18,7 @@
 {"page": 18, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}
 {"page": 19, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}
 {"page": 20, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}
-{"page": 21, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}
+{"page": 21, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13", "corrections": ["2026-10-15: 'வக்ஃஃப்' -> 'வக்ஃப்' (2 places, item 4 heading and body); the printed page has one aytham; flagged by the transcriber, confirmed by the user against the image (D-062)"]}
 {"page": 22, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}
 {"page": 23, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}
 {"page": 24, "route": "claude_subagent", "model": "claude-opus-5-5", "prompt_version": "1.0", "attempts": 1, "accepted_at": "2026-10-13"}

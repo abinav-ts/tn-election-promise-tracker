@@ -2,14 +2,14 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 8 of 20 (deadline 2026-10-25). Stage 01 done. **Stage 02 being built (spec v1.2, D-044–D-053):** steps 1–5 done for DMK and AIADMK, step 6 (backend test) half done; TVK deferred within stage 02 (D-053). Free-tier Gemini quota (~20 requests/day per model) is now the main schedule constraint.
+**Today's position:** Day 10 of 20 (deadline 2026-10-25). Stages 01 and 02 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695). Next: stage 03 (classification & decomposition), spec drafted in Cowork first.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
 | 00 | Global spec + structure | ✅ v0.7 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
-| 02 | Promise extraction | ✅ v1.2 | ◐ steps 1–5 (+6 half) | ✅ 191 | ☐ | ◐ checkpoints |
+| 02 | Promise extraction | ✅ v1.2 (+D-044–D-062) | ✅ | ✅ 195 | ✅ | ✅ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -26,21 +26,12 @@ _Updated at the end of every session. Read this first._
 - [x] Spec 02 OQ-1 (thresholds) and OQ-3 (Gemini vision first, Cowork last resort, D-042) answered.
 - [x] Spec 02 OQ-2: code licence = GPL v3 (D-043).
 - [x] Searched for a better official TVK copy (2026-10-12): none free; OCR route stays.
-- [ ] **Full DMK + AIADMK extraction run (now; ~20 min, ~45–55 calls on gemini-3.5-flash-lite, 50/day):**
-  ```
-  cd ~/Projects/Election-Promise-Tracking && source .venv/bin/activate
-  caffeinate -i python -m ept extract promises && python -m ept extract dedup && python -m ept extract report && python -m ept extract spotcheck
-  ```
-  If it prints `stopped (… quota …)` (exit code 2, the chain stops), re-run the same line after the reset (midnight Pacific = 12:30 IST); finished batches come from the cache. Then tell Claude Code: it reviews the report and the fresh 7–10-item spot-check sheet with you.
-- [ ] Optional, for the record only: after 12:30 IST, `python -m ept extract backend-test` adds gemini-3.8-flash's row to `reports/backend_test_02.md` (2 calls; the choice is already flash-lite, D-055).
-- [ ] TVK catch-up before stage 07 (D-053, D-057): 80 pages via fresh Claude subagents, then units → extraction → spot-check → freeze.
-- [x] Free-tier limits: gemini-3.5-flash-lite 15 rpm / 50 rpd (user, 2026-10-13); gemini-3.8-flash 20 rpd (observed).
-- [ ] Only if some TVK pages still fail after Gemini: Cowork transcription sessions (global §6.4).
+- [x] Stage 02 full run, spot-checks (limit-20 and full) and freeze, 2026-10-13/15.
 
 ## Next step
-Stage 02: the limit-20 spot-check passed (6 ok, 2 flagged → 1 fixed by prompt v1.3, 1 judged background on review; D-058). Run the full DMK + AIADMK extraction (command above), then Claude Code reviews the report, the coverage check (DMK: only 251 may be missing) and the fresh full-run spot-check with you; fix, then `ept extract freeze --term DMK-2021` / `--term AIADMK-2016` on your word. Then stage 03 in a new conversation (spec from Cowork first; plan for the ~50/day quota).
+Open a new conversation in **Cowork** for **stage 03** (classification & decomposition): draft `specs/03-…` from global §12.1. Stage 03 reads the frozen promises (`data/frozen/promises_{term}.jsonl`, loaded into `promises` by `ept extract`), never re-extracts them. Bulk model: `gemini-3.5-flash-lite` (15 rpm, 500 rpd free tier; D-055, D-060): quota is no longer the bottleneck at stage-03 volumes (~1,700 promises ÷ batching).
 
-**Schedule:** about 3 days behind the day plan (stage 02 was planned for Day 5). The user will catch up; **no cuts for now** (D-041). **Risk:** the free-tier quota (~20 requests/day per model, D-050) also limits stages 03–05; stage 05 bulk judging in particular must be designed around it (heavy batching, a smaller judged set) or the cut order may be needed.
+**Schedule:** about 3 days behind the day plan (stage 02 was planned for Day 5, closed Day 10; stage 03 was Day 6). With stage 03 on Day 11, 04 Days 12–13, 05 Days 14–16, 06 Days 17–18, 07 Day 19 and 08 Day 20 there is **no buffer**; the agreed cut order (global §12.3) is the user's call if anything slips (D-041). TVK is already done, so stage 07's projection is unblocked.
 
 ## Facts later stages need (from stage 01; details in global spec v0.6 §3.1, §9.1–§9.3)
 - **Corpus:** `data/ept.sqlite` tables `documents` (9,254) and `chunks` (60,259; 300–500 words, only a document's last chunk shorter). Raw files in `data/raw/evidence/{doc_type}/`, sidecars `{doc_id}.meta.json`, text in `data/interim/text/`.
@@ -100,4 +91,10 @@ Stage 02: the limit-20 spot-check passed (6 ok, 2 flagged → 1 fixed by prompt 
   - Step 6/7 code `5323319`+: extraction prompt (invented few-shots; no 8-word overlap with any manifesto), checks V1–V4, promises, dedup + IDs + coverage, report, spot-check, freeze. Backend test half: `gemini-3.5-flash-lite` V1 1.000, V2 1.000, 23 promises from 20 units (10 DMK + 10 AIADMK), 9.6 s/call; `gemini-3.8-flash` waits for its quota reset.
   - Known limitation: DMK bold headings mix topics and item titles, so an untitled item inherits the previous title as `section`.
   - Limit-20 run on gemini-3.5-flash-lite (D-055): 40 units → 44–45 promises, 0 unresolved failures; spot-check 8 items: 6 ok, 2 wrong → prompt v1.2/v1.3 rule S5 (D-058). TVK transcription via fresh subagents approved but deferred (D-057).
+- **2026-10-13/15 — Stage 02 finished.**
+  - Full run on gemini-3.5-flash-lite (limits are 15 rpm / 500 rpd, not 50, D-060): 1,169 units → 1,674 promises after 14 dedup drops; 50 single-unit retries fixed check failures (a misaligned batch caught by V1/V3; V2 caught "5,000 crore" for a printed 500); 3 failures fixed by user-approved overrides; DMK coverage complete (251 not printed).
+  - TVK: 80 pages transcribed by fresh Claude subagents (D-057), all validated (vision-vs-OCR CER median 0.068); one human correction (page 21 aytham, D-062); units 319 items in 54 sections with new generic cutter options (D-059); section names canonical (Aram/Porul/Inbam, D-061).
+  - Spot-checks: limit-20 (8 items: 6 ok, 2 → prompt v1.3, D-058); full run (10 items: 8 ok, 2 were a sheet-labelling error, sheet fixed, D-061).
+  - Acceptance criteria 1–12 met (backend-test report has only the flash-lite row; the rule's outcome was fixed, D-055). All three terms frozen: `data/frozen/promises_{term}.jsonl`.
+  - Known limitations (in `reports/extraction_02.md` §7): DMK untitled items inherit the previous bold heading as `section`; Tamil V3 checks are flags only; some English texts keep Tamil amount words ("500 kodi rupai"), judged acceptable by the user.
 
