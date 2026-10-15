@@ -84,3 +84,15 @@ def test_source_offset_after_normalisation():
 
     unit = "Line one ends\nhere and   the\npromise starts"
     assert source_offset("here and the promise", unit) == unit.index("here")
+
+
+def test_canonical_sections_majority_and_glossary():
+    from ept.extract.dedup import canonical_sections
+    from ept.extract.promises import Accepted
+    from ept.extract.units import Unit
+
+    units = {f"T-U{i}": Unit(f"T-U{i}", 1, 1, "பொருள் 07 / A. தலைப்பு", "section_number", "x") for i in range(3)}
+    pieces = [Accepted("T", f"T-U{i}", 0, "Do x.", "x", en, "ta", "llm")
+              for i, en in enumerate(["Topic 07 / A. Heading", "Item 07 / A. Heading", "Item 07 / A. Heading"])]
+    out = canonical_sections(pieces, units, {"பொருள்": "Porul"})
+    assert out == {"பொருள் 07 / A. தலைப்பு": "Porul 07 / A. Heading"}

@@ -16,6 +16,7 @@ from __future__ import annotations
 import csv
 import json
 import unicodedata
+from collections import Counter
 from typing import Any, Optional
 
 from pydantic import BaseModel
@@ -172,12 +173,13 @@ def dedup_term(client: LLMClient, cfg: Config, term: str) -> dict[str, Any]:
                      "similarity": sim, "llm_same": "" if a is None else a.same,
                      "reason": "" if a is None else a.reason,
                      "action": "dropped_later" if dropped.get(j) == i else "kept_both"})
+    section_en = canonical_sections(pieces, units, cfg.profiles()[term].section_glossary)
     promises = []
     for k in keep:
         a: Accepted = pieces[k]
         u = units[a.unit_id]
         promises.append(Promise(promise_id=ids[k], term_id=term, text=a.text, source_text=a.source_text,
-                                source_lang=lang, section=a.section_en,
+                                source_lang=lang, section=section_en.get(units[a.unit_id].section, a.section_en),
                                 page=page_of(u, source_offset(a.source_text, u.text)), parent_group=a.unit_id))
     kept_units = {p.parent_group for p in promises}
     deduped_units = {pieces[j].unit_id for j in dropped} - kept_units
@@ -185,6 +187,27 @@ def dedup_term(client: LLMClient, cfg: Config, term: str) -> dict[str, Any]:
     cov = coverage(processed, kept_units, _dropped_kinds(cfg, term), deduped_units)
     return {"promises": promises, "dedup_rows": rows, "coverage": cov, "pairs": len(pairs),
             "dropped": len(dropped)}
+
+
+def canonical_sections(pieces: list[Accepted], units: dict[str, Unit], glossary: dict[str, str]) -> dict[Any, str]:
+    """One English name per printed section: the most common model rendering among its units (batches
+    rendered the same heading differently), with the profile's fixed renderings for heading words applied
+    to the first segment (D-061)."""
+    votes: dict[Any, Counter] = {}
+    for a in pieces:
+        if a.section_en:
+            votes.setdefault(units[a.unit_id].section, Counter())[a.section_en] += 1
+    out = {}
+    for section, c in votes.items():
+        name = c.most_common(1)[0][0]
+        if glossary and section:
+            head, _, rest_ta = section.partition(" / ")
+            for word, fixed in glossary.items():
+                head = head.replace(word, fixed)
+            _, _, rest_en = name.partition(" / ")
+            name = f"{head} / {rest_en}" if rest_ta and rest_en else (head if not rest_ta else name)
+        out[section] = name
+    return out
 
 
 def write_promises(conn, term: str, promises: list[Promise]) -> None:

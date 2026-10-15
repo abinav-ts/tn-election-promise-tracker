@@ -67,16 +67,22 @@ def build(cfg: Config, conn, terms: list[str]) -> list[Item]:
         for p in promises:
             by_unit.setdefault(p["parent_group"], []).append(p)
 
+        def label(uid: str) -> str:
+            """Unit id plus the printed item number (unit ids run ahead of item numbers)."""
+            n = units[uid].number if uid in units else None
+            return f"{uid} (printed item {n})" if n is not None else uid
+
         def shown(uid: str) -> str:
             return " || ".join(f"{p['promise_id']}: {p['text']}" for p in by_unit.get(uid, [])) or "(no promise kept)"
 
         # a. failures and coverage gaps
         for f in (r for r in failures if r["term"] == term):
-            how = f"resolved by {f['resolved_by']}" if f["resolved_by"] else "UNRESOLVED"
-            items.append(Item(f"{f['unit_id']}:{f['rule']}", term, "a", 2.0 if not f["resolved_by"] else 1.0,
-                              f"check {f['rule']} failed ({how}): {f['detail'][:200]}",
-                              "Is the kept promise text faithful to the unit (no added number/name)? "
-                              "If unresolved: write the correct promise as an override row.",
+            how = f"fixed by {f['resolved_by']}" if f["resolved_by"] else "UNRESOLVED"
+            items.append(Item(f"{label(f['unit_id'])}:{f['rule']}", term, "a", 2.0 if not f["resolved_by"] else 1.0,
+                              f"check {f['rule']} failed on the model's FIRST answer ({how}). The REJECTED answer "
+                              f"was (in a batch it may belong to a neighbouring item): {f['detail'][:600]}",
+                              "Compare the KEPT promise (column 'extracted') with the unit text: faithful, nothing "
+                              "added? If unresolved: write the correct promise as an override row.",
                               f["unit_id"], units[f["unit_id"]].page_start if f["unit_id"] in units else None,
                               shown(f["unit_id"])))
         cov_path = term_dir(cfg, term) / "coverage.json"

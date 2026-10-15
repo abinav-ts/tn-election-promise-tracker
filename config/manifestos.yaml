@@ -55,6 +55,10 @@ profiles:
       - 'தமிழக வெற்றிக் கழகம்\s*\d{0,3}'                    # footer (party name, page number on OCR pages)
     running_header_lines: 5     # page top: group word, pillar number, pillar title (+ sub-title), repeated per page
     running_header_in_section: 2  # group word + pillar number (the title lines vary between facing pages)
+    section_glossary:           # the three pillar-group words, transliterated (batches rendered them as Topic/Item/Joy...)
+      அறம்: Aram
+      பொருள்: Porul
+      இன்பம்: Inbam
     page_number_lines: 2        # the page number sits next to the footer, on its own line
     heading:
       pattern: '[A-Z]\s?\.\s?\S.*'                       # lettered sub-section heading, e.g. "C. ..."; resets numbering

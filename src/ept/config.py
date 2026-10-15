@@ -292,6 +292,7 @@ class ManifestoProfile(_Cfg):
     running_header_in_section: Optional[int] = None  # how many running-header lines go into `section`
     page_number_lines: Optional[int] = None  # a bare number among a page's last N lines = page number
     skip_pages: list[int] = []  # 1-based; cover/contents, listed in the report
+    section_glossary: dict[str, str] = {}  # fixed English renderings of section-heading words (D-061)
     source_note: Optional[str] = None
 
 

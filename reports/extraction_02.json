@@ -36,17 +36,17 @@
    },
    "promises_step": {
     "units": 510,
-    "promises": 670,
+    "promises": 671,
     "dropped": 278,
-    "unresolved_failures": 1,
-    "resolved_failures": 32,
-    "retried_units": 19,
+    "unresolved_failures": 0,
+    "resolved_failures": 33,
+    "retried_units": 20,
     "split_outliers": [
      "DMK-2021-U0447"
     ],
     "v3_flags": 0
    },
-   "promises": 666,
+   "promises": 667,
    "dropped_by_kind": {
     "other": 195,
     "criticism": 50,
@@ -56,15 +56,16 @@
    "dedup_pairs": 39,
    "dedup_drops": 4,
    "failures": {
-    "unresolved": 1,
+    "unresolved": 0,
     "resolved": {
-     "retry alone": 32
+     "retry alone": 32,
+     "override": 1
     },
     "by_rule": {
-     "V2": 1,
      "V1": 19,
      "V3": 12,
-     "V4": 1
+     "V4": 1,
+     "V2": 1
     }
    },
    "quality": {
@@ -89,15 +90,12 @@
     "not_printed": [
      251
     ],
-    "unexplained": [
-     294
-    ]
+    "unexplained": []
    },
    "coverage_status": {
-    "promise": 501,
+    "promise": 502,
     "dropped": 2,
-    "dedup": 1,
-    "unexplained": 1
+    "dedup": 1
    },
    "per_section": [
     [
@@ -169,6 +167,10 @@
      9
     ],
     [
+     "Welfare of Persons with Disabilities (PWD)",
+     9
+    ],
+    [
      "People’s Welfare- Corona Death Compensation",
      9
     ],
@@ -194,10 +196,6 @@
     ],
     [
      "Industrial Growth",
-     8
-    ],
-    [
-     "Welfare of Persons with Disabilities (PWD)",
      8
     ],
     [
@@ -715,12 +713,12 @@
    ],
    "longest": [
     [
-     "DMK-2021-0431",
+     "DMK-2021-0432",
      57,
      "Form an independent Commission including members from Labor Welfare Department and Police Department to administer the welfare of journalists including revise the Press regulations; to provide skills training; to settle disputes between the management and workers; settle disputes between public, press and police; to decide pension related disputes; and to increase the amount of family welfare fund."
     ],
     [
-     "DMK-2021-0602",
+     "DMK-2021-0603",
      54,
      "Construct a Dravidian Movement Dheerargal Kottam in Chennai in honor of tall leaders of the\nDravidian movement including Dr C Natesanar, Sir P Theyagarayar, Dr TM Nair who have fought for social justice\nand equality for all in our state, because of which we have developed as one of the top states in India."
     ],
@@ -767,12 +765,12 @@
    ],
    "shortest": [
     [
-     "DMK-2021-0505",
+     "DMK-2021-0506",
      3,
      "Appoint more personnel."
     ],
     [
-     "DMK-2021-0554",
+     "DMK-2021-0555",
      3,
      "Revise bus fares."
     ],
@@ -782,12 +780,12 @@
      "Revive English research centres."
     ],
     [
-     "DMK-2021-0441",
+     "DMK-2021-0442",
      4,
      "Revive Kalaignar Kaapeetu Thittam."
     ],
     [
-     "DMK-2021-0499",
+     "DMK-2021-0500",
      4,
      "Streamline their promotion cycles."
     ],
@@ -807,12 +805,12 @@
      "Ensure disbursement of discount subsidy."
     ],
     [
-     "DMK-2021-0404",
+     "DMK-2021-0405",
      5,
      "Provide minimum pension and gratuity."
     ],
     [
-     "DMK-2021-0500",
+     "DMK-2021-0501",
      5,
      "Fill police department vacancies annually."
     ]
@@ -911,11 +909,23 @@
     ],
     [
      "3. Animal husbandry, fisheries and fishermen welfare :",
-     15
+     24
+    ],
+    [
+     "2. River Water and Water Resources :",
+     19
+    ],
+    [
+     "13. Welfare of Adi Dravidars and Tribals :",
+     18
     ],
     [
      "36. Micro, Small and Medium Enterprises Development :",
      14
+    ],
+    [
+     "10. Health for all :",
+     13
     ],
     [
      "17. Weaver Welfare :",
@@ -926,20 +936,12 @@
      13
     ],
     [
-     "2. River Water and Water Resources :",
-     11
-    ],
-    [
-     "13. Welfare of Adi Dravidars and Tribals :",
-     11
-    ],
-    [
      "15. Welfare of Minorities :",
      11
     ],
     [
-     "3. Animal Husbandry, Fisheries and Fishermen Welfare :",
-     9
+     "49. Employment opportunities for one person per household :",
+     11
     ],
     [
      "32. Social Welfare Schemes :",
@@ -950,23 +952,7 @@
      9
     ],
     [
-     "2. River water and water source :",
-     8
-    ],
-    [
-     "10. Health for all :",
-     8
-    ],
-    [
      "8. School Education Development:",
-     7
-    ],
-    [
-     "13. Welfare of Adi Dravidars and Tribal People :",
-     7
-    ],
-    [
-     "49. Employment opportunities for one person per household :",
      7
     ],
     [
@@ -976,10 +962,6 @@
     [
      "34. Urban Development Schemes :",
      6
-    ],
-    [
-     "10. Health for All:",
-     5
     ],
     [
      "11. Self-sufficiency in electricity :",
@@ -1034,10 +1016,6 @@
      4
     ],
     [
-     "49. Employment for one person per household :",
-     4
-    ],
-    [
      "6. Revenue Department Schemes :",
      3
     ],
@@ -1062,7 +1040,15 @@
      2
     ],
     [
+     "22. Simplifying Registration :",
+     2
+    ],
+    [
      "28. Spiritual Services in Temples:",
+     2
+    ],
+    [
+     "29. Sports Development Scheme:",
      2
     ],
     [
@@ -1098,23 +1084,7 @@
      1
     ],
     [
-     "22. Simplifying Registration :",
-     1
-    ],
-    [
-     "22. Simplification of Registration:",
-     1
-    ],
-    [
      "27. Top Place in Tourism:",
-     1
-    ],
-    [
-     "29. Sports Development Scheme:",
-     1
-    ],
-    [
-     "29. Sports Development Scheme :",
      1
     ],
     [
@@ -1278,11 +1248,11 @@
    },
    "promises_step": {
     "units": 326,
-    "promises": 692,
+    "promises": 694,
     "dropped": 454,
-    "unresolved_failures": 2,
-    "resolved_failures": 18,
-    "retried_units": 16,
+    "unresolved_failures": 0,
+    "resolved_failures": 20,
+    "retried_units": 18,
     "split_outliers": [
      "TVK-2026-U0027",
      "TVK-2026-U0052",
@@ -1296,9 +1266,9 @@
      "TVK-2026-U0254",
      "TVK-2026-U0317"
     ],
-    "v3_flags": 322
+    "v3_flags": 323
    },
-   "promises": 692,
+   "promises": 694,
    "dropped_by_kind": {
     "other": 390,
     "values": 20,
@@ -1308,13 +1278,14 @@
    "dedup_pairs": 19,
    "dedup_drops": 0,
    "failures": {
-    "unresolved": 2,
+    "unresolved": 0,
     "resolved": {
-     "retry alone": 18
+     "retry alone": 18,
+     "override": 2
     },
     "by_rule": {
-     "V1": 13,
-     "V2": 7
+     "V2": 7,
+     "V1": 13
     }
    },
    "quality": {
@@ -1477,6 +1448,10 @@
    "coverage_status": {},
    "per_section": [
     [
+     "Porul 07 / E. District Balanced Development Scheme",
+     75
+    ],
+    [
      "Aram 01 / C. Tourism",
      30
     ],
@@ -1485,67 +1460,75 @@
      27
     ],
     [
-     "Topic 05 / C. Water Management and Agricultural Innovations.",
-     24
-    ],
-    [
-     "Topic 07 / E. District Balanced Development Scheme",
-     24
-    ],
-    [
-     "Item 07 / G. Guiding Tamil Nadu",
-     24
-    ],
-    [
      "Aram 01 / B. Tamil Language - Culture - Tradition",
+     27
+    ],
+    [
+     "Porul 05 / C. Water Management and Agricultural Innovations.",
+     26
+    ],
+    [
+     "Porul 05 / A. Farmers' Welfare",
+     25
+    ],
+    [
+     "Porul 07 / G. Guiding Tamil Nadu",
+     24
+    ],
+    [
+     "Porul 04 / A. Employment and Skill Development",
      23
     ],
     [
-     "Item 04 / A. Employment and Skill Development",
+     "Porul 05 / B.Fishermen Welfare",
      23
-    ],
-    [
-     "Item 05 / A. Farmers' Welfare",
-     21
-    ],
-    [
-     "Item 07 / E. District Balanced Growth Plan",
-     21
     ],
     [
      "A. School Education",
-     20
+     22
     ],
     [
-     "Happiness 08 / A. World-class medical treatment for all families",
-     20
+     "Inbam 08 / A. World-class medical treatment for all families",
+     21
     ],
     [
-     "Topic 05 / B.Fishermen Welfare",
+     "Inbam 08 / B. Protecting the Future of Tamil Nadu; Concerns on Environment, Forests, and Climate Change",
      19
     ],
     [
-     "Subject 07 / E. District Balanced Growth Scheme",
-     19
-    ],
-    [
-     "Happiness 08 / B. Protecting the Future of Tamil Nadu; Concerns on Environment, Forests, and Climate Change",
-     17
-    ],
-    [
-     "Joy 09 / D. Urban Development",
+     "Inbam 09 / D. Urban Development",
      15
     ],
     [
-     "Item 04 / B. Tamil Nadu Stands Tall in Sports",
+     "Porul 04 / B. Tamil Nadu Stands Tall in Sports",
      14
     ],
     [
-     "Joy 10 / D. Law and Order and Justice",
+     "Porul 07 / C .Investment Attraction Scheme",
      14
+    ],
+    [
+     "Inbam 09 / B. Modern Infrastructure",
+     14
+    ],
+    [
+     "Inbam 10 / D. Law and Order and Justice",
+     14
+    ],
+    [
+     "A. People's Rights",
+     13
     ],
     [
      "Aram 02 / G. Weaver Welfare",
+     13
+    ],
+    [
+     "Porul 03 / B. Women's Economic Security",
+     13
+    ],
+    [
+     "Porul 07 / A. Industrial Development - The Golden Decade of Tamil Nadu",
      13
     ],
     [
@@ -1553,15 +1536,15 @@
      12
     ],
     [
-     "Item 03 / B. Women's Economic Security",
+     "Inbam 10 / A. Government for the 21st Century; Our government will have honesty, accountability, transparency and public welfare as its primary focus.",
      12
     ],
     [
-     "Joy 10 / A. Government for the 21st Century; Our government will have honesty, accountability, transparency and public welfare as its primary focus.",
-     12
+     "Aram 02 / C. Minority Welfare",
+     11
     ],
     [
-     "Dharma 02 / D. Senior Citizens Welfare",
+     "Aram 02 / D. Senior Citizens Welfare",
      11
     ],
     [
@@ -1569,79 +1552,63 @@
      11
     ],
     [
-     "Topic 07 / A. Industrial Development - The Golden Decade of Tamil Nadu",
+     "Porul 07 / D. Artificial Intelligence Capital Tamil Nadu",
      11
     ],
     [
-     "Item 07 / E. District Balanced Growth Scheme - Western Zone (Coimbatore, Tiruppur, Erode, Salem, Namakkal, Karur, Dharmapuri, Krishnagiri)",
+     "Inbam 10 / F. Economic Sovereignty; We will increase revenue, prevent losses, and build new resources.",
      11
     ],
     [
-     "Topic 07 / B. Micro, Small and Medium Enterprises Renaissance",
+     "Porul 05 / D. Animal Husbandry and Dairy Products Development",
      10
     ],
     [
-     "Topic 07 / C .Investment Attraction Scheme",
+     "Porul 07 / B. Micro, Small and Medium Enterprises Renaissance",
      10
     ],
     [
-     "Joy 09 / B. Modern Infrastructure",
-     10
-    ],
-    [
-     "Dharma 02 / C. Minority Welfare",
+     "Aram 02 / B. Adi Dravidar and Tribal Welfare",
      9
     ],
     [
-     "Dharma 02 / M. Driver Welfare",
+     "Aram 02 / M. Driver Welfare",
      9
     ],
     [
-     "Item 03 / C. Uncompromising Women's Protection",
+     "Porul 03 / C. Uncompromising Women's Protection",
      9
     ],
     [
-     "Item 03 / D. Women's Health and Wellness",
+     "Porul 03 / D. Women's Health and Wellness",
      9
     ],
     [
-     "Item 05 / D. Animal Husbandry and Dairy Products Development",
+     "Inbam 09 / A. Electricity and Green Energy",
      9
     ],
     [
-     "Topic 07 / D. Artificial Intelligence Capital Tamil Nadu",
-     9
-    ],
-    [
-     "Joy 09 / A. Electricity and Green Energy",
-     9
-    ],
-    [
-     "Joy 09 / C. Rural Development",
+     "Inbam 09 / C. Rural Development",
      8
     ],
     [
-     "Dharma 02 / B. Adi Dravidar and Tribal Welfare",
+     "Inbam 10 / B. Citizens are the Guides of the Government",
      7
     ],
     [
-     "Joy 10 / B. Citizens are the Guides of the Government",
-     7
-    ],
-    [
-     "A. People's Rights",
+     "Aram 02 / J. Teacher Welfare",
      6
     ],
     [
-     "Dharma 02 / L. Sanitation Workers Welfare",
+     "Aram 02 / L. Sanitation Workers Welfare",
      6
     ],
     [
-     "Topic 07 / F. India's Start-up Capital",
+     "Porul 07 / F. India's Start-up Capital",
      6
     ],
     [
-     "Aram 02 / A. People's Rights",
+     "Aram 02 / E. Differently-Abled Welfare",
      5
     ],
     [
@@ -1649,31 +1616,15 @@
      5
     ],
     [
-     "Joy 10 / C. Zero Tolerance Against Corruption",
+     "Inbam 10 / C. Zero Tolerance Against Corruption",
      5
     ],
     [
-     "Joy 10 / E. Five Special Schemes Budget",
+     "Inbam 10 / E. Five Special Schemes Budget",
      5
     ],
     [
-     "Joy 10 / F. Economic Sovereignty; We will increase revenue, prevent losses, and build new resources.",
-     5
-    ],
-    [
-     "Dharma 02 / J. Teacher Welfare",
-     4
-    ],
-    [
-     "Dharma 02 / S. Palm Climbers and Salt Pan Workers Welfare",
-     4
-    ],
-    [
-     "Item 05 / A.Farmers Welfare",
-     4
-    ],
-    [
-     "Item 05 / B. Fishermen's Welfare",
+     "Aram 02 / S. Palm Climbers and Salt Pan Workers Welfare",
      4
     ],
     [
@@ -1681,121 +1632,45 @@
      4
     ],
     [
-     "Topic 07 / C. Investment Attraction Scheme",
-     4
-    ],
-    [
-     "B. Modern Infrastructure",
-     4
-    ],
-    [
-     "Joy 10 / F. Economic Sovereignty; We will boost revenue, prevent loss, and build new resources.",
-     4
-    ],
-    [
-     "B. Tamil Language - Culture - Heritage",
-     3
-    ],
-    [
-     "Dharma 02 / E. Differently-Abled Welfare",
-     3
-    ],
-    [
      "Aram 02 / F. Transgender Welfare",
      3
     ],
     [
-     "Dharma 02 / K. Anganwadi Worker-Asha Worker Welfare",
+     "Aram 02 / K. Anganwadi Worker-Asha Worker Welfare",
      3
     ],
     [
-     "Dharma 02 / N. Gig Worker Welfare",
+     "Aram 02 / N. Gig Worker Welfare",
      3
     ],
     [
-     "Dharma 02 / O. Street Vendors Welfare",
+     "Aram 02 / O. Street Vendors Welfare",
      3
     ],
     [
-     "Dharma 02 / P. Journalists and Media Workers Welfare",
+     "Aram 02 / P. Journalists and Media Workers Welfare",
      3
-    ],
-    [
-     "Why is TVK here?",
-     2
-    ],
-    [
-     "Dharma 02 / A. People's Rights",
-     2
-    ],
-    [
-     "Aram 02 / B. Adi Dravidar and Tribal Welfare",
-     2
-    ],
-    [
-     "Aram 02 / C. Minority Welfare",
-     2
-    ],
-    [
-     "Aram 02 / E. Welfare of Differently Abled Persons",
-     2
-    ],
-    [
-     "Aram 02 / J. Teacher Welfare",
-     2
     ],
     [
      "Aram 02 / Q. Welfare of Advocates and Legal Advisors",
+     3
+    ],
+    [
+     "தமிழக வெற்றிக் கழகம் ஏன் இங்கே உள்ளது?",
      2
     ],
     [
-     "Dharma 02 / R. Construction Workers Welfare",
+     "Aram 02 / R. Construction Workers Welfare",
      2
     ],
     [
-     "Item 03 / A. Women's Welfare and Protection Organization",
+     "Porul 03 / A. Women's Welfare and Protection Organization",
      2
-    ],
-    [
-     "Item 05 / C. Water Management and Agricultural Innovations.",
-     2
-    ],
-    [
-     "Item 06 / A. School Education",
-     2
-    ],
-    [
-     "A. Industrial Development - The Golden Decade of Tamil Nadu",
-     2
-    ],
-    [
-     "Item 07 / D. Artificial Intelligence Capital Tamil Nadu",
-     2
-    ],
-    [
-     "Joy 08 / B. Saving the future of Tamil Nadu; Concerns regarding environment, forests and climate change",
-     2
-    ],
-    [
-     "Joy 10 / F. Economic Sovereignty; We will increase revenue, prevent loss, build new resources.",
-     2
-    ],
-    [
-     "Dharma 02 / Q. Lawyers and Legal Consultants Welfare",
-     1
-    ],
-    [
-     "Topic 05 / D.Livestock and Dairy Products Development",
-     1
-    ],
-    [
-     "Happiness 08 / A. World-class healthcare for all families",
-     1
     ]
    ],
    "longest": [
     [
-     "TVK-2026-0335",
+     "TVK-2026-0337",
      60,
      "Include other major projects such as the Anaimalaiyar - Nallar linkage project (Tiruppur/Coimbatore), Erthalav - Pulikarai linkage project (Dharmapuri), construction of check dams and barrage dams in the Cauvery and Thirumanimutharu parts of Namakkal district, Upper Vaipar and Mudangiyar river restoration (Virudhunagar/Rajapalayam), Ramnathi - Jambunathi linkage canal project (Tenkasi/Alangulam), and Tamirabarani - Karumeniyar - Nambiyar linkage project (Tirunelveli/Thoothukudi) in this."
     ],
@@ -1810,89 +1685,89 @@
      "Provide opportunities for registered folk artists to showcase their artistic skills in government festivals and events to ensure they get at least one hundred days of employment a year, and grant financial assistance of 15 thousand rupees to help them purchase necessary instruments."
     ],
     [
-     "TVK-2026-0576",
+     "TVK-2026-0578",
      43,
      "Create an integrated disaster management office in all 38 districts, flood prevention infrastructure in 5 coastal cities including Chennai, and dedicated disaster management offices for heatwaves in all 38 districts to undertake tasks ranging from predicting local heatwaves to conducting immediate medical check-ups."
     ],
     [
-     "TVK-2026-0599",
+     "TVK-2026-0601",
      43,
      "Reduce the electricity bill of 30 lakh urban apartment residents by replacing 18 thousand old transformers, reducing AT&C losses from 16% to 10% through a time-of-day tariff system, and collecting residential tariff instead of the currently charged commercial tariff in apartment common areas."
     ],
     [
-     "TVK-2026-0094",
+     "TVK-2026-0095",
      42,
      "Distribute iron and folic acid-fortified rice, vitamin A and vitamin D-enriched cooking oil, and fortified wheat flour to everyone through ration shops to prevent public suffering from anemia, vitamin A, and B-12 deficiencies, thereby creating a healthy Tamil Nadu without nutritional deficiencies."
     ],
     [
-     "TVK-2026-0355",
+     "TVK-2026-0357",
      42,
      "Take measures to increase the production of A2 milk obtained exclusively from our native cows through Aavin, to increase the production of food products made from it such as ghee, cheese, and ice cream, and to market them in a quality manner."
     ],
     [
-     "TVK-2026-0680",
+     "TVK-2026-0682",
      42,
      "Tabulate the Education and Medicine Equal Opportunity Budget for eliminating quality differences between educational institutions and hospitals in towns and villages, immediately filling teacher, doctor, and nurse vacancies, world-class education for all children, and world-class medicine for all members of the public."
     ],
     [
-     "TVK-2026-0270",
+     "TVK-2026-0272",
      41,
      "Provide cash prizes of 6 crore rupees to Tamil Nadu athletes who win a gold medal in the Olympic games, 4 crore rupees for those who win a silver medal, and 3 crore rupees for those who win a bronze medal."
     ],
     [
-     "TVK-2026-0552",
+     "TVK-2026-0554",
      41,
      "Provide incentives and subsidies along with infrastructure facilities for ten years to those investing for Thoothukudi to serve as a green ammonia filling centre for international ships, as part of the plan to make Thoothukudi the premier port in South Asia."
     ]
    ],
    "shortest": [
     [
-     "TVK-2026-0480",
+     "TVK-2026-0482",
      5,
      "Establish a silk tourism route."
     ],
     [
-     "TVK-2026-0571",
+     "TVK-2026-0573",
      5,
      "Issue government-recognized Siddha Reformation Certificates."
     ],
     [
-     "TVK-2026-0692",
+     "TVK-2026-0694",
      5,
      "Change that state of affairs."
     ],
     [
-     "TVK-2026-0132",
+     "TVK-2026-0133",
      6,
      "Open exclusive schools for special children."
     ],
     [
-     "TVK-2026-0178",
+     "TVK-2026-0179",
      6,
      "Use modern machines for these tasks."
     ],
     [
-     "TVK-2026-0438",
+     "TVK-2026-0440",
      6,
      "Undertake the following initiatives in it."
     ],
     [
-     "TVK-2026-0473",
+     "TVK-2026-0475",
      6,
      "Provide ISO/BRC certificates for leather products."
     ],
     [
-     "TVK-2026-0588",
+     "TVK-2026-0590",
      6,
      "Provide immediate compensation for crop losses."
     ],
     [
-     "TVK-2026-0077",
+     "TVK-2026-0078",
      7,
      "Create Tamil Nadu's first caravan tourism policy."
     ],
     [
-     "TVK-2026-0111",
+     "TVK-2026-0112",
      7,
      "Establish skill development centers in each district."
     ]
@@ -1953,12 +1828,12 @@
   },
   "extract_promises / gemini-3.5-flash-lite": {
    "calls": 96,
-   "cache_hits": 47,
+   "cache_hits": 134,
    "failed": 0
   },
   "dedup_check / gemini-3.5-flash-lite": {
    "calls": 5,
-   "cache_hits": 0,
+   "cache_hits": 10,
    "failed": 0
   }
  },
