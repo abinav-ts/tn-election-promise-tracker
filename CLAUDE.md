@@ -27,8 +27,11 @@ A solo course project (Data Science & AI), due 2026-10-25. Extract promises from
 ## Strong-judge sessions (global spec §6.2)
 These run in a **separate, fresh** conversation. In them: read only `prompts/judge_indicator.md` and the assigned batch file; **do not use web search or read other files**; write only the output batch file. Then stop.
 
-## Transcription sessions (global spec §6.4; last-resort fallback after Gemini vision)
+## Transcription sessions (global spec §6.4; Cowork, or fresh Claude Code subagents per D-057)
 Same discipline as strong-judge sessions: a **separate, fresh** conversation; read only `prompts/transcribe_page.md` and the assigned batch of page images; **no web search, no other files**; transcribe exactly what is printed (never fill in from memory); write only the `page_NNN.txt` outputs. Then stop.
+
+## Isolated Claude work in Claude Code (D-057)
+When a step needs an isolated Claude session (transcription; possibly the strong judge, if a decision allows it), Claude Code may use **fresh subagents** (never a fork of the main conversation): copy the prompt file and the batch inputs to a neutral scratch folder (no party names in the path), tell the agent to read only those files, no web, no shell, and write only its outputs to a separate folder; then import with the stage's validation. Never transcribe or judge in the main conversation.
 
 ## Code conventions
 - Python 3.10+, package `src/ept`, CLI `python -m ept <stage>`.
@@ -37,6 +40,8 @@ Same discipline as strong-judge sessions: a **separate, fresh** conversation; re
 - Config values come from `config/settings.yaml`; no magic numbers in code.
 - Tests use pytest, run offline with fixtures and `EPT_LLM_MOCK=1`.
 - Every stage supports `--term`, `--limit`, `--force` and is idempotent.
+- Frozen promise lists (`data/frozen/promises_{term}.jsonl`, D-039) are read-only for every later stage; never re-extract.
+- Check a test run's exit code before committing (don't chain `pytest | tail && git commit`).
 
 ## Environment
 - **Two tools, one project folder.** Claude Cowork reads the folder (mounted in its sandbox) and drafts specs, STATUS updates and decision-log entries with the user. Claude Code runs directly on the user's Mac in the project folder and implements, tests and runs the code from the approved spec.

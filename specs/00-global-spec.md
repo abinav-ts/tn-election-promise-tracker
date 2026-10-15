@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -110,7 +110,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 | # | Stage | CLI (planned) | Main output |
 |---|---|---|---|
 | 01 | Corpus collection (done) | `ept crawl`, `ept parse`, `ept coverage`, `ept spotcheck`, `ept leads` | `documents`, `chunks`, coverage report, Tamil pairing, tracker leads |
-| 02 | Promise extraction | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
+| 02 | Promise extraction (done 2026-10-15: 1,674 promises frozen) | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
 | 03 | Classification & decomposition | `ept classify` | covariates, `indicators` |
 | 04 | Evidence retrieval | `ept index`, `ept retrieve` | `retrievals` |
 | 05 | Judgment | `ept judge`, `ept judge export/import` | `verdicts` |
@@ -130,7 +130,7 @@ All LLM use goes through `ept.llm`, which hides the backend:
 
 The interface handles prompt loading from `prompts/` (each prompt file has a `version:` header), JSON-schema validation with one retry, response caching keyed on backend + model + prompt version + input hash, and a usage log. Temperature 0 wherever the backend allows it.
 
-**Bulk backend (Q-03, D-037):** the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`; manifesto-page transcription uses a separate `llm.models.vision` (D-044), with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
+**Bulk backend (Q-03, D-037; chosen in stage 02):** `gemini-3.5-flash-lite` on the Gemini API free tier, **15 rpm / 500 rpd** (D-055, D-060); `gemini-3.8-flash` (20 rpd) does manifesto vision transcription. Per-model daily limits are tracked client-side on Google's Pacific-time clock, so runs stop before a 429 and resume from the cache. General rule: the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`; manifesto-page transcription uses a separate `llm.models.vision` (D-044), with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
 
 ### 6.2 Strong-judge file handoff (Claude in Cowork)
 1. `ept judge export --run ID` writes batches of ~20 judging tasks to `data/judgments/{run_id}/in/batch_NNN.jsonl`. Each task contains the promise, the indicator, the cutoff date and the supplied chunks (id, title, type, date, text).
@@ -147,7 +147,9 @@ Because of Pro usage limits, Claude judges a subset:
 
 The final verdict for a promise is: human override > strong judge > bulk model. The source of each final verdict is stored and shown on the website.
 
-### 6.4 Manifesto transcription (D-036, D-042)
+### 6.4 Manifesto transcription (D-036, D-042, D-057)
+Stage 02 outcome: TVK pages 1–16 by Gemini, 17–96 by **fresh Claude Code subagents** (D-057: each gets one neutral scratch folder with the prompt and its page images only, no web, no other files; outputs pass the same validation and vision-vs-OCR check on import). That route is equivalent to a fresh Cowork session for this rule.
+
 Manifesto pages that fail the OCR quality gate (spec 02 §4.3) are transcribed first by the **bulk backend with image input** through `ept.llm` (same prompt, validation and cross-check as below). Only pages whose Gemini transcription still fails validation go to the **Cowork file handoff**, which follows the same pattern as §6.2:
 1. `ept extract transcribe export --term T` writes the gated page images (native resolution) in batches to `data/interim/manifestos/{term}/transcribe/in/`.
 2. In a **fresh** Cowork session, Claude reads only `prompts/transcribe_page.md` and one batch of images, and writes `data/frozen/transcriptions/{term}/page_NNN.txt`. It transcribes exactly what is printed (Unicode Tamil, reading order, no corrections, additions or summaries; `[?]` for unreadable text). **No web search, no other files.** Claude must not fill in text from its own knowledge of the manifesto.
@@ -334,7 +336,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Judge answers from memory, not evidence | §9.1 rules; citation spot-check |
 | Wrong or missing document dates break cutoffs | Dates required for evidence; date coverage in the corpus report. Stage 01: 95.6 % dated to the day, 220 undated |
 | Conservative (upper-bound) dates hide evidence at early landmarks | Policy notes and CAG reports are often Wayback-dated months or years late. Stage 04 reports evidence availability per landmark; stage 07 states it as a limitation |
-| Free-tier rate limits slow bulk runs | Caching, batching, `--limit` runs; Kaggle as a fallback backend |
+| Free-tier rate limits slow bulk runs | Caching, batching (25 units per call), per-model client-side quota tracking, `--limit` runs; flash-lite's 500 rpd covers stage-scale volumes; Kaggle as a fallback backend. Stage 05 bulk judging still needs batching designed in |
 | Pro usage limits slow strong judging | Subset only (§6.3); batches sized to fit one session |
 | Only two completed terms; independence assumption | Promise-level modelling, wide intervals, both backtest directions, limitations stated on the site |
 | Tamil manifestos with legacy fonts | Font-map conversion (D-035) with Tamil-share and validity checks; verbatim `source_text` kept for checking |

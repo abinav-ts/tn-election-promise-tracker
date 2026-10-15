@@ -7,9 +7,9 @@ _Updated at the end of every session. Read this first._
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
-| 00 | Global spec + structure | ✅ v0.7 | – | – | – | ✅ |
+| 00 | Global spec + structure | ✅ v0.8 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
-| 02 | Promise extraction | ✅ v1.2 (+D-044–D-062) | ✅ | ✅ 195 | ✅ | ✅ |
+| 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
 | 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -32,6 +32,17 @@ _Updated at the end of every session. Read this first._
 Open a new conversation in **Cowork** for **stage 03** (classification & decomposition): draft `specs/03-…` from global §12.1. Stage 03 reads the frozen promises (`data/frozen/promises_{term}.jsonl`, loaded into `promises` by `ept extract`), never re-extracts them. Bulk model: `gemini-3.5-flash-lite` (15 rpm, 500 rpd free tier; D-055, D-060): quota is no longer the bottleneck at stage-03 volumes (~1,700 promises ÷ batching).
 
 **Schedule:** about 3 days behind the day plan (stage 02 was planned for Day 5, closed Day 10; stage 03 was Day 6). With stage 03 on Day 11, 04 Days 12–13, 05 Days 14–16, 06 Days 17–18, 07 Day 19 and 08 Day 20 there is **no buffer**; the agreed cut order (global §12.3) is the user's call if anything slips (D-041). TVK is already done, so stage 07's projection is unblocked.
+
+## Facts later stages need (from stage 02; details in spec 02 and D-044–D-063)
+- **Promises:** 1,674 rows, **frozen** in `data/frozen/promises_{term}.jsonl` (committed; DMK-2021 667, AIADMK-2016 312, TVK-2026 695). These snapshots are the source of truth: any `ept extract` step (e.g. `ept extract dedup`) reloads them into the `promises` table if the DB is lost. Every `ept extract` step refuses to change a frozen term (`--force` too); un-freezing needs a decision-log entry (D-039).
+- **Fields:** `promise_id` `{term}-{seq:04d}`, contiguous in manifesto order; `text` (English, one sentence, base verb); `source_text` (verbatim manifesto span; Tamil for AIADMK/TVK); `source_lang`; `section` (English, one name per printed section: DMK bold headings (untitled items inherit the previous heading), AIADMK "N. … :" headings, TVK "Aram/Porul/Inbam NN / X. …"); `page` (PDF page where `source_text` starts); `parent_group` = `unit_id` (`data/interim/manifestos/{term}/units.jsonl`). Covariates are all null (stage 03 fills them).
+- **Known text quirks:** some English texts keep Tamil amount words ("500 kodi rupai" = 500 crore rupees; judged acceptable); a few say "this scheme" where the scheme is named earlier in the unit (`parent_group` unit text has it). Use the unit text as context in stage 03.
+- **Leakage guards that stage 03 must keep:** only manifesto text goes into prompts (no corpus, no outcome); names/numbers not in the source must not appear in covariates or indicators (global §9.1); few-shot examples invented (test: no 8-word overlap with manifesto text, see `tests/test_leakage_02.py`).
+- **LLM backend:** all calls through `ept.llm.LLMClient.complete_json(prompt, vars, Model, model=…, images=…)`; cache in `cache/llm/` keyed on backend+model+prompt version+input(+images). Bulk model **`gemini-3.5-flash-lite`** (free tier **15 rpm / 500 rpd**, D-055, D-060; settings `llm.models.bulk`, `llm.bulk.rpm/rpd` per model, `quota_tz` Pacific). `gemini-3.8-flash` (20 rpd) is the vision model. Key in `.env` via `ept.config.get_secret`. A run that hits the quota stops cleanly (`QuotaExhausted`; extract commands exit code 2) and resumes from the cache.
+- **Batching works:** 25 units per call gave V1 = 1.0 on the backend test; batches can misalign unit IDs, so validate every item against its own input and retry failures alone (that caught all such cases in stage 02).
+- **Fresh Claude subagents** are an approved route for Claude work that must be isolated (D-057: one neutral scratch folder per batch, only the prompt + inputs, no web, outputs validated on import). Same pattern fits the stage 05 strong judge if the user wants Claude Code instead of Cowork; that needs its own decision.
+- **Spot-check sheets:** the user fills `verdict` freely ("y", "Correct", "No, …"); convert to ok/wrong/unsure with the user's words kept in `note`, and ask when the meaning is ambiguous. Label rows with printed item numbers, and never show a rejected model answer without saying so (D-061).
+- **Tests:** `tests/conftest.py` resets `frozen_terms` to `[]` in the test copy of the settings.
 
 ## Facts later stages need (from stage 01; details in global spec v0.6 §3.1, §9.1–§9.3)
 - **Corpus:** `data/ept.sqlite` tables `documents` (9,254) and `chunks` (60,259; 300–500 words, only a document's last chunk shorter). Raw files in `data/raw/evidence/{doc_type}/`, sidecars `{doc_id}.meta.json`, text in `data/interim/text/`.
@@ -95,6 +106,6 @@ Open a new conversation in **Cowork** for **stage 03** (classification & decompo
   - Full run on gemini-3.5-flash-lite (limits are 15 rpm / 500 rpd, not 50, D-060): 1,169 units → 1,674 promises after 14 dedup drops; 50 single-unit retries fixed check failures (a misaligned batch caught by V1/V3; V2 caught "5,000 crore" for a printed 500); 3 failures fixed by user-approved overrides; DMK coverage complete (251 not printed).
   - TVK: 80 pages transcribed by fresh Claude subagents (D-057), all validated (vision-vs-OCR CER median 0.068); one human correction (page 21 aytham, D-062); units 319 items in 54 sections with new generic cutter options (D-059); section names canonical (Aram/Porul/Inbam, D-061).
   - Spot-checks: limit-20 (8 items: 6 ok, 2 → prompt v1.3, D-058); full run (10 items: 8 ok, 2 were a sheet-labelling error, sheet fixed, D-061).
-  - Acceptance criteria 1–12 met (backend-test report has only the flash-lite row; the rule's outcome was fixed, D-055). All three terms frozen: `data/frozen/promises_{term}.jsonl`.
+  - Acceptance criteria 1–12 met. Backend test completed for the record on 2026-10-15 (both models V1 1.000; flash-lite wins on quota, V2 and speed; D-063). All three terms frozen: `data/frozen/promises_{term}.jsonl`.
   - Known limitations (in `reports/extraction_02.md` §7): DMK untitled items inherit the previous bold heading as `section`; Tamil V3 checks are flags only; some English texts keep Tamil amount words ("500 kodi rupai"), judged acceptable by the user.
 
