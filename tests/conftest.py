@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import socket
 from pathlib import Path
@@ -38,6 +39,10 @@ def _no_network():
 def root(tmp_path, monkeypatch) -> Path:
     """A throwaway project root with the real config and the test fixtures."""
     shutil.copytree(REPO / "config", tmp_path / "config")
+    # tests start with no frozen term (the real project has frozen its terms; tests freeze explicitly)
+    settings = tmp_path / "config" / "settings.yaml"
+    settings.write_text(re.sub(r"(?m)^(  frozen_terms: )\[.*?\]", r"\1[]", settings.read_text(encoding="utf-8")),
+                        encoding="utf-8")
     (tmp_path / "prompts").mkdir()
     shutil.copytree(FIXTURES, tmp_path / "tests" / "fixtures")
     monkeypatch.setenv("EPT_ROOT", str(tmp_path))
