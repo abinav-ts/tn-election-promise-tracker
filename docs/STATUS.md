@@ -2,15 +2,15 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 10 of 20 (deadline 2026-10-25). Stages 01 and 02 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695). Next: stage 03 (classification & decomposition), spec drafted in Cowork first.
+**Today's position:** Day 13 of 20 (deadline 2026-10-25). Stages 01 and 02 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695). Spec 03 approved (v1.0, 2026-10-18). Next: build stage 03 in Claude Code.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
 |---|---|---|---|---|---|---|
-| 00 | Global spec + structure | ✅ v0.8 | – | – | – | ✅ |
+| 00 | Global spec + structure | ✅ v0.9 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
 | 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
-| 03 | Classification & decomposition | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 03 | Classification & decomposition | ✅ v1.0 (D-064–D-070) | ☐ | ☐ | ☐ | ☐ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -29,9 +29,9 @@ _Updated at the end of every session. Read this first._
 - [x] Stage 02 full run, spot-checks (limit-20 and full) and freeze, 2026-10-13/15.
 
 ## Next step
-Open a new conversation in **Cowork** for **stage 03** (classification & decomposition): draft `specs/03-…` from global §12.1. Stage 03 reads the frozen promises (`data/frozen/promises_{term}.jsonl`, loaded into `promises` by `ept extract`), never re-extracts them. Bulk model: `gemini-3.5-flash-lite` (15 rpm, 500 rpd free tier; D-055, D-060): quota is no longer the bottleneck at stage-03 volumes (~1,700 promises ÷ batching).
+Open a new conversation in **Claude Code** to **build stage 03** from `specs/03-classification-decomposition.md` v1.0 (build order §4.10): rubric enums + prompt + checks C1–C6 → `run` + headline cap + report → `--limit 20` per term and spot-check → full run (≈ 85 calls on `gemini-3.5-flash-lite`, one day's quota) → fresh spot-check → `ept classify freeze`. Stop for the user if any term's vague share exceeds 50 %.
 
-**Schedule:** about 3 days behind the day plan (stage 02 was planned for Day 5, closed Day 10; stage 03 was Day 6). With stage 03 on Day 11, 04 Days 12–13, 05 Days 14–16, 06 Days 17–18, 07 Day 19 and 08 Day 20 there is **no buffer**; the agreed cut order (global §12.3) is the user's call if anything slips (D-041). TVK is already done, so stage 07's projection is unblocked.
+**Schedule (as of 2026-10-15):** about 3 days behind the day plan (stage 02 was planned for Day 5, closed Day 10; stage 03 was Day 6). With stage 03 on Day 11, 04 Days 12–13, 05 Days 14–16, 06 Days 17–18, 07 Day 19 and 08 Day 20 there is **no buffer**; the agreed cut order (global §12.3) is the user's call if anything slips (D-041). TVK is already done, so stage 07's projection is unblocked.
 
 ## Facts later stages need (from stage 02; details in spec 02 and D-044–D-063)
 - **Promises:** 1,674 rows, **frozen** in `data/frozen/promises_{term}.jsonl` (committed; DMK-2021 667, AIADMK-2016 312, TVK-2026 695). These snapshots are the source of truth: any `ept extract` step (e.g. `ept extract dedup`) reloads them into the `promises` table if the DB is lost. Every `ept extract` step refuses to change a frozen term (`--force` too); un-freezing needs a decision-log entry (D-039).
@@ -108,4 +108,9 @@ Open a new conversation in **Cowork** for **stage 03** (classification & decompo
   - Spot-checks: limit-20 (8 items: 6 ok, 2 → prompt v1.3, D-058); full run (10 items: 8 ok, 2 were a sheet-labelling error, sheet fixed, D-061).
   - Acceptance criteria 1–12 met. Backend test completed for the record on 2026-10-15 (both models V1 1.000; flash-lite wins on quota, V2 and speed; D-063). All three terms frozen: `data/frozen/promises_{term}.jsonl`.
   - Known limitations (in `reports/extraction_02.md` §7): DMK untitled items inherit the previous bold heading as `section`; Tamil V3 checks are flags only; some English texts keep Tamil amount words ("500 kodi rupai"), judged acceptable by the user.
-
+- **2026-10-18 — Spec 03 drafted and approved (v1.0).**
+  - Covariate rubrics (Q-05): 13 sectors, 8 promise types with a precedence order, judged cost bands (none/low/medium/high), specific = one checkable action with a clear object.
+  - `union_dependent` uses constitutional knowledge (checked online: the 106th Amendment is the latest; the 131st bill was defeated in April 2026), applied by wording (GST vs VAT), audit field `union_basis` (D-066). `continues_existing` needs a verbatim cue (D-067). Headline = text signal 0–3 + cap 25 per term (D-068).
+  - Indicators: code builds the self indicator for specific promises; the model writes 2–4 for vague ones; search queries for every indicator are made here because stage 04's BM25 needs them (D-065). Check C3 rejects any number or capitalised name not in the promise.
+  - Output frozen in `data/frozen/classification_{term}.jsonl`; promise snapshots untouched (D-064); audit fields stay out of §7 (D-069). A vague share > 50 % in any term stops the run (D-070). Global spec v0.9.
+  - Schedule: Day 13 with stages 03–08 left, so there is no buffer; the cut order (global §12.3) stays the user's call (D-041).
