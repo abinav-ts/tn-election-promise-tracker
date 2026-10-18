@@ -37,3 +37,37 @@ def test_stage_reads_no_corpus_tracker_or_evidence_path():
         src = path.read_text(encoding="utf-8")
         for f in forbidden:
             assert f not in src, (path.name, f)
+
+
+def test_c3_runs_on_every_promise_indicator_query_and_override(root, conn, monkeypatch):
+    import csv as _csv
+    import json as _json
+
+    from classify_helpers import FakeLLM, install, setup_term
+    from ept.classify import checks, run
+
+    setup_term(root, conn)
+    seen = []
+    real = checks.check_c3
+    monkeypatch.setattr(checks, "check_c3", lambda r, s, lim: seen.append((s.text, len(checks.checked_strings(r, s.text))))
+                        or real(r, s, lim))
+    strings = []
+    real_unseen = checks.unseen
+    monkeypatch.setattr(checks, "unseen", lambda s, *a, **k: strings.append(s) or real_unseen(s, *a, **k))
+    path = root / "config" / "classify_overrides.csv"
+    cols = path.read_text().strip().split(",")
+    with path.open("w", newline="") as f:
+        w = _csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        w.writerow({"promise_id": "DMK-2021-0004", "sector": "health", "promise_type": "infrastructure",
+                    "specificity": "specific", "cost_band": "low", "union_dependent": "false", "union_basis": "none",
+                    "continues_existing": "false", "continues_cue": "", "headline_signal": "0",
+                    "indicators_json": _json.dumps({"search_queries": ["new hospital Erode", "hospital order"]}),
+                    "note": ""})
+    install(monkeypatch, FakeLLM())
+    run.run_classify(term="DMK-2021")
+    texts = [t for t, _ in seen]
+    assert texts.count("Build a new hospital in Erode.") == 2  # model answer + override
+    assert len(set(texts)) == 5
+    assert "new hospital Erode" in strings and "hospital order" in strings
+    assert sum(n for _, n in seen) == len(strings)

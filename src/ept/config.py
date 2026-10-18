@@ -216,6 +216,7 @@ class Classify(_Cfg):
     max_query_words: int
     max_indicator_words: int
     extra_common_words: list[str]
+    vague_stop_share: float
     goal_verbs: list[str]
     spotcheck: ClassifySpotcheck
     frozen_terms: list[str]

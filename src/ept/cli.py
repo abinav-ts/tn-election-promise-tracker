@@ -24,8 +24,8 @@ def _report(command: str, stats: dict) -> None:
     stopped = stats.pop("stopped", None)
     typer.echo(f"{command}: " + ", ".join(f"{k}={v}" for k, v in stats.items() if not isinstance(v, dict)))
     typer.echo(f"{command}: stopped ({stopped}); re-run to continue" if stopped else f"{command}: done")
-    if stopped and command.startswith("extract"):
-        raise typer.Exit(2)  # stage 02: a quota stop must not let a chained `&&` step run on partial output
+    if stopped and command.startswith(("extract", "classify")):
+        raise typer.Exit(2)  # a quota stop must not let a chained `&&` step run on partial output
 
 
 @app.command("init-db")
@@ -254,3 +254,82 @@ def extract_freeze(term: str = typer.Option(..., "--term")) -> None:
     from ept.extract.freeze import run_freeze
 
     typer.echo(f"extract freeze: {run_freeze(term)}")
+
+
+# --- stage 03: classification & decomposition (spec 03) ---------------------
+
+classify_app = typer.Typer(help="Classification & decomposition (spec 03); no subcommand = run, report, spotcheck")
+app.add_typer(classify_app, name="classify")
+
+
+def _classify_run(term: Optional[str], limit: Optional[int], force: bool) -> None:
+    from ept.classify.run import run_classify
+
+    stats = run_classify(term=term, limit=limit, force=force)
+    for t, s in stats.pop("terms").items():
+        typer.echo(f"  {t}: {s['classified']}/{s['promises']} classified, {s['unresolved']} unresolved, "
+                   f"vague share {s['vague_share']}, {s['llm_calls']} calls, {s['cache_hits']} cache hits, "
+                   f"{s['retried']} retried alone, {s['headline']} headline")
+    typer.echo(f"  skipped: {stats.pop('skipped')}")
+    _report("classify run", stats)
+
+
+def _classify_report(term: Optional[str]) -> None:
+    from ept.classify.report import run_report
+
+    out = run_report(term)
+    typer.echo(f"classify report: {out}")
+    if out["vague_stop"]:
+        typer.echo(f"classify report: STOP — vague share above the limit in {', '.join(out['vague_stop'])} "
+                   "(D-070): the user decides before the next step")
+
+
+def _classify_spotcheck(term: Optional[str]) -> None:
+    from ept.classify.spotcheck import run_spotcheck
+
+    typer.echo(f"classify spotcheck: {run_spotcheck(term)}")
+
+
+@classify_app.callback(invoke_without_command=True)
+def classify(
+    ctx: typer.Context,
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """run -> report -> spotcheck (freeze only by name)."""
+    if ctx.invoked_subcommand is not None:
+        return
+    _classify_run(term, limit, force)
+    _classify_report(term)
+    _classify_spotcheck(term)
+
+
+@classify_app.command("run")
+def classify_run(
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+) -> None:
+    """Covariates + indicators through the bulk model, checks C1–C6, headline cap (spec 03 §4.3–4.5)."""
+    _classify_run(term, limit, force)
+
+
+@classify_app.command("report")
+def classify_report(term: Optional[str] = TermOpt) -> None:
+    """reports/classification_03.md + .json (spec 03 §4.6)."""
+    _classify_report(term)
+
+
+@classify_app.command("spotcheck")
+def classify_spotcheck(term: Optional[str] = TermOpt) -> None:
+    """The 7–10 most problematic items -> data/interim/spotcheck_03.csv (spec 03 §4.7)."""
+    _classify_spotcheck(term)
+
+
+@classify_app.command("freeze")
+def classify_freeze(term: str = typer.Option(..., "--term")) -> None:
+    """Freeze a signed-off term: data/frozen/classification_{term}.jsonl (spec 03 §4.8). Only when the user says so."""
+    from ept.classify.freeze import run_freeze
+
+    typer.echo(f"classify freeze: {run_freeze(term)}")

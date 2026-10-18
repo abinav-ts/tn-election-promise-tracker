@@ -5,6 +5,10 @@ from __future__ import annotations
 from ept.config import Config
 
 
+STAGE03_COLUMNS = ("sector", "promise_type", "specificity", "cost_band", "union_dependent", "continues_existing",
+                   "headline", "covariates_version")
+
+
 class FrozenTermError(RuntimeError):
     pass
 
@@ -111,10 +115,21 @@ def load_frozen(conn, cfg: Config, term_id: str) -> int:
 
     rows = [Promise.model_validate(json.loads(line)) for line in
             snapshot_path(cfg, term_id).read_text(encoding="utf-8").splitlines() if line.strip()]
+    # Only stage 02 columns are (re)written: stage 03 covariates and the indicators that reference these
+    # rows (foreign key) survive a reload (spec 03 §4.8).
+    cols = [c for c in Promise.model_fields if c not in STAGE03_COLUMNS]
+    keep = {r.promise_id for r in rows}
     with conn:
-        conn.execute("DELETE FROM promises WHERE term_id = ?", (term_id,))
+        stale = [x["promise_id"] for x in conn.execute("SELECT promise_id FROM promises WHERE term_id = ?",
+                                                       (term_id,)) if x["promise_id"] not in keep]
+        for pid in stale:
+            conn.execute("DELETE FROM indicators WHERE promise_id = ?", (pid,))
+            conn.execute("DELETE FROM promises WHERE promise_id = ?", (pid,))
+        sql = (f"INSERT INTO promises ({', '.join(cols)}) VALUES ({', '.join('?' for _ in cols)}) "
+               f"ON CONFLICT (promise_id) DO UPDATE SET " + ", ".join(f"{c} = excluded.{c}" for c in cols[1:]))
         for r in rows:
-            db.upsert(conn, r, commit=False)
+            data = r.model_dump(mode="json")
+            conn.execute(sql, [data[c] for c in cols])
     return len(rows)
 
 
