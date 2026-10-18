@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -111,7 +111,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 |---|---|---|---|
 | 01 | Corpus collection (done) | `ept crawl`, `ept parse`, `ept coverage`, `ept spotcheck`, `ept leads` | `documents`, `chunks`, coverage report, Tamil pairing, tracker leads |
 | 02 | Promise extraction (done 2026-10-15: 1,674 promises frozen) | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
-| 03 | Classification & decomposition | `ept classify` | covariates, `indicators` |
+| 03 | Classification & decomposition (spec approved 2026-10-18) | `ept classify` (`run`, `report`, `spotcheck`, `freeze`) | covariates, `indicators` with search queries (frozen per term in `data/frozen/classification_{term}.jsonl`, D-064) |
 | 04 | Evidence retrieval | `ept index`, `ept retrieve` | `retrievals` |
 | 05 | Judgment | `ept judge`, `ept judge export/import` | `verdicts` |
 | 06 | Evaluation | `ept evaluate` | metrics + error analysis |
@@ -214,7 +214,7 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 | Promise text from manifesto text only: no number or name absent from the source span; few-shot examples invented, never from in-scope manifestos | Verbatim/number/name checks V1–V3 + spot-check (stage 02) |
 | Vision transcription (Gemini or Cowork fallback): only the prompt and page images; no web search, no knowledge-based "corrections" | Prompt + handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
 | Promise list frozen per term after sign-off; later knowledge can't reshape it | `data/frozen/promises_{term}.jsonl` + refusal to re-extract (stage 02) |
-| Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + automated name/number check (stage 03) |
+| Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + check C3 (every number and capitalised name in indicators and queries must occur in the promise) + check C4 (`continues_existing` needs a verbatim cue, D-067); no party/term name in the prompt (stage 03) |
 | Gold promises never in prompts or few-shot pools | Overlap test (stage 06) |
 | Backtest fits use training-term rows only | Assertion in modelling code (stage 07) |
 
@@ -237,7 +237,7 @@ ISO `YYYY-MM-DD`. Partial dates are stored as the first day of the period plus `
 
 ### 9.4 Reproducibility
 - Each run gets a `run_id` (`{stage}-{UTC timestamp}`). Its config snapshot, git commit, prompt versions and models go to `reports/runs/{run_id}.json`.
-- Raw downloads are immutable. LLM responses are cached. Strong-judge outputs, gold labels, manifesto transcriptions and the **frozen promise lists** (`data/frozen/`) are committed. A frozen term is loaded from its snapshot, never re-extracted (D-039), so a lost cache can't change promise IDs.
+- Raw downloads are immutable. LLM responses are cached. Strong-judge outputs, gold labels, manifesto transcriptions and the **frozen promise lists** and **classification snapshots** (`data/frozen/`) are committed. A frozen term is loaded from its snapshots, never re-extracted or re-classified (D-039, D-064), so a lost cache can't change promise or indicator IDs.
 - All configurable values (dates, paths, models, thresholds) live in `config/settings.yaml`.
 
 ## 10. Folder structure
@@ -258,7 +258,7 @@ Election-Promise-Tracking/
 │   │   ├── evidence/   crawled government documents (+ _manual/ for hand-added files, _quarantine/ for incomplete downloads, D-030)
 │   │   └── trackers/   third-party tracker pages (leads only, never evidence)
 │   ├── interim/        review sheets, intermediate files (incl. manifestos/{term}/ page text, units, transcription inputs)
-│   ├── frozen/         signed-off promise lists + manifesto transcriptions (committed, D-039)
+│   ├── frozen/         signed-off promise lists, classification snapshots + manifesto transcriptions (committed, D-039, D-064)
 │   ├── processed/      indexes, fitted models
 │   ├── judgments/      strong-judge batches in/out (committed)
 │   └── gold/           hand labels (committed)
@@ -354,7 +354,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Q-03 | ✅ Resolved in spec 02: Gemini free tier, model by backend test; Kaggle fallback (D-037) | 02 |
 | Q-04 | ✅ Resolved in spec 02: what counts, splitting S1–S5, drop-later-duplicate with a log, frozen IDs (D-038, D-039) | 02 |
 | Q-10 | ✅ Resolved in spec 02: font mapping for legacy fonts, OCR + gate + Gemini vision (Cowork last resort) for scans, translation inside the extraction call (D-035, D-036) | 02 |
-| Q-05 | Covariate rubrics (sector list, cost bands) | 03 |
+| Q-05 | ✅ Resolved in spec 03: 13 sectors, 8 promise types, judged cost bands, headline cap 25 per term (D-064–D-070) | 03 |
 | Q-06 | Embedding model; number of chunks per judgment (affects Claude usage) | 04 |
 | Q-07 | Strong-judge batch size that fits within one Cowork session | 05 |
 | Q-08 | Second annotator for agreement (none available solo → use the strong judge vs. bulk model as a proxy, or re-label a subset after a gap of several days) | 06 |
