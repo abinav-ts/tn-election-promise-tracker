@@ -48,6 +48,9 @@ WHAT = {
          "(vague)? For vague: are the indicators observable official steps?",
     "f": "Outlier: is the sector / cost band / decomposition right?",
 }
+WHAT_UNRESOLVED = ("UNRESOLVED: no answer passed the checks, so nothing is stored. Is the rejected name or number "
+                   "outside knowledge (a leak) or taken from the unit text? Are the REJECTED answer's covariates "
+                   "right? It will be fixed by a prompt revision or an override row.")
 
 
 @dataclass
@@ -82,8 +85,20 @@ def _first(r: dict[str, Any]) -> str:
         ind = ans.get("indicators") or []
         shown = (f" REJECTED answer: {ans['sector']}/{ans['promise_type']}/{ans['specificity']}; queries "
                  f"{ans.get('search_queries')}; indicators {[i['text'] for i in ind]}")[:600]
-    how = r.get("resolved_by") or ("UNRESOLVED" if r.get("failures") else "")
-    return f"first answer failed ({fails}); fixed by: {how}.{shown}"
+    if r.get("failures"):
+        after = "; ".join(r["failures"])[:500]
+        status = f"STILL FAILING after the retry alone ({after}): UNRESOLVED, no covariates stored"
+    else:
+        status = f"fixed by {r.get('resolved_by') or 'retry alone'}"
+    return f"first answer failed ({fails}); {status}.{shown}"
+
+
+def _printed(p: dict[str, Any], u) -> str:
+    """Where to find the item in the PDF: section + printed number (D-061), else the unit's kind."""
+    where = p["section"] or ""
+    if u is None:
+        return where
+    return f"{where} #{u.number}" if u.number is not None else f"{where} (unnumbered {u.marker.replace('_', ' ')})"
 
 
 def build(cfg: Config, terms: list[str], texts: dict[str, dict[str, Any]]) -> list[Item]:
@@ -170,8 +185,9 @@ def run_spotcheck(term: Optional[str] = None) -> dict[str, Any]:
             u = units.get(p["parent_group"])
             pdf = manifesto_path(cfg, profiles[it.term]).relative_to(cfg.root).as_posix()
             w.writerow({"item_id": it.promise_id, "term": it.term,
-                        "printed_item": "" if u is None or u.number is None else f"{p['section'] or ''} #{u.number}",
-                        "group": it.group, "why_flagged": it.why, "what_to_check": WHAT[it.group],
+                        "printed_item": _printed(p, u),
+                        "group": it.group, "why_flagged": it.why,
+                        "what_to_check": WHAT_UNRESOLVED if r["sector"] is None else WHAT[it.group],
                         "pdf_page": f"{pdf} p{p['page']}", "promise_text": p["text"], "source_text": p["source_text"],
                         "unit_text": u.text if u else "", "covariates": _covariates(r), "indicators": _indicators(r),
                         "verdict": "", "note": ""})
