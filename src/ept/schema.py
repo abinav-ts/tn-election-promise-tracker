@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import datetime as dt
 from enum import Enum
-from typing import Optional
+from typing import Literal, Optional, get_args
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -72,6 +72,24 @@ class ParseStatus(StrEnum):
 class Specificity(StrEnum):
     specific = "specific"
     vague = "vague"
+
+
+# Covariate values (spec 03 §4.2, Q-05). The definitions live in prompts/classify_promises.md.
+Sector = Literal[
+    "agriculture_fisheries", "education", "health", "social_welfare", "caste_minority_welfare",
+    "employment_labour", "industry_it_msme", "infrastructure_transport_housing", "local_government",
+    "water_environment_energy", "governance_law_state_rights", "culture_language_religion", "other",
+]
+# precedence order: when several fit, the first that applies
+PromiseType = Literal[
+    "advocacy", "law_regulation", "transfer_subsidy", "infrastructure", "institution", "scheme_expansion",
+    "new_scheme", "administrative",
+]
+CostBand = Literal["none", "low", "medium", "high"]  # ascending
+
+SECTORS: tuple[str, ...] = get_args(Sector)
+PROMISE_TYPES: tuple[str, ...] = get_args(PromiseType)
+COST_BANDS: tuple[str, ...] = get_args(CostBand)
 
 
 class Status(StrEnum):
@@ -144,11 +162,11 @@ class Promise(_Row):
     section: Optional[str] = None
     page: Optional[int] = None
     parent_group: Optional[str] = None
-    # Covariates: fixed by spec 03; Optional until then.
-    sector: Optional[str] = None
-    promise_type: Optional[str] = None
+    # Covariates (values: spec 03 §4.2); null until `ept classify run`.
+    sector: Optional[Sector] = None
+    promise_type: Optional[PromiseType] = None
     specificity: Optional[Specificity] = None
-    cost_band: Optional[str] = None
+    cost_band: Optional[CostBand] = None
     union_dependent: Optional[bool] = None
     continues_existing: Optional[bool] = None
     headline: Optional[bool] = None

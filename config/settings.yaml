@@ -34,6 +34,13 @@ paths:
   extraction_md: reports/extraction_02.md
   extraction_json: reports/extraction_02.json
   backend_test_md: reports/backend_test_02.md
+  # stage 03 (spec 03 §4.9)
+  classify_overrides: config/classify_overrides.csv
+  classify_failures: data/interim/classify_failures_03.csv
+  classify_interim: data/interim/classify          # per-term results with audit fields, before freezing
+  classification_md: reports/classification_03.md
+  classification_json: reports/classification_03.json
+  classification_frozen: data/frozen/classification_{term}.jsonl   # template (D-064)
 
 # Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
 terms:
@@ -160,6 +167,25 @@ extract:
     candidate_ratio: 0.80
     pairs_per_call: 20          # D-050: candidate pairs batched into one call
   frozen_terms: [AIADMK-2016, DMK-2021, TVK-2026]
+
+# Spec 03 §4.9; starting values accepted (OQ-4), revisable after the limit-20 run with a logged reason.
+classify:
+  promises_per_call: 20       # a batch never splits a unit, so it may run over by one unit
+  headline_cap: 25            # per term (D-068)
+  headline_frontmatter_ratio: 0.6   # share of a promise's source words found in the front matter
+  min_indicators: 2           # vague promises (D-006)
+  max_indicators: 4
+  min_queries: 2              # per indicator
+  max_queries: 4
+  min_query_words: 2
+  max_query_words: 12
+  max_indicator_words: 40
+  extra_common_words: []      # added to extract.common_words for check C3
+  goal_verbs: [improve, strengthen, promote, ensure]   # spot-check group e (specific promise with a goal verb)
+  spotcheck:
+    per_term: 3
+    per_group: 3
+  frozen_terms: []            # D-064: classification snapshots in data/frozen/classification_{term}.jsonl
 
 llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)

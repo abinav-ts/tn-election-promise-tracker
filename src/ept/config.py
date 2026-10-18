@@ -56,6 +56,13 @@ class Paths(_Cfg):
     extraction_md: str
     extraction_json: str
     backend_test_md: str
+    # stage 03 (spec 03 §4.9)
+    classify_overrides: str
+    classify_failures: str
+    classify_interim: str
+    classification_md: str
+    classification_json: str
+    classification_frozen: str
 
 
 class EvidenceWindow(_Cfg):
@@ -190,6 +197,30 @@ class Extract(_Cfg):
     frozen_terms: list[str]
 
 
+class ClassifySpotcheck(_Cfg):
+    per_term: int
+    per_group: int
+
+
+class Classify(_Cfg):
+    """Spec 03 §4.9."""
+
+    promises_per_call: int
+    headline_cap: int
+    headline_frontmatter_ratio: float
+    min_indicators: int
+    max_indicators: int
+    min_queries: int
+    max_queries: int
+    min_query_words: int
+    max_query_words: int
+    max_indicator_words: int
+    extra_common_words: list[str]
+    goal_verbs: list[str]
+    spotcheck: ClassifySpotcheck
+    frozen_terms: list[str]
+
+
 class BulkCfg(_Cfg):
     api_key_env: str
     candidates: list[str]
@@ -225,6 +256,7 @@ class Settings(_Cfg):
     spotcheck: SpotcheckCfg
     go: Go
     extract: Extract
+    classify: Classify
     llm: Llm
 
 
