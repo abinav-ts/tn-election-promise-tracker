@@ -118,6 +118,8 @@ date:
   fy_bound:                   # spec 04 §4.2 (D-077): available_by capped at the fiscal-year end
     doc_types: [policy_note, budget_speech]
     title_prefixes: {other: ["Performance Budget"]}
+  fetch_bound:                # D-082: a dated document is available no later than the day it was fetched
+    exclude_title_patterns: ["interim budget"]   # presented by the outgoing government before an election
 
 tamil:
   include_in_evidence: false
@@ -219,7 +221,7 @@ retrieve:
   rrf: {k: 60, w_bm25: 1.0, w_dense: 1.0}
   index_shard: 2000
   tokens_per_word: 1.33       # report: stage 05 sizing (English prose, approximate)
-  spotcheck: {per_term: 3, per_group: 3, snippet_words: 150, near_cutoff_days: 31}
+  spotcheck: {per_term: 3, per_group: 3, snippet_words: 150, near_cutoff_days: 31, reserve_per_term: {e: 1}}   # D-083
 
 llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)

@@ -16,7 +16,7 @@ from typing import Any, Optional
 
 from ept import db
 from ept.config import Config, get_config
-from ept.dates import BASIS_FY_ONLY, BASIS_FY_TIGHTENED, availability, parse_iso
+from ept.dates import BASIS_FETCHED, BASIS_FY_ONLY, BASIS_FY_TIGHTENED, availability, parse_iso
 from ept.retrieve import eligible as el
 from ept.retrieve.run import _read_meta, configured, latest_run, read_diag
 
@@ -48,17 +48,21 @@ def _term_of(d: Optional[dt.date], cfg: Config) -> str:
 
 
 def fy_effect(conn, cfg: Config) -> dict[str, Any]:
-    """Documents tightened or newly dated by the fiscal-year bound, by kind and term (§4.2)."""
-    out: dict[str, Counter] = {BASIS_FY_TIGHTENED: Counter(), BASIS_FY_ONLY: Counter()}
-    for r in conn.execute("SELECT doc_type, doc_date, date_precision, fiscal_year, title FROM documents"):
+    """Documents tightened or newly dated by the fiscal-year bound, or capped at their fetch date (D-082),
+    by kind and term (§4.2)."""
+    d = cfg.settings.date
+    out: dict[str, Counter] = {BASIS_FY_TIGHTENED: Counter(), BASIS_FY_ONLY: Counter(), BASIS_FETCHED: Counter()}
+    for r in conn.execute("SELECT doc_type, doc_date, date_precision, fiscal_year, title, fetched_at FROM documents"):
         a, basis = availability(r["doc_date"], r["date_precision"], r["doc_type"], r["fiscal_year"], r["title"],
-                                cfg.settings.date.fy_bound)
+                                d.fy_bound, r["fetched_at"], d.fetch_bound)
         if basis in out:
             out[basis][f"{_kind(r['doc_type'], r['title'], cfg)} · {_term_of(a, cfg)}"] += 1
     return {"tightened": dict(sorted(out[BASIS_FY_TIGHTENED].items())),
             "newly_dated": dict(sorted(out[BASIS_FY_ONLY].items())),
+            "fetch_capped": dict(sorted(out[BASIS_FETCHED].items())),
             "totals": {"tightened": sum(out[BASIS_FY_TIGHTENED].values()),
-                       "newly_dated": sum(out[BASIS_FY_ONLY].values())}}
+                       "newly_dated": sum(out[BASIS_FY_ONLY].values()),
+                       "fetch_capped": sum(out[BASIS_FETCHED].values())}}
 
 
 def availability_section(avail: list[el.ChunkAvail], cutoff: el.Cutoff) -> dict[str, Any]:
@@ -224,8 +228,8 @@ def render_md(d: dict[str, Any], cfg: Config) -> str:
          "## 2. Evidence availability per term × cutoff", "",
          _row(["term", "cutoff", "upper bound", "eligible chunks", "documents", "GO", "policy_note",
                "budget_speech", "other", "cag", "scheme_page", "governor", "FY-tightened", "FY-only",
-               "excl. undated", "excl. before sworn_in", "excl. after bound"]),
-         "|" + "---|" * 3 + "---:|" * 14]
+               "fetch-capped", "excl. undated", "excl. before sworn_in", "excl. after bound"]),
+         "|" + "---|" * 3 + "---:|" * 15]
     for s in d["cutoffs"]:
         a = s["availability"]
         t = a["chunks_by_doc_type"]
@@ -233,14 +237,15 @@ def render_md(d: dict[str, Any], cfg: Config) -> str:
                        t.get("policy_note", 0), t.get("budget_speech", 0), t.get("other", 0), t.get("cag_report", 0),
                        t.get("scheme_page", 0), t.get("governor_address", 0),
                        a["chunks_by_basis"].get(BASIS_FY_TIGHTENED, 0), a["chunks_by_basis"].get(BASIS_FY_ONLY, 0),
-                       a["excluded"]["undated"], a["excluded"]["before_sworn_in"], a["excluded"]["after_cutoff"]]))
+                       a["chunks_by_basis"].get(BASIS_FETCHED, 0), a["excluded"]["undated"], a["excluded"]["before_sworn_in"], a["excluded"]["after_cutoff"]]))
     fy = d["fy_bound_effect"]
     L += ["", "Chunk counts by `doc_type`; FY-tightened / FY-only = eligible chunks whose availability date comes "
-          "from the fiscal-year bound (D-077).", "",
-          "## 3. Fiscal-year bound effect (documents)", "",
-          f"Tightened: **{fy['totals']['tightened']}**; newly dated: **{fy['totals']['newly_dated']}** "
+          "from the fiscal-year bound (D-077); fetch-capped = capped at the document's fetch date (D-082).", "",
+          "## 3. Fiscal-year and fetch-date bound effect (documents)", "",
+          f"Tightened: **{fy['totals']['tightened']}**; newly dated: **{fy['totals']['newly_dated']}**; "
+          f"capped at the fetch date: **{fy['totals']['fetch_capped']}** "
           "(kind · term of the availability date).", "", _row(["effect", "kind · term", "documents"]), "|---|---|---:|"]
-    for eff in ("tightened", "newly_dated"):
+    for eff in ("tightened", "newly_dated", "fetch_capped"):
         for kt, n in fy[eff].items():
             L.append(_row([eff, kt, n]))
     L += ["", "## 4. Retrieval per term × cutoff", "",

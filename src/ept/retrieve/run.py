@@ -44,13 +44,18 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else "missing"
 
 
-def fingerprint(cfg: Config, manifest: dict[str, Any], ids: list[str]) -> dict[str, Any]:
+def fingerprint(cfg: Config, manifest: dict[str, Any], ids: list[str],
+                avail: Optional[list[el.ChunkAvail]] = None) -> dict[str, Any]:
     s = cfg.settings
     pkg = Path(__file__).resolve().parents[1]
     code = hashlib.sha256(b"".join((pkg / f).read_bytes() for f in _ROW_CODE)).hexdigest()
     parts = {
         "retrieve": s.retrieve.model_dump(mode="json", exclude={"spotcheck", "tokens_per_word"}),
         "fy_bound": s.date.fy_bound.model_dump(mode="json"),
+        "fetch_bound": s.date.fetch_bound.model_dump(mode="json"),
+        # every chunk's availability date: a re-dated or re-fetched document starts a new run
+        "availability": hashlib.sha256("\n".join(f"{c.chunk_id} {c.available_by}" for c in avail or []).encode()
+                                       ).hexdigest(),
         "terms": [t.model_dump(mode="json") for t in s.terms],
         "embedding": {k: manifest.get(k) for k in ("model", "revision", "max_seq_length", "n", "index_text_hash",
                                                   "dim")},
@@ -209,7 +214,7 @@ def run_retrieve(term: Optional[str] = None, limit: Optional[int] = None, force:
     conn = db.connect()
     db.init_schema(conn)
     corpus = Corpus(conn, cfg)
-    fp = fingerprint(cfg, corpus.index.manifest, corpus.ids)
+    fp = fingerprint(cfg, corpus.index.manifest, corpus.ids, corpus.avail)
     terms = [term] if term else [t.term_id for t in cfg.settings.terms]
     plan = [c for t in terms for c in el.term_cutoffs(cfg, t, corpus.snapshot, cutoffs)]  # refusals raise first
     run_id, resumed = _start_or_resume(cfg, fp, force, {"term": term, "limit": limit, "force": force,

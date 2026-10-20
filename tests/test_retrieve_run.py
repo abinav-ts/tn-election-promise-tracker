@@ -78,7 +78,7 @@ def test_full_run_rows_resume_force_and_report(corpus):
     out = run_report()
     assert out["leakage_violations"] == 0 and out["pairs"] == 43 and out["structure"] == {}
     data = json.loads(cfg.path("retrieval_json").read_text())
-    assert len(data["cutoffs"]) == 15 and data["fy_bound_effect"]["totals"] == {"tightened": 1, "newly_dated": 1}
+    assert len(data["cutoffs"]) == 15 and data["fy_bound_effect"]["totals"] == {"tightened": 1, "newly_dated": 1, "fetch_capped": 0}
     assert "Leakage line (this run): 0 violations" in cfg.path("retrieval_md").read_text().replace("**", "")
     assert _stage01_hash(corpus) == before
 

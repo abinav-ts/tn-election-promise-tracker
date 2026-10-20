@@ -92,3 +92,20 @@ def test_snippet_picks_densest_window():
     text = " ".join(["filler"] * 300 + ["bus", "fares", "for", "women"] + ["filler"] * 300)
     s = snippet(text, {"bus", "fare", "women"}, 20)
     assert "**bus** **fares**" in s and "**women**" in s and s.startswith("… ") and s.endswith(" …")
+
+
+def test_reserved_group_e_place_per_term():
+    from ept.retrieve.spotcheck import Item, select
+
+    items = []
+    for t in ("AIADMK-2016", "DMK-2021", "TVK-2026"):
+        for n, g in enumerate("aabbcce"):
+            items.append(Item(f"{t}-{n:04d}-I1", f"{t}-{n:04d}", t, "full", g, (n,), "x"))
+    plain = select(items, 10, 3, 3)
+    assert "e" not in [it.group for it in plain]
+    chosen = select(items, 10, 3, 3, {"e": 1})
+    assert [it.group for it in chosen].count("e") == 3
+    for t in ("AIADMK-2016", "DMK-2021", "TVK-2026"):
+        assert sum(it.term == t for it in chosen) == 3 and any(it.term == t and it.group == "e" for it in chosen)
+    groups = [it.group for it in chosen]
+    assert groups == sorted(groups, key="abcdef".index)

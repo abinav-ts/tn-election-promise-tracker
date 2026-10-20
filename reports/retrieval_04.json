@@ -1,7 +1,7 @@
 {
-  "run_id": "retrieve-20261020T185504Z",
+  "run_id": "retrieve-20261020T191347Z",
   "complete": true,
-  "generated": "2026-10-21T00:31:53",
+  "generated": "2026-10-21T00:47:16",
   "snapshot_end": "2026-10-11",
   "index_manifest": {
     "model": "BAAI/bge-small-en-v1.5",
@@ -11,128 +11,113 @@
     "index_text_hash": "a9ce22ca3dc57b9a291f059fa70fdcea952c0df2a621096760fe568926e92cb3",
     "dim": 384
   },
-  "fingerprint": "6aeafaa9785dde0108cc1826a94238d7c72e74507ea55e80d6f5cffa20f960ba",
-  "run_seconds": 216.6,
+  "fingerprint": "38b82598812093d0c60bf7074a9517d4dc3980a00cd9acfe926c5fa81cc096ed",
+  "run_seconds": 202.20000000000005,
   "term_cutoffs": {
     "AIADMK-2016@2016-10-23": {
       "eligible": 1010,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 1.7,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 1.2
     },
     "AIADMK-2016@2016-11-23": {
       "eligible": 1184,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 0.7,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 0.6
     },
     "AIADMK-2016@2017-05-23": {
       "eligible": 4086,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 2.2,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 2.1
     },
     "AIADMK-2016@2018-05-23": {
       "eligible": 8835,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 5.6,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 5.4
     },
     "AIADMK-2016@2019-05-23": {
       "eligible": 14085,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 9.8,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 9.7
     },
     "AIADMK-2016@2020-05-23": {
       "eligible": 19467,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 15.6,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 14.6
     },
     "AIADMK-2016@full": {
       "eligible": 23938,
       "indicators": 385,
       "skipped": 0,
       "written": 385,
-      "seconds": 19.4,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 19.0
     },
     "DMK-2021@2021-10-07": {
       "eligible": 1299,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 2.6,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 2.3
     },
     "DMK-2021@2021-11-07": {
       "eligible": 1738,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 1.8,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 1.7
     },
     "DMK-2021@2022-05-07": {
       "eligible": 6365,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 7.6,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 7.2
     },
     "DMK-2021@2023-05-07": {
       "eligible": 12603,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 17.8,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 16.3
     },
     "DMK-2021@2024-05-07": {
       "eligible": 17964,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 27.3,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 24.8
     },
     "DMK-2021@2025-05-07": {
       "eligible": 26673,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 44.8,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 40.7
     },
     "DMK-2021@full": {
       "eligible": 31829,
       "indicators": 710,
       "skipped": 0,
       "written": 710,
-      "seconds": 56.9,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 51.3
     },
     "TVK-2026@2026-10-10": {
-      "eligible": 1507,
+      "eligible": 3895,
       "indicators": 768,
       "skipped": 0,
       "written": 768,
-      "seconds": 2.8,
-      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
+      "seconds": 5.3
     }
   },
   "fy_bound_effect": {
@@ -143,17 +128,21 @@
       "policy_note \u00b7 DMK-2021": 18
     },
     "newly_dated": {
-      "budget_speech \u00b7 TVK-2026": 2,
+      "budget_speech \u00b7 TVK-2026": 1,
       "performance_budget \u00b7 AIADMK-2016": 8,
       "performance_budget \u00b7 DMK-2021": 6,
-      "performance_budget \u00b7 TVK-2026": 1,
       "policy_note \u00b7 AIADMK-2016": 26,
-      "policy_note \u00b7 DMK-2021": 37,
-      "policy_note \u00b7 TVK-2026": 7
+      "policy_note \u00b7 DMK-2021": 37
+    },
+    "fetch_capped": {
+      "budget_speech \u00b7 TVK-2026": 1,
+      "performance_budget \u00b7 TVK-2026": 5,
+      "policy_note \u00b7 TVK-2026": 55
     },
     "totals": {
       "tightened": 97,
-      "newly_dated": 87
+      "newly_dated": 78,
+      "fetch_capped": 61
     }
   },
   "cutoffs": [
@@ -1833,105 +1822,114 @@
       "cutoff_date": "2026-10-10",
       "upper": "2026-10-10",
       "availability": {
-        "chunks": 1507,
-        "documents": 102,
+        "chunks": 3895,
+        "documents": 163,
         "chunks_by_doc_type": {
-          "budget_speech": 44,
+          "budget_speech": 81,
           "cag_report": 81,
           "go": 1371,
-          "governor_address": 11
+          "governor_address": 11,
+          "other": 181,
+          "policy_note": 2170
         },
         "documents_by_doc_type": {
-          "budget_speech": 1,
+          "budget_speech": 2,
           "cag_report": 1,
           "go": 99,
-          "governor_address": 1
+          "governor_address": 1,
+          "other": 5,
+          "policy_note": 55
         },
         "chunks_by_basis": {
+          "fetched": 2388,
           "stored": 1507
         },
         "excluded": {
           "undated": 184,
           "before_sworn_in": 56161,
-          "after_cutoff": 2407
+          "after_cutoff": 19
         }
       },
       "retrieval": {
         "indicators": 768,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 120,
-        "pct_with_go_place": 14.3,
+        "pct_with_go": 67.2,
+        "go_places_used": 708,
+        "pct_with_go_place": 58.9,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.03,
-        "pct_no_overlap": 34.5,
-        "median_top1_cos": 0.6446,
-        "pct_cap_applied": 54.4,
+        "mean_overlap_bm25_dense_top_k": 1.12,
+        "pct_no_overlap": 33.5,
+        "median_top1_cos": 0.6959,
+        "pct_cap_applied": 63.7,
         "doc_type_mix_pct": {
-          "budget_speech": 26.0,
-          "cag_report": 4.1,
-          "go": 59.4,
-          "governor_address": 10.5
+          "budget_speech": 7.1,
+          "cag_report": 0.4,
+          "go": 24.0,
+          "governor_address": 1.4,
+          "other": 1.2,
+          "policy_note": 65.9
         }
       },
       "override_promises": {
         "indicators": 14,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 2,
-        "pct_with_go_place": 14.3,
+        "pct_with_go": 64.3,
+        "go_places_used": 11,
+        "pct_with_go_place": 50.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.71,
-        "pct_no_overlap": 42.9,
-        "median_top1_cos": 0.6651,
-        "pct_cap_applied": 71.4,
+        "mean_overlap_bm25_dense_top_k": 0.93,
+        "pct_no_overlap": 35.7,
+        "median_top1_cos": 0.6925,
+        "pct_cap_applied": 64.3,
         "doc_type_mix_pct": {
-          "budget_speech": 35.7,
-          "cag_report": 2.9,
-          "go": 52.9,
-          "governor_address": 8.6
+          "budget_speech": 12.9,
+          "go": 21.4,
+          "policy_note": 65.7
         }
       },
       "other_promises": {
         "indicators": 754,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 118,
-        "pct_with_go_place": 14.3,
+        "pct_with_go": 67.2,
+        "go_places_used": 697,
+        "pct_with_go_place": 59.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.03,
-        "pct_no_overlap": 34.4,
-        "median_top1_cos": 0.6443,
-        "pct_cap_applied": 54.1,
+        "mean_overlap_bm25_dense_top_k": 1.12,
+        "pct_no_overlap": 33.4,
+        "median_top1_cos": 0.6959,
+        "pct_cap_applied": 63.7,
         "doc_type_mix_pct": {
-          "budget_speech": 25.8,
-          "cag_report": 4.1,
-          "go": 59.5,
-          "governor_address": 10.6
+          "budget_speech": 7.0,
+          "cag_report": 0.4,
+          "go": 24.1,
+          "governor_address": 1.4,
+          "other": 1.2,
+          "policy_note": 65.9
         }
       },
       "headline_promises": {
         "indicators": 25,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 2,
-        "pct_with_go_place": 8.0,
+        "pct_with_go": 68.0,
+        "go_places_used": 28,
+        "pct_with_go_place": 68.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 32.0,
-        "median_top1_cos": 0.676,
-        "pct_cap_applied": 44.0,
+        "mean_overlap_bm25_dense_top_k": 1.32,
+        "pct_no_overlap": 24.0,
+        "median_top1_cos": 0.716,
+        "pct_cap_applied": 48.0,
         "doc_type_mix_pct": {
-          "budget_speech": 24.0,
-          "cag_report": 1.6,
-          "go": 65.6,
-          "governor_address": 8.8
+          "budget_speech": 4.0,
+          "go": 24.8,
+          "governor_address": 0.8,
+          "other": 2.4,
+          "policy_note": 68.0
         }
       },
       "sizing": {
         "tasks": 768,
-        "mean_words": 2172,
-        "est_tokens": 2888
+        "mean_words": 2104,
+        "est_tokens": 2798
       }
     }
   ],
@@ -1948,8 +1946,8 @@
     },
     "TVK-2026": {
       "tasks": 768,
-      "mean_words": 2172,
-      "est_tokens": 2888
+      "mean_words": 2104,
+      "est_tokens": 2798
     }
   },
   "structure": {},
@@ -1962,7 +1960,7 @@
       "examples": []
     },
     "all_runs": {
-      "rows": 42165,
+      "rows": 84330,
       "violations": 0,
       "undated": 0,
       "missing_chunks": 0,

@@ -115,6 +115,7 @@ def fiscal_years_between(start: dt.date, end: dt.date) -> list[str]:
 BASIS_STORED = "stored"  # the stored date's period_end
 BASIS_FY_TIGHTENED = "fy_tightened"  # stored date later than the fiscal-year end: capped at it
 BASIS_FY_ONLY = "fy_only"  # undated: the fiscal-year end is the only date
+BASIS_FETCHED = "fetched"  # capped at the fetch date (D-082)
 
 
 def fy_bounded(doc_type: str, title: Optional[str], fy_bound) -> bool:
@@ -126,14 +127,8 @@ def fy_bounded(doc_type: str, title: Optional[str], fy_bound) -> bool:
     return any(t.startswith(p.lower()) for p in prefixes)
 
 
-def availability(doc_date: Optional[DateLike], date_precision: Optional[str], doc_type: str,
-                 fiscal_year: Optional[str], title: Optional[str], fy_bound=None
-                 ) -> tuple[Optional[dt.date], Optional[str]]:
-    """(available_by, basis); (None, None) for an undated document without a fiscal-year bound."""
-    if fy_bound is None:
-        from ept.config import get_config
-
-        fy_bound = get_config().settings.date.fy_bound
+def _fy_availability(doc_date, date_precision, doc_type, fiscal_year, title, fy_bound
+                     ) -> tuple[Optional[dt.date], Optional[str]]:
     base = period_end(doc_date, date_precision) if doc_date and date_precision else None
     fy_end = None
     if fiscal_year and fy_bounded(doc_type, title, fy_bound) and normalize_fy(fiscal_year):
@@ -145,11 +140,42 @@ def availability(doc_date: Optional[DateLike], date_precision: Optional[str], do
     return (fy_end, BASIS_FY_TIGHTENED) if fy_end < base else (base, BASIS_STORED)
 
 
+def fetch_capped(title: Optional[str], fetch_bound) -> bool:
+    t = (title or "").lower()
+    return not any(p.lower() in t for p in fetch_bound.exclude_title_patterns)
+
+
+def availability(doc_date: Optional[DateLike], date_precision: Optional[str], doc_type: str,
+                 fiscal_year: Optional[str], title: Optional[str], fy_bound=None,
+                 fetched_at: Optional[DateLike] = None, fetch_bound=None) -> tuple[Optional[dt.date], Optional[str]]:
+    """(available_by, basis); (None, None) for an undated document without a fiscal-year bound.
+
+    Fetch-date bound (D-082): a dated document is never later than the day we fetched it (it existed then);
+    it never dates an undated document, and titles matching `exclude_title_patterns` (interim budgets, which
+    the outgoing government presents) keep their date.
+    """
+    if fy_bound is None or (fetched_at is not None and fetch_bound is None):
+        from ept.config import get_config
+
+        d = get_config().settings.date
+        fy_bound = fy_bound or d.fy_bound
+        fetch_bound = fetch_bound or d.fetch_bound
+    a, basis = _fy_availability(doc_date, date_precision, doc_type, fiscal_year, title, fy_bound)
+    if a is not None and fetched_at and fetch_capped(title, fetch_bound):
+        f = parse_iso(fetched_at)
+        if f < a:
+            return f, BASIS_FETCHED
+    return a, basis
+
+
 def available_by(doc_date: Optional[DateLike], date_precision: Optional[str], doc_type: str,
-                 fiscal_year: Optional[str], title: Optional[str], fy_bound=None) -> Optional[dt.date]:
-    """The date from which a document's chunks count as available (global §9.1, §9.3; D-077).
+                 fiscal_year: Optional[str], title: Optional[str], fy_bound=None,
+                 fetched_at: Optional[DateLike] = None, fetch_bound=None) -> Optional[dt.date]:
+    """The date from which a document's chunks count as available (global §9.1, §9.3; D-077, D-082).
 
     `period_end` of the stored date, but never later than the fiscal-year end for policy notes, performance
-    budgets and budget speeches; for such an undated document, the fiscal-year end. None = undated.
+    budgets and budget speeches (for such an undated document, the fiscal-year end), and never later than
+    the document's fetch date. None = undated.
     """
-    return availability(doc_date, date_precision, doc_type, fiscal_year, title, fy_bound)[0]
+    return availability(doc_date, date_precision, doc_type, fiscal_year, title, fy_bound, fetched_at,
+                        fetch_bound)[0]

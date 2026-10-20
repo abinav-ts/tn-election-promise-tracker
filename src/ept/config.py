@@ -129,10 +129,17 @@ class FyBound(_Cfg):
     title_prefixes: dict[str, list[str]] = {}
 
 
+class FetchBound(_Cfg):
+    """D-082: a dated document is available no later than its fetch date (except these titles)."""
+
+    exclude_title_patterns: list[str] = []
+
+
 class DateCfg(_Cfg):
     conflict_days: int
     fy_slack_months: int
     fy_bound: FyBound
+    fetch_bound: FetchBound
 
 
 class Tamil(_Cfg):
@@ -264,6 +271,7 @@ class RrfCfg(_Cfg):
 class RetrieveSpotcheck(_Cfg):
     per_term: int
     per_group: int
+    reserve_per_term: dict[str, int] = {}  # D-083: places per term kept for a group (e.g. e: 1)
     snippet_words: int
     near_cutoff_days: int
 

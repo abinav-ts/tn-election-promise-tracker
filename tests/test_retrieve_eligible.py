@@ -138,8 +138,12 @@ def test_snapshot_end_never_after_latest_fetch(conn):
     from ept.retrieve.eligible import latest_fetch, load_availability, snapshot_end
 
     add_doc(conn, "a" * 16, doc_type="policy_note", doc_date=None, fy="2026-27")  # available_by 2027-03-31
-    conn.execute("UPDATE documents SET fetched_at = '2026-10-11T03:45:07Z'")
+    add_doc(conn, "b" * 16, doc_type="go", doc_date="2026-10-01")
     cfg = get_config()
+    assert snapshot_end(cfg, load_availability(conn, cfg)) == D(2027, 3, 31)
+    # an interim budget keeps its FY-end date (no fetch bound), the snapshot is still capped at the fetch
+    conn.execute("UPDATE documents SET fetched_at = '2026-10-11T03:45:07Z', doc_type = 'budget_speech', "
+                 "title = 'Interim Budget Speech' WHERE doc_id = ?", ("a" * 16,))
     av = load_availability(conn, cfg)
     assert snapshot_end(cfg, av) == D(2027, 3, 31)
     assert snapshot_end(cfg, av, latest_fetch(conn)) == D(2026, 10, 11)

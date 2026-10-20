@@ -27,7 +27,7 @@ import numpy as np
 
 from ept import db
 from ept.config import Config, get_config
-from ept.dates import BASIS_FY_ONLY, BASIS_FY_TIGHTENED, parse_iso
+from ept.dates import BASIS_FETCHED, BASIS_FY_ONLY, BASIS_FY_TIGHTENED, parse_iso
 from ept.retrieve import eligible as el
 from ept.retrieve.report import load_pairs, override_notes, override_promises
 from ept.retrieve.run import latest_run, read_diag, _read_meta
@@ -84,11 +84,13 @@ def build(pairs: dict, avail: dict[str, el.ChunkAvail], overrides: set[str], upp
         for row in p["rows"]:
             a = avail[row["chunk_id"]]
             days = (upper - a.available_by).days
-            if a.basis in (BASIS_FY_TIGHTENED, BASIS_FY_ONLY):
-                how = "capped at" if a.basis == BASIS_FY_TIGHTENED else "dated only by"
+            if a.basis in (BASIS_FY_TIGHTENED, BASIS_FY_ONLY, BASIS_FETCHED):
+                how = {BASIS_FY_TIGHTENED: "capped at its fiscal-year end (D-077)",
+                       BASIS_FY_ONLY: "dated only by its fiscal-year end (D-077)",
+                       BASIS_FETCHED: "capped at the day it was fetched (D-082)"}[a.basis]
                 mk("e", (row["rank"], 0 if a.basis == BASIS_FY_ONLY else 1, days),
                    f"rank {row['rank']} chunk {row['chunk_id']} ({a.doc_type}) is available by {a.available_by}, "
-                   f"{how} its fiscal-year end (D-077); {days} days before the bound {upper}", row["chunk_id"])
+                   f"{how}; {days} days before the bound {upper}", row["chunk_id"])
                 break
             if days <= near_days:
                 mk("e", (row["rank"], 2, days),
@@ -103,7 +105,10 @@ def build(pairs: dict, avail: dict[str, el.ChunkAvail], overrides: set[str], upp
     return items
 
 
-def select(items: list[Item], max_items: int, per_term: int, per_group: int) -> list[Item]:
+def select(items: list[Item], max_items: int, per_term: int, per_group: int,
+           reserve_per_term: Optional[dict[str, int]] = None) -> list[Item]:
+    """Priority order with the spread caps; `reserve_per_term` {group: n} first takes each term's best n
+    items of that group (D-083), which count toward the caps."""
     by_key = sorted(items, key=lambda it: (it.key, it.item_id))
     turn: dict[tuple[str, str], int] = {}
     order: dict[int, int] = {}
@@ -116,16 +121,28 @@ def select(items: list[Item], max_items: int, per_term: int, per_group: int) -> 
     n_term: dict[str, int] = {}
     n_group: dict[str, int] = {}
     seen: set[str] = set()
-    for it in ranked:
-        if it.promise_id in seen or n_term.get(it.term, 0) >= per_term or n_group.get(it.group, 0) >= per_group:
-            continue
+
+    def take(it: Item) -> bool:
+        if (it in out or it.promise_id in seen or n_term.get(it.term, 0) >= per_term
+                or n_group.get(it.group, 0) >= per_group or len(out) >= max_items):
+            return False
         out.append(it)
         seen.add(it.promise_id)
         n_term[it.term] = n_term.get(it.term, 0) + 1
         n_group[it.group] = n_group.get(it.group, 0) + 1
-        if len(out) == max_items:
-            break
-    return out
+        return True
+
+    for group, n in (reserve_per_term or {}).items():
+        for term in sorted({it.term for it in items}):
+            got = 0
+            for it in by_key:
+                if got >= n:
+                    break
+                if it.group == group and it.term == term and take(it):
+                    got += 1
+    for it in ranked:
+        take(it)
+    return sorted(out, key=lambda it: (GROUPS.index(it.group), order[id(it)], it.key, it.item_id))
 
 
 def snippet(text: str, query_tokens: set[str], n_words: int) -> str:
@@ -204,7 +221,7 @@ def run_spotcheck(term: Optional[str] = None, run_id: Optional[str] = None) -> d
             if p["term"] == t and cut != el.FULL:
                 uppers[(t, cut)] = parse_iso(cut)
     chosen = select(build(pairs, avail, override_promises(cfg), uppers, sc.near_cutoff_days),
-                    s.max_items, sc.per_term, sc.per_group)
+                    s.max_items, sc.per_term, sc.per_group, sc.reserve_per_term)
     notes = override_notes(cfg)
     path = cfg.spotcheck_path("04")
     md_dir = cfg.path("spotcheck_04_dir")

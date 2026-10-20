@@ -98,3 +98,20 @@ def test_availability_basis(root):
     assert availability("2021-08-24", "day", "policy_note", "2021-22", None)[1] == BASIS_STORED
     assert availability("2022-03-31", "day", "policy_note", "2021-22", None) == (D(2022, 3, 31), BASIS_STORED)
     assert availability(None, None, "go", None, None) == (None, None)
+
+
+def test_fetch_date_bound(root):
+    from ept.dates import BASIS_FETCHED, availability
+
+    # © year 2026 (period end 2026-12-31) fetched 2026-10-08 -> the fetch date
+    assert availability("2026-01-01", "year", "policy_note", "2026-27", "Policy Note X",
+                        fetched_at="2026-10-08T05:00:00Z") == (D(2026, 10, 8), BASIS_FETCHED)
+    # undated with a fiscal year: the FY end is capped at the fetch date
+    assert availability(None, None, "policy_note", "2026-27", None, fetched_at="2026-10-07T01:00:00Z")[0] == D(2026, 10, 7)
+    # an earlier stored date is kept
+    assert availability("2021-06-01", "day", "go", None, None, fetched_at="2026-10-08T00:00:00Z") == (D(2021, 6, 1), "stored")
+    # never dates an undated document
+    assert availability(None, None, "cag_report", None, None, fetched_at="2026-10-08T00:00:00Z") == (None, None)
+    # interim budgets (outgoing government) are excluded from the fetch bound
+    assert availability(None, None, "budget_speech", "2026-27", "Agriculture Interim Budget Speech - 2026-2027",
+                        fetched_at="2026-10-08T00:00:00Z")[0] == D(2027, 3, 31)

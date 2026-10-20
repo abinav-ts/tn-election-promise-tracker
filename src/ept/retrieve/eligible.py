@@ -48,10 +48,12 @@ class ChunkAvail:
 
 def load_availability(conn: sqlite3.Connection, cfg: Config) -> list[ChunkAvail]:
     """Every chunk with its document's availability date, in chunk_id order."""
-    fyb = cfg.settings.date.fy_bound
+    d = cfg.settings.date
     docs: dict[str, tuple[str, Optional[dt.date], Optional[str]]] = {}
-    for r in conn.execute("SELECT doc_id, doc_type, doc_date, date_precision, fiscal_year, title FROM documents"):
-        a, basis = availability(r["doc_date"], r["date_precision"], r["doc_type"], r["fiscal_year"], r["title"], fyb)
+    for r in conn.execute("SELECT doc_id, doc_type, doc_date, date_precision, fiscal_year, title, fetched_at "
+                          "FROM documents"):
+        a, basis = availability(r["doc_date"], r["date_precision"], r["doc_type"], r["fiscal_year"], r["title"],
+                                d.fy_bound, r["fetched_at"], d.fetch_bound)
         docs[r["doc_id"]] = (r["doc_type"], a, basis)
     out = []
     for r in conn.execute("SELECT chunk_id, doc_id FROM chunks ORDER BY chunk_id"):

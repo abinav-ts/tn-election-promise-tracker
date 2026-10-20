@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.1** (2026-10-20; v1.0 = all questions settled with the user in the drafting conversation, §9; v1.1 = one non-blocking spot-check on the full run, D-080) |
+| Status | **APPROVED v1.1** (2026-10-20; v1.0 = all questions settled with the user in the drafting conversation, §9; v1.1 = one non-blocking spot-check on the full run, D-080; v1.2 (2026-10-21) = fetch-date bound D-082, one spot-check place per term for group e D-083) |
 | Global spec | `specs/00-global-spec.md` v0.11 (amended with this spec, §9.3). This spec references §7/§8 and redefines nothing; `retrievals` (§7) is filled as defined there |
 | Day plan | Day 7–8 in the plan; now Day 15–16 (2026-10-20/21). No buffer (STATUS) |
 | CLI | `python -m ept index` · `python -m ept retrieve [run\|report\|spotcheck]` (no subcommand = `run` → `report` → `spotcheck`) |
@@ -64,6 +64,8 @@ Every command takes `--term`; `index` and `run` take `--limit N` and `--force`; 
 - Every other document: `available_by = base` (CAG reports: their fiscal year is the audited period, published later; GOs: listing-dated; Governor's addresses: unclear fiscal-year meaning; state policies and scheme pages: no reliable fiscal year).
 
 Why it is safe: these documents are written for one year's demands for grants and are tabled within that fiscal year, also in election years (2016-17 notes in July 2016, 2021-22 in Aug–Sep 2021). Checked on the corpus: all 165 policy notes with a © year carry the fiscal year's first year, and all 14 budget speeches with a day date fall on or before their fiscal year's end. `min` means a strong stored date is never moved later, and the bound is never earlier than the true date, so it can only remove late (upper-bound) dates: a recall gain, not a leak. Effect: 87 policy notes and 16 performance budgets dated by Wayback after their fiscal year get the tighter date; 89 undated documents (70 policy notes, 17 performance budgets, 2 budget speeches) become dated. Stored `doc_date`s (stage 01) are unchanged.
+
+**Fetch-date bound (D-082, user 2026-10-21).** `available_by` is also capped at the document's fetch date (`fetched_at`): a document we downloaded on day F was released by F. It never dates an undated document, and titles containing "interim budget" are excluded (the outgoing government presents interim budgets, so a fetch date would wrongly place them in the new term). Effect: 61 documents of fiscal year 2026-27 (55 policy notes, 5 performance budgets, 1 budget speech; © 2026 or undated, fetched 2026-10-07/08), all of the TVK government (they cite Vijay or months after May 2026, or follow the election-year pattern: the new government tables the year's notes), become eligible at TVK month 5: 3,895 eligible chunks instead of 1,507. The Agriculture Interim Budget Speech 2026-27 stays undated-by-fetch. Completed terms are unchanged (every fetch date is after their `term_end`). Signature: `available_by(doc_date, date_precision, doc_type, fiscal_year, title, fy_bound=None, fetched_at=None, fetch_bound=None)`; basis `fetched`.
 
 Known limitation: D-018 keeps the latest file at a URL; a note re-uploaded with edits after its fiscal year would carry them. Policy notes are tabled once; logged, and spot-check group e looks at fiscal-year-dated chunks.
 
@@ -129,7 +131,7 @@ Items are indicator × cutoff. Problem score, groups in priority order:
 - **e.** date-sensitive: a selected chunk whose `available_by` comes from the fiscal-year bound, or lies within `near_cutoff_days` (31) before the cutoff: was the document really issued by then?
 - **f.** fill (if a–e give fewer than 7): a GO-place chunk that displaced a higher-ranked chunk.
 
-Spread: at most 3 per term and 3 per group, one item per promise, terms take turns within a group (D-074 practice). A sheet that already holds verdicts is archived, never overwritten (D-073). Each row: `item_id` (`{indicator_id}@{cutoff or full}`), `why_flagged`, `what_to_check`, `open` (path to its `.md`), empty `verdict` (`ok`/`wrong`/`unsure`) and `note`. The `.md` shows the indicator, promise text, queries, cutoff, and the 5 chunks (rank, title, `doc_type`, `available_by` and its basis, `chunk_id`, raw-file path, a 150-word snippet around the densest query-word window). Question for a–d and f: "Is at least one of the 5 chunks about this commitment (evidence for or against delivery)?"; for e: "Was this document plausibly issued by its available-by date?". ≤ 2 minutes per item. Verdicts converted as in stage 02 (STATUS).
+Spread: at most 3 per term and 3 per group, one item per promise, terms take turns within a group (D-074 practice). **One place per term is reserved for group e** (`reserve_per_term: {e: 1}`, D-083): with 3 terms × 3 items, groups a–c alone filled the sheet. Group e also covers chunks capped at their fetch date (D-082). A sheet that already holds verdicts is archived, never overwritten (D-073). Each row: `item_id` (`{indicator_id}@{cutoff or full}`), `why_flagged`, `what_to_check`, `open` (path to its `.md`), empty `verdict` (`ok`/`wrong`/`unsure`) and `note`. The `.md` shows the indicator, promise text, queries, cutoff, and the 5 chunks (rank, title, `doc_type`, `available_by` and its basis, `chunk_id`, raw-file path, a 150-word snippet around the densest query-word window). Question for a–d and f: "Is at least one of the 5 chunks about this commitment (evidence for or against delivery)?"; for e: "Was this document plausibly issued by its available-by date?". ≤ 2 minutes per item. Verdicts converted as in stage 02 (STATUS).
 
 **One human spot-check, on the full run (D-080).** The `--limit 20` run is an automatic smoke test that Claude Code checks itself (report leakage line 0, rows per indicator, per-document cap, GO rule, plausible evidence counts). The check does **not** block: Claude Code prepares the sheet, writes "spot-check pending" in STATUS and moves on. Stage 04 freezes nothing, so a `wrong` item is fixed by a re-run; the stage is closed (STATUS "Run checked" ✅, final commit) only after the verdicts are in. Verdicts may be collected on a phone review page (global §12.4 item 7). Pass rule: global §12.4.
 
@@ -139,6 +141,8 @@ date:
   fy_bound:                       # D-077
     doc_types: [policy_note, budget_speech]
     title_prefixes: {other: ["Performance Budget"]}
+  fetch_bound:                    # D-082
+    exclude_title_patterns: ["interim budget"]
 retrieve:
   landmarks_months: {AIADMK-2016: [5, 6, 12, 24, 36, 48], DMK-2021: [5, 6, 12, 24, 36, 48], TVK-2026: [5]}
   full_term: true                 # for every term with a term_end
@@ -157,7 +161,7 @@ retrieve:
     query_instruction: "Represent this sentence for searching relevant passages: "
   rrf: {k: 60, w_bm25: 1.0, w_dense: 1.0}
   index_shard: 2000
-  spotcheck: {per_term: 3, per_group: 3, snippet_words: 150, near_cutoff_days: 31}
+  spotcheck: {per_term: 3, per_group: 3, snippet_words: 150, near_cutoff_days: 31, reserve_per_term: {e: 1}}  # D-083
 paths:
   embeddings_dir: data/processed/embeddings
   bm25_tokens: data/processed/bm25_tokens.jsonl.gz
@@ -239,3 +243,5 @@ D-075 (cutoffs), D-076 (term window, undated excluded), D-077 (`available_by` wi
 ## 10. Spec vs build (in progress; completed when the stage closes)
 
 Build clarifications D-081 (Claude Code, 2026-10-21): fingerprint also covers the terms config and the row-shaping code; `ept index --limit N` is a timing run that writes nothing; per-pair diagnostics in `data/interim/retrieve_diag_04/{run_id}.jsonl` (path `retrieve_diag`) and `retrieve.tokens_per_word` 1.33 for sizing; the corpus snapshot is also capped at the latest `fetched_at`; a new run waits for a fresh `run_id` second; `ept retrieve report` exits 3 on a non-zero leakage line; stage 03's freeze regex fixed (DOTALL backtracking). Model revision pinned: `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`. Corpus counts at build: 97 documents tightened (policy notes 87, performance budgets 10) and 87 newly dated (policy notes 70, performance budgets 15, budget speeches 2), vs 103 / 89 in §4.2; D-077 counter-example scan: 0.
+
+v1.2 (2026-10-21, user decisions after the first sheet): fetch-date bound D-082 (TVK month 5: 3,895 eligible chunks; AIADMK and DMK retrievals byte-for-byte the same ranks), one reserved group-e place per term D-083. Run `retrieve-20261020T191347Z` replaces `retrieve-20261020T185504Z` (kept in the DB, superseded). After v1.2: 97 tightened, 78 newly dated (9 undated 2026-27 notes now count as fetch-capped), 61 fetch-capped documents.
