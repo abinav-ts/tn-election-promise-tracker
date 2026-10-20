@@ -14,6 +14,7 @@ REPO = Path(__file__).resolve().parents[1]
 FIXTURES = REPO / "tests" / "fixtures"
 
 os.environ["EPT_LLM_MOCK"] = "1"
+os.environ["EPT_EMBED_MOCK"] = "1"  # stage 04: hashing embedder, never a model download
 
 
 class NetworkBlocked(RuntimeError):

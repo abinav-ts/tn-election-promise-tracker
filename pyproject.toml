@@ -19,6 +19,10 @@ dependencies = [
     "pymupdf>=1.23",
     "rapidfuzz>=3",
     "google-genai>=1.0",
+    # stage 04 (spec 04 §3, D-079)
+    "numpy>=1.26",
+    "rank_bm25>=0.2.2",
+    "sentence-transformers>=3.0",  # pulls torch; imported lazily (tests use the mock embedder)
 ]
 
 [project.optional-dependencies]

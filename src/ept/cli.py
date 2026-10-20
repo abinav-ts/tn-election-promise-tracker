@@ -333,3 +333,91 @@ def classify_freeze(term: str = typer.Option(..., "--term")) -> None:
     from ept.classify.freeze import run_freeze
 
     typer.echo(f"classify freeze: {run_freeze(term)}")
+
+
+# --- stage 04: evidence retrieval (spec 04) ----------------------------------
+
+CutoffOpt = typer.Option(None, "--cutoff", help="'full' or a landmark month (repeatable); default all configured")
+RunOpt = typer.Option(None, "--run", help="A retrieve run_id (default: the latest)")
+
+
+@app.command("index")
+def index(
+    limit: Optional[int] = typer.Option(None, "--limit", help="Timing run: embed the first N chunks, write nothing"),
+    force: bool = ForceOpt,
+) -> None:
+    """Embedding index + BM25 token cache over every chunk (spec 04 §4.1, §4.5)."""
+    from ept import db
+    from ept.config import get_config
+    from ept.retrieve.dense import build_index
+
+    conn = db.connect()
+    stats = build_index(conn, get_config(), force=force, limit=limit)
+    conn.close()
+    _report("index", stats)
+
+
+retrieve_app = typer.Typer(help="Evidence retrieval (spec 04); no subcommand = run, report, spotcheck")
+app.add_typer(retrieve_app, name="retrieve")
+
+
+def _retrieve_run(term: Optional[str], limit: Optional[int], force: bool, cutoff: Optional[list[str]]) -> None:
+    from ept.retrieve.run import run_retrieve
+
+    _report("retrieve run", run_retrieve(term=term, limit=limit, force=force, cutoffs=cutoff or None))
+
+
+def _retrieve_report(term: Optional[str], run: Optional[str]) -> None:
+    from ept.retrieve.report import run_report
+
+    out = run_report(term, run)
+    typer.echo(f"retrieve report: {out}")
+    if out["leakage_violations"] or out["undated_rows"]:
+        typer.echo("retrieve report: STOP — the DB-wide eligibility check found violations (spec 04 §4.12): "
+                   "the user decides before the next step")
+        raise typer.Exit(3)
+
+
+def _retrieve_spotcheck(term: Optional[str], run: Optional[str]) -> None:
+    from ept.retrieve.spotcheck import run_spotcheck
+
+    typer.echo(f"retrieve spotcheck: {run_spotcheck(term, run)}")
+
+
+@retrieve_app.callback(invoke_without_command=True)
+def retrieve(
+    ctx: typer.Context,
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+    cutoff: Optional[list[str]] = CutoffOpt,
+) -> None:
+    """run -> report -> spotcheck."""
+    if ctx.invoked_subcommand is not None:
+        return
+    _retrieve_run(term, limit, force, cutoff)
+    _retrieve_report(term, None)
+    _retrieve_spotcheck(term, None)
+
+
+@retrieve_app.command("run")
+def retrieve_run(
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+    cutoff: Optional[list[str]] = CutoffOpt,
+) -> None:
+    """Top-k chunks per indicator × cutoff into `retrievals` (spec 04 §4.3–4.8)."""
+    _retrieve_run(term, limit, force, cutoff)
+
+
+@retrieve_app.command("report")
+def retrieve_report(term: Optional[str] = TermOpt, run: Optional[str] = RunOpt) -> None:
+    """reports/retrieval_04.md + .json (spec 04 §4.9)."""
+    _retrieve_report(term, run)
+
+
+@retrieve_app.command("spotcheck")
+def retrieve_spotcheck(term: Optional[str] = TermOpt, run: Optional[str] = RunOpt) -> None:
+    """The 7–10 most problematic items -> data/interim/spotcheck_04.csv + .md files (spec 04 §4.10)."""
+    _retrieve_spotcheck(term, run)
