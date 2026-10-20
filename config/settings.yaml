@@ -179,7 +179,7 @@ classify:
   min_query_words: 2
   max_query_words: 12
   max_indicator_words: 40
-  extra_common_words: []      # added to extract.common_words for check C3
+  extra_common_words: [MW, LPG]   # added to extract.common_words for check C3 (D-073: generic units, not names)
   vague_stop_share: 0.5       # D-070: a term above this stops the run for the user's decision
   goal_verbs: [improve, strengthen, promote, ensure]   # spot-check group e (specific promise with a goal verb)
   spotcheck:

@@ -2,241 +2,242 @@
  "AIADMK-2016": {
   "summary": {
    "term": "AIADMK-2016",
-   "covariates_version": "classify_promises v1.1",
+   "covariates_version": "classify_promises v1.2",
    "limit": null,
    "promises_in_term": 312,
    "promises": 312,
-   "classified": 308,
-   "unresolved": 4,
+   "classified": 312,
+   "unresolved": 0,
    "batches": 16,
-   "llm_calls": 41,
-   "cache_hits": 1,
-   "retried": 26,
-   "resolved_by_retry": 22,
-   "overrides": 0,
+   "llm_calls": 0,
+   "cache_hits": 38,
+   "retried": 22,
+   "resolved_by_retry": 21,
+   "overrides": 3,
    "extra_ids": 0,
-   "vague": 58,
-   "vague_share": 0.1883,
+   "vague": 70,
+   "vague_share": 0.2244,
    "headline": 25
   },
   "sector": {
-   "agriculture_fisheries": 56,
-   "industry_it_msme": 44,
-   "water_environment_energy": 41,
+   "agriculture_fisheries": 65,
+   "water_environment_energy": 38,
    "infrastructure_transport_housing": 25,
-   "caste_minority_welfare": 36,
-   "governance_law_state_rights": 21,
-   "culture_language_religion": 12,
+   "caste_minority_welfare": 35,
+   "governance_law_state_rights": 27,
+   "culture_language_religion": 10,
    "social_welfare": 18,
-   "education": 13,
-   "health": 14,
-   "employment_labour": 20,
-   "local_government": 8
+   "education": 14,
+   "health": 15,
+   "employment_labour": 21,
+   "industry_it_msme": 40,
+   "local_government": 4
   },
   "promise_type": {
-   "transfer_subsidy": 59,
-   "new_scheme": 13,
-   "scheme_expansion": 49,
-   "administrative": 82,
-   "infrastructure": 68,
-   "institution": 20,
+   "transfer_subsidy": 65,
+   "new_scheme": 10,
+   "scheme_expansion": 52,
+   "administrative": 84,
+   "infrastructure": 62,
+   "institution": 22,
    "law_regulation": 6,
    "advocacy": 11
   },
   "specificity": {
-   "specific": 250,
-   "vague": 58
+   "specific": 242,
+   "vague": 70
   },
   "cost_band": {
-   "high": 121,
-   "medium": 116,
-   "low": 31,
-   "none": 40
+   "high": 125,
+   "medium": 136,
+   "none": 32,
+   "low": 19
   },
   "union_basis": {
-   "none": 294,
-   "union_approval": 2,
+   "none": 297,
+   "union_approval": 3,
    "advocacy": 11,
    "union_subject": 1
   },
-  "continues_existing": 77,
-  "vague_share": 0.1883,
+  "continues_existing": 82,
+  "vague_share": 0.2244,
   "indicators_per_vague": {
-   "2": 58
+   "2": 67,
+   "3": 3
   },
-  "indicators": 366,
+  "indicators": 385,
   "headline": [
    {
     "rank": 1,
-    "promise_id": "AIADMK-2016-0160",
+    "promise_id": "AIADMK-2016-0107",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 2,
-    "promise_id": "AIADMK-2016-0223",
+    "promise_id": "AIADMK-2016-0108",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 3,
+    "promise_id": "AIADMK-2016-0109",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 4,
+    "promise_id": "AIADMK-2016-0111",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 5,
+    "promise_id": "AIADMK-2016-0114",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 6,
+    "promise_id": "AIADMK-2016-0117",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 7,
+    "promise_id": "AIADMK-2016-0118",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 8,
+    "promise_id": "AIADMK-2016-0223",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 9,
     "promise_id": "AIADMK-2016-0001",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 4,
+    "rank": 10,
     "promise_id": "AIADMK-2016-0002",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 5,
+    "rank": 11,
     "promise_id": "AIADMK-2016-0029",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 6,
+    "rank": 12,
     "promise_id": "AIADMK-2016-0032",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 7,
-    "promise_id": "AIADMK-2016-0035",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 8,
-    "promise_id": "AIADMK-2016-0039",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 9,
+    "rank": 13,
     "promise_id": "AIADMK-2016-0040",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 10,
-    "promise_id": "AIADMK-2016-0094",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 11,
-    "promise_id": "AIADMK-2016-0107",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 12,
-    "promise_id": "AIADMK-2016-0117",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 13,
-    "promise_id": "AIADMK-2016-0123",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
     "rank": 14,
-    "promise_id": "AIADMK-2016-0171",
+    "promise_id": "AIADMK-2016-0081",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 15,
-    "promise_id": "AIADMK-2016-0190",
+    "promise_id": "AIADMK-2016-0087",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 16,
-    "promise_id": "AIADMK-2016-0191",
+    "promise_id": "AIADMK-2016-0088",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 17,
-    "promise_id": "AIADMK-2016-0210",
+    "promise_id": "AIADMK-2016-0090",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 18,
-    "promise_id": "AIADMK-2016-0211",
+    "promise_id": "AIADMK-2016-0092",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 19,
-    "promise_id": "AIADMK-2016-0216",
+    "promise_id": "AIADMK-2016-0094",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 20,
-    "promise_id": "AIADMK-2016-0218",
+    "promise_id": "AIADMK-2016-0095",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 21,
-    "promise_id": "AIADMK-2016-0224",
+    "promise_id": "AIADMK-2016-0096",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 22,
-    "promise_id": "AIADMK-2016-0225",
+    "promise_id": "AIADMK-2016-0098",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 23,
-    "promise_id": "AIADMK-2016-0229",
+    "promise_id": "AIADMK-2016-0100",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 24,
-    "promise_id": "AIADMK-2016-0231",
+    "promise_id": "AIADMK-2016-0123",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 25,
-    "promise_id": "AIADMK-2016-0234",
+    "promise_id": "AIADMK-2016-0160",
     "signal": 1,
     "cost_band": "high",
     "headline": true
@@ -245,138 +246,139 @@
   "below_cap": [
    {
     "rank": 26,
-    "promise_id": "AIADMK-2016-0235",
+    "promise_id": "AIADMK-2016-0171",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 27,
-    "promise_id": "AIADMK-2016-0291",
+    "promise_id": "AIADMK-2016-0185",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 28,
-    "promise_id": "AIADMK-2016-0292",
+    "promise_id": "AIADMK-2016-0190",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 29,
-    "promise_id": "AIADMK-2016-0306",
+    "promise_id": "AIADMK-2016-0191",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 30,
-    "promise_id": "AIADMK-2016-0310",
+    "promise_id": "AIADMK-2016-0197",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    }
   ],
-  "signal_ge_1": 36,
+  "signal_ge_1": 52,
   "failures": {
    "by_rule": {
-    "C2": 5,
-    "C5": 1,
-    "C3": 36,
-    "C4": 1
+    "C5": 3,
+    "C3": 29
    },
    "resolved": {
     "retry alone": 29,
-    "UNRESOLVED": 14
+    "override": 3
    }
   }
  },
  "DMK-2021": {
   "summary": {
    "term": "DMK-2021",
-   "covariates_version": "classify_promises v1.1",
+   "covariates_version": "classify_promises v1.2",
    "limit": null,
    "promises_in_term": 667,
    "promises": 667,
-   "classified": 658,
-   "unresolved": 9,
+   "classified": 667,
+   "unresolved": 0,
    "batches": 33,
-   "llm_calls": 59,
-   "cache_hits": 3,
-   "retried": 29,
-   "resolved_by_retry": 20,
-   "overrides": 0,
+   "llm_calls": 0,
+   "cache_hits": 76,
+   "retried": 43,
+   "resolved_by_retry": 28,
+   "overrides": 15,
    "extra_ids": 0,
-   "vague": 37,
-   "vague_share": 0.0562,
+   "vague": 43,
+   "vague_share": 0.0645,
    "headline": 25
   },
   "sector": {
-   "governance_law_state_rights": 67,
-   "education": 31,
-   "culture_language_religion": 53,
-   "caste_minority_welfare": 28,
-   "employment_labour": 82,
-   "agriculture_fisheries": 95,
-   "water_environment_energy": 82,
-   "social_welfare": 50,
-   "industry_it_msme": 53,
-   "infrastructure_transport_housing": 74,
-   "health": 31,
-   "local_government": 12
+   "governance_law_state_rights": 60,
+   "education": 34,
+   "culture_language_religion": 56,
+   "employment_labour": 77,
+   "local_government": 15,
+   "industry_it_msme": 62,
+   "agriculture_fisheries": 93,
+   "social_welfare": 53,
+   "water_environment_energy": 80,
+   "caste_minority_welfare": 29,
+   "infrastructure_transport_housing": 77,
+   "health": 31
   },
   "promise_type": {
-   "advocacy": 55,
-   "administrative": 195,
-   "institution": 65,
-   "infrastructure": 143,
-   "law_regulation": 28,
-   "new_scheme": 22,
-   "transfer_subsidy": 103,
-   "scheme_expansion": 47
+   "advocacy": 54,
+   "administrative": 190,
+   "institution": 72,
+   "infrastructure": 144,
+   "law_regulation": 32,
+   "new_scheme": 25,
+   "transfer_subsidy": 107,
+   "scheme_expansion": 43
   },
   "specificity": {
-   "vague": 37,
-   "specific": 621
+   "vague": 43,
+   "specific": 624
   },
   "cost_band": {
-   "none": 105,
-   "low": 140,
-   "medium": 226,
-   "high": 187
+   "none": 110,
+   "low": 109,
+   "medium": 233,
+   "high": 215
   },
   "union_basis": {
-   "advocacy": 55,
-   "none": 580,
-   "union_approval": 5,
-   "union_subject": 18
+   "advocacy": 54,
+   "none": 584,
+   "union_approval": 8,
+   "union_subject": 19,
+   "union_funds": 1,
+   "presidential_assent": 1
   },
-  "continues_existing": 63,
-  "vague_share": 0.0562,
+  "continues_existing": 62,
+  "vague_share": 0.0645,
   "indicators_per_vague": {
-   "2": 37
+   "2": 41,
+   "3": 2
   },
-  "indicators": 695,
+  "indicators": 712,
   "headline": [
    {
     "rank": 1,
-    "promise_id": "DMK-2021-0015",
+    "promise_id": "DMK-2021-0242",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 2,
-    "promise_id": "DMK-2021-0125",
+    "promise_id": "DMK-2021-0414",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 3,
-    "promise_id": "DMK-2021-0242",
+    "promise_id": "DMK-2021-0424",
     "signal": 2,
     "cost_band": "high",
     "headline": true
@@ -404,21 +406,21 @@
    },
    {
     "rank": 7,
-    "promise_id": "DMK-2021-0053",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 8,
     "promise_id": "DMK-2021-0055",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 9,
+    "rank": 8,
     "promise_id": "DMK-2021-0077",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 9,
+    "promise_id": "DMK-2021-0092",
     "signal": 1,
     "cost_band": "high",
     "headline": true
@@ -453,84 +455,84 @@
    },
    {
     "rank": 14,
+    "promise_id": "DMK-2021-0109",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 15,
+    "promise_id": "DMK-2021-0111",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 16,
+    "promise_id": "DMK-2021-0118",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 17,
     "promise_id": "DMK-2021-0124",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 15,
+    "rank": 18,
+    "promise_id": "DMK-2021-0125",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 19,
+    "promise_id": "DMK-2021-0130",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 20,
     "promise_id": "DMK-2021-0155",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 16,
+    "rank": 21,
     "promise_id": "DMK-2021-0156",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 17,
+    "rank": 22,
     "promise_id": "DMK-2021-0165",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 18,
-    "promise_id": "DMK-2021-0175",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 19,
-    "promise_id": "DMK-2021-0178",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 20,
-    "promise_id": "DMK-2021-0208",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 21,
-    "promise_id": "DMK-2021-0212",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 22,
-    "promise_id": "DMK-2021-0213",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
     "rank": 23,
-    "promise_id": "DMK-2021-0214",
+    "promise_id": "DMK-2021-0166",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 24,
-    "promise_id": "DMK-2021-0215",
+    "promise_id": "DMK-2021-0167",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 25,
-    "promise_id": "DMK-2021-0216",
+    "promise_id": "DMK-2021-0175",
     "signal": 1,
     "cost_band": "high",
     "headline": true
@@ -539,291 +541,292 @@
   "below_cap": [
    {
     "rank": 26,
-    "promise_id": "DMK-2021-0220",
+    "promise_id": "DMK-2021-0177",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 27,
-    "promise_id": "DMK-2021-0247",
+    "promise_id": "DMK-2021-0178",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 28,
-    "promise_id": "DMK-2021-0252",
+    "promise_id": "DMK-2021-0200",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 29,
-    "promise_id": "DMK-2021-0286",
+    "promise_id": "DMK-2021-0208",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 30,
-    "promise_id": "DMK-2021-0291",
+    "promise_id": "DMK-2021-0212",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    }
   ],
-  "signal_ge_1": 84,
+  "signal_ge_1": 106,
   "failures": {
    "by_rule": {
-    "C3": 52,
-    "C5": 1
+    "C3": 41,
+    "C6": 4,
+    "C5": 9,
+    "C2": 2
    },
    "resolved": {
-    "retry alone": 21,
-    "UNRESOLVED": 32
+    "retry alone": 28,
+    "override": 28
    }
   }
  },
  "TVK-2026": {
   "summary": {
    "term": "TVK-2026",
-   "covariates_version": "classify_promises v1.1",
+   "covariates_version": "classify_promises v1.2",
    "limit": null,
    "promises_in_term": 695,
    "promises": 695,
-   "classified": 683,
-   "unresolved": 12,
+   "classified": 695,
+   "unresolved": 0,
    "batches": 33,
-   "llm_calls": 106,
-   "cache_hits": 3,
-   "retried": 76,
-   "resolved_by_retry": 64,
-   "overrides": 0,
+   "llm_calls": 0,
+   "cache_hits": 95,
+   "retried": 62,
+   "resolved_by_retry": 55,
+   "overrides": 12,
    "extra_ids": 0,
-   "vague": 70,
-   "vague_share": 0.1025,
+   "vague": 71,
+   "vague_share": 0.1022,
    "headline": 25
   },
   "sector": {
-   "governance_law_state_rights": 92,
-   "caste_minority_welfare": 31,
-   "culture_language_religion": 49,
-   "health": 30,
-   "water_environment_energy": 55,
-   "employment_labour": 48,
-   "social_welfare": 44,
-   "education": 49,
-   "industry_it_msme": 165,
-   "infrastructure_transport_housing": 40,
-   "agriculture_fisheries": 73,
-   "local_government": 7
+   "governance_law_state_rights": 88,
+   "caste_minority_welfare": 32,
+   "culture_language_religion": 50,
+   "health": 24,
+   "water_environment_energy": 54,
+   "social_welfare": 52,
+   "education": 57,
+   "industry_it_msme": 164,
+   "infrastructure_transport_housing": 37,
+   "employment_labour": 49,
+   "local_government": 10,
+   "agriculture_fisheries": 78
   },
   "promise_type": {
-   "advocacy": 26,
-   "administrative": 228,
-   "institution": 68,
-   "law_regulation": 22,
-   "infrastructure": 137,
-   "transfer_subsidy": 154,
-   "new_scheme": 38,
-   "scheme_expansion": 10
+   "advocacy": 27,
+   "administrative": 220,
+   "institution": 63,
+   "law_regulation": 20,
+   "infrastructure": 155,
+   "transfer_subsidy": 159,
+   "new_scheme": 37,
+   "scheme_expansion": 14
   },
   "specificity": {
-   "vague": 70,
-   "specific": 613
+   "vague": 71,
+   "specific": 624
   },
   "cost_band": {
-   "none": 115,
-   "medium": 246,
-   "low": 85,
-   "high": 237
+   "none": 97,
+   "medium": 251,
+   "low": 86,
+   "high": 261
   },
   "union_basis": {
-   "advocacy": 26,
-   "none": 654,
-   "union_approval": 2,
-   "union_funds": 1
+   "advocacy": 27,
+   "none": 661,
+   "union_approval": 7
   },
-  "continues_existing": 16,
-  "vague_share": 0.1025,
+  "continues_existing": 18,
+  "vague_share": 0.1022,
   "indicators_per_vague": {
-   "2": 65,
-   "3": 5
+   "2": 69,
+   "3": 2
   },
-  "indicators": 758,
+  "indicators": 768,
   "headline": [
    {
     "rank": 1,
-    "promise_id": "TVK-2026-0214",
+    "promise_id": "TVK-2026-0089",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 2,
-    "promise_id": "TVK-2026-0219",
+    "promise_id": "TVK-2026-0216",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 3,
-    "promise_id": "TVK-2026-0556",
+    "promise_id": "TVK-2026-0259",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 4,
-    "promise_id": "TVK-2026-0558",
+    "promise_id": "TVK-2026-0556",
     "signal": 2,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 5,
-    "promise_id": "TVK-2026-0680",
-    "signal": 2,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 6,
     "promise_id": "TVK-2026-0087",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 7,
+    "rank": 6,
     "promise_id": "TVK-2026-0088",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 8,
-    "promise_id": "TVK-2026-0089",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 9,
+    "rank": 7,
     "promise_id": "TVK-2026-0090",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 10,
+    "rank": 8,
     "promise_id": "TVK-2026-0091",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 11,
+    "rank": 9,
     "promise_id": "TVK-2026-0095",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 12,
+    "rank": 10,
     "promise_id": "TVK-2026-0105",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 13,
+    "rank": 11,
     "promise_id": "TVK-2026-0119",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 14,
+    "rank": 12,
     "promise_id": "TVK-2026-0120",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 15,
+    "rank": 13,
     "promise_id": "TVK-2026-0122",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 16,
+    "rank": 14,
     "promise_id": "TVK-2026-0124",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 17,
-    "promise_id": "TVK-2026-0125",
-    "signal": 1,
-    "cost_band": "high",
-    "headline": true
-   },
-   {
-    "rank": 18,
+    "rank": 15,
     "promise_id": "TVK-2026-0132",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 19,
+    "rank": 16,
     "promise_id": "TVK-2026-0133",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 20,
+    "rank": 17,
     "promise_id": "TVK-2026-0140",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 21,
+    "rank": 18,
     "promise_id": "TVK-2026-0145",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 22,
+    "rank": 19,
     "promise_id": "TVK-2026-0154",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 23,
+    "rank": 20,
+    "promise_id": "TVK-2026-0173",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 21,
     "promise_id": "TVK-2026-0176",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
+    "rank": 22,
+    "promise_id": "TVK-2026-0177",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 23,
+    "promise_id": "TVK-2026-0195",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
     "rank": 24,
-    "promise_id": "TVK-2026-0215",
+    "promise_id": "TVK-2026-0206",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
     "rank": 25,
-    "promise_id": "TVK-2026-0216",
+    "promise_id": "TVK-2026-0214",
     "signal": 1,
     "cost_band": "high",
     "headline": true
@@ -832,56 +835,57 @@
   "below_cap": [
    {
     "rank": 26,
-    "promise_id": "TVK-2026-0220",
+    "promise_id": "TVK-2026-0215",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 27,
-    "promise_id": "TVK-2026-0234",
+    "promise_id": "TVK-2026-0218",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 28,
-    "promise_id": "TVK-2026-0236",
+    "promise_id": "TVK-2026-0219",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 29,
-    "promise_id": "TVK-2026-0237",
+    "promise_id": "TVK-2026-0221",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    },
    {
     "rank": 30,
-    "promise_id": "TVK-2026-0239",
+    "promise_id": "TVK-2026-0222",
     "signal": 1,
     "cost_band": "high",
     "headline": false
    }
   ],
-  "signal_ge_1": 102,
+  "signal_ge_1": 107,
   "failures": {
    "by_rule": {
-    "C5": 12,
-    "C3": 71,
-    "C6": 2,
-    "C2": 14
+    "C3": 46,
+    "C5": 3,
+    "C6": 8,
+    "C2": 19,
+    "C4": 1
    },
    "resolved": {
-    "retry alone": 68,
-    "UNRESOLVED": 31
+    "retry alone": 65,
+    "override": 12
    }
   }
  },
  "_meta": {
-  "prompt_version": "1.1",
+  "prompt_version": "1.2",
   "vague_stop_exceeded": []
  }
 }

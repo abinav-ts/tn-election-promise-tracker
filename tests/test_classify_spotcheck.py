@@ -41,7 +41,8 @@ def sheet_input(root, conn):
         (tdir / "units.jsonl").write_text("")
         for r in recs:
             db.upsert(conn, Promise(promise_id=r["promise_id"], term_id=t, text="Improve the roads.",
-                                    source_text="x", source_lang="en", page=1, parent_group=f"{t}-U0001"))
+                                    source_text="x", source_lang="en", page=1,
+                                    parent_group=r["promise_id"].replace("-0", "-U")))
     return root
 
 
@@ -86,3 +87,14 @@ def test_a_reviewed_sheet_is_archived_not_overwritten(sheet_input):
     with open(second["archived"], newline="") as f:
         assert next(csv.DictReader(f))["verdict"] == "ok"
     assert run_spotcheck()["archived"] is None  # a blank sheet is simply replaced
+
+
+def test_select_interleaves_terms_and_takes_one_per_unit():
+    from ept.classify.spotcheck import Item, select
+
+    items = [Item(f"A-{i}", "A", "a", 1.0, "", f"A-U{i}") for i in range(3)]
+    items += [Item(f"B-{i}", "B", "a", 1.0, "", f"B-U{i}") for i in range(3)]
+    items += [Item("C-1", "C", "c", 1.0, "", "C-U1"), Item("C-2", "C", "c", 0.9, "", "C-U1"),
+              Item("C-3", "C", "c", 0.5, "", "C-U2")]
+    out = select(items, 10, per_term=3, per_group=3)
+    assert [i.promise_id for i in out] == ["A-0", "B-0", "A-1", "C-1", "C-3"]

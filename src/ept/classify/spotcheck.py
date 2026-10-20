@@ -9,8 +9,9 @@ Problem groups, in priority order:
   e. specificity outliers: `specific` with a goal verb (`classify.goal_verbs`), `vague` with a number or a
      capitalised name;
   f. fill: sector `other`, `cost_band` high with an administrative/regulatory/advocacy type, 4 indicators.
-At most `classify.spotcheck.per_term` items per term and `per_group` per group, one row per promise;
-7–10 rows; `verdict` and `note` empty. A rejected first answer is always labelled as rejected (D-061).
+At most `classify.spotcheck.per_term` items per term and `per_group` per group, one row per promise and
+per unit; within a group the terms take turns (best item of each term first), so ties don't fill a group
+from one term; 7–10 rows; `verdict` and `note` empty. A rejected first answer is always labelled as rejected (D-061).
 """
 
 from __future__ import annotations
@@ -60,6 +61,7 @@ class Item:
     group: str
     score: float
     why: str
+    unit_id: str = ""
 
 
 def _covariates(r: dict[str, Any]) -> str:
@@ -112,7 +114,9 @@ def build(cfg: Config, terms: list[str], texts: dict[str, dict[str, Any]]) -> li
             rules = {rule_of(f) for f in r.get("first_failures") or []} | {rule_of(f) for f in r.get("failures") or []}
             unresolved = 1.0 if r.get("failures") else 0.0
             if "C3" in rules:
-                items.append(Item(pid, term, "a", 1 + unresolved, "C3 (possible leak): " + _first(r)))
+                names = sum(len(f.split("|")[0].split(":")[-1].split(",")) for f in r.get("first_failures") or []
+                            if rule_of(f) == "C3")
+                items.append(Item(pid, term, "a", 1 + unresolved + names / 100, "C3 (possible leak): " + _first(r)))
             elif r.get("retried") or r.get("origin") == "override":
                 why = _first(r) if r.get("retried") else "answer replaced by an override row"
                 items.append(Item(pid, term, "b", 1 + unresolved, why))
@@ -147,16 +151,27 @@ def build(cfg: Config, terms: list[str], texts: dict[str, dict[str, Any]]) -> li
 
 
 def select(items: list[Item], max_items: int, per_term: int, per_group: int) -> list[Item]:
-    ranked = sorted(items, key=lambda it: (GROUPS.index(it.group), -it.score, it.promise_id))
+    by_score = sorted(items, key=lambda it: (-it.score, it.promise_id))
+    turn: dict[tuple[str, str], int] = {}
+    order: dict[int, int] = {}
+    for it in by_score:  # the k-th best item of a term within its group gets turn k
+        key = (it.group, it.term)
+        order[id(it)] = turn.get(key, 0)
+        turn[key] = order[id(it)] + 1
+    ranked = sorted(items, key=lambda it: (GROUPS.index(it.group), order[id(it)], -it.score, it.promise_id))
     out: list[Item] = []
     n_term: dict[str, int] = {}
     n_group: dict[str, int] = {}
     seen: set[str] = set()
+    units: set[str] = set()
     for it in ranked:
-        if it.promise_id in seen or n_term.get(it.term, 0) >= per_term or n_group.get(it.group, 0) >= per_group:
+        if (it.promise_id in seen or (it.unit_id and it.unit_id in units) or n_term.get(it.term, 0) >= per_term
+                or n_group.get(it.group, 0) >= per_group):
             continue
         out.append(it)
         seen.add(it.promise_id)
+        if it.unit_id:
+            units.add(it.unit_id)
         n_term[it.term] = n_term.get(it.term, 0) + 1
         n_group[it.group] = n_group.get(it.group, 0) + 1
         if len(out) == max_items:
@@ -171,7 +186,10 @@ def run_spotcheck(term: Optional[str] = None) -> dict[str, Any]:
     conn = db.connect()
     texts = {r["promise_id"]: dict(r) for r in conn.execute("SELECT * FROM promises")}
     conn.close()
-    chosen = select(build(cfg, terms, texts), s.max_items, c.per_term, c.per_group)
+    items = build(cfg, terms, texts)
+    for it in items:
+        it.unit_id = texts[it.promise_id]["parent_group"] or ""
+    chosen = select(items, s.max_items, c.per_term, c.per_group)
     recs = {r["promise_id"]: r for t in terms for r in read_interim(cfg, t)}
     units = {u.unit_id: u for t in terms for u in read_units(cfg, t)}
     profiles = cfg.profiles()

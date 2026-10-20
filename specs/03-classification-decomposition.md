@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.1** (2026-10-20; v1.0 approved 2026-10-18 after OQ-1–OQ-4; v1.1 = limit-20 spot-check outcome: front-matter headline point dropped, C3 allows same-unit promise names and acronyms, build clarifications; D-071, D-072) |
+| Status | **APPROVED v1.2** (2026-10-20; v1.0 approved 2026-10-18 after OQ-1–OQ-4; v1.1 = limit-20 spot-check outcome: front-matter headline point dropped, C3 allows same-unit promise names and acronyms, build clarifications; v1.2 = full-run outcome: C3 acronyms in any case, names capitalised in queries, C3 stop rule counts unresolved promises; D-071–D-073) |
 | Global spec | `specs/00-global-spec.md` v0.9 (amended with this spec, §9.3). This spec references §7/§8 and redefines nothing. It fills in the covariate *values* that §7 leaves to spec 03. Global amendments made on approval: listed in §9.3 |
 | Day plan | Day 6 in the plan; now Day 13 (2026-10-18). No buffer is left (STATUS) |
 | CLI | `python -m ept classify [run\|report\|spotcheck\|freeze]` (no subcommand = `run` → `report` → `spotcheck`) |
 | Resolves | Q-05 (covariate rubrics) |
-| Decisions | D-064–D-072 (`docs/decisions/log.md`) |
+| Decisions | D-064–D-073 (`docs/decisions/log.md`) |
 
 ---
 
@@ -134,8 +134,8 @@ A stated amount, when present, guides the band, but the band never invents an am
 - **C2 indicators:** `specific` → model returned no `indicators` and 2–4 `search_queries`; `vague` → 2–4 indicators, each with 2–4 queries.
 - **C3 names and numbers (global §9.1, rule 6):** in every indicator text and every query:
   - every digit group occurs in the promise `text`;
-  - every capitalised token that isn't sentence-initial and isn't in `extract.common_words` (reused, with additions under `classify.extra_common_words`) occurs in the promise `text`, its `source_text` (English units), its `section` or the English `text` of another promise of the same unit, or is an acronym (initials of a capitalised phrase, small joining words skipped) of a phrase in those (D-072: limit-20 spot-check, "Cauvery" named in a sibling promise, "NEP" for "New Education Policy"; all promise texts are English, so the rule is the same for every term). An indicator is a sentence, so its first token is exempt; a query is not, so none of its tokens is (D-071).
-  - Lower-case query words are not checked; they carry no names. A failure here is a possible model-memory leak and goes to the top of the spot-check.
+  - every capitalised token that isn't sentence-initial and isn't in `extract.common_words` (reused, with additions under `classify.extra_common_words`) occurs in the promise `text`, its `source_text` (English units), its `section` or the English `text` of another promise of the same unit, or is an acronym (initials of a phrase in any case, small joining words skipped, "&" inside a name ignored; D-073) of a phrase in those (D-072: limit-20 spot-check, "Cauvery" named in a sibling promise, "NEP" for "New Education Policy"; all promise texts are English, so the rule is the same for every term). An indicator is a sentence, so its first token is exempt; a query is not, so none of its tokens is (D-071).
+  - Lower-case query words are not checked; they carry no names. The prompt therefore requires every name in an indicator or query to be written with capitals (prompt v1.2, D-073): v1.1 asked for lower-case queries, and transliterated scheme names from Tamil unit headings passed C3 unseen. A failure here is a possible model-memory leak and goes to the top of the spot-check.
 - **C4 cues:** `continues_existing = true` ⇒ `continues_cue` is non-empty and a verbatim substring (after NFC, whitespace and quote normalisation, as V1 in stage 02) of the promise `text` or the unit text; `false` ⇒ cue empty. `union_dependent = true` ⇔ `union_basis ≠ none`.
 - **C5 consistency:** `promise_type = advocacy` ⇒ `union_dependent` with basis `advocacy`; `promise_type = scheme_expansion` ⇒ `continues_existing`.
 - **C6 shape limits:** a model-written indicator ≤ `max_indicator_words` words (a self indicator is the promise text, which stage 02 allowed up to 60 words; D-071); each query `min_query_words`–`max_query_words` words; `headline_signal` in 0–2.
@@ -186,7 +186,7 @@ Spread: at most 3 per term and at most 3 per group (the global rule; three terms
 3. `--limit 20` per term on `gemini-3.5-flash-lite`, then `spotcheck`. **Human spot-check (7–10 items).** Fix, log. ✔ `stage 03: limit-20 run`
 4. Full run (≈ 85 calls), report, a **fresh** spot-check over the full output, fixes, `freeze` each term. STATUS, spec-vs-build diff, deviations logged. ✔ `stage 03: classification and decomposition`
 
-Stop and ask the user if: the vague share exceeds 50 % in any term (it changes the cost of stage 04/05 and the cut order); C3 fails on more than 5 % of promises after one prompt revision; the run would take more than one day's quota; or any rule in §5 would have to bend.
+Stop and ask the user if: the vague share exceeds 50 % in any term (it changes the cost of stage 04/05 and the cut order); C3 leaves more than 5 % of promises unresolved after the retry, after one prompt revision (D-073: the unresolved rate counts, not the first-answer rate); the run would take more than one day's quota; or any rule in §5 would have to bend.
 
 ## 5. Leakage warning
 
@@ -248,6 +248,7 @@ Rules from the global warning box that apply to this stage:
 - **D-068** · headline = model signal from text + deterministic cap 25 per term (§4.5); signal 0–2 since D-072.
 - **D-071** · build clarifications (aliases, C3 on queries, C6 self exemption, extra config keys, stage 02 reload keeps covariates).
 - **D-072** · limit-20 spot-check outcome: front-matter point dropped, C3 same-unit names + acronyms, no party tag in queries, prompt v1.1.
+- **D-073** · full-run outcome: C3 stop rule counts unresolved promises; acronyms in any case; 14 approved overrides; names capitalised in queries (prompt v1.2) and a full re-run; a reviewed spot-check sheet is archived, never overwritten.
 - **D-069** · audit fields (`union_basis`, `continues_cue`, `headline_signal`, `headline_rank`) live only in the classification snapshot and reports, not in §7 tables (they are stage artefacts, like `extract_dropped_02.csv`).
 
 ### 9.3 Global spec amendments (v0.9, made with this spec)
