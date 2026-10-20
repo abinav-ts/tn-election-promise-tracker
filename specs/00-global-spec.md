@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**; **v0.10 (2026-10-20) = §9.1 C3 wording after the stage 03 limit-20 spot-check, D-072**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**; **v0.10 (2026-10-20) = §9.1 C3 wording after the stage 03 limit-20 spot-check, D-072**; **v0.11 (2026-10-20) = spec 04 approved: availability date with fiscal-year bound, term-bounded retrieval windows, landmark months, Q-06 resolved, D-075–D-079; §12 spot-checks: one per stage, on the full run, non-blocking, phone review page, D-080**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -112,7 +112,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 | 01 | Corpus collection (done) | `ept crawl`, `ept parse`, `ept coverage`, `ept spotcheck`, `ept leads` | `documents`, `chunks`, coverage report, Tamil pairing, tracker leads |
 | 02 | Promise extraction (done 2026-10-15: 1,674 promises frozen) | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
 | 03 | Classification & decomposition (done 2026-10-20: 1,674 promises, 1,863 indicators, frozen) | `ept classify` (`run`, `report`, `spotcheck`, `freeze`) | covariates, `indicators` with search queries (frozen per term in `data/frozen/classification_{term}.jsonl`, D-064) |
-| 04 | Evidence retrieval | `ept index`, `ept retrieve` | `retrievals` |
+| 04 | Evidence retrieval (spec 04 approved 2026-10-20) | `ept index`, `ept retrieve` (`run`, `report`, `spotcheck`) | `retrievals`: top 5 chunks per indicator × cutoff (landmarks + full term, D-075, D-078), embedding index, retrieval report |
 | 05 | Judgment | `ept judge`, `ept judge export/import` | `verdicts` |
 | 06 | Evaluation | `ept evaluate` | metrics + error analysis |
 | 07 | Survival modelling | `ept model` | curves, hazard ratios, backtest, projection |
@@ -201,6 +201,7 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 - **Secondary backtest (forward, built later):** fit on AIADMK-2016, predict DMK-2021. Comparing the two directions shows how stable the model is across terms.
 - **TVK projection:** fitted on both completed terms. Whether to weight DMK-2021 more heavily (recency) is decided in stage 07 using the backtest results.
 - Landmark (cutoff) judging runs are done first for AIADMK-2016 (the primary backtest target), then for DMK-2021 when the forward backtest is built.
+- **Landmarks (D-075):** months 5, 6, 12, 24, 36, 48 for AIADMK-2016 and DMK-2021 (plus full term); TVK-2026 at month 5, its current month at the corpus snapshot. Cutoff = `add_months(sworn_in, m)`. The TVK projection itself is a continuous curve from the survival models; landmarks are where it is validated and where the observed state is fixed.
 
 ## 9. Cross-cutting rules
 
@@ -209,8 +210,8 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 |---|---|
 | Judge sees only supplied chunks; uncited E1 verdicts rejected | Prompt wording + import validation (stage 05) |
 | Strong-judge sessions: no web search, no other files | Handoff protocol §6.2; written in the session instructions |
-| Cutoff runs: no chunk whose `period_end(doc_date, date_precision)` > cutoff (never compare the stored first-of-period date, §9.3); undated chunks excluded | Retrieval filter using `ept.dates.period_end` + unit test (stage 04) |
-| `realisation_date` ≤ the latest `period_end(doc_date, date_precision)` among cited chunks, and ≥ `sworn_in` | Verdict validation (stage 05) |
+| Cutoff runs: no chunk whose `available_by` > cutoff, where `ept.dates.available_by` = `period_end(doc_date, date_precision)`, tightened to the fiscal-year end for policy notes, performance budgets and budget speeches (D-077; never compare the stored first-of-period date, §9.3); undated chunks excluded; every run is also bounded below by `sworn_in` and, for full-term runs, above by `term_end` (D-076) | Retrieval filter using `ept.dates.available_by` + unit tests + DB-wide check (stage 04) |
+| `realisation_date` ≤ the latest `available_by` among cited chunks (D-077), and ≥ `sworn_in` | Verdict validation (stage 05) |
 | Promise text from manifesto text only: no number or name absent from the source span; few-shot examples invented, never from in-scope manifestos | Verbatim/number/name checks V1–V3 + spot-check (stage 02) |
 | Vision transcription (Gemini or Cowork fallback): only the prompt and page images; no web search, no knowledge-based "corrections" | Prompt + handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
 | Promise list frozen per term after sign-off; later knowledge can't reshape it | `data/frozen/promises_{term}.jsonl` + refusal to re-extract (stage 02) |
@@ -232,7 +233,8 @@ ISO `YYYY-MM-DD`. Partial dates are stored as the first day of the period plus `
 - It is the date from which the document is treated as available. Sources, strongest first: `manual` → `listing` (official listing, e.g. GOs) → `document_text` (issue date in the front matter, or a © year at year precision, D-024) → `filename` → `wayback_capture` → `none`.
 - When both a listing date and a day-precise issue date exist, the **later** one is stored (D-032), so a document is never available before it was issued.
 - `wayback_capture` (first capture of the exact bytes kept, D-018/D-023) and © year dates are **upper bounds**: the document may have been public earlier, so it can appear late in a cutoff run (a recall cost, never a leak).
-- `none` (220 of 9,254 documents) = undated: excluded from every cutoff run, usable only in full-term judging.
+- `none` (220 of 9,254 documents) = undated: excluded from every cutoff run and, since spec 04, from full-term runs too (every run is bounded to the term, D-076), unless the fiscal-year bound below gives it a date.
+- **Availability date (D-077):** every cutoff or term comparison uses `ept.dates.available_by`: the stored date's `period_end`, except that for policy notes, performance budgets and budget speeches it is never later than the end of the document's `fiscal_year` (they are tabled within that year; consistent on all 179 such documents with an independent date). For such an undated document it is the fiscal-year end. Stored `doc_date`s are not changed.
 - Every weak or suspicious date is listed in `data/interim/date_review.csv` with a reason.
 
 ### 9.4 Reproducibility
@@ -271,19 +273,19 @@ Election-Promise-Tracking/
 
 ## 11. Tech stack (defaults; a stage spec may change one with a logged reason)
 
-Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · PyMuPDF (+ Tesseract fallback, `eng` + `tam`) · VANAVIL→Unicode table vendored from Open-Tamil `txt2unicode` (GPL v3+, D-035) · `google-genai` (bulk backend, D-037) · rapidfuzz (CER and token-set similarity, D-046) · rank_bm25 · sentence-transformers + FAISS · lifelines · pandas · pytest. **Licence:** code under GNU GPL v3-or-later (`LICENSE`, `THIRD_PARTY_NOTICES.md`; D-043); licences for data, website text and whitepaper are decided in spec 08. Website: static HTML/JS (Vite optional) with a charting library, data from exported JSON, hosted on GitHub Pages or Netlify (chosen in spec 08).
+Python 3.10+ · typer · pydantic v2 · SQLite · requests + BeautifulSoup · PyMuPDF (+ Tesseract fallback, `eng` + `tam`) · VANAVIL→Unicode table vendored from Open-Tamil `txt2unicode` (GPL v3+, D-035) · `google-genai` (bulk backend, D-037) · rapidfuzz (CER and token-set similarity, D-046) · rank_bm25 · sentence-transformers (`BAAI/bge-small-en-v1.5`) with exact numpy search (FAISS dropped, D-079) · lifelines · pandas · pytest. **Licence:** code under GNU GPL v3-or-later (`LICENSE`, `THIRD_PARTY_NOTICES.md`; D-043); licences for data, website text and whitepaper are decided in spec 08. Website: static HTML/JS (Vite optional) with a charting library, data from exported JSON, hosted on GitHub Pages or Netlify (chosen in spec 08).
 
 ## 12. Working method
 
 ### 12.1 Spec-first, one stage at a time
-For each stage: Claude drafts the spec → **unresolved questions go back to Abinav before the spec is final** → spec approved → code + tests → a small real run (`--limit 20`) → **human spot-check of the 7–10 most problematic items** (§12.4) → full run → STATUS updated.
+For each stage: Claude drafts the spec → **unresolved questions go back to Abinav before the spec is final** → spec approved → code + tests → a small real run (`--limit 20`, an automatic smoke test checked by Claude) → full run → **human spot-check of the full run's 7–10 most problematic items** (§12.4; non-blocking, D-080) → STATUS updated.
 
 Every stage spec uses this template: Purpose · Inputs · Outputs · Behaviour · **Leakage warning** · Acceptance criteria · Tests · Out of scope · Open questions.
 
 ### 12.2 Definition of done (per stage)
 1. Acceptance criteria in the stage spec pass.
 2. Tests pass offline (mock LLM, fixtures).
-3. A `--limit 20` real run was done, and its 7–10 most problematic items were spot-checked by a human (§12.4).
+3. A `--limit 20` real run was done and checked by Claude (smoke test), and the full run's 7–10 most problematic items were spot-checked by a human (§12.4). The stage counts as done only after that check (D-080).
 4. The spec matches what was built; deviations are logged in `docs/decisions/`.
 
 ### 12.3 Day plan (Day 1 = 2026-10-06)
@@ -327,6 +329,8 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 3. **Sheet.** The stage writes `data/interim/spotcheck_{stage}.csv` (one row per item: `item_id`, `why_flagged`, `what_to_check`, a link or path to open, and empty `verdict` (`ok` / `wrong` / `unsure`) and `note` columns). Claude prepares everything so that each item takes ≤ 2 minutes; the whole check is ≤ 15 minutes.
 4. **Pass rule.** Because these are worst cases, errors are expected; there is no percentage threshold. The stage passes when every `wrong` item has a logged root cause and is either fixed (re-check only the fixed items) or recorded as a known limitation in STATUS. If **more than half** are `wrong`, the stage is not done: fix the cause, re-run, and draw a fresh list.
 5. **What this does not measure.** A worst-case sample says nothing about overall accuracy. Unbiased accuracy comes only from the gold set in stage 06, which this rule does not change.
+6. **One check per stage, non-blocking (D-080).** The human check is drawn from the **full** run; the `--limit 20` run is an automatic smoke test. A pending check does not stop the pipeline: Claude Code prepares the sheet, marks "spot-check pending" in STATUS and moves on. Only **irreversible** steps wait for the verdicts: freezing a term, running Claude (strong-judge) batches, and closing the stage. A stage spec may add one earlier check where a later fix would be irreversible (stage 05: before any strong-judge batch, because Claude usage can't be recovered).
+7. **Phone review (D-080).** The CSV stays the record. On request, Claude (in a Cowork/claude.ai session) publishes the sheet as a private page with one item per screen, the evidence with matched words highlighted, and ok / wrong / unsure buttons plus a note; verdicts are saved as they are tapped, so a check can be spread over short slots. Claude then writes the verdicts back into the CSV's `verdict` and `note` columns, in the user's words.
 
 ## 13. Risks
 
@@ -335,7 +339,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Older documents removed from government sites | Wayback Machine (incl. pre-migration URLs); manual drop. Stage 01: 193 documents are gone and were never archived; gaps listed in `reports/coverage_01.md` |
 | Judge answers from memory, not evidence | §9.1 rules; citation spot-check |
 | Wrong or missing document dates break cutoffs | Dates required for evidence; date coverage in the corpus report. Stage 01: 95.6 % dated to the day, 220 undated |
-| Conservative (upper-bound) dates hide evidence at early landmarks | Policy notes and CAG reports are often Wayback-dated months or years late. Stage 04 reports evidence availability per landmark; stage 07 states it as a limitation |
+| Conservative (upper-bound) dates hide evidence at early landmarks | Policy notes and CAG reports are often Wayback-dated months or years late. Stage 04 reports evidence availability per landmark; stage 07 states it as a limitation. The fiscal-year bound (D-077) removes most of this for policy notes, performance budgets and budget speeches |
 | Free-tier rate limits slow bulk runs | Caching, batching (25 units per call), per-model client-side quota tracking, `--limit` runs; flash-lite's 500 rpd covers stage-scale volumes; Kaggle as a fallback backend. Stage 05 bulk judging still needs batching designed in |
 | Pro usage limits slow strong judging | Subset only (§6.3); batches sized to fit one session |
 | Only two completed terms; independence assumption | Promise-level modelling, wide intervals, both backtest directions, limitations stated on the site |
@@ -355,7 +359,7 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Q-04 | ✅ Resolved in spec 02: what counts, splitting S1–S5, drop-later-duplicate with a log, frozen IDs (D-038, D-039) | 02 |
 | Q-10 | ✅ Resolved in spec 02: font mapping for legacy fonts, OCR + gate + Gemini vision (Cowork last resort) for scans, translation inside the extraction call (D-035, D-036) | 02 |
 | Q-05 | ✅ Resolved in spec 03: 13 sectors, 8 promise types, judged cost bands, headline cap 25 per term (D-064–D-070) | 03 |
-| Q-06 | Embedding model; number of chunks per judgment (affects Claude usage) | 04 |
+| Q-06 | ✅ Resolved in spec 04: `BAAI/bge-small-en-v1.5` (local); 5 chunks per indicator, the same for both judges (D-078, D-079) | 04 |
 | Q-07 | Strong-judge batch size that fits within one Cowork session | 05 |
 | Q-08 | Second annotator for agreement (none available solo → use the strong judge vs. bulk model as a proxy, or re-label a subset after a gap of several days) | 06 |
 | Q-09 | Hosting (GitHub Pages vs. Netlify) and charting library | 08 |

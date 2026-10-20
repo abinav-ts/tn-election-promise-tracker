@@ -2,7 +2,7 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 15 of 20 (deadline 2026-10-25). Stages 01–03 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695), each with covariates and **1,863 indicators** (with search queries), classification **frozen** 2026-10-20. Next: spec 04 (evidence retrieval) in Cowork.
+**Today's position:** Day 15 of 20 (deadline 2026-10-25). Stages 01–03 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695), each with covariates and **1,863 indicators** (with search queries), classification **frozen** 2026-10-20. **Spec 04 (evidence retrieval) approved v1.1** 2026-10-20 (D-075–D-080; spot-checks now one per stage, on the full run, non-blocking). Next: build stage 04 in Claude Code.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
@@ -11,7 +11,7 @@ _Updated at the end of every session. Read this first._
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
 | 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
 | 03 | Classification & decomposition | ✅ v1.3 (D-064–D-074) | ✅ | ✅ 240 | ✅ | ✅ |
-| 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 04 | Evidence retrieval | ✅ v1.1 (D-075–D-080) | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 07 | Survival modelling | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -29,7 +29,9 @@ _Updated at the end of every session. Read this first._
 - [x] Stage 02 full run, spot-checks (limit-20 and full) and freeze, 2026-10-13/15.
 
 ## Next step
-Open a new conversation in **Claude Cowork** to draft **spec 04 (evidence retrieval)**: BM25 over the indicators' `search_queries` + dense retrieval over indicator text (D-009, Q-06: embedding model and chunks per judgment), the cutoff filter with `ept.dates.period_end` (global §9.1), and optional cutoff-aware query expansion. Then build it in Claude Code.
+Two parallel tracks:
+1. Build **stage 04** in **Claude Code** from `specs/04-evidence-retrieval.md` v1.1 (build order §4.12): `available_by` + eligibility → retrieval code with offline tests → real `ept index` (bge-small; the user may need to run the download or a long index in their terminal) → `--limit 20` smoke test → full run → spot-check sheet prepared (non-blocking, D-080). Then spec 05 (judgment), sized for Claude Cowork at k = 5 (Q-07).
+2. **Gold set** (stage 06, part 1) in a **new Cowork conversation**: settle size, sampling and labelling protocol, draw the gold promises, start labelling. It must be drawn before stage 05's prompts and strong-judge batches (gold promises are judged by both judges, global §6.3, and may never appear in prompts or few-shots, rule 4).
 
 **Schedule (as of 2026-10-20):** Day 15, with stages 04–08 left in 5 days (04 Day 16, 05 Days 17–18, 06 Day 19, 07 + 08 Day 20 is already over-full). The cut order (global §12.3) is the user's call (D-041); item 1 ("drop indicator decomposition") would now save little, since only 183 promises are vague.
 
@@ -129,3 +131,11 @@ Open a new conversation in **Claude Cowork** to draft **spec 04 (evidence retrie
   - Full run v1.1: 1.4 % unresolved (C3 first-answer rate 5.7 %; user: the unresolved rate counts). Acronyms in any case; 14 overrides approved; C3's lower-case blind spot (transliterated TVK scheme names in lower case) → prompt v1.2 with names capitalised, full re-run (D-073).
   - Full run v1.2: 16 more overrides approved; MW/LPG treated as common words. Fresh spot-check 8 ok, 1 wrong (DMK-2021-0100: revive = continues, specific) → 14 approved `continues_existing` overrides found by a scan (D-074). 43 overrides in total, 0 unresolved.
   - Result: 1,674 promises, 1,863 indicators, vague share AIADMK 22.4 % / DMK 6.3 % / TVK 10.2 %, 25 headline promises per term. Acceptance criteria 1–10 met; all three terms frozen. Spec 03 v1.3 with a spec-vs-build section; global spec v0.10.
+- **2026-10-20 — Spec 04 drafted and approved (v1.0).**
+  - Cutoffs (D-075): AIADMK-2016 and DMK-2021 at months 5, 6, 12, 24, 36, 48 + full term; TVK-2026 at month 5. The website's TVK projection is a continuous survival curve; landmarks are validation points.
+  - Every run bounded to the term; undated chunks never used (D-076).
+  - Availability date (D-077): policy notes, performance budgets and budget speeches capped at their fiscal-year end (the user spotted that out-of-term policy-note dates were Wayback artefacts; consistent on all 179 documents with an independent date). Tightens 103 documents and dates 89 undated ones; stored dates unchanged.
+  - Q-06 (D-078, D-079): k = 5 per indicator for both judges (tuned for Cowork), ≤ 2 per document, up to 2 GO places; `BAAI/bge-small-en-v1.5` locally with exact numpy search; BM25 per run on eligible chunks; title + text index; RRF; no query expansion.
+  - Corpus facts checked: chunks in term windows (stored dates) AIADMK 20,793, DMK 31,238, TVK 1,507; 4,350 undated chunks (3,409 policy notes).
+  - Global spec v0.11 (§5, §8.1, §9.1, §9.3, §11, §13, §14). Not yet committed (the shell here can't run git safely): Claude Code commits it first.
+  - Spot-check rule changed (D-080, global §12, CLAUDE.md, spec 04 v1.1): one human check per stage, on the full run, non-blocking (only freezing, strong-judge runs and closing a stage wait); `--limit 20` is a smoke test; verdicts can be collected on a phone review page. Gold set to start now in a separate Cowork conversation.
