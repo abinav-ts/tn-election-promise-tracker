@@ -131,3 +131,15 @@ def test_db_wide_check_catches_planted_violation(conn):
     db.upsert(conn, Retrieval(indicator_id=iid, chunk_id=undated, rank=1, cutoff_date=None, run_id="r"))
     out = check_retrievals(conn, get_config())
     assert out["violations"] == 2 and out["undated"] == 1
+
+
+def test_snapshot_end_never_after_latest_fetch(conn):
+    from ept.config import get_config
+    from ept.retrieve.eligible import latest_fetch, load_availability, snapshot_end
+
+    add_doc(conn, "a" * 16, doc_type="policy_note", doc_date=None, fy="2026-27")  # available_by 2027-03-31
+    conn.execute("UPDATE documents SET fetched_at = '2026-10-11T03:45:07Z'")
+    cfg = get_config()
+    av = load_availability(conn, cfg)
+    assert snapshot_end(cfg, av) == D(2027, 3, 31)
+    assert snapshot_end(cfg, av, latest_fetch(conn)) == D(2026, 10, 11)

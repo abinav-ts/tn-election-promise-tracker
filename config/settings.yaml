@@ -208,7 +208,7 @@ retrieve:
   bm25: {k1: 1.5, b: 0.75, epsilon: 0.25, depth: 100}
   dense:
     model: BAAI/bge-small-en-v1.5   # D-079; MIT licence (THIRD_PARTY_NOTICES.md)
-    revision: null            # pinned to the commit hash at first download
+    revision: 5c38ec7c405ec4b44b94cc5a9bb96e735b38267a   # pinned 2026-10-21 (HF commit of 2024-02-22)
     max_seq_length: 512
     batch_size: 64
     depth: 100

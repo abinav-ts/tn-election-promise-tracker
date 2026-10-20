@@ -89,7 +89,8 @@ class SentenceEmbedder:
         self.name, self.revision, self.batch_size = d.model, d.revision, d.batch_size
         self.model = SentenceTransformer(d.model, revision=d.revision, device=_device(d.device))
         self.model.max_seq_length = d.max_seq_length
-        self.dim = int(self.model.get_sentence_embedding_dimension())
+        get_dim = getattr(self.model, "get_embedding_dimension", None) or self.model.get_sentence_embedding_dimension
+        self.dim = int(get_dim())
 
     def encode(self, texts: list[str]) -> np.ndarray:
         vecs = self.model.encode(texts, batch_size=self.batch_size, normalize_embeddings=True,

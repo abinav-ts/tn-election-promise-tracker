@@ -144,7 +144,7 @@ def run_report(term: Optional[str] = None, run_id: Optional[str] = None) -> dict
     run_id = meta["run_id"]
     conn = db.connect()
     avail = el.load_availability(conn, cfg)
-    snapshot = el.snapshot_end(cfg, avail)
+    snapshot = el.snapshot_end(cfg, avail, el.latest_fetch(conn))
     diag = read_diag(cfg, run_id)
     pairs = load_pairs(conn, run_id, diag)
     overrides = override_promises(cfg)

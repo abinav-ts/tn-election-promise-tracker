@@ -136,7 +136,7 @@ class Corpus:
         self.text_hash = dense.texts_hash(ids, texts)
         self.index = dense.load_index(cfg, ids, self.text_hash)
         self.tokens = bm25.load_tokens(cfg, ids, self.text_hash)
-        self.snapshot = el.snapshot_end(cfg, self.avail)
+        self.snapshot = el.snapshot_end(cfg, self.avail, el.latest_fetch(conn))
 
 
 def retrieve_one(queries: list[list[str]], qvec: np.ndarray, sub_vecs: np.ndarray, run_bm25: bm25.RunBM25,

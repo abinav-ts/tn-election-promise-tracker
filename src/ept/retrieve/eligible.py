@@ -60,14 +60,20 @@ def load_availability(conn: sqlite3.Connection, cfg: Config) -> list[ChunkAvail]
     return out
 
 
-def snapshot_end(cfg: Config, avail: list[ChunkAvail]) -> dt.date:
-    """`evidence_window.end`, else the latest availability date in the corpus."""
+def latest_fetch(conn: sqlite3.Connection) -> Optional[dt.date]:
+    row = conn.execute("SELECT max(fetched_at) FROM documents").fetchone()
+    return parse_iso(row[0]) if row and row[0] else None
+
+
+def snapshot_end(cfg: Config, avail: list[ChunkAvail], fetched: Optional[dt.date] = None) -> dt.date:
+    """`evidence_window.end`, else the latest availability date in the corpus, but never after the latest
+    fetch (`fetched`): fiscal-year and year-precision bounds can lie in the future (build clarification)."""
     if cfg.settings.evidence_window.end:
         return cfg.settings.evidence_window.end
     dates = [c.available_by for c in avail if c.available_by]
     if not dates:
         raise CutoffRefused("the corpus has no dated chunk")
-    return max(dates)
+    return min(max(dates), fetched) if fetched else max(dates)
 
 
 def landmark(term: Term, month: int, snapshot: dt.date) -> Cutoff:
