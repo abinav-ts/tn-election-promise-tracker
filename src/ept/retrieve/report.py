@@ -49,7 +49,7 @@ def fy_effect(conn, cfg: Config) -> dict[str, Any]:
         a, basis = availability(r["doc_date"], r["date_precision"], r["doc_type"], r["fiscal_year"], r["title"],
                                 cfg.settings.date.fy_bound)
         if basis in out:
-            out[basis][f"{_kind(r['doc_type'], r['title'], cfg)} | {_term_of(a, cfg)}"] += 1
+            out[basis][f"{_kind(r['doc_type'], r['title'], cfg)} · {_term_of(a, cfg)}"] += 1
     return {"tightened": dict(sorted(out[BASIS_FY_TIGHTENED].items())),
             "newly_dated": dict(sorted(out[BASIS_FY_ONLY].items())),
             "totals": {"tightened": sum(out[BASIS_FY_TIGHTENED].values()),
@@ -234,7 +234,7 @@ def render_md(d: dict[str, Any], cfg: Config) -> str:
           "from the fiscal-year bound (D-077).", "",
           "## 3. Fiscal-year bound effect (documents)", "",
           f"Tightened: **{fy['totals']['tightened']}**; newly dated: **{fy['totals']['newly_dated']}** "
-          "(kind | term of the availability date).", "", _row(["effect", "kind | term", "documents"]), "|---|---|---:|"]
+          "(kind · term of the availability date).", "", _row(["effect", "kind · term", "documents"]), "|---|---|---:|"]
     for eff in ("tightened", "newly_dated"):
         for kt, n in fy[eff].items():
             L.append(_row([eff, kt, n]))
