@@ -19,7 +19,7 @@ UnionBasis = Literal["advocacy", "union_subject", "presidential_assent", "union_
                      "gst_council", "none"]
 UNION_BASES: tuple[str, ...] = get_args(UnionBasis)
 SPECIFICITIES = ("specific", "vague")
-HEADLINE_SIGNAL_MAX = 3  # one point per signal, three signals (§4.5)
+HEADLINE_SIGNAL_MAX = 2  # one point per signal, two signals (§4.5; the front-matter point was dropped, D-072)
 
 COVARIATES = ("sector", "promise_type", "specificity", "cost_band", "union_dependent", "continues_existing",
               "headline", "covariates_version")

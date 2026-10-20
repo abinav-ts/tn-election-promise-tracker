@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.0** (2026-10-18; v0.1 draft → OQ-1–OQ-4 answered by the user the same day) |
+| Status | **APPROVED v1.1** (2026-10-20; v1.0 approved 2026-10-18 after OQ-1–OQ-4; v1.1 = limit-20 spot-check outcome: front-matter headline point dropped, C3 allows same-unit promise names and acronyms, build clarifications; D-071, D-072) |
 | Global spec | `specs/00-global-spec.md` v0.9 (amended with this spec, §9.3). This spec references §7/§8 and redefines nothing. It fills in the covariate *values* that §7 leaves to spec 03. Global amendments made on approval: listed in §9.3 |
 | Day plan | Day 6 in the plan; now Day 13 (2026-10-18). No buffer is left (STATUS) |
 | CLI | `python -m ept classify [run\|report\|spotcheck\|freeze]` (no subcommand = `run` → `report` → `spotcheck`) |
 | Resolves | Q-05 (covariate rubrics) |
-| Decisions | D-064–D-070 (`docs/decisions/log.md`) |
+| Decisions | D-064–D-072 (`docs/decisions/log.md`) |
 
 ---
 
@@ -24,7 +24,7 @@
 | Input | Use |
 |---|---|
 | `data/frozen/promises_{term}.jsonl` | The promises. **Read-only** (D-039). Stage 03 never changes `text`, `source_text`, IDs or any stage 02 field |
-| `data/interim/manifestos/{term}/units.jsonl` | The unit text of each promise's `parent_group` (Tamil for AIADMK/TVK), given as context. Some promise texts say "this scheme" and the unit names it (STATUS). Also the term's `front_matter` units (headline signal, §4.5) |
+| `data/interim/manifestos/{term}/units.jsonl` | The unit text of each promise's `parent_group` (Tamil for AIADMK/TVK), given as context. Some promise texts say "this scheme" and the unit names it (STATUS). Front-matter units are **not** used (D-072) |
 | `config/settings.yaml` | New `classify:` block (§4.9); bulk model `llm.models.bulk` = `gemini-3.5-flash-lite` (15 rpm / 500 rpd, D-055, D-060) |
 | `prompts/classify_promises.md` | New, with a `version:` header (§4.3) |
 | `config/classify_overrides.csv` | New, committed, starts empty: human fixes for items the model cannot get past the checks (§4.4) |
@@ -113,19 +113,19 @@ A stated amount, when present, guides the band, but the band never invents an am
 - `false` otherwise, **including when the model happens to know that such a scheme already existed** (leakage rule 3, §5).
 - `promise_type = scheme_expansion` implies `true` (check C5).
 
-**`headline`** (bool) + audit fields **`headline_signal`** (0–3) and **`headline_rank`**: §4.5.
+**`headline`** (bool) + audit fields **`headline_signal`** (0–2) and **`headline_rank`**: §4.5.
 
 **`covariates_version`** = `classify_promises v{prompt version}`; the rubric lives in the prompt, so one version covers both.
 
 ### 4.3 LLM call (`ept classify run`)
 - **Batches:** promises in ID order, `classify.promises_per_call` (20) per call, never splitting a unit across batches (a batch may run over by the size of one unit). Batches are deterministic, so cache keys are stable. Estimated volume: ≈ 85 calls plus retries. That fits within one day's quota (500), at ≈ 14 rpm about 10 minutes of throttled run time plus generation.
-- **Input per promise:** `promise_id`, `text`, `source_text`, `source_lang`, `section`, and the unit text (sent once per unit). Each batch also carries the term's front-matter text for the headline signal (§4.5). **No party or term name**: §9.2 neutrality, and the model doesn't need it.
+- **Input per promise:** `promise_id`, `text`, `source_text`, `source_lang`, `section`, and the unit text (sent once per unit). No front matter (D-072). **No party or term name** in the template: §9.2 neutrality, and the model doesn't need it. Promise and unit IDs carry the term name, so the prompt uses batch-local aliases (P01…, U01…) and answers are mapped back by alias, never by position (D-071). A retry-alone call also shows the unit's other promise texts as `context_promises` (not answered), because C3 accepts names from them (D-072).
 - **Output per promise** (JSON schema from pydantic): `promise_id`, `sector`, `promise_type`, `specificity`, `cost_band`, `union_dependent`, `union_basis`, `continues_existing`, `continues_cue`, `headline_signal`, and:
   - for `specific`: `search_queries` (for the self indicator);
   - for `vague`: `indicators`, a list of 2–4 items `{text, search_queries}`.
 - **Self indicators are made by code, not the model:** for a specific promise, `indicator_id` = `{promise_id}-I1`, `text` = the promise `text` exactly, `is_self` = true. For a vague promise, the model's indicators become `-I1`…`-I4` in its order, `is_self` = false (D-065).
 - **Indicator rules (in the prompt):** each indicator is one official, observable step that would show the promise being acted on (an order, a scheme, a law, a body set up, a facility opened, a payment started). It is written as one English sentence of ≤ `classify.max_indicator_words` words, using only the promise's own words for names, amounts and places, and it adds no scheme name, number, date or place the promise doesn't state.
-- **Search-query rules:** 2–4 English keyword queries per indicator, each 2–`classify.max_query_words` words. Synonyms and generic government vocabulary ("government order", "scheme", "sanction") are allowed. Names and numbers must come from the promise (check C3).
+- **Search-query rules:** 2–4 English keyword queries per indicator, each 2–`classify.max_query_words` words. Synonyms and generic government vocabulary ("government order", "scheme", "sanction") are allowed. Names must come from the promise, its section or another promise of the same unit (acronyms of those allowed); numbers from the promise text (check C3).
 - **Few-shot examples** are invented promises in manifesto style. None may share an 8-word run with any manifesto unit (the same test as `test_leakage_02.py`).
 - **One prompt, one call** for classification and decomposition together (user-approved). If the limit-20 run shows one task degrading, they are split into two prompts and the split is logged.
 
@@ -134,20 +134,20 @@ A stated amount, when present, guides the band, but the band never invents an am
 - **C2 indicators:** `specific` → model returned no `indicators` and 2–4 `search_queries`; `vague` → 2–4 indicators, each with 2–4 queries.
 - **C3 names and numbers (global §9.1, rule 6):** in every indicator text and every query:
   - every digit group occurs in the promise `text`;
-  - every capitalised token that isn't sentence-initial and isn't in `extract.common_words` (reused, with additions under `classify.extra_common_words`) occurs in the promise `text`, its `source_text` (English units) or `section`.
+  - every capitalised token that isn't sentence-initial and isn't in `extract.common_words` (reused, with additions under `classify.extra_common_words`) occurs in the promise `text`, its `source_text` (English units), its `section` or the English `text` of another promise of the same unit, or is an acronym (initials of a capitalised phrase, small joining words skipped) of a phrase in those (D-072: limit-20 spot-check, "Cauvery" named in a sibling promise, "NEP" for "New Education Policy"; all promise texts are English, so the rule is the same for every term). An indicator is a sentence, so its first token is exempt; a query is not, so none of its tokens is (D-071).
   - Lower-case query words are not checked; they carry no names. A failure here is a possible model-memory leak and goes to the top of the spot-check.
 - **C4 cues:** `continues_existing = true` ⇒ `continues_cue` is non-empty and a verbatim substring (after NFC, whitespace and quote normalisation, as V1 in stage 02) of the promise `text` or the unit text; `false` ⇒ cue empty. `union_dependent = true` ⇔ `union_basis ≠ none`.
 - **C5 consistency:** `promise_type = advocacy` ⇒ `union_dependent` with basis `advocacy`; `promise_type = scheme_expansion` ⇒ `continues_existing`.
-- **C6 shape limits:** indicator ≤ `max_indicator_words` words; query word count within limits; `headline_signal` in 0–3.
+- **C6 shape limits:** a model-written indicator ≤ `max_indicator_words` words (a self indicator is the promise text, which stage 02 allowed up to 60 words; D-071); each query `min_query_words`–`max_query_words` words; `headline_signal` in 0–2.
 - **Unresolved failures:** a failing promise gets no covariates or indicators in the DB. It is fixed by a prompt revision (a version bump re-runs everything through a new cache key; `covariates_version` changes for all) or by a row in `config/classify_overrides.csv` (`promise_id`, the covariate fields, `indicators_json`, `note`), written by a human and passing C1–C6. **Zero unresolved failures at freeze.**
 
 ### 4.5 Headline (user-approved: text signals only, cap 25 per term)
-1. **Signal from the model** (`headline_signal`, 0–3), using only the text: one point each, up to 3, for
+1. **Signal from the model** (`headline_signal`, 0–2), using only the text: one point each, up to 2, for
    - a statewide or universal entitlement, or a benefit to a very large group;
-   - wording that marks the promise as special or primary in the manifesto itself ("flagship", "first", "major", "important", "special scheme", or a heading of its own);
-   - the promise being named or summarised in the term's front matter or preface (front matter is in the batch input).
+   - wording that marks the promise as special or primary in the manifesto itself ("flagship", "first", "major", "important", "special scheme", or a heading of its own).
+   - *(v1.0 had a third point, "named in the term's front matter", and a front-matter tie-break. Dropped in v1.1 (D-072): the front matter ranges from a bare title (DMK) to an 11,000-character preface (TVK), so it would favour some terms.)*
    The prompt forbids using knowledge of which promises later became well known.
-2. **Cap by code:** within each term, rank by (`headline_signal` desc, `cost_band` desc, appears in front matter by token overlap ≥ `classify.headline_frontmatter_ratio` desc, `promise_id` asc). The top `classify.headline_cap` (25) with signal ≥ 1 get `headline` = true, all others false. `headline_rank` is stored for every promise with signal ≥ 1. Ties are broken deterministically by the order above, so a re-run gives the same 25.
+2. **Cap by code:** within each term, rank by (`headline_signal` desc, `cost_band` desc, `promise_id` asc). The top `classify.headline_cap` (25) with signal ≥ 1 get `headline` = true, all others false. `headline_rank` is stored for every promise with signal ≥ 1. Ties are broken deterministically by the order above, so a re-run gives the same 25.
 3. The cap matters because every headline promise goes to the Claude strong judge (global §6.3): 75 at most across the three terms.
 
 ### 4.6 Report (`ept classify report` → `reports/classification_03.md/json`)
@@ -178,7 +178,7 @@ Spread: at most 3 per term and at most 3 per group (the global rule; three terms
 - `tests/conftest.py` resets `classify.frozen_terms` to `[]` in the test settings, as for stage 02.
 
 ### 4.9 Configuration (`settings.yaml`, new `classify:` block; no literals in code)
-`promises_per_call: 20` · `headline_cap: 25` · `headline_frontmatter_ratio: 0.6` · `min_indicators: 2` · `max_indicators: 4` · `min_queries: 2` · `max_queries: 4` · `max_query_words: 12` · `max_indicator_words: 40` · `extra_common_words: []` · `spotcheck: {per_term: 3, per_group: 3}` · `frozen_terms: []`. New `paths`: `classify_overrides`, `classify_failures`, `classification_md/json`, frozen snapshot template. Starting values are open for review (§9 OQ-4).
+`promises_per_call: 20` · `headline_cap: 25` · `min_indicators: 2` · `max_indicators: 4` · `min_queries: 2` · `max_queries: 4` · `min_query_words: 2` · `max_query_words: 12` · `max_indicator_words: 40` · `extra_common_words: []` · `vague_stop_share: 0.5` · `goal_verbs: [improve, strengthen, promote, ensure]` · `spotcheck: {per_term: 3, per_group: 3}` · `frozen_terms: []`. New `paths`: `classify_overrides`, `classify_failures`, `classify_interim` (per-term results with audit fields before freezing), `classification_md/json`, frozen snapshot template. `min_query_words`, `vague_stop_share` and `goal_verbs` added in the build (D-071). Starting values are open for review (§9 OQ-4).
 
 ### 4.10 Build order (Claude Code; commit at each ✔)
 1. Rubric enums in `schema.py`, `classify:` config, prompt v1.0 with invented few-shots, `checks.py` (C1–C6) with offline tests. ✔ `stage 03: rubric, prompt, checks`
@@ -191,7 +191,7 @@ Stop and ask the user if: the vague share exceeds 50 % in any term (it changes t
 ## 5. Leakage warning
 
 Rules from the global warning box that apply to this stage:
-- **Rule 3 (covariates from the manifesto only):** the model sees only the promise, its unit and the term's front matter. `continues_existing` needs a verbatim cue (C4), so "I know this scheme already existed" can't set it. `headline` uses text signals only, and the prompt forbids knowledge of which promises later became famous. `union_dependent` uses constitutional knowledge of **who holds the power** (not outcome knowledge), applied through wording (the GST/VAT rule), never through dates after the election.
+- **Rule 3 (covariates from the manifesto only):** the model sees only the promise, its unit and the unit's other promises. `continues_existing` needs a verbatim cue (C4), so "I know this scheme already existed" can't set it. `headline` uses text signals only, and the prompt forbids knowledge of which promises later became famous. `union_dependent` uses constitutional knowledge of **who holds the power** (not outcome knowledge), applied through wording (the GST/VAT rule), never through dates after the election.
 - **Rule 6 (no outcome-derived names in indicators or queries):** C3 rejects any number or capitalised name in an indicator or query that isn't in the promise. That stops a later scheme name, GO number or date from entering the stage 04 queries. C3 failures head the spot-check.
 - **Rule 4 (gold set is test data):** no gold set exists yet; few-shot examples are invented and pass the 8-word overlap test, so no example can coincide with a promise later drawn into the gold set.
 - **Rule 1 (no web, no corpus):** the stage reads no `documents`, `chunks`, tracker or evidence path (tested); the model has no tools.
@@ -217,7 +217,7 @@ Rules from the global warning box that apply to this stage:
 | `test_classify_rubric.py` | Enums match §4.2; `schema.py` accepts every value and rejects others; `covariates_version` format |
 | `test_classify_checks.py` | C1 (results matched by ID, a missing or extra ID fails, a shuffled batch passes); C2; C3 (number not in text fails, capitalised name not in text fails, common words pass, lower-case query words pass); C4 cue verbatim incl. quote/NFC normalisation; C5; C6 |
 | `test_classify_run.py` | Mock LLM: batches deterministic and never split a unit; failing promise retried alone; override applied and checked; self indicator built by code; vague IDs `-I1..-In`; cache → 0 calls on re-run; only covariate columns written |
-| `test_classify_headline.py` | Ranking order and tie-breaks; cap 25; signal 0 never headline; front-matter overlap |
+| `test_classify_headline.py` | Ranking order and tie-breaks; cap 25; signal 0 never headline |
 | `test_classify_freeze.py` | Freeze writes the snapshot; a frozen term loads from it; `--force` refused; `promises_{term}.jsonl` unchanged |
 | `test_classify_spotcheck.py` | Group order a–f; ≤ 3 per term and per group; 7–10 rows; empty verdict columns |
 | `test_leakage_03.py` | Few-shot examples share no 8-word run with any manifesto unit; the prompt template contains no party or term name; the stage reads no corpus/tracker/evidence path; C3 runs on every indicator, every query and every override |
@@ -245,7 +245,9 @@ Rules from the global warning box that apply to this stage:
 - **D-065** · self indicators built by code; the model writes indicators only for vague promises (§4.3).
 - **D-066** · `union_dependent` rubric: constitutional power, applied by wording (GST vs VAT), never by post-election dates; `union_basis` audit field (§4.2).
 - **D-067** · `continues_cue` must be verbatim from the promise or unit (C4).
-- **D-068** · headline = model signal 0–3 from text + deterministic cap 25 per term (§4.5).
+- **D-068** · headline = model signal from text + deterministic cap 25 per term (§4.5); signal 0–2 since D-072.
+- **D-071** · build clarifications (aliases, C3 on queries, C6 self exemption, extra config keys, stage 02 reload keeps covariates).
+- **D-072** · limit-20 spot-check outcome: front-matter point dropped, C3 same-unit names + acronyms, no party tag in queries, prompt v1.1.
 - **D-069** · audit fields (`union_basis`, `continues_cue`, `headline_signal`, `headline_rank`) live only in the classification snapshot and reports, not in §7 tables (they are stage artefacts, like `extract_dropped_02.csv`).
 
 ### 9.3 Global spec amendments (v0.9, made with this spec)

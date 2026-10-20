@@ -1,13 +1,12 @@
-version: 1.0
-purpose: classify each manifesto promise (covariates) and decompose vague promises into checkable indicators with search queries (spec 03 §4.2–§4.5, D-065–D-068). One prompt for every manifesto; the manifesto's text is data.
+version: 1.1
+purpose: classify each manifesto promise (covariates) and decompose vague promises into checkable indicators with search queries (spec 03 §4.2–§4.5, D-065–D-068, D-072). One prompt for every manifesto; the manifesto's text is data.
 
 You classify promises taken from an election manifesto of an Indian state government, and you write checkable indicators and search queries for them.
 
-Use ONLY the text given below: the front matter, each promise and the unit (manifesto item) it comes from. Do not use anything you know about any party, about Tamil Nadu, about what happened after the election, about which schemes already existed, or about which promises later became well known. The only outside knowledge allowed is general knowledge of the Indian Constitution, for `union_dependent` (see its rule).
+Use ONLY the text given below: each promise and the unit (manifesto item) it comes from. Do not use anything you know about any party, about Tamil Nadu, about what happened after the election, about which schemes already existed, or about which promises later became well known. The only outside knowledge allowed is general knowledge of the Indian Constitution, for `union_dependent` (see its rule).
 
 ## Input
-- `front_matter`: the manifesto's opening pages (title, preface), in the manifesto's language.
-- `units`: manifesto items. Each has `unit` (a label), `section`, `unit_text` (original language; Tamil or English) and `promises`. Each promise has `id`, `text` (one English sentence), `source_text` (the span of the unit it comes from) and `source_lang`.
+`units`: manifesto items. Each has `unit` (a label), `section`, `unit_text` (original language; Tamil or English) and `promises`. Each promise has `id`, `text` (one English sentence), `source_text` (the span of the unit it comes from) and `source_lang`. A unit may also list `context_promises`: the English texts of its other promises, given for reference only (return no result for them).
 
 Return exactly one result for every promise `id`, with the same `id`.
 
@@ -59,6 +58,7 @@ A stated amount, when present, guides the band, but the band never invents an am
 - `union_funds`: the text makes Union funding a condition;
 - `gst_council`: a change to a GST rate. Taxes outside GST stay state powers: a promise phrased as VAT, sales tax or a tax on petrol/diesel/alcohol is `none`. The rule follows the wording of the promise.
 
+An advocacy promise ALWAYS has `union_basis` = `advocacy`, even when what it asks for is also a Union List subject, a GST matter or Union funds. `advocacy` is used ONLY for `promise_type` = `advocacy`; a promise of any other type takes the basis of its own delivery (often `none`).
 Otherwise `union_dependent` is false and `union_basis` is `none`. A State List subject, or a Concurrent List subject where the state can act within existing central law, is false. Backward-class lists are a state power (false, unless the text asks for a Union change such as Ninth Schedule protection, which is `union_subject`).
 Use general knowledge of the Constitution of India as amended up to the 106th Amendment, about who holds the power. Judge by the promise's wording; never use events or dates after the election.
 
@@ -67,11 +67,10 @@ Use general knowledge of the Constitution of India as amended up to the 106th Am
 - false otherwise, **including when you happen to know that such a scheme already existed**. Then `continues_cue` is "".
 - A `scheme_expansion` promise always has `continues_existing` = true.
 
-### `headline_signal` (0–3), from the text only
-One point each, up to 3:
-- a statewide or universal entitlement, or a benefit to a very large group;
-- wording that marks the promise as special or primary in the manifesto itself ("flagship", "first", "major", "important", "special scheme", or a heading of its own);
-- the promise being named or summarised in the front matter.
+### `headline_signal` (0–2), from the text only
+One point each, up to 2; score each point on its own:
+- a statewide or universal entitlement, or a benefit to a very large group. This point applies whenever the beneficiaries are, for example, all farmers or all small and marginal farmers, all women or all women heads of family, every family or ration-card holder, all students, all government employees, or the whole state;
+- wording that marks the promise as special or primary in the manifesto itself ("flagship", "first", "major", "important", "special scheme", or a heading of its own).
 Never use knowledge of which promises later became well known.
 
 ## Consistency
@@ -83,11 +82,10 @@ Never use knowledge of which promises later became well known.
 - A `specific` promise is its own indicator: give only `search_queries` (2–4) for it and leave `indicators` empty.
 - A `vague` promise gets `indicators`: 2–4 items, each `{text, search_queries}`, and an empty top-level `search_queries`.
 - Each indicator is one official, observable step that would show the promise being acted on (an order, a scheme, a law, a body set up, a facility opened, a payment started). Write it as one English sentence of at most 40 words. Use only the promise's own words for names, amounts and places; add no scheme name, number, date or place the promise does not state.
-- Search queries: 2–4 per indicator, English keywords, each 2 to 12 words. Generic government vocabulary and synonyms are fine ("government order", "scheme", "sanction", "launched", "assistance"). Write queries in lower case; a capitalised word or any number may appear only if it is in the promise `text`. Never add a scheme name, order number, year or date.
+- Search queries: 2–4 per indicator, English keywords, each 2 to 12 words. Generic government vocabulary and synonyms are fine ("government order", "scheme", "sanction", "launched", "assistance"). Write queries in lower case. Never add a scheme name, order number, year or date.
+- Names (capitalised words: places, rivers, schemes, laws, bodies, parties) in indicators and queries may come only from this promise's `text`, its English `source_text`, its `section`, or the `text` of another promise of the same unit (in `promises` or `context_promises`). Write them as written there; an acronym of such a name is fine ("Rural Water Board" → "RWB"). Do not take a name from `unit_text` that no promise text contains, and do not add a party name the promise text doesn't contain: describe it in general words instead. Numbers may come only from this promise's `text`.
 
 ## Example (invented; not from any real manifesto)
-
-Front matter: "Our pledge to the hill country. Five promises come first: a monthly support for every small tea grower, ..."
 
 Units:
 [{"unit": "U01", "section": "Hill Farmers", "unit_text": "41. Hill Farmers\nTea growers owning under two acres shall get a monthly support of Rs 1,200. The existing seedling subsidy for pepper growers will be raised from 40 percent to 60 percent.", "promises": [
@@ -96,22 +94,22 @@ Units:
  {"unit": "U02", "section": "Clean Coast", "unit_text": "42. Every seaside town shall be rid of plastic litter.", "promises": [
   {"id": "P03", "text": "Make every seaside town free of plastic litter.", "source_text": "Every seaside town shall be rid of plastic litter.", "source_lang": "en"}]},
  {"unit": "U03", "section": "Railways", "unit_text": "43. We will press the Union Government for an overnight train linking Valparai and Kotagiri.", "promises": [
-  {"id": "P04", "text": "Urge the Union Government to run an overnight train linking Valparai and Kotagiri.", "source_text": "We will press the Union Government for an overnight train linking Valparai and Kotagiri.", "source_lang": "en"}]}]
+  {"id": "P04", "text": "Urge the Union Government to run an overnight train linking Valparai and Kotagiri.", "source_text": "We will press the Union Government for an overnight train linking Valparai and Kotagiri.", "source_lang": "en"}]},
+ {"unit": "U04", "section": "Our Flagship Pledge", "unit_text": "44. Our Flagship Pledge\nEach household holding a ration card shall be handed a water purifier free of cost.", "promises": [
+  {"id": "P05", "text": "Give a water purifier free of cost to each household holding a ration card.", "source_text": "Each household holding a ration card shall be handed a water purifier free of cost.", "source_lang": "en"}]}]
 
 Output:
 {"promises": [
- {"promise_id": "P01", "sector": "agriculture_fisheries", "promise_type": "transfer_subsidy", "specificity": "specific", "cost_band": "medium", "union_dependent": false, "union_basis": "none", "continues_existing": false, "continues_cue": "", "headline_signal": 1, "search_queries": ["monthly support small tea growers", "tea growers under two acres assistance", "Rs 1,200 monthly support tea growers"], "indicators": []},
+ {"promise_id": "P01", "sector": "agriculture_fisheries", "promise_type": "transfer_subsidy", "specificity": "specific", "cost_band": "medium", "union_dependent": false, "union_basis": "none", "continues_existing": false, "continues_cue": "", "headline_signal": 0, "search_queries": ["monthly support small tea growers", "tea growers under two acres assistance", "Rs 1,200 monthly support tea growers"], "indicators": []},
  {"promise_id": "P02", "sector": "agriculture_fisheries", "promise_type": "transfer_subsidy", "specificity": "specific", "cost_band": "medium", "union_dependent": false, "union_basis": "none", "continues_existing": true, "continues_cue": "The existing seedling subsidy for pepper growers will be raised from", "headline_signal": 0, "search_queries": ["pepper growers seedling subsidy enhanced", "seedling subsidy 60 percent pepper", "subsidy pepper seedlings revised"], "indicators": []},
  {"promise_id": "P03", "sector": "water_environment_energy", "promise_type": "administrative", "specificity": "vague", "cost_band": "medium", "union_dependent": false, "union_basis": "none", "continues_existing": false, "continues_cue": "", "headline_signal": 0, "search_queries": [], "indicators": [
    {"text": "The government issues an order to ban or control plastic litter in seaside towns.", "search_queries": ["plastic ban seaside towns order", "plastic litter coastal towns government order"]},
    {"text": "A plastic waste collection drive is started in seaside towns.", "search_queries": ["plastic waste collection coastal towns", "beach plastic clean up drive launched"]},
    {"text": "Facilities to collect or recycle plastic waste are set up in seaside towns.", "search_queries": ["plastic recycling unit coastal town", "plastic waste recovery facility sanctioned"]}]},
- {"promise_id": "P04", "sector": "infrastructure_transport_housing", "promise_type": "advocacy", "specificity": "specific", "cost_band": "none", "union_dependent": true, "union_basis": "advocacy", "continues_existing": false, "continues_cue": "", "headline_signal": 0, "search_queries": ["overnight train Valparai Kotagiri", "new train request railway ministry", "train service Valparai Kotagiri request"], "indicators": []}]}
+ {"promise_id": "P04", "sector": "infrastructure_transport_housing", "promise_type": "advocacy", "specificity": "specific", "cost_band": "none", "union_dependent": true, "union_basis": "advocacy", "continues_existing": false, "continues_cue": "", "headline_signal": 0, "search_queries": ["overnight train Valparai Kotagiri", "new train request railway ministry", "train service Valparai Kotagiri request"], "indicators": []},
+ {"promise_id": "P05", "sector": "social_welfare", "promise_type": "transfer_subsidy", "specificity": "specific", "cost_band": "high", "union_dependent": false, "union_basis": "none", "continues_existing": false, "continues_cue": "", "headline_signal": 2, "search_queries": ["free water purifier ration card households", "water purifier distribution scheme", "ration card holders water purifier"], "indicators": []}]}
 
-Why: P02 is a subsidy to growers, so `transfer_subsidy` comes before `scheme_expansion` in the order, and its text says the existing subsidy is raised, so `continues_existing` is true with the words copied exactly. P03 states a goal with no checkable action, so it is vague and decomposed. P01 is named in the front matter (one point).
-
-## Front matter
-{{front_matter}}
+Why: P02 is a subsidy to growers, so `transfer_subsidy` comes before `scheme_expansion` in the order, and its text says the existing subsidy is raised, so `continues_existing` is true with the words copied exactly. P03 states a goal with no checkable action, so it is vague and decomposed. P04 is advocacy, so its basis is `advocacy` although railways are a Union List subject. P05 reaches every ration-card household (one point) and has a heading marking it as the flagship pledge (one point).
 
 ## Units
 {{units}}

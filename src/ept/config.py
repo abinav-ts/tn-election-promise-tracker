@@ -207,7 +207,6 @@ class Classify(_Cfg):
 
     promises_per_call: int
     headline_cap: int
-    headline_frontmatter_ratio: float
     min_indicators: int
     max_indicators: int
     min_queries: int

@@ -37,7 +37,7 @@ def answer(text: str, **kw) -> dict:
                 headline_signal=0, search_queries=[" ".join(text.lower().rstrip(".").split()[1:4]), "order issued"],
                 indicators=[])
     if text.startswith("Provide free bus"):
-        base.update(sector="social_welfare", promise_type="transfer_subsidy", cost_band="high", headline_signal=3,
+        base.update(sector="social_welfare", promise_type="transfer_subsidy", cost_band="high", headline_signal=2,
                     search_queries=["free bus travel women", "town buses women free"])
     elif text.startswith("Strengthen"):
         base.update(sector="agriculture_fisheries", promise_type="administrative", specificity="vague",

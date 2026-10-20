@@ -23,7 +23,7 @@ from typing import Any, Optional
 
 from ept import db
 from ept.classify import headline as hl
-from ept.classify.batches import Batch, front_matter, limit_promises, make_batches, payload, single
+from ept.classify.batches import Batch, limit_promises, make_batches, payload, single
 from ept.classify.checks import Limits, Subject, check_result, match_results, parse_override, rule_of
 from ept.classify.freeze import check_writable, is_frozen, load_snapshot
 from ept.classify.rubric import PROMPT, ClassifyOut, PromiseOut, covariates_version
@@ -60,7 +60,7 @@ class Outcome:
 class Caller:
     client: LLMClient
     units: dict[str, Unit]
-    front_matter: str
+    unit_texts: dict[str, list[tuple[str, str]]]  # unit_id -> [(promise_id, text)] for every promise of the unit
     calls: int = 0
     cache_hits: int = 0
     extra_ids: int = 0
@@ -70,8 +70,7 @@ class Caller:
         aliases = batch.aliases()
         before = self.client.calls
         try:
-            out = self.client.complete_json(PROMPT, {"front_matter": self.front_matter,
-                                                     "units": payload(batch, self.units)}, ClassifyOut)
+            out = self.client.complete_json(PROMPT, {"units": payload(batch, self.units)}, ClassifyOut)
         except LLMValidationError as e:
             self.calls += self.client.calls - before
             return {}, {pid: f"C1: invalid JSON for the batch: {str(e)[:200]}" for pid in aliases.values()}
@@ -82,18 +81,19 @@ class Caller:
         return ({aliases[a]: r for a, r in matched.items()}, {aliases[a]: f for a, f in c1.items()})
 
 
-def subject(p: Promise, units: dict[str, Unit]) -> Subject:
-    unit = units.get(p.parent_group or "")
+def subject(p: Promise, call: "Caller") -> Subject:
+    unit = call.units.get(p.parent_group or "")
+    others = tuple(t for pid, t in call.unit_texts.get(p.parent_group or "", []) if pid != p.promise_id)
     return Subject(text=p.text, source_text=p.source_text, source_lang=p.source_lang, section=p.section,
-                   unit_text=unit.text if unit else "")
+                   unit_text=unit.text if unit else "", unit_promise_texts=others)
 
 
-def _judge(p: Promise, answers: dict[str, PromiseOut], c1: dict[str, str], units: dict[str, Unit],
+def _judge(p: Promise, answers: dict[str, PromiseOut], c1: dict[str, str], call: Caller,
            lim: Limits) -> tuple[Optional[PromiseOut], list[str]]:
     if p.promise_id in c1:
         return None, [c1[p.promise_id]]
     r = answers[p.promise_id]
-    fails = check_result(r, subject(p, units), lim)
+    fails = check_result(r, subject(p, call), lim)
     return (None, fails) if fails else (r, [])
 
 
@@ -102,20 +102,20 @@ def classify_batch(call: Caller, batch: Batch, overrides: dict[str, dict[str, st
     outcomes = []
     for p in batch.promises:
         o = Outcome(promise=p)
-        o.result, fails = _judge(p, answers, c1, call.units, lim)
+        o.result, fails = _judge(p, answers, c1, call, lim)
         if fails:  # retry this promise alone, once
             o.first_failures = fails
             if p.promise_id in answers:
                 o.first_answer = answers[p.promise_id].model_dump(exclude={"promise_id"})
             o.retried = True
             a2, c2 = call(single(batch, p))
-            o.result, fails = _judge(p, a2, c2, call.units, lim)
+            o.result, fails = _judge(p, a2, c2, call, lim)
             if not fails:
                 o.resolved_by = "retry alone"
         if p.promise_id in overrides:
             r, f = parse_override(overrides[p.promise_id], "P01")
             if r is not None:
-                f = check_result(r, subject(p, call.units), lim)
+                f = check_result(r, subject(p, call), lim)
             if fails and not f:
                 o.resolved_by = "override"
             o.origin, o.result, fails = "override", (r if not f else None), f
@@ -229,10 +229,11 @@ def classify_term(conn, client: LLMClient, cfg: Config, term: str, limit: Option
     version = covariates_version(load_prompt(PROMPT, cfg).version)
     all_promises = term_promises(conn, cfg, term)
     promises = limit_promises(all_promises, limit)
-    unit_list = read_units(cfg, term)
-    units = {u.unit_id: u for u in unit_list}
-    fm = front_matter(unit_list)
-    call = Caller(client, units, fm)
+    units = {u.unit_id: u for u in read_units(cfg, term)}
+    unit_texts: dict[str, list[tuple[str, str]]] = {}
+    for p in all_promises:
+        unit_texts.setdefault(p.parent_group or "", []).append((p.promise_id, p.text))
+    call = Caller(client, units, unit_texts)
     overrides = read_overrides(cfg)
     lim = Limits.from_config(cfg)
     batches = make_batches(promises, c.promises_per_call)
@@ -241,10 +242,7 @@ def classify_term(conn, client: LLMClient, cfg: Config, term: str, limit: Option
         progress(f"classify: {term} batch {i}/{len(batches)} ({len(b.promises)} promises)")
         outcomes += classify_batch(call, b, overrides, lim)
 
-    fm_words = hl.words(fm)
-    heads = hl.assign([hl.Candidate(o.promise.promise_id, o.result.headline_signal, o.result.cost_band,
-                                    hl.frontmatter_overlap(o.promise.source_text, fm_words)
-                                    >= c.headline_frontmatter_ratio)
+    heads = hl.assign([hl.Candidate(o.promise.promise_id, o.result.headline_signal, o.result.cost_band)
                        for o in outcomes if o.result is not None], c.headline_cap)
     records = []
     for o in outcomes:

@@ -23,6 +23,7 @@ from ept.schema import Promise
 class Group:
     unit_id: str
     promises: tuple[Promise, ...]
+    context: tuple[Promise, ...] = ()  # the unit's other promises, shown but not asked (retry alone)
 
 
 @dataclass(frozen=True)
@@ -77,8 +78,11 @@ def make_batches(promises: list[Promise], per_call: int) -> list[Batch]:
 
 
 def single(batch: Batch, promise: Promise) -> Batch:
-    """A batch holding one promise of `batch` (its unit text goes with it): the retry-alone call."""
-    return Batch((Group(promise.parent_group or promise.promise_id, (promise,)),))
+    """A batch asking for one promise of `batch` (the retry-alone call). Its unit text and the unit's other
+    promises go with it, because C3 allows names from those promise texts (D-072)."""
+    group = next(g for g in batch.groups if promise in g.promises)
+    others = tuple(p for p in group.promises if p.promise_id != promise.promise_id)
+    return Batch((Group(group.unit_id, (promise,), others),))
 
 
 def payload(batch: Batch, units: dict[str, Unit]) -> str:
@@ -87,16 +91,14 @@ def payload(batch: Batch, units: dict[str, Unit]) -> str:
     rows = []
     for i, g in enumerate(batch.groups, 1):
         unit = units.get(g.unit_id)
-        rows.append({
+        row = {
             "unit": f"U{i:02d}",
             "section": g.promises[0].section,
             "unit_text": unit.text if unit else "",
             "promises": [{"id": alias_of[p.promise_id], "text": p.text, "source_text": p.source_text,
                           "source_lang": p.source_lang} for p in g.promises],
-        })
+        }
+        if g.context:
+            row["context_promises"] = [p.text for p in g.context]
+        rows.append(row)
     return json.dumps(rows, ensure_ascii=False, indent=1)
-
-
-def front_matter(units: list[Unit]) -> str:
-    """The term's front-matter units, joined (the headline signal's third point, §4.5)."""
-    return "\n\n".join(u.text for u in units if u.marker == "front_matter").strip() or "(none)"

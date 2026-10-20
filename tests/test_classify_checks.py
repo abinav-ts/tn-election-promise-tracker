@@ -106,6 +106,26 @@ def test_c3_tamil_source_text_is_not_a_name_source():
     assert check_c3(_r(search_queries=["fishers relief order", "Mannar fishers relief"]), en, LIM) == []
 
 
+def test_c3_names_from_sibling_promises_and_acronyms_pass():
+    from dataclasses import replace
+
+    sub = replace(SUBJ, text="Take legal action to secure the river water due to the state.",
+                  unit_promise_texts=("Secure the due share of Cauvery water.",
+                                      "Oppose the New Education Policy of the Union Government."))
+    ok = _r(search_queries=["Cauvery water legal action", "NEP opposition resolution"])
+    assert check_c3(ok, sub, LIM) == []
+    assert check_c3(_r(search_queries=["Vaigai water legal action", "river water order"]), sub, LIM)
+    assert check_c3(_r(search_queries=["NEPS opposition", "XYZ water order"]), sub, LIM)  # XYZ fails
+    assert check_c3(_r(search_queries=["river water 2018 verdict", "river water order"]), sub, LIM)  # numbers stay strict
+
+
+def test_acronyms():
+    from ept.classify.checks import acronyms
+
+    assert {"MHA", "TN", "TNPSC"} <= acronyms("the Ministry of Home Affairs and the Tamil Nadu Public Service Commission")
+    assert "NEP" in acronyms("Union government's New Education Policy")
+
+
 # --- C4 -------------------------------------------------------------------------
 
 def test_c4_cue_verbatim_with_quote_and_nfc_normalisation():
@@ -136,7 +156,8 @@ def test_c5_consistency():
 
 def test_c6_limits():
     assert check_c6(_r(), SUBJ, LIM) == []
-    assert check_c6(_r(headline_signal=4), SUBJ, LIM)
+    assert check_c6(_r(headline_signal=2), SUBJ, LIM) == []
+    assert check_c6(_r(headline_signal=3), SUBJ, LIM)  # 0–2 since the front-matter point was dropped
     assert check_c6(_r(headline_signal=-1), SUBJ, LIM)
     assert check_c6(_r(search_queries=["fishers", "fishers ban period"]), SUBJ, LIM)  # 1 word
     assert check_c6(_r(search_queries=["fishers " * 13, "fishers ban period"]), SUBJ, LIM)

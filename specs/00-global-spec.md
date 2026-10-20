@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**; **v0.10 (2026-10-20) = §9.1 C3 wording after the stage 03 limit-20 spot-check, D-072**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -214,7 +214,7 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 | Promise text from manifesto text only: no number or name absent from the source span; few-shot examples invented, never from in-scope manifestos | Verbatim/number/name checks V1–V3 + spot-check (stage 02) |
 | Vision transcription (Gemini or Cowork fallback): only the prompt and page images; no web search, no knowledge-based "corrections" | Prompt + handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
 | Promise list frozen per term after sign-off; later knowledge can't reshape it | `data/frozen/promises_{term}.jsonl` + refusal to re-extract (stage 02) |
-| Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + check C3 (every number and capitalised name in indicators and queries must occur in the promise) + check C4 (`continues_existing` needs a verbatim cue, D-067); no party/term name in the prompt (stage 03) |
+| Covariates and indicators from manifesto text only; no unseen scheme names, GO numbers or dates | Prompt + check C3 (every number in indicators and queries must occur in the promise; every capitalised name in the promise, its section or another promise of the same unit, or be an acronym of one, D-072) + check C4 (`continues_existing` needs a verbatim cue, D-067); no party/term name in the prompt (stage 03) |
 | Gold promises never in prompts or few-shot pools | Overlap test (stage 06) |
 | Backtest fits use training-term rows only | Assertion in modelling code (stage 07) |
 

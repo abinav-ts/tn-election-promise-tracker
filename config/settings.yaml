@@ -172,7 +172,6 @@ extract:
 classify:
   promises_per_call: 20       # a batch never splits a unit, so it may run over by one unit
   headline_cap: 25            # per term (D-068)
-  headline_frontmatter_ratio: 0.6   # share of a promise's source words found in the front matter
   min_indicators: 2           # vague promises (D-006)
   max_indicators: 4
   min_queries: 2              # per indicator

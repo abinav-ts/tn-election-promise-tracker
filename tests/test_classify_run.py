@@ -55,7 +55,7 @@ def test_run_writes_covariates_self_and_vague_indicators(term, conn, monkeypatch
     assert stats["classified"] == 5 and stats["unresolved"] == 0
     rows = {p.promise_id: p for p in db.select_models(conn, "promises", "term_id = 'DMK-2021'")}
     assert rows["DMK-2021-0001"].sector == "social_welfare" and rows["DMK-2021-0001"].headline is True
-    assert rows["DMK-2021-0001"].covariates_version == "classify_promises v1.0"
+    assert rows["DMK-2021-0001"].covariates_version == "classify_promises v1.1"
     assert rows["DMK-2021-0003"].continues_existing is True
     ind = {i.indicator_id: i for i in db.select_models(conn, "indicators")}
     self1 = ind["DMK-2021-0001-I1"]
@@ -83,6 +83,8 @@ def test_failing_promise_retried_alone_then_override(term, conn, monkeypatch):
     assert stats["unresolved"] == 1 and stats["llm_calls"] == 4  # 2 batches + 2 retries alone
     single = [u for u in (p.split("## Units\n", 1)[1] for p in fake.prompts) if u.count('"id": "P') == 1]
     assert len(single) == 2 and all('"id": "P01"' in p for p in single)
+    # the unit's other promise goes along as context (C3 allows names from it)
+    assert any('"context_promises"' in u and "Urge the Union Government to start an AIIMS." in u for u in single)
     with (term / "data" / "interim" / "classify_failures_03.csv").open() as f:
         fails = list(csv.DictReader(f))
     by = {(r["promise_id"], r["rule"]): r["resolved_by"] for r in fails}

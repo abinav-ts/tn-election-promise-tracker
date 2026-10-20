@@ -2,7 +2,7 @@
  "AIADMK-2016": {
   "summary": {
    "term": "AIADMK-2016",
-   "covariates_version": "classify_promises v1.0",
+   "covariates_version": "classify_promises v1.1",
    "limit": 20,
    "promises_in_term": 312,
    "promises": 20,
@@ -15,9 +15,9 @@
    "resolved_by_retry": 0,
    "overrides": 0,
    "extra_ids": 0,
-   "vague": 4,
-   "vague_share": 0.2,
-   "headline": 0
+   "vague": 7,
+   "vague_share": 0.35,
+   "headline": 2
   },
   "sector": {
    "agriculture_fisheries": 18,
@@ -27,31 +27,45 @@
   "promise_type": {
    "transfer_subsidy": 7,
    "new_scheme": 1,
-   "scheme_expansion": 5,
-   "administrative": 5,
+   "scheme_expansion": 6,
+   "administrative": 4,
    "infrastructure": 2
   },
   "specificity": {
-   "specific": 16,
-   "vague": 4
+   "specific": 13,
+   "vague": 7
   },
   "cost_band": {
-   "high": 5,
-   "medium": 13,
-   "none": 2
+   "high": 6,
+   "medium": 14
   },
   "union_basis": {
    "none": 20
   },
-  "continues_existing": 9,
-  "vague_share": 0.2,
+  "continues_existing": 10,
+  "vague_share": 0.35,
   "indicators_per_vague": {
-   "2": 4
+   "2": 7
   },
-  "indicators": 24,
-  "headline": [],
+  "indicators": 27,
+  "headline": [
+   {
+    "rank": 1,
+    "promise_id": "AIADMK-2016-0001",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 2,
+    "promise_id": "AIADMK-2016-0002",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   }
+  ],
   "below_cap": [],
-  "signal_ge_1": 0,
+  "signal_ge_1": 2,
   "failures": {
    "by_rule": {},
    "resolved": {}
@@ -60,9 +74,82 @@
  "DMK-2021": {
   "summary": {
    "term": "DMK-2021",
-   "covariates_version": "classify_promises v1.0",
+   "covariates_version": "classify_promises v1.1",
    "limit": 20,
    "promises_in_term": 667,
+   "promises": 21,
+   "classified": 20,
+   "unresolved": 1,
+   "batches": 1,
+   "llm_calls": 3,
+   "cache_hits": 0,
+   "retried": 2,
+   "resolved_by_retry": 1,
+   "overrides": 0,
+   "extra_ids": 0,
+   "vague": 2,
+   "vague_share": 0.1,
+   "headline": 1
+  },
+  "sector": {
+   "governance_law_state_rights": 5,
+   "education": 2,
+   "culture_language_religion": 13
+  },
+  "promise_type": {
+   "advocacy": 11,
+   "administrative": 4,
+   "institution": 2,
+   "infrastructure": 2,
+   "law_regulation": 1
+  },
+  "specificity": {
+   "vague": 2,
+   "specific": 18
+  },
+  "cost_band": {
+   "none": 12,
+   "low": 6,
+   "medium": 1,
+   "high": 1
+  },
+  "union_basis": {
+   "advocacy": 11,
+   "none": 9
+  },
+  "continues_existing": 0,
+  "vague_share": 0.1,
+  "indicators_per_vague": {
+   "2": 2
+  },
+  "indicators": 22,
+  "headline": [
+   {
+    "rank": 1,
+    "promise_id": "DMK-2021-0015",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   }
+  ],
+  "below_cap": [],
+  "signal_ge_1": 1,
+  "failures": {
+   "by_rule": {
+    "C3": 3
+   },
+   "resolved": {
+    "retry alone": 1,
+    "UNRESOLVED": 2
+   }
+  }
+ },
+ "TVK-2026": {
+  "summary": {
+   "term": "TVK-2026",
+   "covariates_version": "classify_promises v1.1",
+   "limit": 20,
+   "promises_in_term": 695,
    "promises": 21,
    "classified": 21,
    "unresolved": 0,
@@ -73,43 +160,42 @@
    "resolved_by_retry": 2,
    "overrides": 0,
    "extra_ids": 0,
-   "vague": 2,
-   "vague_share": 0.0952,
+   "vague": 4,
+   "vague_share": 0.1905,
    "headline": 0
   },
   "sector": {
-   "governance_law_state_rights": 6,
-   "education": 3,
-   "culture_language_religion": 11,
-   "employment_labour": 1
+   "governance_law_state_rights": 15,
+   "caste_minority_welfare": 1,
+   "culture_language_religion": 1,
+   "health": 1,
+   "water_environment_energy": 3
   },
   "promise_type": {
    "advocacy": 12,
-   "administrative": 4,
-   "institution": 2,
-   "infrastructure": 2,
-   "law_regulation": 1
+   "administrative": 7,
+   "institution": 2
   },
   "specificity": {
-   "vague": 2,
-   "specific": 19
+   "vague": 4,
+   "specific": 17
   },
   "cost_band": {
    "none": 13,
-   "low": 6,
-   "medium": 1,
-   "high": 1
+   "medium": 3,
+   "low": 5
   },
   "union_basis": {
    "advocacy": 12,
    "none": 9
   },
   "continues_existing": 0,
-  "vague_share": 0.0952,
+  "vague_share": 0.1905,
   "indicators_per_vague": {
-   "2": 2
+   "2": 2,
+   "3": 2
   },
-  "indicators": 23,
+  "indicators": 27,
   "headline": [],
   "below_cap": [],
   "signal_ge_1": 0,
@@ -122,77 +208,8 @@
    }
   }
  },
- "TVK-2026": {
-  "summary": {
-   "term": "TVK-2026",
-   "covariates_version": "classify_promises v1.0",
-   "limit": 20,
-   "promises_in_term": 695,
-   "promises": 21,
-   "classified": 19,
-   "unresolved": 2,
-   "batches": 1,
-   "llm_calls": 14,
-   "cache_hits": 0,
-   "retried": 13,
-   "resolved_by_retry": 11,
-   "overrides": 0,
-   "extra_ids": 0,
-   "vague": 5,
-   "vague_share": 0.2632,
-   "headline": 0
-  },
-  "sector": {
-   "governance_law_state_rights": 14,
-   "caste_minority_welfare": 1,
-   "culture_language_religion": 1,
-   "health": 1,
-   "water_environment_energy": 2
-  },
-  "promise_type": {
-   "advocacy": 11,
-   "administrative": 6,
-   "institution": 2
-  },
-  "specificity": {
-   "vague": 5,
-   "specific": 14
-  },
-  "cost_band": {
-   "none": 14,
-   "high": 1,
-   "low": 3,
-   "medium": 1
-  },
-  "union_basis": {
-   "advocacy": 12,
-   "none": 4,
-   "union_subject": 1,
-   "union_approval": 2
-  },
-  "continues_existing": 0,
-  "vague_share": 0.2632,
-  "indicators_per_vague": {
-   "2": 2,
-   "3": 3
-  },
-  "indicators": 27,
-  "headline": [],
-  "below_cap": [],
-  "signal_ge_1": 0,
-  "failures": {
-   "by_rule": {
-    "C3": 7,
-    "C5": 10
-   },
-   "resolved": {
-    "retry alone": 12,
-    "UNRESOLVED": 5
-   }
-  }
- },
  "_meta": {
-  "prompt_version": "1.0",
+  "prompt_version": "1.1",
   "vague_stop_exceeded": []
  }
 }

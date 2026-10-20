@@ -42,8 +42,8 @@ WHAT = {
          "covariates fit the rubric, and are the indicators checkable steps of this promise?",
     "c": "Leakage-sensitive: is continues_existing backed by the cue words in the text (not outside knowledge)? "
          "Is the Union dependence real by the wording (union_funds / union_approval)?",
-    "d": "Headline boundary: should this promise be on the other side of the cap (statewide, marked special, "
-         "named in the front matter)?",
+    "d": "Headline boundary: should this promise be on the other side of the cap (statewide or very large "
+         "group, marked special in the manifesto)?",
     "e": "Specific vs vague: is there one checkable action with a clear object (specific) or only a goal "
          "(vague)? For vague: are the indicators observable official steps?",
     "f": "Outlier: is the sector / cost band / decomposition right?",
@@ -177,6 +177,7 @@ def run_spotcheck(term: Optional[str] = None) -> dict[str, Any]:
     profiles = cfg.profiles()
     path = cfg.spotcheck_path("03")
     path.parent.mkdir(parents=True, exist_ok=True)
+    archived = _archive_if_reviewed(path)
     with path.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS)
         w.writeheader()
@@ -192,4 +193,18 @@ def run_spotcheck(term: Optional[str] = None) -> dict[str, Any]:
                         "unit_text": u.text if u else "", "covariates": _covariates(r), "indicators": _indicators(r),
                         "verdict": "", "note": ""})
     return {"rows": len(chosen), "below_minimum": len(chosen) < s.min_items, "path": str(path),
-            "groups": [it.group for it in chosen]}
+            "groups": [it.group for it in chosen], "archived": archived}
+
+
+def _archive_if_reviewed(path) -> Optional[str]:
+    """A sheet that already holds verdicts is moved aside, never overwritten."""
+    if not path.exists():
+        return None
+    with path.open(encoding="utf-8", newline="") as f:
+        if not any((r.get("verdict") or "").strip() for r in csv.DictReader(f)):
+            return None
+    import datetime as dt
+
+    dest = path.with_name(f"{path.stem}_reviewed_{dt.datetime.now().strftime('%Y%m%dT%H%M%S')}{path.suffix}")
+    path.rename(dest)
+    return str(dest)

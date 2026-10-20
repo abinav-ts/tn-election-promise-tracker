@@ -68,3 +68,21 @@ def test_select_caps():
     items = [Item(f"T{t}-{i}", f"T{t}", g, 1.0, "") for t in range(3) for i, g in enumerate("aaaabbbbcccc")]
     out = select(items, 10, per_term=3, per_group=3)
     assert len(out) == 9 and [i.group for i in out] == list("aaabbbccc")
+
+
+def test_a_reviewed_sheet_is_archived_not_overwritten(sheet_input):
+    from ept.classify.spotcheck import run_spotcheck
+
+    first = run_spotcheck()
+    with open(first["path"], newline="") as f:
+        rows = list(csv.DictReader(f))
+    rows[0]["verdict"] = "ok"
+    with open(first["path"], "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=rows[0].keys())
+        w.writeheader()
+        w.writerows(rows)
+    second = run_spotcheck()
+    assert second["archived"] and "_reviewed_" in second["archived"]
+    with open(second["archived"], newline="") as f:
+        assert next(csv.DictReader(f))["verdict"] == "ok"
+    assert run_spotcheck()["archived"] is None  # a blank sheet is simply replaced

@@ -95,11 +95,11 @@ def run_report(term: Optional[str] = None) -> dict[str, Any]:
            + (f"EXCEEDED in {', '.join(stops)} — stop for the user's decision." if stops else "not exceeded."), ""]
     md += ["**Neutrality:** every term used the same prompt version "
            f"({', '.join(sorted({data[t]['summary'].get('covariates_version', '?') for t in terms}))}), the same "
-           f"rubric, the same checks C1–C6 and the same thresholds (headline cap {c.headline_cap}, front-matter "
-           f"ratio {c.headline_frontmatter_ratio}, {c.min_indicators}–{c.max_indicators} indicators, "
+           f"rubric, the same checks C1–C6 and the same thresholds (headline cap {c.headline_cap}, "
+           f"{c.min_indicators}–{c.max_indicators} indicators, "
            f"{c.min_queries}–{c.max_queries} queries of {c.min_query_words}–{c.max_query_words} words). The "
            "template names no party or term; promise and unit IDs are replaced by batch-local aliases. "
-           "Manifesto text (front matter, units) can name the party: it is data.", ""]
+           "Manifesto text (units, source spans) can name the party: it is data.", ""]
     md += ["## Covariates", ""]
     md += _table("Sector", SECTORS, terms, data, "sector")
     md += _table("Promise type", PROMISE_TYPES, terms, data, "promise_type")
