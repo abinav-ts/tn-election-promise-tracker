@@ -185,7 +185,7 @@ classify:
   spotcheck:
     per_term: 3
     per_group: 3
-  frozen_terms: []            # D-064: classification snapshots in data/frozen/classification_{term}.jsonl
+  frozen_terms: [AIADMK-2016, DMK-2021, TVK-2026]            # D-064: classification snapshots in data/frozen/classification_{term}.jsonl
 
 llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)

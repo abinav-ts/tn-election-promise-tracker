@@ -13,7 +13,7 @@
    "cache_hits": 38,
    "retried": 22,
    "resolved_by_retry": 21,
-   "overrides": 3,
+   "overrides": 4,
    "extra_ids": 0,
    "vague": 70,
    "vague_share": 0.2244,
@@ -59,7 +59,7 @@
    "advocacy": 11,
    "union_subject": 1
   },
-  "continues_existing": 82,
+  "continues_existing": 83,
   "vague_share": 0.2244,
   "indicators_per_vague": {
    "2": 67,
@@ -306,10 +306,10 @@
    "cache_hits": 76,
    "retried": 43,
    "resolved_by_retry": 28,
-   "overrides": 15,
+   "overrides": 26,
    "extra_ids": 0,
-   "vague": 43,
-   "vague_share": 0.0645,
+   "vague": 42,
+   "vague_share": 0.063,
    "headline": 25
   },
   "sector": {
@@ -337,8 +337,8 @@
    "scheme_expansion": 43
   },
   "specificity": {
-   "vague": 43,
-   "specific": 624
+   "vague": 42,
+   "specific": 625
   },
   "cost_band": {
    "none": 110,
@@ -354,13 +354,13 @@
    "union_funds": 1,
    "presidential_assent": 1
   },
-  "continues_existing": 62,
-  "vague_share": 0.0645,
+  "continues_existing": 74,
+  "vague_share": 0.063,
   "indicators_per_vague": {
    "2": 41,
-   "3": 2
+   "3": 1
   },
-  "indicators": 712,
+  "indicators": 710,
   "headline": [
    {
     "rank": 1,
@@ -603,7 +603,7 @@
    "cache_hits": 95,
    "retried": 62,
    "resolved_by_retry": 55,
-   "overrides": 12,
+   "overrides": 13,
    "extra_ids": 0,
    "vague": 71,
    "vague_share": 0.1022,
@@ -648,7 +648,7 @@
    "none": 661,
    "union_approval": 7
   },
-  "continues_existing": 18,
+  "continues_existing": 19,
   "vague_share": 0.1022,
   "indicators_per_vague": {
    "2": 69,

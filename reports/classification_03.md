@@ -1,14 +1,14 @@
 # Classification & decomposition (stage 03)
 
-Generated 2026-10-20T18:01:28 · prompt `classify_promises` v1.2 · model `gemini-3.5-flash-lite`
+Generated 2026-10-20T22:37:44 · prompt `classify_promises` v1.2 · model `gemini-3.5-flash-lite`
 
 ## Summary
 
 | term | promises | classified | unresolved | vague share | indicators | headline (signal ≥ 1) | LLM calls | cache hits | retried alone | overrides |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| AIADMK-2016 | 312 of 312 | 312 | 0 | 22.4% | 385 | 25 (52) | 0 | 38 | 22 | 3 |
-| DMK-2021 | 667 of 667 | 667 | 0 | 6.5% | 712 | 25 (106) | 0 | 76 | 43 | 15 |
-| TVK-2026 | 695 of 695 | 695 | 0 | 10.2% | 768 | 25 (107) | 0 | 95 | 62 | 12 |
+| AIADMK-2016 | 312 of 312 | 312 | 0 | 22.4% | 385 | 25 (52) | 0 | 38 | 22 | 4 |
+| DMK-2021 | 667 of 667 | 667 | 0 | 6.3% | 710 | 25 (106) | 0 | 76 | 43 | 26 |
+| TVK-2026 | 695 of 695 | 695 | 0 | 10.2% | 768 | 25 (107) | 0 | 95 | 62 | 13 |
 
 **Vague share stop rule (> 50%, D-070):** not exceeded.
 
@@ -51,8 +51,8 @@ Generated 2026-10-20T18:01:28 · prompt `classify_promises` v1.2 · model `gemin
 
 | value | AIADMK-2016 | DMK-2021 | TVK-2026 |
 |---|---:|---:|---:|
-| specific | 242 | 624 | 624 |
-| vague | 70 | 43 | 71 |
+| specific | 242 | 625 | 624 |
+| vague | 70 | 42 | 71 |
 
 ### Cost band
 
@@ -79,16 +79,16 @@ Generated 2026-10-20T18:01:28 · prompt `classify_promises` v1.2 · model `gemin
 
 | term | true |
 |---|---:|
-| AIADMK-2016 | 82 |
-| DMK-2021 | 62 |
-| TVK-2026 | 18 |
+| AIADMK-2016 | 83 |
+| DMK-2021 | 74 |
+| TVK-2026 | 19 |
 
 ### Indicators per vague promise
 
 | term | 2 | 3 | 4 |
 |---|---:|---:|---:|
 | AIADMK-2016 | 67 | 3 | 0 |
-| DMK-2021 | 41 | 2 | 0 |
+| DMK-2021 | 41 | 1 | 0 |
 | TVK-2026 | 69 | 2 | 0 |
 
 ## Headline promises

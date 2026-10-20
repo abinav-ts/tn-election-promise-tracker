@@ -2,7 +2,7 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 13 of 20 (deadline 2026-10-25). Stages 01 and 02 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695). Spec 03 approved (v1.0, 2026-10-18). Next: build stage 03 in Claude Code.
+**Today's position:** Day 15 of 20 (deadline 2026-10-25). Stages 01–03 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695), each with covariates and **1,863 indicators** (with search queries), classification **frozen** 2026-10-20. Next: spec 04 (evidence retrieval) in Cowork.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
@@ -10,7 +10,7 @@ _Updated at the end of every session. Read this first._
 | 00 | Global spec + structure | ✅ v0.9 | – | – | – | ✅ |
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
 | 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
-| 03 | Classification & decomposition | ✅ v1.0 (D-064–D-070) | ☐ | ☐ | ☐ | ☐ |
+| 03 | Classification & decomposition | ✅ v1.3 (D-064–D-074) | ✅ | ✅ 240 | ✅ | ✅ |
 | 04 | Evidence retrieval | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -29,9 +29,18 @@ _Updated at the end of every session. Read this first._
 - [x] Stage 02 full run, spot-checks (limit-20 and full) and freeze, 2026-10-13/15.
 
 ## Next step
-Open a new conversation in **Claude Code** to **build stage 03** from `specs/03-classification-decomposition.md` v1.0 (build order §4.10): rubric enums + prompt + checks C1–C6 → `run` + headline cap + report → `--limit 20` per term and spot-check → full run (≈ 85 calls on `gemini-3.5-flash-lite`, one day's quota) → fresh spot-check → `ept classify freeze`. Stop for the user if any term's vague share exceeds 50 %.
+Open a new conversation in **Claude Cowork** to draft **spec 04 (evidence retrieval)**: BM25 over the indicators' `search_queries` + dense retrieval over indicator text (D-009, Q-06: embedding model and chunks per judgment), the cutoff filter with `ept.dates.period_end` (global §9.1), and optional cutoff-aware query expansion. Then build it in Claude Code.
 
-**Schedule (as of 2026-10-15):** about 3 days behind the day plan (stage 02 was planned for Day 5, closed Day 10; stage 03 was Day 6). With stage 03 on Day 11, 04 Days 12–13, 05 Days 14–16, 06 Days 17–18, 07 Day 19 and 08 Day 20 there is **no buffer**; the agreed cut order (global §12.3) is the user's call if anything slips (D-041). TVK is already done, so stage 07's projection is unblocked.
+**Schedule (as of 2026-10-20):** Day 15, with stages 04–08 left in 5 days (04 Day 16, 05 Days 17–18, 06 Day 19, 07 + 08 Day 20 is already over-full). The cut order (global §12.3) is the user's call (D-041); item 1 ("drop indicator decomposition") would now save little, since only 183 promises are vague.
+
+## Facts later stages need (from stage 03; details in spec 03 v1.3 §10 and D-064–D-074)
+- **Classification frozen** in `data/frozen/classification_{term}.jsonl` (committed): per promise the 8 covariates, the audit fields (`union_basis`, `continues_cue`, `headline_signal` 0–2, `headline_rank`) and its indicators. `ept classify` loads them into the DB (`promises` covariate columns, `indicators`); re-classifying is refused (`--force` too). Promise snapshots untouched (byte-identical).
+- **Indicators:** `indicator_id` = `{promise_id}-I{n}`. Specific promises have one self indicator (`-I1`, `is_self`, text = promise text); vague promises have 2–4 model-written ones. DMK 710 indicators (42 vague promises), AIADMK 385 (70), TVK 768 (71). 2–4 `search_queries` each (5,110 queries in total), English keywords, names only from the promise or its unit's other promises (C3), names capitalised.
+- **Retrieval caveat:** 43 promises have override rows (`config/classify_overrides.csv`), mostly "this scheme / these works" texts whose names are printed only in the unit, so their queries are generic ("canal renovation works"). Stage 04 may expand queries only from corpus documents dated before the cutoff (global rule 6).
+- **Covariates for stage 07:** 13 sectors, 8 types (administrative, transfer_subsidy and infrastructure lead), cost band none/low/medium/high, `union_dependent` (DMK 83, AIADMK 15, TVK 34), `continues_existing` (DMK 74, AIADMK 83, TVK 19), `headline` = exactly 25 per term (75 for the strong judge, global §6.3).
+- **Known limitations:** spec 03 §10 (model knowledge can tilt judged fields; `continues_existing` under-set for revive/again wording, 14 fixed; generic queries where names are unit-only; vague indicators weakly checkable; C3 can't see lower-case names, mitigated by prompt v1.2 and a scan).
+- **Tests:** `tests/conftest.py` resets `extract.frozen_terms`, `classify.frozen_terms` and `config/classify_overrides.csv` (header only) in the test copy; stage 03 run tests use the scripted mock in `tests/classify_helpers.py`.
+- **Quota:** stage 03 used ≈ 450 `gemini-3.5-flash-lite` calls over 2026-10-18/20 (430 on the Pacific day of 2026-10-20).
 
 ## Facts later stages need (from stage 02; details in spec 02 and D-044–D-063)
 - **Promises:** 1,674 rows, **frozen** in `data/frozen/promises_{term}.jsonl` (committed; DMK-2021 667, AIADMK-2016 312, TVK-2026 695). These snapshots are the source of truth: any `ept extract` step (e.g. `ept extract dedup`) reloads them into the `promises` table if the DB is lost. Every `ept extract` step refuses to change a frozen term (`--force` too); un-freezing needs a decision-log entry (D-039).
@@ -114,3 +123,9 @@ Open a new conversation in **Claude Code** to **build stage 03** from `specs/03-
   - Indicators: code builds the self indicator for specific promises; the model writes 2–4 for vague ones; search queries for every indicator are made here because stage 04's BM25 needs them (D-065). Check C3 rejects any number or capitalised name not in the promise.
   - Output frozen in `data/frozen/classification_{term}.jsonl`; promise snapshots untouched (D-064); audit fields stay out of §7 (D-069). A vague share > 50 % in any term stops the run (D-070). Global spec v0.9.
   - Schedule: Day 13 with stages 03–08 left, so there is no buffer; the cut order (global §12.3) stays the user's call (D-041).
+- **2026-10-20 — Stage 03 built, run and frozen (Claude Code).**
+  - Build: rubric enums, prompt `classify_promises`, checks C1–C6, deterministic batches (never split a unit, answers matched by alias), retry alone, overrides, self indicators by code, headline cap, report, spot-check, freeze. Build clarifications D-071: aliases instead of IDs in the prompt (IDs carry the term name), no sentence-initial exemption for queries in C3, C6 word limit only for model-written indicators, stage 02 reload keeps covariates.
+  - Limit-20 run (v1.0): spot-check 9/9 ok (D-072). Changes: C3 accepts names from the unit's other promises and acronyms; no party tag in queries; prompt v1.1 (advocacy basis, clearer headline point); front-matter headline point and tie-break dropped for every term (signal 0–2). Incident: the `ept classify` chain overwrote the reviewed sheet; verdicts restored, reviewed sheets are now archived.
+  - Full run v1.1: 1.4 % unresolved (C3 first-answer rate 5.7 %; user: the unresolved rate counts). Acronyms in any case; 14 overrides approved; C3's lower-case blind spot (transliterated TVK scheme names in lower case) → prompt v1.2 with names capitalised, full re-run (D-073).
+  - Full run v1.2: 16 more overrides approved; MW/LPG treated as common words. Fresh spot-check 8 ok, 1 wrong (DMK-2021-0100: revive = continues, specific) → 14 approved `continues_existing` overrides found by a scan (D-074). 43 overrides in total, 0 unresolved.
+  - Result: 1,674 promises, 1,863 indicators, vague share AIADMK 22.4 % / DMK 6.3 % / TVK 10.2 %, 25 headline promises per term. Acceptance criteria 1–10 met; all three terms frozen. Spec 03 v1.3 with a spec-vs-build section; global spec v0.10.

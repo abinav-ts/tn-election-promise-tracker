@@ -43,6 +43,9 @@ def root(tmp_path, monkeypatch) -> Path:
     settings = tmp_path / "config" / "settings.yaml"
     settings.write_text(re.sub(r"(?m)^(  frozen_terms: )\[.*?\]", r"\1[]", settings.read_text(encoding="utf-8")),
                         encoding="utf-8")
+    # ... and with no classification overrides (the real ones target real promise IDs)
+    overrides = tmp_path / "config" / "classify_overrides.csv"
+    overrides.write_text(overrides.read_text(encoding="utf-8").splitlines()[0] + "\n", encoding="utf-8")
     (tmp_path / "prompts").mkdir()
     shutil.copytree(FIXTURES, tmp_path / "tests" / "fixtures")
     monkeypatch.setenv("EPT_ROOT", str(tmp_path))

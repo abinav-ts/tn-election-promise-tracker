@@ -111,7 +111,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 |---|---|---|---|
 | 01 | Corpus collection (done) | `ept crawl`, `ept parse`, `ept coverage`, `ept spotcheck`, `ept leads` | `documents`, `chunks`, coverage report, Tamil pairing, tracker leads |
 | 02 | Promise extraction (done 2026-10-15: 1,674 promises frozen) | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
-| 03 | Classification & decomposition (spec approved 2026-10-18) | `ept classify` (`run`, `report`, `spotcheck`, `freeze`) | covariates, `indicators` with search queries (frozen per term in `data/frozen/classification_{term}.jsonl`, D-064) |
+| 03 | Classification & decomposition (done 2026-10-20: 1,674 promises, 1,863 indicators, frozen) | `ept classify` (`run`, `report`, `spotcheck`, `freeze`) | covariates, `indicators` with search queries (frozen per term in `data/frozen/classification_{term}.jsonl`, D-064) |
 | 04 | Evidence retrieval | `ept index`, `ept retrieve` | `retrievals` |
 | 05 | Judgment | `ept judge`, `ept judge export/import` | `verdicts` |
 | 06 | Evaluation | `ept evaluate` | metrics + error analysis |

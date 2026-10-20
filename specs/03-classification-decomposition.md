@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.2** (2026-10-20; v1.0 approved 2026-10-18 after OQ-1–OQ-4; v1.1 = limit-20 spot-check outcome: front-matter headline point dropped, C3 allows same-unit promise names and acronyms, build clarifications; v1.2 = full-run outcome: C3 acronyms in any case, names capitalised in queries, C3 stop rule counts unresolved promises; D-071–D-073) |
+| Status | **APPROVED v1.3 — BUILT** (2026-10-20; v1.0 approved 2026-10-18 after OQ-1–OQ-4; v1.1 = limit-20 spot-check outcome: front-matter headline point dropped, C3 allows same-unit promise names and acronyms, build clarifications; v1.2 = full-run outcome: C3 acronyms in any case, names capitalised in queries, C3 stop rule counts unresolved promises; v1.3 = as built: spot-check spread, generic units in common words, spec-vs-build §10; D-071–D-074) |
 | Global spec | `specs/00-global-spec.md` v0.9 (amended with this spec, §9.3). This spec references §7/§8 and redefines nothing. It fills in the covariate *values* that §7 leaves to spec 03. Global amendments made on approval: listed in §9.3 |
 | Day plan | Day 6 in the plan; now Day 13 (2026-10-18). No buffer is left (STATUS) |
 | CLI | `python -m ept classify [run\|report\|spotcheck\|freeze]` (no subcommand = `run` → `report` → `spotcheck`) |
 | Resolves | Q-05 (covariate rubrics) |
-| Decisions | D-064–D-073 (`docs/decisions/log.md`) |
+| Decisions | D-064–D-074 (`docs/decisions/log.md`) |
 
 ---
 
@@ -168,7 +168,7 @@ Problem score, groups in priority order:
 - **e.** specificity outliers: `specific` promises whose text has a goal verb ("improve", "strengthen", "promote", "ensure"), and `vague` promises that contain a number or a named place;
 - **f.** fill (if a–e give fewer than 7): sector `other`, `cost_band` = `high` with a `low`-type action, 4-indicator decompositions.
 
-Spread: at most 3 per term and at most 3 per group (the global rule; three terms make 9–10 reachable). Each row carries the promise text, `source_text`, unit text (with an English gloss already in the promise text for Tamil units), the covariates, the indicators and queries, and exactly what to check. Each item takes ≤ 2 minutes. Verdicts are written freely by the user and converted as in stage 02 (STATUS).
+Spread: at most 3 per term and at most 3 per group (the global rule; three terms make 9–10 reachable), at most one item per unit, and within a group the terms take turns (each term's best item first) so ties can't fill a group from one term (D-074). A sheet that already holds verdicts is archived, never overwritten (D-073). Each row carries the promise text, `source_text`, unit text (with an English gloss already in the promise text for Tamil units), the covariates, the indicators and queries, and exactly what to check. Each item takes ≤ 2 minutes. Verdicts are written freely by the user and converted as in stage 02 (STATUS).
 
 ### 4.8 Freezing (D-064)
 - `ept classify freeze --term T` writes `data/frozen/classification_{term}.jsonl` and adds T to `classify.frozen_terms`. It runs only after the spot-check has passed and §6 holds.
@@ -178,7 +178,7 @@ Spread: at most 3 per term and at most 3 per group (the global rule; three terms
 - `tests/conftest.py` resets `classify.frozen_terms` to `[]` in the test settings, as for stage 02.
 
 ### 4.9 Configuration (`settings.yaml`, new `classify:` block; no literals in code)
-`promises_per_call: 20` · `headline_cap: 25` · `min_indicators: 2` · `max_indicators: 4` · `min_queries: 2` · `max_queries: 4` · `min_query_words: 2` · `max_query_words: 12` · `max_indicator_words: 40` · `extra_common_words: []` · `vague_stop_share: 0.5` · `goal_verbs: [improve, strengthen, promote, ensure]` · `spotcheck: {per_term: 3, per_group: 3}` · `frozen_terms: []`. New `paths`: `classify_overrides`, `classify_failures`, `classify_interim` (per-term results with audit fields before freezing), `classification_md/json`, frozen snapshot template. `min_query_words`, `vague_stop_share` and `goal_verbs` added in the build (D-071). Starting values are open for review (§9 OQ-4).
+`promises_per_call: 20` · `headline_cap: 25` · `min_indicators: 2` · `max_indicators: 4` · `min_queries: 2` · `max_queries: 4` · `min_query_words: 2` · `max_query_words: 12` · `max_indicator_words: 40` · `extra_common_words: []` (as built: `[MW, LPG]`, D-074) · `vague_stop_share: 0.5` · `goal_verbs: [improve, strengthen, promote, ensure]` · `spotcheck: {per_term: 3, per_group: 3}` · `frozen_terms: []`. New `paths`: `classify_overrides`, `classify_failures`, `classify_interim` (per-term results with audit fields before freezing), `classification_md/json`, frozen snapshot template. `min_query_words`, `vague_stop_share` and `goal_verbs` added in the build (D-071). Starting values are open for review (§9 OQ-4).
 
 ### 4.10 Build order (Claude Code; commit at each ✔)
 1. Rubric enums in `schema.py`, `classify:` config, prompt v1.0 with invented few-shots, `checks.py` (C1–C6) with offline tests. ✔ `stage 03: rubric, prompt, checks`
@@ -261,3 +261,29 @@ Rules from the global warning box that apply to this stage:
 - **OQ-4:** starting values in §4.9 accepted; revisable after the limit-20 run with a logged reason.
 
 **Open:** none.
+
+## 10. Spec vs build (2026-10-20)
+
+Everything in §3–§7 was built as specified, except for the points below. Each is logged.
+
+| Spec | Build | Log |
+|---|---|---|
+| §4.3 input per promise includes `promise_id` | The prompt sees batch-local aliases (P01…, U01…), because IDs carry the term name; answers are mapped back by alias | D-071 |
+| §4.3 batches carry the front matter; §4.5 front-matter point and tie-break | Dropped for every term; `headline_signal` is 0–2 | D-072 |
+| §4.3 retry alone = the promise alone | Also shows the unit's other promise texts as `context_promises` (not answered), since C3 accepts names from them | D-072 |
+| §4.4 C3: names from the promise, English source, section; sentence-initial tokens exempt | Also sibling promise texts of the same unit and acronyms in any case (incl. "&"); queries get no sentence-initial exemption | D-071–D-073 |
+| §4.4 C6: indicator ≤ 40 words | Applies to model-written indicators only (self indicator = promise text, up to 60 words) | D-071 |
+| §4.4 lower-case query words not checked | Unchanged, but prompt v1.2 requires names with capitals; a scan of the final output found no lower-case transliterated name left | D-073, D-074 |
+| §4.7 spread: ≤ 3 per term and group | Also one per unit; terms take turns within a group; reviewed sheet archived | D-073, D-074 |
+| §4.9 config keys | Added `min_query_words`, `vague_stop_share`, `goal_verbs`; `headline_frontmatter_ratio` removed; path `classify_interim` | D-071, D-072 |
+| §4.10 "C3 fails on > 5 %" | Counts promises still unresolved after the retry | D-073 |
+| §4.1 every step takes `--term`, `--limit`, `--force` | `report`, `spotcheck` and `freeze` take `--term` only (as in stage 02); `run` takes all three | — (as stage 02) |
+| §3 tests + `tests/fixtures/llm/classify_promises/…` | Run tests use a scripted mock backend (`tests/classify_helpers.py`) that answers by the promises in each rendered prompt, instead of fixture files: different calls need different answers | — |
+| Stage 02 code | `extract.freeze.load_frozen` rewrites only stage 02 columns, so a stage 02 reload keeps covariates and indicators | D-071 |
+
+**Known limitations** (for the whitepaper):
+- The bulk model's background knowledge can tilt judged fields (`cost_band`, `headline_signal`, `specificity`); the spot-check and the stage 06 evaluation cover what the checks can't.
+- `continues_existing` is under-set by the model for revive / reopen / again wording. 14 promises found by an English cue-word scan were fixed by overrides; promises whose cue exists only in Tamil unit text may still be missed.
+- C3 rejects names printed only in the unit text, so 43 promises (mostly "this scheme / these works" texts) carry generic queries through overrides, which will retrieve less precisely in stage 04. The rule is the same for every term.
+- Indicators of vague promises are only weakly checkable by nature (spot-check AIADMK-2016-0004).
+- C3 cannot see a name written in lower case; prompt v1.2 asks for capitals, and the final output was scanned, but this is not a mechanical guarantee.
