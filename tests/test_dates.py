@@ -47,3 +47,54 @@ def test_fiscal_years():
     assert normalize_fy("nothing") is None
     assert fy_bounds("2021-22") == (D(2021, 4, 1), D(2022, 3, 31))
     assert fiscal_years_between(D(2016, 5, 1), D(2018, 4, 2)) == ["2016-17", "2017-18", "2018-19"]
+
+
+# --- spec 04 §4.2: available_by (D-077) ---
+
+def _ab(doc_date, precision, doc_type, fy=None, title=None):
+    from ept.dates import available_by
+
+    return available_by(doc_date, precision, doc_type, fy, title)
+
+
+def test_available_by_precisions(root):
+    assert _ab("2021-06-15", "day", "go") == D(2021, 6, 15)
+    assert _ab("2021-06-01", "month", "go") == D(2021, 6, 30)
+    assert _ab("2021-01-01", "year", "scheme_page") == D(2021, 12, 31)
+
+
+def test_available_by_fiscal_year_bound(root):
+    # policy note with a late Wayback date -> fiscal-year end
+    assert _ab("2022-05-17", "day", "policy_note", "2021-22") == D(2022, 3, 31)
+    # undated policy note -> fiscal-year end
+    assert _ab(None, None, "policy_note", "2021-22") == D(2022, 3, 31)
+    # a strong date earlier than the FY end is kept (min never moves a date later)
+    assert _ab("2021-08-24", "day", "policy_note", "2021-22") == D(2021, 8, 24)
+    # © year: period_end 2021-12-31 is before the FY end 2022-03-31
+    assert _ab("2021-01-01", "year", "policy_note", "2021-22") == D(2021, 12, 31)
+    assert _ab("2023-01-01", "day", "budget_speech", "2021-22") == D(2022, 3, 31)
+    # performance budget by title prefix (case-insensitive)
+    assert _ab("2021-12-28", "day", "other", "2020-21", "Performance budget of Sericulture-2020-21") == D(2021, 3, 31)
+    assert _ab(None, None, "other", "2020-21", "PERFORMANCE BUDGET of X") == D(2021, 3, 31)
+
+
+def test_available_by_not_tightened(root):
+    # state policy (other, no prefix), CAG report and GO keep their own date
+    assert _ab("2022-05-17", "day", "other", "2021-22", "Tamil Nadu Data Centre Policy - 2021") == D(2022, 5, 17)
+    assert _ab("2024-05-17", "day", "cag_report", "2021-22") == D(2024, 5, 17)
+    assert _ab("2022-05-17", "day", "go", "2021-22") == D(2022, 5, 17)
+    assert _ab("2022-05-17", "day", "governor_address", "2021-22") == D(2022, 5, 17)
+    # undated without a fiscal-year bound -> None
+    assert _ab(None, None, "cag_report", "2021-22") is None
+    assert _ab(None, None, "policy_note", None) is None
+    assert _ab(None, None, "other", None, "Performance Budget of X") is None
+
+
+def test_availability_basis(root):
+    from ept.dates import BASIS_FY_ONLY, BASIS_FY_TIGHTENED, BASIS_STORED, availability
+
+    assert availability("2022-05-17", "day", "policy_note", "2021-22", None)[1] == BASIS_FY_TIGHTENED
+    assert availability(None, None, "policy_note", "2021-22", None)[1] == BASIS_FY_ONLY
+    assert availability("2021-08-24", "day", "policy_note", "2021-22", None)[1] == BASIS_STORED
+    assert availability("2022-03-31", "day", "policy_note", "2021-22", None) == (D(2022, 3, 31), BASIS_STORED)
+    assert availability(None, None, "go", None, None) == (None, None)

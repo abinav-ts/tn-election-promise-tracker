@@ -63,6 +63,13 @@ class Paths(_Cfg):
     classification_md: str
     classification_json: str
     classification_frozen: str
+    # stage 04 (spec 04 §4.11)
+    embeddings_dir: str
+    bm25_tokens: str
+    retrieval_md: str
+    retrieval_json: str
+    spotcheck_04_dir: str
+    retrieve_diag: str
 
 
 class EvidenceWindow(_Cfg):
@@ -115,9 +122,17 @@ class Chunk(_Cfg):
     max_words: int
 
 
+class FyBound(_Cfg):
+    """Spec 04 §4.2 (D-077): document kinds whose availability is capped at their fiscal-year end."""
+
+    doc_types: list[str]
+    title_prefixes: dict[str, list[str]] = {}
+
+
 class DateCfg(_Cfg):
     conflict_days: int
     fy_slack_months: int
+    fy_bound: FyBound
 
 
 class Tamil(_Cfg):
@@ -221,6 +236,55 @@ class Classify(_Cfg):
     frozen_terms: list[str]
 
 
+class Bm25Cfg(_Cfg):
+    k1: float
+    b: float
+    epsilon: float
+    depth: int
+
+
+class DenseCfg(_Cfg):
+    model: str
+    revision: Optional[str] = None  # pinned to the commit hash at first download
+    max_seq_length: int
+    batch_size: int
+    depth: int
+    device: str
+    query_instruction: str
+    mock: bool = False  # deterministic hashing embedder (tests; also EPT_EMBED_MOCK=1)
+    mock_dim: int = 64
+
+
+class RrfCfg(_Cfg):
+    k: float
+    w_bm25: float
+    w_dense: float
+
+
+class RetrieveSpotcheck(_Cfg):
+    per_term: int
+    per_group: int
+    snippet_words: int
+    near_cutoff_days: int
+
+
+class Retrieve(_Cfg):
+    """Spec 04 §4.11."""
+
+    landmarks_months: dict[str, list[int]]
+    full_term: bool
+    k: int
+    max_per_doc: int
+    go_min: int
+    go_pool: int
+    bm25: Bm25Cfg
+    dense: DenseCfg
+    rrf: RrfCfg
+    index_shard: int
+    tokens_per_word: float  # report: stage 05 sizing estimate
+    spotcheck: RetrieveSpotcheck
+
+
 class BulkCfg(_Cfg):
     api_key_env: str
     candidates: list[str]
@@ -257,6 +321,7 @@ class Settings(_Cfg):
     go: Go
     extract: Extract
     classify: Classify
+    retrieve: Retrieve
     llm: Llm
 
 

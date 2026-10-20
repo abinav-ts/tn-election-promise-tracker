@@ -108,3 +108,48 @@ def fiscal_years_between(start: dt.date, end: dt.date) -> list[str]:
     first = fy_start_year(fiscal_year_of(start))
     last = fy_start_year(fiscal_year_of(end))
     return [f"{y}-{(y + 1) % 100:02d}" for y in range(first, last + 1)]
+
+
+# --- availability date (spec 04 §4.2, D-077) ---
+
+BASIS_STORED = "stored"  # the stored date's period_end
+BASIS_FY_TIGHTENED = "fy_tightened"  # stored date later than the fiscal-year end: capped at it
+BASIS_FY_ONLY = "fy_only"  # undated: the fiscal-year end is the only date
+
+
+def fy_bounded(doc_type: str, title: Optional[str], fy_bound) -> bool:
+    """Policy notes, budget speeches, and `other` documents whose title starts with a listed prefix."""
+    if doc_type in fy_bound.doc_types:
+        return True
+    prefixes = fy_bound.title_prefixes.get(doc_type) or []
+    t = (title or "").strip().lower()
+    return any(t.startswith(p.lower()) for p in prefixes)
+
+
+def availability(doc_date: Optional[DateLike], date_precision: Optional[str], doc_type: str,
+                 fiscal_year: Optional[str], title: Optional[str], fy_bound=None
+                 ) -> tuple[Optional[dt.date], Optional[str]]:
+    """(available_by, basis); (None, None) for an undated document without a fiscal-year bound."""
+    if fy_bound is None:
+        from ept.config import get_config
+
+        fy_bound = get_config().settings.date.fy_bound
+    base = period_end(doc_date, date_precision) if doc_date and date_precision else None
+    fy_end = None
+    if fiscal_year and fy_bounded(doc_type, title, fy_bound) and normalize_fy(fiscal_year):
+        fy_end = fy_bounds(fiscal_year)[1]
+    if fy_end is None:
+        return (base, BASIS_STORED) if base else (None, None)
+    if base is None:
+        return fy_end, BASIS_FY_ONLY
+    return (fy_end, BASIS_FY_TIGHTENED) if fy_end < base else (base, BASIS_STORED)
+
+
+def available_by(doc_date: Optional[DateLike], date_precision: Optional[str], doc_type: str,
+                 fiscal_year: Optional[str], title: Optional[str], fy_bound=None) -> Optional[dt.date]:
+    """The date from which a document's chunks count as available (global §9.1, §9.3; D-077).
+
+    `period_end` of the stored date, but never later than the fiscal-year end for policy notes, performance
+    budgets and budget speeches; for such an undated document, the fiscal-year end. None = undated.
+    """
+    return availability(doc_date, date_precision, doc_type, fiscal_year, title, fy_bound)[0]

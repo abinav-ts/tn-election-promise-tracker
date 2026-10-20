@@ -85,7 +85,7 @@ def _set_frozen_terms(cfg: Config, terms: list[str]) -> None:
     """Rewrite `frozen_terms` inside the `classify:` block of settings.yaml (extract has its own)."""
     path = cfg.root / "config" / "settings.yaml"
     text = path.read_text(encoding="utf-8")
-    new, n = re.subn(r"(?ms)^(classify:\n(?:[ #].*\n|\n)*?  frozen_terms: )\[.*?\]",
+    new, n = re.subn(r"(?m)^(classify:\n(?:[ #].*\n|\n)*?  frozen_terms: )\[.*?\]",
                      lambda m: m.group(1) + "[" + ", ".join(terms) + "]", text, count=1)
     if n != 1:
         raise RuntimeError("classify.frozen_terms not found in settings.yaml")

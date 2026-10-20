@@ -41,6 +41,13 @@ paths:
   classification_md: reports/classification_03.md
   classification_json: reports/classification_03.json
   classification_frozen: data/frozen/classification_{term}.jsonl   # template (D-064)
+  # stage 04 (spec 04 §4.11)
+  embeddings_dir: data/processed/embeddings
+  bm25_tokens: data/processed/bm25_tokens.jsonl.gz
+  retrieval_md: reports/retrieval_04.md
+  retrieval_json: reports/retrieval_04.json
+  spotcheck_04_dir: data/interim/spotcheck_04
+  retrieve_diag: data/interim/retrieve_diag_04/{run_id}.jsonl   # per indicator x cutoff diagnostics (report, spot-check)
 
 # Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
 terms:
@@ -108,6 +115,9 @@ chunk:
 date:
   conflict_days: 7
   fy_slack_months: 3
+  fy_bound:                   # spec 04 §4.2 (D-077): available_by capped at the fiscal-year end
+    doc_types: [policy_note, budget_speech]
+    title_prefixes: {other: ["Performance Budget"]}
 
 tamil:
   include_in_evidence: false
@@ -186,6 +196,30 @@ classify:
     per_term: 3
     per_group: 3
   frozen_terms: [AIADMK-2016, DMK-2021, TVK-2026]            # D-064: classification snapshots in data/frozen/classification_{term}.jsonl
+
+# Spec 04 §4.11 (D-075–D-079).
+retrieve:
+  landmarks_months: {AIADMK-2016: [5, 6, 12, 24, 36, 48], DMK-2021: [5, 6, 12, 24, 36, 48], TVK-2026: [5]}
+  full_term: true             # for every term with a term_end (D-075)
+  k: 5                        # chunks per indicator x cutoff, both judges (D-078, Q-06)
+  max_per_doc: 2
+  go_min: 2                   # GO places (D-078)
+  go_pool: 50
+  bm25: {k1: 1.5, b: 0.75, epsilon: 0.25, depth: 100}
+  dense:
+    model: BAAI/bge-small-en-v1.5   # D-079; MIT licence (THIRD_PARTY_NOTICES.md)
+    revision: null            # pinned to the commit hash at first download
+    max_seq_length: 512
+    batch_size: 64
+    depth: 100
+    device: auto              # MPS if available, else CPU
+    query_instruction: "Represent this sentence for searching relevant passages: "
+    mock: false               # tests: deterministic hashing embedder (or EPT_EMBED_MOCK=1)
+    mock_dim: 64
+  rrf: {k: 60, w_bm25: 1.0, w_dense: 1.0}
+  index_shard: 2000
+  tokens_per_word: 1.33       # report: stage 05 sizing (English prose, approximate)
+  spotcheck: {per_term: 3, per_group: 3, snippet_words: 150, near_cutoff_days: 31}
 
 llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)
