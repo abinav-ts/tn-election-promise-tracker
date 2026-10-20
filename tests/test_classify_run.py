@@ -55,7 +55,7 @@ def test_run_writes_covariates_self_and_vague_indicators(term, conn, monkeypatch
     assert stats["classified"] == 5 and stats["unresolved"] == 0
     rows = {p.promise_id: p for p in db.select_models(conn, "promises", "term_id = 'DMK-2021'")}
     assert rows["DMK-2021-0001"].sector == "social_welfare" and rows["DMK-2021-0001"].headline is True
-    assert rows["DMK-2021-0001"].covariates_version == "classify_promises v1.1"
+    assert rows["DMK-2021-0001"].covariates_version == "classify_promises v1.2"
     assert rows["DMK-2021-0003"].continues_existing is True
     ind = {i.indicator_id: i for i in db.select_models(conn, "indicators")}
     self1 = ind["DMK-2021-0001-I1"]
@@ -94,7 +94,7 @@ def test_failing_promise_retried_alone_then_override(term, conn, monkeypatch):
 
     # an override fixes it; it is checked like any answer (a leaking override is refused)
     path = term / "config" / "classify_overrides.csv"
-    cols = path.read_text().strip().split(",")
+    cols = path.read_text().splitlines()[0].split(",")
     def write(queries):
         with path.open("w", newline="") as f:
             w = csv.DictWriter(f, fieldnames=cols)

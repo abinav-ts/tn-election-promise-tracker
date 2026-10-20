@@ -1,5 +1,5 @@
-version: 1.1
-purpose: classify each manifesto promise (covariates) and decompose vague promises into checkable indicators with search queries (spec 03 §4.2–§4.5, D-065–D-068, D-072). One prompt for every manifesto; the manifesto's text is data.
+version: 1.2
+purpose: classify each manifesto promise (covariates) and decompose vague promises into checkable indicators with search queries (spec 03 §4.2–§4.5, D-065–D-068, D-072, D-073). One prompt for every manifesto; the manifesto's text is data.
 
 You classify promises taken from an election manifesto of an Indian state government, and you write checkable indicators and search queries for them.
 
@@ -82,8 +82,8 @@ Never use knowledge of which promises later became well known.
 - A `specific` promise is its own indicator: give only `search_queries` (2–4) for it and leave `indicators` empty.
 - A `vague` promise gets `indicators`: 2–4 items, each `{text, search_queries}`, and an empty top-level `search_queries`.
 - Each indicator is one official, observable step that would show the promise being acted on (an order, a scheme, a law, a body set up, a facility opened, a payment started). Write it as one English sentence of at most 40 words. Use only the promise's own words for names, amounts and places; add no scheme name, number, date or place the promise does not state.
-- Search queries: 2–4 per indicator, English keywords, each 2 to 12 words. Generic government vocabulary and synonyms are fine ("government order", "scheme", "sanction", "launched", "assistance"). Write queries in lower case. Never add a scheme name, order number, year or date.
-- Names (capitalised words: places, rivers, schemes, laws, bodies, parties) in indicators and queries may come only from this promise's `text`, its English `source_text`, its `section`, or the `text` of another promise of the same unit (in `promises` or `context_promises`). Write them as written there; an acronym of such a name is fine ("Rural Water Board" → "RWB"). Do not take a name from `unit_text` that no promise text contains, and do not add a party name the promise text doesn't contain: describe it in general words instead. Numbers may come only from this promise's `text`.
+- Search queries: 2–4 per indicator, English keywords, each 2 to 12 words. Generic government vocabulary and synonyms are fine ("government order", "scheme", "sanction", "launched", "assistance"). Write ordinary words in lower case, but write every name (person, place, river, scheme, law, body, party, acronym) with capitals, as in normal English, so that it can be checked. Never add a scheme name, order number, year or date.
+- Names (capitalised words: places, rivers, schemes, laws, bodies, parties) in indicators and queries may come only from this promise's `text`, its English `source_text`, its `section`, or the `text` of another promise of the same unit (in `promises` or `context_promises`). Write them as written there; an acronym of such a name is fine ("Rural Water Board" → "RWB"). Do not take a name from `unit_text` that no promise text contains (this includes names printed in Tamil in `unit_text`: do not transliterate them), and do not add a party name the promise text doesn't contain: describe it in general words instead. Numbers may come only from this promise's `text`.
 
 ## Example (invented; not from any real manifesto)
 

@@ -55,7 +55,7 @@ def test_c3_runs_on_every_promise_indicator_query_and_override(root, conn, monke
     real_unseen = checks.unseen
     monkeypatch.setattr(checks, "unseen", lambda s, *a, **k: strings.append(s) or real_unseen(s, *a, **k))
     path = root / "config" / "classify_overrides.csv"
-    cols = path.read_text().strip().split(",")
+    cols = path.read_text().splitlines()[0].split(",")
     with path.open("w", newline="") as f:
         w = _csv.DictWriter(f, fieldnames=cols)
         w.writeheader()

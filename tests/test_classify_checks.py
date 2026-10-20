@@ -124,6 +124,19 @@ def test_acronyms():
 
     assert {"MHA", "TN", "TNPSC"} <= acronyms("the Ministry of Home Affairs and the Tamil Nadu Public Service Commission")
     assert "NEP" in acronyms("Union government's New Education Policy")
+    assert {"SHG", "MSME", "PPP", "FDI", "PSU"} <= acronyms(
+        "women self-help groups, micro, small and medium enterprises, public-private partnership, Foreign direct "
+        "investment, public sector undertakings")
+
+
+def test_c3_lower_case_acronyms_and_ampersand_names():
+    from dataclasses import replace
+
+    sub = replace(SUBJ, text="Appoint temple staff under the HR&CE department and help self-help groups and "
+                             "public sector undertakings.")
+    ok = _r(search_queries=["HRCE temple staff", "SHG assistance PSUs"])
+    assert check_c3(ok, sub, LIM) == []
+    assert check_c3(_r(search_queries=["TAHDCO loans", "temple staff order"]), sub, LIM)
 
 
 # --- C4 -------------------------------------------------------------------------

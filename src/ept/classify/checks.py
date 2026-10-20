@@ -7,8 +7,9 @@
 - C3 names and numbers, in every indicator text and every query: each digit group occurs in the promise
   `text`; each capitalised token that isn't a common word occurs in the promise `text`, its `source_text`
   (English units), `section` or the English text of another promise of the same unit, or is an acronym of
-  a capitalised phrase in those (D-072: "Cauvery" named in a sibling promise, "NEP" for "New Education
-  Policy"). All promise texts are English, so the rule is the same for every term. An indicator is a sentence, so its first token is exempt; a query is a
+  a phrase in those, in any case (D-072: "Cauvery" named in a sibling promise, "NEP" for "New Education
+  Policy"; D-073: "SHG" for "self-help groups", "HRCE" for "HR&CE"). All promise texts are English, so
+  the rule is the same for every term. An indicator is a sentence, so its first token is exempt; a query is a
   keyword string, so none of its tokens is (stricter than the sentence rule: "Amma canteen" as a query
   would otherwise pass). Lower-case words are not checked.
 - C4 cues: `continues_existing` ⇒ `continues_cue` is a verbatim span (after NFC, whitespace and quote
@@ -139,25 +140,23 @@ def check_c2(r: PromiseOut, lim: Limits) -> list[str]:
     return out
 
 
-_ACRONYM_SKIP = {"of", "and", "for", "the", "in", "on", "to"}
+_ACRONYM_SKIP = {"of", "and", "for", "the", "in", "on", "to", "a", "an"}
+_AMP = re.compile(r"(?<=[A-Za-z])&(?=[A-Za-z])")  # "HR&CE" -> "HRCE"
 
 
 def acronyms(text: str) -> set[str]:
-    """Initials (≥ 2 letters) of runs of capitalised words, skipping small joining words:
-    "Ministry of Home Affairs" -> {"MH", "MHA"}."""
-    words = re.findall(r"[A-Za-z]+", re.sub(r"'s\b", "", norm(text)))
+    """Upper-cased initials (≥ 2 letters) of every run of words, skipping small joining words, in any case
+    (D-073): "Ministry of Home Affairs" -> {"MH", "MHA", "HA"}; "micro, small and medium enterprises" ->
+    {"MS", "MSM", "MSME", ...}. Hyphens split words ("self-help groups" -> "SHG")."""
+    words = [w for w in re.findall(r"[A-Za-z]+", re.sub(r"'s\b", "", _AMP.sub("", norm(text))))
+             if w.lower() not in _ACRONYM_SKIP]
     out: set[str] = set()
-    for i, w in enumerate(words):
-        if not w[0].isupper():
-            continue
+    for i in range(len(words)):
         letters = ""
-        for x in words[i:]:
-            if x[0].isupper():
-                letters += x[0]
-                if len(letters) >= 2:
-                    out.add(letters)
-            elif x.lower() not in _ACRONYM_SKIP:
-                break
+        for x in words[i:i + 8]:
+            letters += x[0].upper()
+            if len(letters) >= 2:
+                out.add(letters)
     return out
 
 
@@ -168,7 +167,7 @@ def unseen(s: str, subject: Subject, common: frozenset[str], sentence: bool) -> 
     hay = [subject.text, subject.section or "", *subject.unit_promise_texts]
     if subject.source_lang == "en":
         hay.append(subject.source_text)
-    hay_lower = norm(" ".join(hay)).lower()
+    hay_lower = _AMP.sub("", norm(" ".join(hay))).lower()
     initials = acronyms(" ".join(hay))
     lead = len(s) - len(s.lstrip())
     names: list[str] = []
@@ -178,7 +177,8 @@ def unseen(s: str, subject: Subject, common: frozenset[str], sentence: bool) -> 
         word = re.sub(r"'s$", "", norm(m.group())).strip("'-")
         if not word or word in common or word.lower() in hay_lower or word in names:
             continue
-        if word.isupper() and (word in initials or word.rstrip("S") in initials):
+        core = word[:-1] if word.endswith("s") and word[:-1].isupper() else word  # "PSUs"
+        if core.isupper() and (core in initials or core.rstrip("S") in initials):
             continue
         names.append(word)
     return numbers, names

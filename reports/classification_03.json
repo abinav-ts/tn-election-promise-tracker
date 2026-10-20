@@ -3,126 +3,362 @@
   "summary": {
    "term": "AIADMK-2016",
    "covariates_version": "classify_promises v1.1",
-   "limit": 20,
+   "limit": null,
    "promises_in_term": 312,
-   "promises": 20,
-   "classified": 20,
-   "unresolved": 0,
-   "batches": 1,
-   "llm_calls": 1,
-   "cache_hits": 0,
-   "retried": 0,
-   "resolved_by_retry": 0,
+   "promises": 312,
+   "classified": 308,
+   "unresolved": 4,
+   "batches": 16,
+   "llm_calls": 41,
+   "cache_hits": 1,
+   "retried": 26,
+   "resolved_by_retry": 22,
    "overrides": 0,
    "extra_ids": 0,
-   "vague": 7,
-   "vague_share": 0.35,
-   "headline": 2
+   "vague": 58,
+   "vague_share": 0.1883,
+   "headline": 25
   },
   "sector": {
-   "agriculture_fisheries": 18,
-   "industry_it_msme": 1,
-   "water_environment_energy": 1
+   "agriculture_fisheries": 56,
+   "industry_it_msme": 44,
+   "water_environment_energy": 41,
+   "infrastructure_transport_housing": 25,
+   "caste_minority_welfare": 36,
+   "governance_law_state_rights": 21,
+   "culture_language_religion": 12,
+   "social_welfare": 18,
+   "education": 13,
+   "health": 14,
+   "employment_labour": 20,
+   "local_government": 8
   },
   "promise_type": {
-   "transfer_subsidy": 7,
-   "new_scheme": 1,
-   "scheme_expansion": 6,
-   "administrative": 4,
-   "infrastructure": 2
+   "transfer_subsidy": 59,
+   "new_scheme": 13,
+   "scheme_expansion": 49,
+   "administrative": 82,
+   "infrastructure": 68,
+   "institution": 20,
+   "law_regulation": 6,
+   "advocacy": 11
   },
   "specificity": {
-   "specific": 13,
-   "vague": 7
+   "specific": 250,
+   "vague": 58
   },
   "cost_band": {
-   "high": 6,
-   "medium": 14
+   "high": 121,
+   "medium": 116,
+   "low": 31,
+   "none": 40
   },
   "union_basis": {
-   "none": 20
+   "none": 294,
+   "union_approval": 2,
+   "advocacy": 11,
+   "union_subject": 1
   },
-  "continues_existing": 10,
-  "vague_share": 0.35,
+  "continues_existing": 77,
+  "vague_share": 0.1883,
   "indicators_per_vague": {
-   "2": 7
+   "2": 58
   },
-  "indicators": 27,
+  "indicators": 366,
   "headline": [
    {
     "rank": 1,
+    "promise_id": "AIADMK-2016-0160",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 2,
+    "promise_id": "AIADMK-2016-0223",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 3,
     "promise_id": "AIADMK-2016-0001",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    },
    {
-    "rank": 2,
+    "rank": 4,
     "promise_id": "AIADMK-2016-0002",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 5,
+    "promise_id": "AIADMK-2016-0029",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 6,
+    "promise_id": "AIADMK-2016-0032",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 7,
+    "promise_id": "AIADMK-2016-0035",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 8,
+    "promise_id": "AIADMK-2016-0039",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 9,
+    "promise_id": "AIADMK-2016-0040",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 10,
+    "promise_id": "AIADMK-2016-0094",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 11,
+    "promise_id": "AIADMK-2016-0107",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 12,
+    "promise_id": "AIADMK-2016-0117",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 13,
+    "promise_id": "AIADMK-2016-0123",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 14,
+    "promise_id": "AIADMK-2016-0171",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 15,
+    "promise_id": "AIADMK-2016-0190",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 16,
+    "promise_id": "AIADMK-2016-0191",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 17,
+    "promise_id": "AIADMK-2016-0210",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 18,
+    "promise_id": "AIADMK-2016-0211",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 19,
+    "promise_id": "AIADMK-2016-0216",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 20,
+    "promise_id": "AIADMK-2016-0218",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 21,
+    "promise_id": "AIADMK-2016-0224",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 22,
+    "promise_id": "AIADMK-2016-0225",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 23,
+    "promise_id": "AIADMK-2016-0229",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 24,
+    "promise_id": "AIADMK-2016-0231",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 25,
+    "promise_id": "AIADMK-2016-0234",
     "signal": 1,
     "cost_band": "high",
     "headline": true
    }
   ],
-  "below_cap": [],
-  "signal_ge_1": 2,
+  "below_cap": [
+   {
+    "rank": 26,
+    "promise_id": "AIADMK-2016-0235",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 27,
+    "promise_id": "AIADMK-2016-0291",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 28,
+    "promise_id": "AIADMK-2016-0292",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 29,
+    "promise_id": "AIADMK-2016-0306",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 30,
+    "promise_id": "AIADMK-2016-0310",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   }
+  ],
+  "signal_ge_1": 36,
   "failures": {
-   "by_rule": {},
-   "resolved": {}
+   "by_rule": {
+    "C2": 5,
+    "C5": 1,
+    "C3": 36,
+    "C4": 1
+   },
+   "resolved": {
+    "retry alone": 29,
+    "UNRESOLVED": 14
+   }
   }
  },
  "DMK-2021": {
   "summary": {
    "term": "DMK-2021",
    "covariates_version": "classify_promises v1.1",
-   "limit": 20,
+   "limit": null,
    "promises_in_term": 667,
-   "promises": 21,
-   "classified": 20,
-   "unresolved": 1,
-   "batches": 1,
-   "llm_calls": 3,
-   "cache_hits": 0,
-   "retried": 2,
-   "resolved_by_retry": 1,
+   "promises": 667,
+   "classified": 658,
+   "unresolved": 9,
+   "batches": 33,
+   "llm_calls": 59,
+   "cache_hits": 3,
+   "retried": 29,
+   "resolved_by_retry": 20,
    "overrides": 0,
    "extra_ids": 0,
-   "vague": 2,
-   "vague_share": 0.1,
-   "headline": 1
+   "vague": 37,
+   "vague_share": 0.0562,
+   "headline": 25
   },
   "sector": {
-   "governance_law_state_rights": 5,
-   "education": 2,
-   "culture_language_religion": 13
+   "governance_law_state_rights": 67,
+   "education": 31,
+   "culture_language_religion": 53,
+   "caste_minority_welfare": 28,
+   "employment_labour": 82,
+   "agriculture_fisheries": 95,
+   "water_environment_energy": 82,
+   "social_welfare": 50,
+   "industry_it_msme": 53,
+   "infrastructure_transport_housing": 74,
+   "health": 31,
+   "local_government": 12
   },
   "promise_type": {
-   "advocacy": 11,
-   "administrative": 4,
-   "institution": 2,
-   "infrastructure": 2,
-   "law_regulation": 1
+   "advocacy": 55,
+   "administrative": 195,
+   "institution": 65,
+   "infrastructure": 143,
+   "law_regulation": 28,
+   "new_scheme": 22,
+   "transfer_subsidy": 103,
+   "scheme_expansion": 47
   },
   "specificity": {
-   "vague": 2,
-   "specific": 18
+   "vague": 37,
+   "specific": 621
   },
   "cost_band": {
-   "none": 12,
-   "low": 6,
-   "medium": 1,
-   "high": 1
+   "none": 105,
+   "low": 140,
+   "medium": 226,
+   "high": 187
   },
   "union_basis": {
-   "advocacy": 11,
-   "none": 9
+   "advocacy": 55,
+   "none": 580,
+   "union_approval": 5,
+   "union_subject": 18
   },
-  "continues_existing": 0,
-  "vague_share": 0.1,
+  "continues_existing": 63,
+  "vague_share": 0.0562,
   "indicators_per_vague": {
-   "2": 2
+   "2": 37
   },
-  "indicators": 22,
+  "indicators": 695,
   "headline": [
    {
     "rank": 1,
@@ -130,17 +366,222 @@
     "signal": 2,
     "cost_band": "high",
     "headline": true
+   },
+   {
+    "rank": 2,
+    "promise_id": "DMK-2021-0125",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 3,
+    "promise_id": "DMK-2021-0242",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 4,
+    "promise_id": "DMK-2021-0041",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 5,
+    "promise_id": "DMK-2021-0042",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 6,
+    "promise_id": "DMK-2021-0052",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 7,
+    "promise_id": "DMK-2021-0053",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 8,
+    "promise_id": "DMK-2021-0055",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 9,
+    "promise_id": "DMK-2021-0077",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 10,
+    "promise_id": "DMK-2021-0093",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 11,
+    "promise_id": "DMK-2021-0095",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 12,
+    "promise_id": "DMK-2021-0102",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 13,
+    "promise_id": "DMK-2021-0103",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 14,
+    "promise_id": "DMK-2021-0124",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 15,
+    "promise_id": "DMK-2021-0155",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 16,
+    "promise_id": "DMK-2021-0156",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 17,
+    "promise_id": "DMK-2021-0165",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 18,
+    "promise_id": "DMK-2021-0175",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 19,
+    "promise_id": "DMK-2021-0178",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 20,
+    "promise_id": "DMK-2021-0208",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 21,
+    "promise_id": "DMK-2021-0212",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 22,
+    "promise_id": "DMK-2021-0213",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 23,
+    "promise_id": "DMK-2021-0214",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 24,
+    "promise_id": "DMK-2021-0215",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 25,
+    "promise_id": "DMK-2021-0216",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
    }
   ],
-  "below_cap": [],
-  "signal_ge_1": 1,
+  "below_cap": [
+   {
+    "rank": 26,
+    "promise_id": "DMK-2021-0220",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 27,
+    "promise_id": "DMK-2021-0247",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 28,
+    "promise_id": "DMK-2021-0252",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 29,
+    "promise_id": "DMK-2021-0286",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 30,
+    "promise_id": "DMK-2021-0291",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   }
+  ],
+  "signal_ge_1": 84,
   "failures": {
    "by_rule": {
-    "C3": 3
+    "C3": 52,
+    "C5": 1
    },
    "resolved": {
-    "retry alone": 1,
-    "UNRESOLVED": 2
+    "retry alone": 21,
+    "UNRESOLVED": 32
    }
   }
  },
@@ -148,63 +589,294 @@
   "summary": {
    "term": "TVK-2026",
    "covariates_version": "classify_promises v1.1",
-   "limit": 20,
+   "limit": null,
    "promises_in_term": 695,
-   "promises": 21,
-   "classified": 21,
-   "unresolved": 0,
-   "batches": 1,
-   "llm_calls": 3,
-   "cache_hits": 0,
-   "retried": 2,
-   "resolved_by_retry": 2,
+   "promises": 695,
+   "classified": 683,
+   "unresolved": 12,
+   "batches": 33,
+   "llm_calls": 106,
+   "cache_hits": 3,
+   "retried": 76,
+   "resolved_by_retry": 64,
    "overrides": 0,
    "extra_ids": 0,
-   "vague": 4,
-   "vague_share": 0.1905,
-   "headline": 0
+   "vague": 70,
+   "vague_share": 0.1025,
+   "headline": 25
   },
   "sector": {
-   "governance_law_state_rights": 15,
-   "caste_minority_welfare": 1,
-   "culture_language_religion": 1,
-   "health": 1,
-   "water_environment_energy": 3
+   "governance_law_state_rights": 92,
+   "caste_minority_welfare": 31,
+   "culture_language_religion": 49,
+   "health": 30,
+   "water_environment_energy": 55,
+   "employment_labour": 48,
+   "social_welfare": 44,
+   "education": 49,
+   "industry_it_msme": 165,
+   "infrastructure_transport_housing": 40,
+   "agriculture_fisheries": 73,
+   "local_government": 7
   },
   "promise_type": {
-   "advocacy": 12,
-   "administrative": 7,
-   "institution": 2
+   "advocacy": 26,
+   "administrative": 228,
+   "institution": 68,
+   "law_regulation": 22,
+   "infrastructure": 137,
+   "transfer_subsidy": 154,
+   "new_scheme": 38,
+   "scheme_expansion": 10
   },
   "specificity": {
-   "vague": 4,
-   "specific": 17
+   "vague": 70,
+   "specific": 613
   },
   "cost_band": {
-   "none": 13,
-   "medium": 3,
-   "low": 5
+   "none": 115,
+   "medium": 246,
+   "low": 85,
+   "high": 237
   },
   "union_basis": {
-   "advocacy": 12,
-   "none": 9
+   "advocacy": 26,
+   "none": 654,
+   "union_approval": 2,
+   "union_funds": 1
   },
-  "continues_existing": 0,
-  "vague_share": 0.1905,
+  "continues_existing": 16,
+  "vague_share": 0.1025,
   "indicators_per_vague": {
-   "2": 2,
-   "3": 2
+   "2": 65,
+   "3": 5
   },
-  "indicators": 27,
-  "headline": [],
-  "below_cap": [],
-  "signal_ge_1": 0,
+  "indicators": 758,
+  "headline": [
+   {
+    "rank": 1,
+    "promise_id": "TVK-2026-0214",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 2,
+    "promise_id": "TVK-2026-0219",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 3,
+    "promise_id": "TVK-2026-0556",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 4,
+    "promise_id": "TVK-2026-0558",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 5,
+    "promise_id": "TVK-2026-0680",
+    "signal": 2,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 6,
+    "promise_id": "TVK-2026-0087",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 7,
+    "promise_id": "TVK-2026-0088",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 8,
+    "promise_id": "TVK-2026-0089",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 9,
+    "promise_id": "TVK-2026-0090",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 10,
+    "promise_id": "TVK-2026-0091",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 11,
+    "promise_id": "TVK-2026-0095",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 12,
+    "promise_id": "TVK-2026-0105",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 13,
+    "promise_id": "TVK-2026-0119",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 14,
+    "promise_id": "TVK-2026-0120",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 15,
+    "promise_id": "TVK-2026-0122",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 16,
+    "promise_id": "TVK-2026-0124",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 17,
+    "promise_id": "TVK-2026-0125",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 18,
+    "promise_id": "TVK-2026-0132",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 19,
+    "promise_id": "TVK-2026-0133",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 20,
+    "promise_id": "TVK-2026-0140",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 21,
+    "promise_id": "TVK-2026-0145",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 22,
+    "promise_id": "TVK-2026-0154",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 23,
+    "promise_id": "TVK-2026-0176",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 24,
+    "promise_id": "TVK-2026-0215",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   },
+   {
+    "rank": 25,
+    "promise_id": "TVK-2026-0216",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": true
+   }
+  ],
+  "below_cap": [
+   {
+    "rank": 26,
+    "promise_id": "TVK-2026-0220",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 27,
+    "promise_id": "TVK-2026-0234",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 28,
+    "promise_id": "TVK-2026-0236",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 29,
+    "promise_id": "TVK-2026-0237",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   },
+   {
+    "rank": 30,
+    "promise_id": "TVK-2026-0239",
+    "signal": 1,
+    "cost_band": "high",
+    "headline": false
+   }
+  ],
+  "signal_ge_1": 102,
   "failures": {
    "by_rule": {
-    "C5": 2
+    "C5": 12,
+    "C3": 71,
+    "C6": 2,
+    "C2": 14
    },
    "resolved": {
-    "retry alone": 2
+    "retry alone": 68,
+    "UNRESOLVED": 31
    }
   }
  },
