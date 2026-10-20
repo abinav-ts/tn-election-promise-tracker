@@ -2,7 +2,7 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 15 of 20 (deadline 2026-10-25). Stages 01–03 done: **1,674 promises frozen** (DMK-2021 667, AIADMK-2016 312, TVK-2026 695), each with covariates and **1,863 indicators** (with search queries), classification **frozen** 2026-10-20. **Spec 04 (evidence retrieval) approved v1.1** 2026-10-20 (D-075–D-080; spot-checks now one per stage, on the full run, non-blocking). Next: build stage 04 in Claude Code.
+**Today's position:** Day 16 of 20 (deadline 2026-10-25). Stages 01–03 done (1,674 promises, 1,863 indicators, frozen). **Stage 04 built and run** 2026-10-21: retrievals for all 1,863 indicators × 15 term-cutoffs (8,433 tasks, 42,165 rows), leakage line 0. **Stage 04 spot-check pending** (`data/interim/spotcheck_04.csv`, 9 items, non-blocking, D-080). Next: spec 05 (judgment) in Cowork.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
@@ -11,7 +11,7 @@ _Updated at the end of every session. Read this first._
 | 01 | Corpus collection | ✅ v1.5 | ✅ | ✅ 136 | ✅ | ✅ |
 | 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
 | 03 | Classification & decomposition | ✅ v1.3 (D-064–D-074) | ✅ | ✅ 240 | ✅ | ✅ |
-| 04 | Evidence retrieval | ✅ v1.1 (D-075–D-080) | ☐ | ☐ | ☐ | ☐ |
+| 04 | Evidence retrieval | ✅ v1.1 (D-075–D-081) | ✅ | ✅ 281 | ⏳ spot-check pending | ✅ (closing commit after verdicts) |
 | 05 | Judgment | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 07 | Survival modelling | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -27,13 +27,27 @@ _Updated at the end of every session. Read this first._
 - [x] Spec 02 OQ-2: code licence = GPL v3 (D-043).
 - [x] Searched for a better official TVK copy (2026-10-12): none free; OCR route stays.
 - [x] Stage 02 full run, spot-checks (limit-20 and full) and freeze, 2026-10-13/15.
+- [ ] **Stage 04 spot-check** (D-080, non-blocking): `data/interim/spotcheck_04.csv`, 9 items, each with a page in `data/interim/spotcheck_04/{n}.md` (≤ 2 min each). Fill `verdict` (ok / wrong / unsure) and `note`; a phone review page can be made on request (global §12.4 item 7).
+- [ ] **Your call (stage 04 sheet):** with 3 items per term × 3 terms the sheet caps at 9, and groups a–c filled it, so groups d (headline), e (date-sensitive: fiscal-year-dated chunks, D-077's check) and f (GO places) have no item. Keep the sheet as the spec draws it, or swap e.g. one c item per term for an e item?
+- [ ] **Your call (TVK recall, not a leak):** 2,407 chunks of 2026-27 policy notes, performance budgets and budget speeches are dated only by © year 2026 (available 2026-12-31) or by their fiscal-year end (2027-03-31), so none is eligible at TVK month 5 (cutoff 2026-10-10); TVK's eligible set is 1,507 chunks (GOs, the Governor's address of 2026-06-18, 2 budget speeches, CAG). They were probably tabled in mid-2026, but no corpus date shows it. Any change needs a decision (e.g. a manual date from the document text).
 
 ## Next step
-Two parallel tracks:
-1. Build **stage 04** in **Claude Code** from `specs/04-evidence-retrieval.md` v1.1 (build order §4.12): `available_by` + eligibility → retrieval code with offline tests → real `ept index` (bge-small; the user may need to run the download or a long index in their terminal) → `--limit 20` smoke test → full run → spot-check sheet prepared (non-blocking, D-080). Then spec 05 (judgment), sized for Claude Cowork at k = 5 (Q-07).
-2. **Gold set** (stage 06, part 1) in a **new Cowork conversation**: settle size, sampling and labelling protocol, draw the gold promises, start labelling. It must be drawn before stage 05's prompts and strong-judge batches (gold promises are judged by both judges, global §6.3, and may never appear in prompts or few-shots, rule 4).
+1. **Spec 05 (judgment) in Cowork**, sized from the stage 04 facts below. The stage 04 spot-check runs in parallel; it only blocks closing stage 04 (and nothing in stage 05 except strong-judge batches, D-080).
+2. **Gold set** (stage 06, part 1) continues in its own Cowork conversation (`data/gold/` and `specs/06-evaluation.md` are there, untracked: not committed by Claude Code).
+3. Closing stage 04 (spec §4.12 step 6, a later session): convert the verdicts, root causes, fixes and a re-run if needed, finish spec 04 §10, close STATUS. Also fix then: a no-op resume overwrites each term-cutoff's record in the run metadata (rows unaffected; the record of run `retrieve-20261020T185504Z` was restored by hand from the logs). The fix touches `run.py`, which changes the code fingerprint, so it waits for a re-run.
 
-**Schedule (as of 2026-10-20):** Day 15, with stages 04–08 left in 5 days (04 Day 16, 05 Days 17–18, 06 Day 19, 07 + 08 Day 20 is already over-full). The cut order (global §12.3) is the user's call (D-041); item 1 ("drop indicator decomposition") would now save little, since only 183 promises are vague.
+**Schedule (as of 2026-10-21):** Day 16, stages 05–08 left in 4 days. The cut order (global §12.3) is the user's call (D-041).
+
+## Facts later stages need (from stage 04; details in spec 04 v1.1, D-075–D-081, `reports/retrieval_04.md`)
+- **Retrievals:** run **`retrieve-20261020T185504Z`** (complete, `reports/runs/…json`, `complete: true`; stage 05 reads the latest complete run via `ept.retrieve.run.latest_run(cfg, complete_only=True)`). 8,433 indicator × cutoff tasks, each exactly 5 chunks (42,165 rows), ranks 1–5, ≤ 2 chunks per document, ≥ 2 GOs where the fused top 50 had them. `retrievals.cutoff_date` = the landmark date, null = full term; match null with `IS NULL`. Retrievals are not committed (rebuildable: `ept index` then `ept retrieve run`, ~4 min after a 14-min index).
+- **Cutoffs (D-075):** AIADMK-2016 and DMK-2021 at months 5, 6, 12, 24, 36, 48 (= `add_months(sworn_in, m)`) + full term; TVK-2026 month 5 (2026-10-10). AIADMK m5 2016-10-23 … m48 2020-05-23; DMK m5 2021-10-07 … m48 2025-05-07.
+- **Availability date:** `ept.dates.available_by(doc_date, date_precision, doc_type, fiscal_year, title)` (D-077); stage 05's realisation-date check must use it too. `ept.retrieve.eligible.check_retrievals` is the DB-wide leakage check (0 violations, 0 undated).
+- **Eligible chunks per cutoff:** AIADMK 1,010 / 1,184 / 4,086 / 8,835 / 14,085 / 19,467 / full 23,938; DMK 1,299 / 1,738 / 6,365 / 12,603 / 17,964 / 26,673 / full 31,829; TVK m5 1,507 (see the TVK recall item above). Early landmarks have few policy notes (they date to the fiscal-year end), so month 5–6 evidence is mostly GOs and budget speeches.
+- **Stage 05 sizing (tasks = indicators × cutoffs):** AIADMK 2,695 (385 × 7), DMK 4,970 (710 × 7), TVK 768 (× 1); 8,433 in total. One task's 5 chunks + titles ≈ 2,150 words ≈ **2,860 tokens** (words × 1.33; slightly above spec 04's 2.6k estimate), before the prompt, promise and indicator text. 20 tasks ≈ 57k tokens of evidence. Per cutoff: AIADMK 1,956–2,149 words, DMK 2,146–2,161, TVK 2,172.
+- **Retrieval quality signals:** 0 tasks without a BM25 hit; GO share of retrieved chunks 36–65 %; GO places used in 14–35 % of tasks at months 5–6 and 46–69 % from month 12 on; BM25 and dense top 5 share no chunk in 29–51 % of tasks (higher at later cutoffs); median top-1 cosine 0.64–0.71. The 43 override (generic-query) promises have slightly lower top-1 cosine and overlap than the rest.
+- **Embedding index:** `data/processed/embeddings/` (not committed), `BAAI/bge-small-en-v1.5` @ `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`, 60,259 × 384, built in 14 min on MPS. BM25 token cache `data/processed/bm25_tokens.jsonl.gz`. Tests use a hashing mock (`EPT_EMBED_MOCK=1`, set in `tests/conftest.py`), never torch.
+- **Diagnostics** per task: `data/interim/retrieve_diag_04/{run_id}.jsonl` (BM25/dense top 5, top-1 cosine and rrf, GO places and displaced chunks).
+- **Known limitations** (spec 04 §4.7): manifesto vs official wording; OCR noise; a later amending GO may be retrieved instead of the original; generic override queries; conservative Wayback/© dates hide evidence at early landmarks (above all TVK month 5); the embedding model's web training can reorder eligible chunks (never adds content or dates).
 
 ## Facts later stages need (from stage 03; details in spec 03 v1.3 §10 and D-064–D-074)
 - **Classification frozen** in `data/frozen/classification_{term}.jsonl` (committed): per promise the 8 covariates, the audit fields (`union_basis`, `continues_cue`, `headline_signal` 0–2, `headline_rank`) and its indicators. `ept classify` loads them into the DB (`promises` covariate columns, `indicators`); re-classifying is refused (`--force` too). Promise snapshots untouched (byte-identical).
@@ -139,3 +153,10 @@ Two parallel tracks:
   - Corpus facts checked: chunks in term windows (stored dates) AIADMK 20,793, DMK 31,238, TVK 1,507; 4,350 undated chunks (3,409 policy notes).
   - Global spec v0.11 (§5, §8.1, §9.1, §9.3, §11, §13, §14). Not yet committed (the shell here can't run git safely): Claude Code commits it first.
   - Spot-check rule changed (D-080, global §12, CLAUDE.md, spec 04 v1.1): one human check per stage, on the full run, non-blocking (only freezing, strong-judge runs and closing a stage wait); `--limit 20` is a smoke test; verdicts can be collected on a phone review page. Gold set to start now in a separate Cowork conversation.
+- **2026-10-21 — Stage 04 built and run (Claude Code).**
+  - Spec v1.1 committed (`f5586fc`). Build order §4.12 steps 1–5: availability date + eligibility (`a8f9304`), retrieval code (`2171c5c`), index (`5879e28`), limit-20 smoke test (`d1cb8f5`), full run (this commit).
+  - D-077 counter-example scan: 0 documents with an independent day date after their fiscal-year end (14 budget speeches have one; policy notes only © years). Tightened 97 / newly dated 87 documents (spec said 103 / 89; the difference is in performance budgets: 10 / 15 vs 16 / 17). 3 performance budgets have a title FY one year earlier than the stored one (safe direction).
+  - Build clarifications D-081 (fingerprint covers code, index `--limit` = timing, diagnostics file, snapshot capped at the latest fetch, run-id second, report exit 3, stage 03 freeze regex fix: a DOTALL regex hung once settings.yaml grew).
+  - Index: 500 chunks in 6.8 s → 60,259 in 14 min (MPS). Limit-20 smoke test: 300 tasks, leakage 0, structure clean, monotone eligible counts. Full run: 8,433 tasks in 217 s; second run writes 0; leakage line 0.
+  - Spot-check sheet prepared (9 items, groups a a a b b b c c c), pending. Frozen promise/classification snapshots unchanged (git clean); stage 04 writes only `retrievals`.
+

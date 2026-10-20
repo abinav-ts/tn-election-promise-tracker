@@ -235,3 +235,7 @@ D-075 (cutoffs), D-076 (term window, undated excluded), D-077 (`available_by` wi
 §5 stage 04 row; §8.1 landmark months; §9.1 cutoff and realisation-date rows use `ept.dates.available_by`; §9.3 availability date and undated chunks; §11 numpy exact search instead of FAISS, bge-small; §13 conservative-dates risk row; §14 Q-06 resolved. §7 unchanged.
 
 **Open:** none.
+
+## 10. Spec vs build (in progress; completed when the stage closes)
+
+Build clarifications D-081 (Claude Code, 2026-10-21): fingerprint also covers the terms config and the row-shaping code; `ept index --limit N` is a timing run that writes nothing; per-pair diagnostics in `data/interim/retrieve_diag_04/{run_id}.jsonl` (path `retrieve_diag`) and `retrieve.tokens_per_word` 1.33 for sizing; the corpus snapshot is also capped at the latest `fetched_at`; a new run waits for a fresh `run_id` second; `ept retrieve report` exits 3 on a non-zero leakage line; stage 03's freeze regex fixed (DOTALL backtracking). Model revision pinned: `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`. Corpus counts at build: 97 documents tightened (policy notes 87, performance budgets 10) and 87 newly dated (policy notes 70, performance budgets 15, budget speeches 2), vs 103 / 89 in §4.2; D-077 counter-example scan: 0.

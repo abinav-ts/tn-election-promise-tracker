@@ -1,12 +1,12 @@
 # Retrieval report (stage 04)
 
-Run `retrieve-20261020T185504Z` · complete: False · generated 2026-10-21T00:25:56 · corpus snapshot end 2026-10-11
+Run `retrieve-20261020T185504Z` · complete: True · generated 2026-10-21T00:31:53 · corpus snapshot end 2026-10-11
 
 k = 5, ≤ 2 chunks per document, GO places 2 from the top 50, BM25 depth 100, dense depth 100, RRF k 60.
 
 ## 1. Leakage and structure
 
-- **Leakage line (this run): 0 violations** of sworn_in ≤ available_by ≤ bound over 1500 rows; 0 undated chunks. All runs in the DB: 0 violations over 1500 rows.
+- **Leakage line (this run): 0 violations** of sworn_in ≤ available_by ≤ bound over 42165 rows; 0 undated chunks. All runs in the DB: 0 violations over 42165 rows.
 - Structure (ranks contiguous, ≤ 2 per document, ≤ k rows, GO rule): no problem found.
 - Neutrality: one config, one tokeniser, one embedding model, the same k, per-document cap and GO rule for every term; the same landmark months for both completed terms.
 
@@ -54,71 +54,71 @@ Tightened: **97**; newly dated: **87** (kind · term of the availability date).
 
 | term | cutoff | indicators | % with 5 | % ≥1 GO | GO places | % no BM25 hit | mean BM25∩dense top-k | % no overlap | median top-1 cos | % cap applied | doc_type mix % |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| AIADMK-2016 | m5 | 20 | 100.0 | 100.0 | 3 | 0.0 | 1.3 | 35.0 | 0.6932 | 45.0 | budget_speech 13.0, go 59.0, governor_address 4.0, policy_note 1.0, scheme_page 23.0 |
-| AIADMK-2016 | m6 | 20 | 100.0 | 100.0 | 3 | 0.0 | 1.1 | 45.0 | 0.699 | 40.0 | budget_speech 10.0, go 62.0, governor_address 3.0, policy_note 1.0, scheme_page 24.0 |
-| AIADMK-2016 | m12 | 20 | 100.0 | 100.0 | 9 | 0.0 | 0.75 | 45.0 | 0.7149 | 20.0 | budget_speech 5.0, go 52.0, policy_note 34.0, scheme_page 9.0 |
-| AIADMK-2016 | m24 | 20 | 100.0 | 100.0 | 9 | 0.0 | 0.55 | 60.0 | 0.7203 | 30.0 | budget_speech 5.0, go 48.0, policy_note 43.0, scheme_page 4.0 |
-| AIADMK-2016 | m36 | 20 | 100.0 | 100.0 | 14 | 0.0 | 0.45 | 70.0 | 0.7203 | 15.0 | budget_speech 4.0, go 45.0, policy_note 48.0, scheme_page 3.0 |
-| AIADMK-2016 | m48 | 20 | 100.0 | 100.0 | 20 | 0.0 | 0.55 | 60.0 | 0.7247 | 15.0 | budget_speech 3.0, go 45.0, policy_note 50.0, scheme_page 2.0 |
-| AIADMK-2016 | full | 20 | 100.0 | 100.0 | 18 | 0.0 | 0.5 | 65.0 | 0.7292 | 20.0 | budget_speech 3.0, go 46.0, other 1.0, policy_note 49.0, scheme_page 1.0 |
-| DMK-2021 | m5 | 20 | 100.0 | 100.0 | 10 | 0.0 | 1.15 | 30.0 | 0.6766 | 40.0 | budget_speech 10.0, cag_report 6.0, go 50.0, governor_address 14.0, other 1.0, policy_note 19.0 |
-| DMK-2021 | m6 | 20 | 100.0 | 100.0 | 10 | 0.0 | 1.15 | 30.0 | 0.6766 | 45.0 | budget_speech 10.0, cag_report 5.0, go 50.0, governor_address 14.0, other 1.0, policy_note 20.0 |
-| DMK-2021 | m12 | 20 | 100.0 | 100.0 | 21 | 0.0 | 0.95 | 50.0 | 0.6872 | 60.0 | budget_speech 3.0, cag_report 1.0, go 47.0, governor_address 9.0, other 2.0, policy_note 38.0 |
-| DMK-2021 | m24 | 20 | 100.0 | 95.0 | 18 | 0.0 | 1 | 45.0 | 0.6898 | 20.0 | budget_speech 2.0, cag_report 1.0, go 43.0, governor_address 8.0, other 1.0, policy_note 45.0 |
-| DMK-2021 | m36 | 20 | 100.0 | 90.0 | 18 | 0.0 | 0.8 | 55.0 | 0.6961 | 0.0 | budget_speech 3.0, cag_report 1.0, go 40.0, governor_address 6.0, policy_note 50.0 |
-| DMK-2021 | m48 | 20 | 100.0 | 90.0 | 19 | 0.0 | 0.8 | 50.0 | 0.6962 | 0.0 | budget_speech 3.0, cag_report 2.0, go 36.0, governor_address 4.0, policy_note 55.0 |
-| DMK-2021 | full | 20 | 100.0 | 90.0 | 21 | 0.0 | 0.75 | 55.0 | 0.6971 | 5.0 | budget_speech 2.0, cag_report 1.0, go 39.0, governor_address 9.0, policy_note 49.0 |
-| TVK-2026 | m5 | 20 | 100.0 | 100.0 | 3 | 0.0 | 1 | 30.0 | 0.6411 | 35.0 | budget_speech 10.0, cag_report 8.0, go 51.0, governor_address 31.0 |
+| AIADMK-2016 | m5 | 385 | 100.0 | 100.0 | 202 | 0.0 | 1.15 | 37.1 | 0.6563 | 32.2 | budget_speech 12.6, go 55.2, governor_address 6.0, policy_note 10.4, scheme_page 15.7 |
+| AIADMK-2016 | m6 | 385 | 100.0 | 100.0 | 181 | 0.0 | 1.09 | 39.0 | 0.6583 | 31.9 | budget_speech 11.9, go 56.5, governor_address 5.5, policy_note 9.4, scheme_page 16.8 |
+| AIADMK-2016 | m12 | 385 | 100.0 | 94.3 | 384 | 0.0 | 1.33 | 28.8 | 0.6955 | 54.3 | budget_speech 3.9, go 40.9, governor_address 2.2, other 2.6, policy_note 45.1, scheme_page 5.1 |
+| AIADMK-2016 | m24 | 385 | 100.0 | 93.8 | 382 | 0.0 | 1.22 | 33.8 | 0.7037 | 37.4 | budget_speech 1.9, go 40.7, governor_address 1.3, other 2.8, policy_note 51.4, scheme_page 2.0 |
+| AIADMK-2016 | m36 | 385 | 100.0 | 95.8 | 436 | 0.0 | 1.14 | 40.3 | 0.7072 | 22.3 | budget_speech 1.4, go 41.8, governor_address 1.2, other 2.4, policy_note 52.3, scheme_page 1.0 |
+| AIADMK-2016 | m48 | 385 | 100.0 | 95.8 | 430 | 0.0 | 1.04 | 44.9 | 0.7109 | 15.3 | budget_speech 1.0, go 42.1, governor_address 1.0, other 2.8, policy_note 52.4, scheme_page 0.7 |
+| AIADMK-2016 | full | 385 | 100.0 | 95.6 | 425 | 0.0 | 0.98 | 47.0 | 0.713 | 13.2 | budget_speech 0.9, cag_report 0.2, go 42.5, governor_address 0.9, other 2.7, policy_note 52.1, scheme_page 0.6 |
+| DMK-2021 | m5 | 710 | 100.0 | 100.0 | 204 | 0.0 | 0.95 | 42.7 | 0.6533 | 37.0 | budget_speech 17.7, cag_report 4.1, go 61.7, governor_address 5.8, other 0.3, policy_note 10.3, scheme_page 0.1 |
+| DMK-2021 | m6 | 710 | 100.0 | 100.0 | 155 | 0.0 | 0.93 | 43.9 | 0.6587 | 37.7 | budget_speech 13.6, cag_report 3.0, go 64.9, governor_address 5.0, other 0.3, policy_note 13.0, scheme_page 0.3 |
+| DMK-2021 | m12 | 710 | 100.0 | 99.4 | 501 | 0.0 | 1.03 | 39.9 | 0.6833 | 45.8 | budget_speech 4.8, cag_report 0.8, go 49.0, governor_address 2.2, other 1.5, policy_note 41.6, scheme_page 0.1 |
+| DMK-2021 | m24 | 710 | 100.0 | 98.0 | 555 | 0.0 | 0.95 | 43.8 | 0.6916 | 33.1 | budget_speech 3.0, cag_report 0.6, go 47.3, governor_address 1.2, other 2.0, policy_note 45.9 |
+| DMK-2021 | m36 | 710 | 100.0 | 96.8 | 638 | 0.0 | 0.86 | 49.4 | 0.6961 | 18.9 | budget_speech 2.4, cag_report 0.7, go 45.2, governor_address 0.9, other 1.7, policy_note 49.2, scheme_page 0.1 |
+| DMK-2021 | m48 | 710 | 100.0 | 93.9 | 704 | 0.0 | 0.84 | 49.7 | 0.7016 | 13.9 | budget_speech 2.2, cag_report 2.3, go 42.6, governor_address 0.6, other 1.6, policy_note 50.3, scheme_page 0.4 |
+| DMK-2021 | full | 710 | 100.0 | 94.5 | 698 | 0.0 | 0.82 | 51.1 | 0.704 | 12.1 | budget_speech 2.2, cag_report 2.7, go 42.9, governor_address 0.8, other 1.3, policy_note 49.7, scheme_page 0.3 |
+| TVK-2026 | m5 | 768 | 100.0 | 100.0 | 120 | 0.0 | 1.03 | 34.5 | 0.6446 | 54.4 | budget_speech 26.0, cag_report 4.1, go 59.4, governor_address 10.5 |
 
 ## 5. Override (generic-query) and headline promises vs the rest
 
 | term | cutoff | group | indicators | % ≥1 GO | % no BM25 hit | mean overlap | median top-1 cos |
 |---|---|---|---:|---:|---:|---:|---:|
-| AIADMK-2016 | m5 | override | 0 | – | – | – | – |
-| AIADMK-2016 | m5 | other | 20 | 100.0 | 0.0 | 1.3 | 0.6932 |
-| AIADMK-2016 | m5 | headline | 2 | 100.0 | 0.0 | 3 | 0.8019 |
-| AIADMK-2016 | m6 | override | 0 | – | – | – | – |
-| AIADMK-2016 | m6 | other | 20 | 100.0 | 0.0 | 1.1 | 0.699 |
-| AIADMK-2016 | m6 | headline | 2 | 100.0 | 0.0 | 3 | 0.8019 |
-| AIADMK-2016 | m12 | override | 0 | – | – | – | – |
-| AIADMK-2016 | m12 | other | 20 | 100.0 | 0.0 | 0.75 | 0.7149 |
-| AIADMK-2016 | m12 | headline | 2 | 100.0 | 0.0 | 2.5 | 0.8176 |
-| AIADMK-2016 | m24 | override | 0 | – | – | – | – |
-| AIADMK-2016 | m24 | other | 20 | 100.0 | 0.0 | 0.55 | 0.7203 |
-| AIADMK-2016 | m24 | headline | 2 | 100.0 | 0.0 | 1 | 0.8209 |
-| AIADMK-2016 | m36 | override | 0 | – | – | – | – |
-| AIADMK-2016 | m36 | other | 20 | 100.0 | 0.0 | 0.45 | 0.7203 |
-| AIADMK-2016 | m36 | headline | 2 | 100.0 | 0.0 | 1 | 0.8228 |
-| AIADMK-2016 | m48 | override | 0 | – | – | – | – |
-| AIADMK-2016 | m48 | other | 20 | 100.0 | 0.0 | 0.55 | 0.7247 |
-| AIADMK-2016 | m48 | headline | 2 | 100.0 | 0.0 | 1 | 0.8251 |
-| AIADMK-2016 | full | override | 0 | – | – | – | – |
-| AIADMK-2016 | full | other | 20 | 100.0 | 0.0 | 0.5 | 0.7292 |
-| AIADMK-2016 | full | headline | 2 | 100.0 | 0.0 | 1 | 0.8251 |
-| DMK-2021 | m5 | override | 4 | 100.0 | 0.0 | 0.75 | 0.6655 |
-| DMK-2021 | m5 | other | 16 | 100.0 | 0.0 | 1.25 | 0.6787 |
-| DMK-2021 | m5 | headline | 0 | – | – | – | – |
-| DMK-2021 | m6 | override | 4 | 100.0 | 0.0 | 0.75 | 0.6655 |
-| DMK-2021 | m6 | other | 16 | 100.0 | 0.0 | 1.25 | 0.6787 |
-| DMK-2021 | m6 | headline | 0 | – | – | – | – |
-| DMK-2021 | m12 | override | 4 | 100.0 | 0.0 | 0.75 | 0.6774 |
-| DMK-2021 | m12 | other | 16 | 100.0 | 0.0 | 1 | 0.6872 |
-| DMK-2021 | m12 | headline | 0 | – | – | – | – |
-| DMK-2021 | m24 | override | 4 | 100.0 | 0.0 | 0.5 | 0.6774 |
-| DMK-2021 | m24 | other | 16 | 93.8 | 0.0 | 1.12 | 0.6898 |
-| DMK-2021 | m24 | headline | 0 | – | – | – | – |
-| DMK-2021 | m36 | override | 4 | 100.0 | 0.0 | 0.25 | 0.6774 |
-| DMK-2021 | m36 | other | 16 | 87.5 | 0.0 | 0.94 | 0.6961 |
-| DMK-2021 | m36 | headline | 0 | – | – | – | – |
-| DMK-2021 | m48 | override | 4 | 100.0 | 0.0 | 0.25 | 0.6774 |
-| DMK-2021 | m48 | other | 16 | 87.5 | 0.0 | 0.94 | 0.7034 |
-| DMK-2021 | m48 | headline | 0 | – | – | – | – |
-| DMK-2021 | full | override | 4 | 100.0 | 0.0 | 0.25 | 0.6778 |
-| DMK-2021 | full | other | 16 | 87.5 | 0.0 | 0.88 | 0.7042 |
-| DMK-2021 | full | headline | 0 | – | – | – | – |
-| TVK-2026 | m5 | override | 0 | – | – | – | – |
-| TVK-2026 | m5 | other | 20 | 100.0 | 0.0 | 1 | 0.6411 |
-| TVK-2026 | m5 | headline | 0 | – | – | – | – |
+| AIADMK-2016 | m5 | override | 5 | 100.0 | 0.0 | 0 | 0.6223 |
+| AIADMK-2016 | m5 | other | 380 | 100.0 | 0.0 | 1.17 | 0.6564 |
+| AIADMK-2016 | m5 | headline | 28 | 100.0 | 0.0 | 1.54 | 0.6757 |
+| AIADMK-2016 | m6 | override | 5 | 100.0 | 0.0 | 0 | 0.6223 |
+| AIADMK-2016 | m6 | other | 380 | 100.0 | 0.0 | 1.11 | 0.6594 |
+| AIADMK-2016 | m6 | headline | 28 | 100.0 | 0.0 | 1.43 | 0.6757 |
+| AIADMK-2016 | m12 | override | 5 | 100.0 | 0.0 | 0.8 | 0.672 |
+| AIADMK-2016 | m12 | other | 380 | 94.2 | 0.0 | 1.34 | 0.6957 |
+| AIADMK-2016 | m12 | headline | 28 | 92.9 | 0.0 | 1.32 | 0.7039 |
+| AIADMK-2016 | m24 | override | 5 | 100.0 | 0.0 | 0.6 | 0.691 |
+| AIADMK-2016 | m24 | other | 380 | 93.7 | 0.0 | 1.23 | 0.7041 |
+| AIADMK-2016 | m24 | headline | 28 | 92.9 | 0.0 | 1.04 | 0.7127 |
+| AIADMK-2016 | m36 | override | 5 | 100.0 | 0.0 | 0.4 | 0.691 |
+| AIADMK-2016 | m36 | other | 380 | 95.8 | 0.0 | 1.15 | 0.7074 |
+| AIADMK-2016 | m36 | headline | 28 | 92.9 | 0.0 | 0.89 | 0.7211 |
+| AIADMK-2016 | m48 | override | 5 | 100.0 | 0.0 | 0.6 | 0.691 |
+| AIADMK-2016 | m48 | other | 380 | 95.8 | 0.0 | 1.04 | 0.7112 |
+| AIADMK-2016 | m48 | headline | 28 | 96.4 | 0.0 | 0.75 | 0.7211 |
+| AIADMK-2016 | full | override | 5 | 100.0 | 0.0 | 0.6 | 0.691 |
+| AIADMK-2016 | full | other | 380 | 95.5 | 0.0 | 0.99 | 0.7137 |
+| AIADMK-2016 | full | headline | 28 | 92.9 | 0.0 | 0.71 | 0.7239 |
+| DMK-2021 | m5 | override | 31 | 100.0 | 0.0 | 0.68 | 0.6336 |
+| DMK-2021 | m5 | other | 679 | 100.0 | 0.0 | 0.96 | 0.6535 |
+| DMK-2021 | m5 | headline | 25 | 100.0 | 0.0 | 1.12 | 0.6982 |
+| DMK-2021 | m6 | override | 31 | 100.0 | 0.0 | 0.58 | 0.6538 |
+| DMK-2021 | m6 | other | 679 | 100.0 | 0.0 | 0.95 | 0.6591 |
+| DMK-2021 | m6 | headline | 25 | 100.0 | 0.0 | 0.92 | 0.7055 |
+| DMK-2021 | m12 | override | 31 | 100.0 | 0.0 | 0.81 | 0.6688 |
+| DMK-2021 | m12 | other | 679 | 99.4 | 0.0 | 1.04 | 0.6839 |
+| DMK-2021 | m12 | headline | 25 | 100.0 | 0.0 | 1.12 | 0.7181 |
+| DMK-2021 | m24 | override | 31 | 100.0 | 0.0 | 0.65 | 0.6818 |
+| DMK-2021 | m24 | other | 679 | 97.9 | 0.0 | 0.97 | 0.6925 |
+| DMK-2021 | m24 | headline | 25 | 80.0 | 0.0 | 1.04 | 0.7181 |
+| DMK-2021 | m36 | override | 31 | 100.0 | 0.0 | 0.58 | 0.6863 |
+| DMK-2021 | m36 | other | 679 | 96.6 | 0.0 | 0.87 | 0.6967 |
+| DMK-2021 | m36 | headline | 25 | 88.0 | 0.0 | 0.8 | 0.7181 |
+| DMK-2021 | m48 | override | 31 | 100.0 | 0.0 | 0.42 | 0.6909 |
+| DMK-2021 | m48 | other | 679 | 93.7 | 0.0 | 0.86 | 0.7029 |
+| DMK-2021 | m48 | headline | 25 | 76.0 | 0.0 | 0.88 | 0.7308 |
+| DMK-2021 | full | override | 31 | 100.0 | 0.0 | 0.48 | 0.6938 |
+| DMK-2021 | full | other | 679 | 94.3 | 0.0 | 0.84 | 0.7046 |
+| DMK-2021 | full | headline | 25 | 76.0 | 0.0 | 0.84 | 0.7308 |
+| TVK-2026 | m5 | override | 14 | 100.0 | 0.0 | 0.71 | 0.6651 |
+| TVK-2026 | m5 | other | 754 | 100.0 | 0.0 | 1.03 | 0.6443 |
+| TVK-2026 | m5 | headline | 25 | 100.0 | 0.0 | 1 | 0.676 |
 
 ## 6. Stage 05 sizing
 
@@ -126,30 +126,30 @@ One judging task = one indicator × cutoff with its 5 chunks + titles; tokens �
 
 | term | tasks (all cutoffs) | mean words / task | est. tokens / task |
 |---|---:|---:|---:|
-| AIADMK-2016 | 140 | 2060 | 2740 |
-| DMK-2021 | 140 | 2136 | 2841 |
-| TVK-2026 | 20 | 2157 | 2869 |
+| AIADMK-2016 | 2695 | 2078 | 2764 |
+| DMK-2021 | 4970 | 2152 | 2862 |
+| TVK-2026 | 768 | 2172 | 2888 |
 
 | term | cutoff | tasks | mean words | est. tokens |
 |---|---|---:|---:|---:|
-| AIADMK-2016 | m5 | 20 | 1916 | 2549 |
-| AIADMK-2016 | m6 | 20 | 1905 | 2533 |
-| AIADMK-2016 | m12 | 20 | 2051 | 2728 |
-| AIADMK-2016 | m24 | 20 | 2116 | 2815 |
-| AIADMK-2016 | m36 | 20 | 2130 | 2833 |
-| AIADMK-2016 | m48 | 20 | 2150 | 2859 |
-| AIADMK-2016 | full | 20 | 2153 | 2863 |
-| DMK-2021 | m5 | 20 | 2138 | 2843 |
-| DMK-2021 | m6 | 20 | 2116 | 2814 |
-| DMK-2021 | m12 | 20 | 2162 | 2876 |
-| DMK-2021 | m24 | 20 | 2153 | 2864 |
-| DMK-2021 | m36 | 20 | 2134 | 2838 |
-| DMK-2021 | m48 | 20 | 2135 | 2840 |
-| DMK-2021 | full | 20 | 2114 | 2811 |
-| TVK-2026 | m5 | 20 | 2157 | 2869 |
+| AIADMK-2016 | m5 | 385 | 1976 | 2628 |
+| AIADMK-2016 | m6 | 385 | 1956 | 2601 |
+| AIADMK-2016 | m12 | 385 | 2076 | 2762 |
+| AIADMK-2016 | m24 | 385 | 2113 | 2810 |
+| AIADMK-2016 | m36 | 385 | 2136 | 2841 |
+| AIADMK-2016 | m48 | 385 | 2142 | 2849 |
+| AIADMK-2016 | full | 385 | 2149 | 2858 |
+| DMK-2021 | m5 | 710 | 2156 | 2868 |
+| DMK-2021 | m6 | 710 | 2161 | 2874 |
+| DMK-2021 | m12 | 710 | 2151 | 2861 |
+| DMK-2021 | m24 | 710 | 2153 | 2863 |
+| DMK-2021 | m36 | 710 | 2150 | 2859 |
+| DMK-2021 | m48 | 710 | 2146 | 2854 |
+| DMK-2021 | full | 710 | 2146 | 2855 |
+| TVK-2026 | m5 | 768 | 2172 | 2888 |
 
 ## 7. Index and run
 
 - Embedding index: `{"model": "BAAI/bge-small-en-v1.5", "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a", "max_seq_length": 512, "n": 60259, "index_text_hash": "a9ce22ca3dc57b9a291f059fa70fdcea952c0df2a621096760fe568926e92cb3", "dim": 384}`
 - Fingerprint: `6aeafaa9785dde0108cc1826a94238d7c72e74507ea55e80d6f5cffa20f960ba`
-- Run time (sum over term-cutoffs, all invocations' last records): 12 s
+- Run time (sum over term-cutoffs): 217 s

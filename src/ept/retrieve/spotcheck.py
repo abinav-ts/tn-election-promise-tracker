@@ -29,7 +29,7 @@ from ept import db
 from ept.config import Config, get_config
 from ept.dates import BASIS_FY_ONLY, BASIS_FY_TIGHTENED, parse_iso
 from ept.retrieve import eligible as el
-from ept.retrieve.report import load_pairs, override_promises
+from ept.retrieve.report import load_pairs, override_notes, override_promises
 from ept.retrieve.run import latest_run, read_diag, _read_meta
 from ept.retrieve.tokenize import tokenize
 
@@ -150,7 +150,10 @@ def write_md(path: Path, it: Item, info: dict[str, Any], rows: list[dict[str, An
          f"- Term: {it.term} · {cut} · group {it.group}", f"- Why flagged: {it.why}",
          f"- Promise ({it.promise_id}): {info['promise_text']}",
          f"- Indicator{' (the promise itself)' if info['is_self'] else ''}: {info['indicator_text']}",
-         f"- Search queries: {' | '.join(info['queries'])}", ""]
+         f"- Search queries: {' | '.join(info['queries'])}"]
+    if info.get("override_note"):
+        L.append(f"- Stage 03 override note (why the queries are generic): {info['override_note']}")
+    L.append("")
     for r in rows:
         flag = " ⚑ FLAGGED" if r["chunk_id"] == it.flagged_chunk else ""
         s = r["scores"]
@@ -202,6 +205,7 @@ def run_spotcheck(term: Optional[str] = None, run_id: Optional[str] = None) -> d
                 uppers[(t, cut)] = parse_iso(cut)
     chosen = select(build(pairs, avail, override_promises(cfg), uppers, sc.near_cutoff_days),
                     s.max_items, sc.per_term, sc.per_group)
+    notes = override_notes(cfg)
     path = cfg.spotcheck_path("04")
     md_dir = cfg.path("spotcheck_04_dir")
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -215,7 +219,8 @@ def run_spotcheck(term: Optional[str] = None, run_id: Optional[str] = None) -> d
             info = conn.execute("SELECT i.text AS indicator_text, i.is_self, i.search_queries, p.text AS promise_text "
                                 "FROM indicators i JOIN promises p ON p.promise_id = i.promise_id "
                                 "WHERE i.indicator_id = ?", (it.indicator_id,)).fetchone()
-            info = {**dict(info), "queries": json.loads(info["search_queries"])}
+            info = {**dict(info), "queries": json.loads(info["search_queries"]),
+                    "override_note": notes.get(it.promise_id, "")}
             rows = []
             for r in pairs[(it.indicator_id, it.cutoff)]["rows"]:
                 c = conn.execute("SELECT c.text, c.page_start, d.title, d.doc_date, d.date_precision, d.date_source, "

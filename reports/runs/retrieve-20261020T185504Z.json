@@ -2,7 +2,7 @@
   "run_id": "retrieve-20261020T185504Z",
   "stage": "retrieve",
   "started_at": "2026-10-20T18:55:04+00:00",
-  "finished_at": "2026-10-20T18:55:21+00:00",
+  "finished_at": "2026-10-20T19:00:04+00:00",
   "status": "done",
   "git_commit": "5879e28ebfe8ad7a0eb042905daaa99db2dde9b5",
   "params": {
@@ -22,10 +22,10 @@
     "embedding": "BAAI/bge-small-en-v1.5@5c38ec7c405ec4b44b94cc5a9bb96e735b38267a"
   },
   "counts": {
-    "resumed": false,
-    "written": 300,
-    "skipped": 0,
-    "rows": 1500
+    "resumed": true,
+    "written": 0,
+    "skipped": 8433,
+    "rows": 0
   },
   "config": {
     "settings": {
@@ -656,112 +656,131 @@
       "code": "03ebf4ea2e24fdca1c4200d2213f5d2e6209409f3b94b514abe3547d19ca2fa9"
     }
   },
-  "complete": false,
+  "complete": true,
   "term_cutoffs": {
     "AIADMK-2016@2016-10-23": {
       "eligible": 1010,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.5
+      "written": 385,
+      "seconds": 1.7,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2016-11-23": {
       "eligible": 1184,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.1
+      "written": 385,
+      "seconds": 0.7,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2017-05-23": {
       "eligible": 4086,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.2
+      "written": 385,
+      "seconds": 2.2,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2018-05-23": {
       "eligible": 8835,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.6
+      "written": 385,
+      "seconds": 5.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2019-05-23": {
       "eligible": 14085,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.9
+      "written": 385,
+      "seconds": 9.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2020-05-23": {
       "eligible": 19467,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 1.3
+      "written": 385,
+      "seconds": 15.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@full": {
       "eligible": 23938,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 1.5
+      "written": 385,
+      "seconds": 19.4,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2021-10-07": {
       "eligible": 1299,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.2
+      "written": 710,
+      "seconds": 2.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2021-11-07": {
       "eligible": 1738,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.1
+      "written": 710,
+      "seconds": 1.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2022-05-07": {
       "eligible": 6365,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.4
+      "written": 710,
+      "seconds": 7.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2023-05-07": {
       "eligible": 12603,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.8
+      "written": 710,
+      "seconds": 17.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2024-05-07": {
       "eligible": 17964,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 1.2
+      "written": 710,
+      "seconds": 27.3,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2025-05-07": {
       "eligible": 26673,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 2.0
+      "written": 710,
+      "seconds": 44.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@full": {
       "eligible": 31829,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 2.4
+      "written": 710,
+      "seconds": 56.9,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "TVK-2026@2026-10-10": {
       "eligible": 1507,
-      "indicators": 20,
+      "indicators": 768,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.2
+      "written": 768,
+      "seconds": 2.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     }
-  }
+  },
+  "resumed_at": [
+    "2026-10-21T00:26:09",
+    "2026-10-21T00:29:57"
+  ]
 }

@@ -21,12 +21,17 @@ from ept.retrieve import eligible as el
 from ept.retrieve.run import _read_meta, configured, latest_run, read_diag
 
 
-def override_promises(cfg: Config) -> set[str]:
+def override_notes(cfg: Config) -> dict[str, str]:
+    """{promise_id: note} of the stage 03 override rows (generic queries)."""
     path = cfg.path("classify_overrides")
     if not path.exists():
-        return set()
+        return {}
     with path.open(encoding="utf-8", newline="") as f:
-        return {r["promise_id"] for r in csv.DictReader(f)}
+        return {r["promise_id"]: r.get("note") or "" for r in csv.DictReader(f)}
+
+
+def override_promises(cfg: Config) -> set[str]:
+    return set(override_notes(cfg))
 
 
 def _kind(doc_type: str, title: Optional[str], cfg: Config) -> str:
@@ -270,5 +275,5 @@ def render_md(d: dict[str, Any], cfg: Config) -> str:
     L += ["", "## 7. Index and run", "",
           f"- Embedding index: `{json.dumps(d['index_manifest'])}`",
           f"- Fingerprint: `{d['fingerprint']}`",
-          f"- Run time (sum over term-cutoffs, all invocations' last records): {d['run_seconds']:.0f} s", ""]
+          f"- Run time (sum over term-cutoffs): {d['run_seconds']:.0f} s", ""]
     return "\n".join(L)

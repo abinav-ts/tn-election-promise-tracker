@@ -1,7 +1,7 @@
 {
   "run_id": "retrieve-20261020T185504Z",
-  "complete": false,
-  "generated": "2026-10-21T00:25:56",
+  "complete": true,
+  "generated": "2026-10-21T00:31:53",
   "snapshot_end": "2026-10-11",
   "index_manifest": {
     "model": "BAAI/bge-small-en-v1.5",
@@ -12,112 +12,127 @@
     "dim": 384
   },
   "fingerprint": "6aeafaa9785dde0108cc1826a94238d7c72e74507ea55e80d6f5cffa20f960ba",
-  "run_seconds": 12.4,
+  "run_seconds": 216.6,
   "term_cutoffs": {
     "AIADMK-2016@2016-10-23": {
       "eligible": 1010,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.5
+      "written": 385,
+      "seconds": 1.7,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2016-11-23": {
       "eligible": 1184,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.1
+      "written": 385,
+      "seconds": 0.7,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2017-05-23": {
       "eligible": 4086,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.2
+      "written": 385,
+      "seconds": 2.2,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2018-05-23": {
       "eligible": 8835,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.6
+      "written": 385,
+      "seconds": 5.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2019-05-23": {
       "eligible": 14085,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.9
+      "written": 385,
+      "seconds": 9.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@2020-05-23": {
       "eligible": 19467,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 1.3
+      "written": 385,
+      "seconds": 15.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "AIADMK-2016@full": {
       "eligible": 23938,
-      "indicators": 20,
+      "indicators": 385,
       "skipped": 0,
-      "written": 20,
-      "seconds": 1.5
+      "written": 385,
+      "seconds": 19.4,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2021-10-07": {
       "eligible": 1299,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.2
+      "written": 710,
+      "seconds": 2.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2021-11-07": {
       "eligible": 1738,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.1
+      "written": 710,
+      "seconds": 1.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2022-05-07": {
       "eligible": 6365,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.4
+      "written": 710,
+      "seconds": 7.6,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2023-05-07": {
       "eligible": 12603,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.8
+      "written": 710,
+      "seconds": 17.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2024-05-07": {
       "eligible": 17964,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 1.2
+      "written": 710,
+      "seconds": 27.3,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@2025-05-07": {
       "eligible": 26673,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 2.0
+      "written": 710,
+      "seconds": 44.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "DMK-2021@full": {
       "eligible": 31829,
-      "indicators": 20,
+      "indicators": 710,
       "skipped": 0,
-      "written": 20,
-      "seconds": 2.4
+      "written": 710,
+      "seconds": 56.9,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     },
     "TVK-2026@2026-10-10": {
       "eligible": 1507,
-      "indicators": 20,
+      "indicators": 768,
       "skipped": 0,
-      "written": 20,
-      "seconds": 0.2
+      "written": 768,
+      "seconds": 2.8,
+      "note": "restored from the limit-20 metadata + full-run log (a later no-op resume had overwritten it)"
     }
   },
   "fy_bound_effect": {
@@ -174,67 +189,84 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 3,
-        "pct_with_go_place": 15.0,
+        "go_places_used": 202,
+        "pct_with_go_place": 34.3,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.3,
-        "pct_no_overlap": 35.0,
-        "median_top1_cos": 0.6932,
-        "pct_cap_applied": 45.0,
+        "mean_overlap_bm25_dense_top_k": 1.15,
+        "pct_no_overlap": 37.1,
+        "median_top1_cos": 0.6563,
+        "pct_cap_applied": 32.2,
         "doc_type_mix_pct": {
-          "budget_speech": 13.0,
-          "go": 59.0,
-          "governor_address": 4.0,
-          "policy_note": 1.0,
-          "scheme_page": 23.0
+          "budget_speech": 12.6,
+          "go": 55.2,
+          "governor_address": 6.0,
+          "policy_note": 10.4,
+          "scheme_page": 15.7
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
-        "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 3,
-        "pct_with_go_place": 15.0,
-        "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.3,
-        "pct_no_overlap": 35.0,
-        "median_top1_cos": 0.6932,
-        "pct_cap_applied": 45.0,
-        "doc_type_mix_pct": {
-          "budget_speech": 13.0,
-          "go": 59.0,
-          "governor_address": 4.0,
-          "policy_note": 1.0,
-          "scheme_page": 23.0
-        }
-      },
-      "headline_promises": {
-        "indicators": 2,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
         "go_places_used": 0,
         "pct_with_go_place": 0.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 3,
-        "pct_no_overlap": 0.0,
-        "median_top1_cos": 0.8019,
-        "pct_cap_applied": 100.0,
+        "mean_overlap_bm25_dense_top_k": 0,
+        "pct_no_overlap": 100.0,
+        "median_top1_cos": 0.6223,
+        "pct_cap_applied": 40.0,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "go": 60.0,
-          "scheme_page": 30.0
+          "budget_speech": 4.0,
+          "go": 84.0,
+          "policy_note": 4.0,
+          "scheme_page": 8.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 202,
+        "pct_with_go_place": 34.7,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.17,
+        "pct_no_overlap": 36.3,
+        "median_top1_cos": 0.6564,
+        "pct_cap_applied": 32.1,
+        "doc_type_mix_pct": {
+          "budget_speech": 12.7,
+          "go": 54.8,
+          "governor_address": 6.1,
+          "policy_note": 10.5,
+          "scheme_page": 15.8
+        }
+      },
+      "headline_promises": {
+        "indicators": 28,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 24,
+        "pct_with_go_place": 50.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.54,
+        "pct_no_overlap": 32.1,
+        "median_top1_cos": 0.6757,
+        "pct_cap_applied": 42.9,
+        "doc_type_mix_pct": {
+          "budget_speech": 10.7,
+          "go": 54.3,
+          "governor_address": 7.1,
+          "policy_note": 7.9,
+          "scheme_page": 20.0
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 1916,
-        "est_tokens": 2549
+        "tasks": 385,
+        "mean_words": 1976,
+        "est_tokens": 2628
       }
     },
     {
@@ -269,66 +301,84 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 3,
-        "pct_with_go_place": 10.0,
+        "go_places_used": 181,
+        "pct_with_go_place": 30.6,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.1,
-        "pct_no_overlap": 45.0,
-        "median_top1_cos": 0.699,
-        "pct_cap_applied": 40.0,
+        "mean_overlap_bm25_dense_top_k": 1.09,
+        "pct_no_overlap": 39.0,
+        "median_top1_cos": 0.6583,
+        "pct_cap_applied": 31.9,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "go": 62.0,
-          "governor_address": 3.0,
-          "policy_note": 1.0,
-          "scheme_page": 24.0
+          "budget_speech": 11.9,
+          "go": 56.5,
+          "governor_address": 5.5,
+          "policy_note": 9.4,
+          "scheme_page": 16.8
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
-        "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 3,
-        "pct_with_go_place": 10.0,
-        "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.1,
-        "pct_no_overlap": 45.0,
-        "median_top1_cos": 0.699,
-        "pct_cap_applied": 40.0,
-        "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "go": 62.0,
-          "governor_address": 3.0,
-          "policy_note": 1.0,
-          "scheme_page": 24.0
-        }
-      },
-      "headline_promises": {
-        "indicators": 2,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
         "go_places_used": 0,
         "pct_with_go_place": 0.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 3,
-        "pct_no_overlap": 0.0,
-        "median_top1_cos": 0.8019,
-        "pct_cap_applied": 100.0,
+        "mean_overlap_bm25_dense_top_k": 0,
+        "pct_no_overlap": 100.0,
+        "median_top1_cos": 0.6223,
+        "pct_cap_applied": 40.0,
         "doc_type_mix_pct": {
-          "go": 80.0,
-          "scheme_page": 20.0
+          "budget_speech": 4.0,
+          "go": 84.0,
+          "policy_note": 4.0,
+          "scheme_page": 8.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 181,
+        "pct_with_go_place": 31.1,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.11,
+        "pct_no_overlap": 38.2,
+        "median_top1_cos": 0.6594,
+        "pct_cap_applied": 31.8,
+        "doc_type_mix_pct": {
+          "budget_speech": 12.1,
+          "go": 56.1,
+          "governor_address": 5.5,
+          "policy_note": 9.4,
+          "scheme_page": 16.9
+        }
+      },
+      "headline_promises": {
+        "indicators": 28,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 20,
+        "pct_with_go_place": 42.9,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.43,
+        "pct_no_overlap": 35.7,
+        "median_top1_cos": 0.6757,
+        "pct_cap_applied": 39.3,
+        "doc_type_mix_pct": {
+          "budget_speech": 9.3,
+          "go": 55.7,
+          "governor_address": 5.7,
+          "policy_note": 7.9,
+          "scheme_page": 21.4
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 1905,
-        "est_tokens": 2533
+        "tasks": 385,
+        "mean_words": 1956,
+        "est_tokens": 2601
       }
     },
     {
@@ -367,64 +417,85 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 9,
-        "pct_with_go_place": 35.0,
+        "pct_with_go": 94.3,
+        "go_places_used": 384,
+        "pct_with_go_place": 63.4,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.75,
-        "pct_no_overlap": 45.0,
-        "median_top1_cos": 0.7149,
-        "pct_cap_applied": 20.0,
+        "mean_overlap_bm25_dense_top_k": 1.33,
+        "pct_no_overlap": 28.8,
+        "median_top1_cos": 0.6955,
+        "pct_cap_applied": 54.3,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
-          "go": 52.0,
-          "policy_note": 34.0,
-          "scheme_page": 9.0
+          "budget_speech": 3.9,
+          "go": 40.9,
+          "governor_address": 2.2,
+          "other": 2.6,
+          "policy_note": 45.1,
+          "scheme_page": 5.1
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 9,
-        "pct_with_go_place": 35.0,
+        "go_places_used": 3,
+        "pct_with_go_place": 40.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.75,
-        "pct_no_overlap": 45.0,
-        "median_top1_cos": 0.7149,
-        "pct_cap_applied": 20.0,
+        "mean_overlap_bm25_dense_top_k": 0.8,
+        "pct_no_overlap": 80.0,
+        "median_top1_cos": 0.672,
+        "pct_cap_applied": 40.0,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
-          "go": 52.0,
-          "policy_note": 34.0,
-          "scheme_page": 9.0
+          "go": 44.0,
+          "governor_address": 4.0,
+          "policy_note": 52.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 94.2,
+        "go_places_used": 381,
+        "pct_with_go_place": 63.7,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.34,
+        "pct_no_overlap": 28.2,
+        "median_top1_cos": 0.6957,
+        "pct_cap_applied": 54.5,
+        "doc_type_mix_pct": {
+          "budget_speech": 4.0,
+          "go": 40.9,
+          "governor_address": 2.2,
+          "other": 2.7,
+          "policy_note": 45.0,
+          "scheme_page": 5.2
         }
       },
       "headline_promises": {
-        "indicators": 2,
+        "indicators": 28,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 0,
-        "pct_with_go_place": 0.0,
+        "pct_with_go": 92.9,
+        "go_places_used": 25,
+        "pct_with_go_place": 53.6,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 2.5,
-        "pct_no_overlap": 0.0,
-        "median_top1_cos": 0.8176,
-        "pct_cap_applied": 50.0,
+        "mean_overlap_bm25_dense_top_k": 1.32,
+        "pct_no_overlap": 32.1,
+        "median_top1_cos": 0.7039,
+        "pct_cap_applied": 57.1,
         "doc_type_mix_pct": {
-          "go": 70.0,
-          "policy_note": 30.0
+          "budget_speech": 5.0,
+          "go": 46.4,
+          "governor_address": 1.4,
+          "policy_note": 43.6,
+          "scheme_page": 3.6
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2051,
-        "est_tokens": 2728
+        "tasks": 385,
+        "mean_words": 2076,
+        "est_tokens": 2762
       }
     },
     {
@@ -463,64 +534,85 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 9,
-        "pct_with_go_place": 35.0,
+        "pct_with_go": 93.8,
+        "go_places_used": 382,
+        "pct_with_go_place": 61.6,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.55,
-        "pct_no_overlap": 60.0,
-        "median_top1_cos": 0.7203,
-        "pct_cap_applied": 30.0,
+        "mean_overlap_bm25_dense_top_k": 1.22,
+        "pct_no_overlap": 33.8,
+        "median_top1_cos": 0.7037,
+        "pct_cap_applied": 37.4,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
-          "go": 48.0,
-          "policy_note": 43.0,
-          "scheme_page": 4.0
+          "budget_speech": 1.9,
+          "go": 40.7,
+          "governor_address": 1.3,
+          "other": 2.8,
+          "policy_note": 51.4,
+          "scheme_page": 2.0
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 9,
-        "pct_with_go_place": 35.0,
+        "go_places_used": 2,
+        "pct_with_go_place": 20.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.55,
+        "mean_overlap_bm25_dense_top_k": 0.6,
         "pct_no_overlap": 60.0,
-        "median_top1_cos": 0.7203,
-        "pct_cap_applied": 30.0,
+        "median_top1_cos": 0.691,
+        "pct_cap_applied": 0.0,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
           "go": 48.0,
-          "policy_note": 43.0,
-          "scheme_page": 4.0
+          "policy_note": 52.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 93.7,
+        "go_places_used": 380,
+        "pct_with_go_place": 62.1,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.23,
+        "pct_no_overlap": 33.4,
+        "median_top1_cos": 0.7041,
+        "pct_cap_applied": 37.9,
+        "doc_type_mix_pct": {
+          "budget_speech": 1.9,
+          "go": 40.6,
+          "governor_address": 1.3,
+          "other": 2.8,
+          "policy_note": 51.4,
+          "scheme_page": 2.0
         }
       },
       "headline_promises": {
-        "indicators": 2,
+        "indicators": 28,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 0,
-        "pct_with_go_place": 0.0,
+        "pct_with_go": 92.9,
+        "go_places_used": 25,
+        "pct_with_go_place": 50.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.8209,
-        "pct_cap_applied": 100.0,
+        "mean_overlap_bm25_dense_top_k": 1.04,
+        "pct_no_overlap": 32.1,
+        "median_top1_cos": 0.7127,
+        "pct_cap_applied": 46.4,
         "doc_type_mix_pct": {
-          "go": 50.0,
-          "policy_note": 50.0
+          "budget_speech": 3.6,
+          "go": 42.9,
+          "governor_address": 1.4,
+          "other": 0.7,
+          "policy_note": 50.0,
+          "scheme_page": 1.4
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2116,
-        "est_tokens": 2815
+        "tasks": 385,
+        "mean_words": 2113,
+        "est_tokens": 2810
       }
     },
     {
@@ -559,64 +651,85 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 14,
-        "pct_with_go_place": 50.0,
+        "pct_with_go": 95.8,
+        "go_places_used": 436,
+        "pct_with_go_place": 69.1,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.45,
-        "pct_no_overlap": 70.0,
-        "median_top1_cos": 0.7203,
-        "pct_cap_applied": 15.0,
+        "mean_overlap_bm25_dense_top_k": 1.14,
+        "pct_no_overlap": 40.3,
+        "median_top1_cos": 0.7072,
+        "pct_cap_applied": 22.3,
         "doc_type_mix_pct": {
-          "budget_speech": 4.0,
-          "go": 45.0,
-          "policy_note": 48.0,
-          "scheme_page": 3.0
+          "budget_speech": 1.4,
+          "go": 41.8,
+          "governor_address": 1.2,
+          "other": 2.4,
+          "policy_note": 52.3,
+          "scheme_page": 1.0
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 14,
-        "pct_with_go_place": 50.0,
+        "go_places_used": 2,
+        "pct_with_go_place": 20.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.45,
-        "pct_no_overlap": 70.0,
-        "median_top1_cos": 0.7203,
-        "pct_cap_applied": 15.0,
+        "mean_overlap_bm25_dense_top_k": 0.4,
+        "pct_no_overlap": 80.0,
+        "median_top1_cos": 0.691,
+        "pct_cap_applied": 0.0,
         "doc_type_mix_pct": {
-          "budget_speech": 4.0,
-          "go": 45.0,
-          "policy_note": 48.0,
-          "scheme_page": 3.0
+          "go": 44.0,
+          "policy_note": 56.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 95.8,
+        "go_places_used": 434,
+        "pct_with_go_place": 69.7,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.15,
+        "pct_no_overlap": 39.7,
+        "median_top1_cos": 0.7074,
+        "pct_cap_applied": 22.6,
+        "doc_type_mix_pct": {
+          "budget_speech": 1.4,
+          "go": 41.7,
+          "governor_address": 1.2,
+          "other": 2.5,
+          "policy_note": 52.2,
+          "scheme_page": 1.0
         }
       },
       "headline_promises": {
-        "indicators": 2,
+        "indicators": 28,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 0,
-        "pct_with_go_place": 0.0,
+        "pct_with_go": 92.9,
+        "go_places_used": 29,
+        "pct_with_go_place": 60.7,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.8228,
-        "pct_cap_applied": 100.0,
+        "mean_overlap_bm25_dense_top_k": 0.89,
+        "pct_no_overlap": 42.9,
+        "median_top1_cos": 0.7211,
+        "pct_cap_applied": 21.4,
         "doc_type_mix_pct": {
-          "go": 50.0,
-          "policy_note": 50.0
+          "budget_speech": 5.0,
+          "go": 41.4,
+          "governor_address": 1.4,
+          "other": 1.4,
+          "policy_note": 50.0,
+          "scheme_page": 0.7
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2130,
-        "est_tokens": 2833
+        "tasks": 385,
+        "mean_words": 2136,
+        "est_tokens": 2841
       }
     },
     {
@@ -655,64 +768,86 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 20,
-        "pct_with_go_place": 65.0,
+        "pct_with_go": 95.8,
+        "go_places_used": 430,
+        "pct_with_go_place": 67.5,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.55,
-        "pct_no_overlap": 60.0,
-        "median_top1_cos": 0.7247,
-        "pct_cap_applied": 15.0,
+        "mean_overlap_bm25_dense_top_k": 1.04,
+        "pct_no_overlap": 44.9,
+        "median_top1_cos": 0.7109,
+        "pct_cap_applied": 15.3,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "go": 45.0,
-          "policy_note": 50.0,
-          "scheme_page": 2.0
+          "budget_speech": 1.0,
+          "go": 42.1,
+          "governor_address": 1.0,
+          "other": 2.8,
+          "policy_note": 52.4,
+          "scheme_page": 0.7
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 20,
-        "pct_with_go_place": 65.0,
+        "go_places_used": 2,
+        "pct_with_go_place": 20.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.55,
+        "mean_overlap_bm25_dense_top_k": 0.6,
         "pct_no_overlap": 60.0,
-        "median_top1_cos": 0.7247,
-        "pct_cap_applied": 15.0,
+        "median_top1_cos": 0.691,
+        "pct_cap_applied": 0.0,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "go": 45.0,
-          "policy_note": 50.0,
-          "scheme_page": 2.0
+          "go": 44.0,
+          "other": 4.0,
+          "policy_note": 52.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 95.8,
+        "go_places_used": 428,
+        "pct_with_go_place": 68.2,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.04,
+        "pct_no_overlap": 44.7,
+        "median_top1_cos": 0.7112,
+        "pct_cap_applied": 15.5,
+        "doc_type_mix_pct": {
+          "budget_speech": 1.1,
+          "go": 42.1,
+          "governor_address": 1.0,
+          "other": 2.7,
+          "policy_note": 52.4,
+          "scheme_page": 0.7
         }
       },
       "headline_promises": {
-        "indicators": 2,
+        "indicators": 28,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 0,
-        "pct_with_go_place": 0.0,
+        "pct_with_go": 96.4,
+        "go_places_used": 31,
+        "pct_with_go_place": 64.3,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.8251,
-        "pct_cap_applied": 100.0,
+        "mean_overlap_bm25_dense_top_k": 0.75,
+        "pct_no_overlap": 57.1,
+        "median_top1_cos": 0.7211,
+        "pct_cap_applied": 7.1,
         "doc_type_mix_pct": {
-          "go": 50.0,
-          "policy_note": 50.0
+          "budget_speech": 5.0,
+          "go": 43.6,
+          "governor_address": 1.4,
+          "other": 1.4,
+          "policy_note": 47.9,
+          "scheme_page": 0.7
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2150,
-        "est_tokens": 2859
+        "tasks": 385,
+        "mean_words": 2142,
+        "est_tokens": 2849
       }
     },
     {
@@ -753,66 +888,88 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 385,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 18,
-        "pct_with_go_place": 60.0,
+        "pct_with_go": 95.6,
+        "go_places_used": 425,
+        "pct_with_go_place": 66.2,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.5,
-        "pct_no_overlap": 65.0,
-        "median_top1_cos": 0.7292,
-        "pct_cap_applied": 20.0,
+        "mean_overlap_bm25_dense_top_k": 0.98,
+        "pct_no_overlap": 47.0,
+        "median_top1_cos": 0.713,
+        "pct_cap_applied": 13.2,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "go": 46.0,
-          "other": 1.0,
-          "policy_note": 49.0,
-          "scheme_page": 1.0
+          "budget_speech": 0.9,
+          "cag_report": 0.2,
+          "go": 42.5,
+          "governor_address": 0.9,
+          "other": 2.7,
+          "policy_note": 52.1,
+          "scheme_page": 0.6
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
+        "indicators": 5,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 18,
-        "pct_with_go_place": 60.0,
+        "go_places_used": 3,
+        "pct_with_go_place": 40.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.5,
-        "pct_no_overlap": 65.0,
-        "median_top1_cos": 0.7292,
-        "pct_cap_applied": 20.0,
+        "mean_overlap_bm25_dense_top_k": 0.6,
+        "pct_no_overlap": 60.0,
+        "median_top1_cos": 0.691,
+        "pct_cap_applied": 0.0,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "go": 46.0,
-          "other": 1.0,
-          "policy_note": 49.0,
-          "scheme_page": 1.0
+          "go": 44.0,
+          "other": 4.0,
+          "policy_note": 52.0
+        }
+      },
+      "other_promises": {
+        "indicators": 380,
+        "pct_with_k": 100.0,
+        "pct_with_go": 95.5,
+        "go_places_used": 422,
+        "pct_with_go_place": 66.6,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.99,
+        "pct_no_overlap": 46.8,
+        "median_top1_cos": 0.7137,
+        "pct_cap_applied": 13.4,
+        "doc_type_mix_pct": {
+          "budget_speech": 0.9,
+          "cag_report": 0.2,
+          "go": 42.5,
+          "governor_address": 0.9,
+          "other": 2.7,
+          "policy_note": 52.1,
+          "scheme_page": 0.6
         }
       },
       "headline_promises": {
-        "indicators": 2,
+        "indicators": 28,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 0,
-        "pct_with_go_place": 0.0,
+        "pct_with_go": 92.9,
+        "go_places_used": 29,
+        "pct_with_go_place": 60.7,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.8251,
-        "pct_cap_applied": 100.0,
+        "mean_overlap_bm25_dense_top_k": 0.71,
+        "pct_no_overlap": 64.3,
+        "median_top1_cos": 0.7239,
+        "pct_cap_applied": 7.1,
         "doc_type_mix_pct": {
-          "go": 50.0,
-          "policy_note": 50.0
+          "budget_speech": 4.3,
+          "go": 43.6,
+          "governor_address": 1.4,
+          "other": 0.7,
+          "policy_note": 49.3,
+          "scheme_page": 0.7
         }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2153,
-        "est_tokens": 2863
+        "tasks": 385,
+        "mean_words": 2149,
+        "est_tokens": 2858
       }
     },
     {
@@ -851,70 +1008,89 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 10,
-        "pct_with_go_place": 30.0,
+        "go_places_used": 204,
+        "pct_with_go_place": 20.8,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.15,
-        "pct_no_overlap": 30.0,
-        "median_top1_cos": 0.6766,
-        "pct_cap_applied": 40.0,
+        "mean_overlap_bm25_dense_top_k": 0.95,
+        "pct_no_overlap": 42.7,
+        "median_top1_cos": 0.6533,
+        "pct_cap_applied": 37.0,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "cag_report": 6.0,
-          "go": 50.0,
-          "governor_address": 14.0,
-          "other": 1.0,
-          "policy_note": 19.0
+          "budget_speech": 17.7,
+          "cag_report": 4.1,
+          "go": 61.7,
+          "governor_address": 5.8,
+          "other": 0.3,
+          "policy_note": 10.3,
+          "scheme_page": 0.1
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 1,
-        "pct_with_go_place": 25.0,
+        "go_places_used": 6,
+        "pct_with_go_place": 16.1,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.75,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6655,
-        "pct_cap_applied": 25.0,
+        "mean_overlap_bm25_dense_top_k": 0.68,
+        "pct_no_overlap": 61.3,
+        "median_top1_cos": 0.6336,
+        "pct_cap_applied": 22.6,
         "doc_type_mix_pct": {
-          "budget_speech": 15.0,
-          "cag_report": 10.0,
-          "go": 45.0,
-          "governor_address": 30.0
+          "budget_speech": 12.9,
+          "cag_report": 3.9,
+          "go": 66.5,
+          "governor_address": 11.6,
+          "policy_note": 5.2
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 9,
-        "pct_with_go_place": 31.2,
+        "go_places_used": 198,
+        "pct_with_go_place": 21.1,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.25,
-        "pct_no_overlap": 25.0,
-        "median_top1_cos": 0.6787,
-        "pct_cap_applied": 43.8,
+        "mean_overlap_bm25_dense_top_k": 0.96,
+        "pct_no_overlap": 41.8,
+        "median_top1_cos": 0.6535,
+        "pct_cap_applied": 37.7,
         "doc_type_mix_pct": {
-          "budget_speech": 8.8,
-          "cag_report": 5.0,
-          "go": 51.2,
-          "governor_address": 10.0,
-          "other": 1.2,
-          "policy_note": 23.8
+          "budget_speech": 17.9,
+          "cag_report": 4.1,
+          "go": 61.5,
+          "governor_address": 5.6,
+          "other": 0.4,
+          "policy_note": 10.6,
+          "scheme_page": 0.1
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 12,
+        "pct_with_go_place": 28.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.12,
+        "pct_no_overlap": 24.0,
+        "median_top1_cos": 0.6982,
+        "pct_cap_applied": 52.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 35.2,
+          "cag_report": 1.6,
+          "go": 54.4,
+          "governor_address": 4.0,
+          "policy_note": 4.8
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2138,
-        "est_tokens": 2843
+        "tasks": 710,
+        "mean_words": 2156,
+        "est_tokens": 2868
       }
     },
     {
@@ -953,70 +1129,89 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 10,
-        "pct_with_go_place": 30.0,
+        "go_places_used": 155,
+        "pct_with_go_place": 16.6,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.15,
-        "pct_no_overlap": 30.0,
-        "median_top1_cos": 0.6766,
-        "pct_cap_applied": 45.0,
+        "mean_overlap_bm25_dense_top_k": 0.93,
+        "pct_no_overlap": 43.9,
+        "median_top1_cos": 0.6587,
+        "pct_cap_applied": 37.7,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "cag_report": 5.0,
-          "go": 50.0,
-          "governor_address": 14.0,
-          "other": 1.0,
-          "policy_note": 20.0
+          "budget_speech": 13.6,
+          "cag_report": 3.0,
+          "go": 64.9,
+          "governor_address": 5.0,
+          "other": 0.3,
+          "policy_note": 13.0,
+          "scheme_page": 0.3
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 1,
-        "pct_with_go_place": 25.0,
+        "go_places_used": 4,
+        "pct_with_go_place": 12.9,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.75,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6655,
-        "pct_cap_applied": 25.0,
+        "mean_overlap_bm25_dense_top_k": 0.58,
+        "pct_no_overlap": 64.5,
+        "median_top1_cos": 0.6538,
+        "pct_cap_applied": 25.8,
         "doc_type_mix_pct": {
-          "budget_speech": 15.0,
-          "cag_report": 10.0,
-          "go": 45.0,
-          "governor_address": 30.0
+          "budget_speech": 10.3,
+          "cag_report": 3.9,
+          "go": 68.4,
+          "governor_address": 11.6,
+          "policy_note": 5.8
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 9,
-        "pct_with_go_place": 31.2,
+        "go_places_used": 151,
+        "pct_with_go_place": 16.8,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.25,
-        "pct_no_overlap": 25.0,
-        "median_top1_cos": 0.6787,
-        "pct_cap_applied": 50.0,
+        "mean_overlap_bm25_dense_top_k": 0.95,
+        "pct_no_overlap": 43.0,
+        "median_top1_cos": 0.6591,
+        "pct_cap_applied": 38.3,
         "doc_type_mix_pct": {
-          "budget_speech": 8.8,
-          "cag_report": 3.8,
-          "go": 51.2,
-          "governor_address": 10.0,
-          "other": 1.2,
-          "policy_note": 25.0
+          "budget_speech": 13.7,
+          "cag_report": 3.0,
+          "go": 64.7,
+          "governor_address": 4.7,
+          "other": 0.3,
+          "policy_note": 13.3,
+          "scheme_page": 0.3
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 6,
+        "pct_with_go_place": 16.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.92,
+        "pct_no_overlap": 40.0,
+        "median_top1_cos": 0.7055,
+        "pct_cap_applied": 44.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 32.0,
+          "cag_report": 0.8,
+          "go": 59.2,
+          "governor_address": 3.2,
+          "policy_note": 4.8
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2116,
-        "est_tokens": 2814
+        "tasks": 710,
+        "mean_words": 2161,
+        "est_tokens": 2874
       }
     },
     {
@@ -1057,70 +1252,88 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 21,
-        "pct_with_go_place": 65.0,
+        "pct_with_go": 99.4,
+        "go_places_used": 501,
+        "pct_with_go_place": 46.2,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.95,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6872,
-        "pct_cap_applied": 60.0,
+        "mean_overlap_bm25_dense_top_k": 1.03,
+        "pct_no_overlap": 39.9,
+        "median_top1_cos": 0.6833,
+        "pct_cap_applied": 45.8,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "cag_report": 1.0,
-          "go": 47.0,
-          "governor_address": 9.0,
-          "other": 2.0,
-          "policy_note": 38.0
+          "budget_speech": 4.8,
+          "cag_report": 0.8,
+          "go": 49.0,
+          "governor_address": 2.2,
+          "other": 1.5,
+          "policy_note": 41.6,
+          "scheme_page": 0.1
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 4,
-        "pct_with_go_place": 75.0,
+        "go_places_used": 21,
+        "pct_with_go_place": 45.2,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.75,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6774,
-        "pct_cap_applied": 50.0,
+        "mean_overlap_bm25_dense_top_k": 0.81,
+        "pct_no_overlap": 45.2,
+        "median_top1_cos": 0.6688,
+        "pct_cap_applied": 45.2,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "cag_report": 5.0,
-          "go": 40.0,
-          "governor_address": 10.0,
-          "policy_note": 35.0
+          "budget_speech": 5.2,
+          "cag_report": 1.9,
+          "go": 52.9,
+          "governor_address": 5.2,
+          "other": 1.3,
+          "policy_note": 33.5
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
-        "pct_with_go": 100.0,
-        "go_places_used": 17,
-        "pct_with_go_place": 62.5,
+        "pct_with_go": 99.4,
+        "go_places_used": 480,
+        "pct_with_go_place": 46.2,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6872,
-        "pct_cap_applied": 62.5,
+        "mean_overlap_bm25_dense_top_k": 1.04,
+        "pct_no_overlap": 39.6,
+        "median_top1_cos": 0.6839,
+        "pct_cap_applied": 45.8,
         "doc_type_mix_pct": {
-          "budget_speech": 1.2,
+          "budget_speech": 4.8,
+          "cag_report": 0.7,
           "go": 48.8,
-          "governor_address": 8.8,
-          "other": 2.5,
-          "policy_note": 38.8
+          "governor_address": 2.0,
+          "other": 1.6,
+          "policy_note": 41.9,
+          "scheme_page": 0.1
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 24,
+        "pct_with_go_place": 56.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.12,
+        "pct_no_overlap": 48.0,
+        "median_top1_cos": 0.7181,
+        "pct_cap_applied": 44.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 15.2,
+          "go": 48.0,
+          "policy_note": 36.8
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2162,
-        "est_tokens": 2876
+        "tasks": 710,
+        "mean_words": 2151,
+        "est_tokens": 2861
       }
     },
     {
@@ -1161,69 +1374,87 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
-        "pct_with_go": 95.0,
-        "go_places_used": 18,
-        "pct_with_go_place": 50.0,
+        "pct_with_go": 98.0,
+        "go_places_used": 555,
+        "pct_with_go_place": 50.1,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 45.0,
-        "median_top1_cos": 0.6898,
-        "pct_cap_applied": 20.0,
+        "mean_overlap_bm25_dense_top_k": 0.95,
+        "pct_no_overlap": 43.8,
+        "median_top1_cos": 0.6916,
+        "pct_cap_applied": 33.1,
         "doc_type_mix_pct": {
-          "budget_speech": 2.0,
-          "cag_report": 1.0,
-          "go": 43.0,
-          "governor_address": 8.0,
-          "other": 1.0,
-          "policy_note": 45.0
+          "budget_speech": 3.0,
+          "cag_report": 0.6,
+          "go": 47.3,
+          "governor_address": 1.2,
+          "other": 2.0,
+          "policy_note": 45.9
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 6,
-        "pct_with_go_place": 75.0,
+        "go_places_used": 22,
+        "pct_with_go_place": 45.2,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.5,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6774,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.65,
+        "pct_no_overlap": 58.1,
+        "median_top1_cos": 0.6818,
+        "pct_cap_applied": 22.6,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "go": 40.0,
-          "governor_address": 10.0,
-          "policy_note": 40.0
+          "budget_speech": 2.6,
+          "cag_report": 1.3,
+          "go": 47.7,
+          "governor_address": 3.2,
+          "other": 3.2,
+          "policy_note": 41.9
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
-        "pct_with_go": 93.8,
-        "go_places_used": 12,
-        "pct_with_go_place": 43.8,
+        "pct_with_go": 97.9,
+        "go_places_used": 533,
+        "pct_with_go_place": 50.4,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1.12,
-        "pct_no_overlap": 43.8,
-        "median_top1_cos": 0.6898,
-        "pct_cap_applied": 25.0,
+        "mean_overlap_bm25_dense_top_k": 0.97,
+        "pct_no_overlap": 43.2,
+        "median_top1_cos": 0.6925,
+        "pct_cap_applied": 33.6,
         "doc_type_mix_pct": {
-          "cag_report": 1.2,
-          "go": 43.8,
-          "governor_address": 7.5,
-          "other": 1.2,
-          "policy_note": 46.2
+          "budget_speech": 3.1,
+          "cag_report": 0.6,
+          "go": 47.3,
+          "governor_address": 1.1,
+          "other": 2.0,
+          "policy_note": 46.0
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 80.0,
+        "go_places_used": 16,
+        "pct_with_go_place": 40.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.04,
+        "pct_no_overlap": 48.0,
+        "median_top1_cos": 0.7181,
+        "pct_cap_applied": 32.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 10.4,
+          "go": 39.2,
+          "other": 0.8,
+          "policy_note": 49.6
+        }
       },
       "sizing": {
-        "tasks": 20,
+        "tasks": 710,
         "mean_words": 2153,
-        "est_tokens": 2864
+        "est_tokens": 2863
       }
     },
     {
@@ -1264,68 +1495,88 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
-        "pct_with_go": 90.0,
-        "go_places_used": 18,
-        "pct_with_go_place": 55.0,
+        "pct_with_go": 96.8,
+        "go_places_used": 638,
+        "pct_with_go_place": 55.8,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.8,
-        "pct_no_overlap": 55.0,
+        "mean_overlap_bm25_dense_top_k": 0.86,
+        "pct_no_overlap": 49.4,
         "median_top1_cos": 0.6961,
-        "pct_cap_applied": 0.0,
+        "pct_cap_applied": 18.9,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "cag_report": 1.0,
-          "go": 40.0,
-          "governor_address": 6.0,
-          "policy_note": 50.0
+          "budget_speech": 2.4,
+          "cag_report": 0.7,
+          "go": 45.2,
+          "governor_address": 0.9,
+          "other": 1.7,
+          "policy_note": 49.2,
+          "scheme_page": 0.1
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 5,
-        "pct_with_go_place": 75.0,
+        "go_places_used": 28,
+        "pct_with_go_place": 58.1,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.25,
-        "pct_no_overlap": 75.0,
-        "median_top1_cos": 0.6774,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.58,
+        "pct_no_overlap": 64.5,
+        "median_top1_cos": 0.6863,
+        "pct_cap_applied": 6.5,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
-          "go": 40.0,
-          "governor_address": 10.0,
-          "policy_note": 45.0
+          "budget_speech": 1.3,
+          "cag_report": 1.3,
+          "go": 43.9,
+          "governor_address": 2.6,
+          "other": 2.6,
+          "policy_note": 48.4
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
-        "pct_with_go": 87.5,
-        "go_places_used": 13,
-        "pct_with_go_place": 50.0,
+        "pct_with_go": 96.6,
+        "go_places_used": 610,
+        "pct_with_go_place": 55.7,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.94,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6961,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.87,
+        "pct_no_overlap": 48.7,
+        "median_top1_cos": 0.6967,
+        "pct_cap_applied": 19.4,
         "doc_type_mix_pct": {
-          "budget_speech": 2.5,
-          "cag_report": 1.2,
-          "go": 40.0,
-          "governor_address": 5.0,
-          "policy_note": 51.2
+          "budget_speech": 2.4,
+          "cag_report": 0.6,
+          "go": 45.2,
+          "governor_address": 0.8,
+          "other": 1.6,
+          "policy_note": 49.2,
+          "scheme_page": 0.1
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 88.0,
+        "go_places_used": 23,
+        "pct_with_go_place": 60.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.8,
+        "pct_no_overlap": 48.0,
+        "median_top1_cos": 0.7181,
+        "pct_cap_applied": 4.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 10.4,
+          "go": 39.2,
+          "policy_note": 50.4
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2134,
-        "est_tokens": 2838
+        "tasks": 710,
+        "mean_words": 2150,
+        "est_tokens": 2859
       }
     },
     {
@@ -1366,68 +1617,90 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
-        "pct_with_go": 90.0,
-        "go_places_used": 19,
-        "pct_with_go_place": 65.0,
+        "pct_with_go": 93.9,
+        "go_places_used": 704,
+        "pct_with_go_place": 59.7,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.8,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.6962,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.84,
+        "pct_no_overlap": 49.7,
+        "median_top1_cos": 0.7016,
+        "pct_cap_applied": 13.9,
         "doc_type_mix_pct": {
-          "budget_speech": 3.0,
-          "cag_report": 2.0,
-          "go": 36.0,
-          "governor_address": 4.0,
-          "policy_note": 55.0
+          "budget_speech": 2.2,
+          "cag_report": 2.3,
+          "go": 42.6,
+          "governor_address": 0.6,
+          "other": 1.6,
+          "policy_note": 50.3,
+          "scheme_page": 0.4
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 6,
-        "pct_with_go_place": 100.0,
+        "go_places_used": 27,
+        "pct_with_go_place": 54.8,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.25,
-        "pct_no_overlap": 75.0,
-        "median_top1_cos": 0.6774,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.42,
+        "pct_no_overlap": 74.2,
+        "median_top1_cos": 0.6909,
+        "pct_cap_applied": 12.9,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
-          "go": 40.0,
-          "governor_address": 5.0,
-          "policy_note": 50.0
+          "budget_speech": 1.3,
+          "cag_report": 1.9,
+          "go": 46.5,
+          "governor_address": 1.9,
+          "other": 3.2,
+          "policy_note": 45.2
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
-        "pct_with_go": 87.5,
-        "go_places_used": 13,
-        "pct_with_go_place": 56.2,
+        "pct_with_go": 93.7,
+        "go_places_used": 677,
+        "pct_with_go_place": 59.9,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.94,
-        "pct_no_overlap": 43.8,
-        "median_top1_cos": 0.7034,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.86,
+        "pct_no_overlap": 48.6,
+        "median_top1_cos": 0.7029,
+        "pct_cap_applied": 14.0,
         "doc_type_mix_pct": {
-          "budget_speech": 2.5,
-          "cag_report": 2.5,
-          "go": 35.0,
-          "governor_address": 3.8,
-          "policy_note": 56.2
+          "budget_speech": 2.2,
+          "cag_report": 2.3,
+          "go": 42.4,
+          "governor_address": 0.6,
+          "other": 1.6,
+          "policy_note": 50.5,
+          "scheme_page": 0.4
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 76.0,
+        "go_places_used": 21,
+        "pct_with_go_place": 48.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.88,
+        "pct_no_overlap": 52.0,
+        "median_top1_cos": 0.7308,
+        "pct_cap_applied": 0.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 10.4,
+          "go": 36.0,
+          "other": 0.8,
+          "policy_note": 51.2,
+          "scheme_page": 1.6
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2135,
-        "est_tokens": 2840
+        "tasks": 710,
+        "mean_words": 2146,
+        "est_tokens": 2854
       }
     },
     {
@@ -1468,68 +1741,90 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 710,
         "pct_with_k": 100.0,
-        "pct_with_go": 90.0,
-        "go_places_used": 21,
-        "pct_with_go_place": 65.0,
+        "pct_with_go": 94.5,
+        "go_places_used": 698,
+        "pct_with_go_place": 60.0,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.75,
-        "pct_no_overlap": 55.0,
-        "median_top1_cos": 0.6971,
-        "pct_cap_applied": 5.0,
+        "mean_overlap_bm25_dense_top_k": 0.82,
+        "pct_no_overlap": 51.1,
+        "median_top1_cos": 0.704,
+        "pct_cap_applied": 12.1,
         "doc_type_mix_pct": {
-          "budget_speech": 2.0,
-          "cag_report": 1.0,
-          "go": 39.0,
-          "governor_address": 9.0,
-          "policy_note": 49.0
+          "budget_speech": 2.2,
+          "cag_report": 2.7,
+          "go": 42.9,
+          "governor_address": 0.8,
+          "other": 1.3,
+          "policy_note": 49.7,
+          "scheme_page": 0.3
         }
       },
       "override_promises": {
-        "indicators": 4,
+        "indicators": 31,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 7,
-        "pct_with_go_place": 100.0,
+        "go_places_used": 28,
+        "pct_with_go_place": 51.6,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.25,
-        "pct_no_overlap": 75.0,
-        "median_top1_cos": 0.6778,
-        "pct_cap_applied": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.48,
+        "pct_no_overlap": 71.0,
+        "median_top1_cos": 0.6938,
+        "pct_cap_applied": 6.5,
         "doc_type_mix_pct": {
-          "budget_speech": 5.0,
-          "go": 40.0,
-          "governor_address": 10.0,
-          "policy_note": 45.0
+          "budget_speech": 1.3,
+          "cag_report": 3.2,
+          "go": 47.7,
+          "governor_address": 3.2,
+          "other": 3.2,
+          "policy_note": 41.3
         }
       },
       "other_promises": {
-        "indicators": 16,
+        "indicators": 679,
         "pct_with_k": 100.0,
-        "pct_with_go": 87.5,
-        "go_places_used": 14,
-        "pct_with_go_place": 56.2,
+        "pct_with_go": 94.3,
+        "go_places_used": 670,
+        "pct_with_go_place": 60.4,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 0.88,
-        "pct_no_overlap": 50.0,
-        "median_top1_cos": 0.7042,
-        "pct_cap_applied": 6.2,
+        "mean_overlap_bm25_dense_top_k": 0.84,
+        "pct_no_overlap": 50.2,
+        "median_top1_cos": 0.7046,
+        "pct_cap_applied": 12.4,
         "doc_type_mix_pct": {
-          "budget_speech": 1.2,
-          "cag_report": 1.2,
-          "go": 38.8,
-          "governor_address": 8.8,
-          "policy_note": 50.0
+          "budget_speech": 2.2,
+          "cag_report": 2.7,
+          "go": 42.7,
+          "governor_address": 0.7,
+          "other": 1.2,
+          "policy_note": 50.1,
+          "scheme_page": 0.4
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 76.0,
+        "go_places_used": 21,
+        "pct_with_go_place": 48.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 0.84,
+        "pct_no_overlap": 52.0,
+        "median_top1_cos": 0.7308,
+        "pct_cap_applied": 0.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 8.8,
+          "go": 36.0,
+          "other": 0.8,
+          "policy_note": 52.8,
+          "scheme_page": 1.6
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2114,
-        "est_tokens": 2811
+        "tasks": 710,
+        "mean_words": 2146,
+        "est_tokens": 2855
       }
     },
     {
@@ -1562,82 +1857,112 @@
         }
       },
       "retrieval": {
-        "indicators": 20,
+        "indicators": 768,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 3,
-        "pct_with_go_place": 15.0,
+        "go_places_used": 120,
+        "pct_with_go_place": 14.3,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 30.0,
-        "median_top1_cos": 0.6411,
-        "pct_cap_applied": 35.0,
+        "mean_overlap_bm25_dense_top_k": 1.03,
+        "pct_no_overlap": 34.5,
+        "median_top1_cos": 0.6446,
+        "pct_cap_applied": 54.4,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "cag_report": 8.0,
-          "go": 51.0,
-          "governor_address": 31.0
+          "budget_speech": 26.0,
+          "cag_report": 4.1,
+          "go": 59.4,
+          "governor_address": 10.5
         }
       },
       "override_promises": {
-        "indicators": 0
-      },
-      "other_promises": {
-        "indicators": 20,
+        "indicators": 14,
         "pct_with_k": 100.0,
         "pct_with_go": 100.0,
-        "go_places_used": 3,
-        "pct_with_go_place": 15.0,
+        "go_places_used": 2,
+        "pct_with_go_place": 14.3,
         "pct_no_bm25_hit": 0.0,
-        "mean_overlap_bm25_dense_top_k": 1,
-        "pct_no_overlap": 30.0,
-        "median_top1_cos": 0.6411,
-        "pct_cap_applied": 35.0,
+        "mean_overlap_bm25_dense_top_k": 0.71,
+        "pct_no_overlap": 42.9,
+        "median_top1_cos": 0.6651,
+        "pct_cap_applied": 71.4,
         "doc_type_mix_pct": {
-          "budget_speech": 10.0,
-          "cag_report": 8.0,
-          "go": 51.0,
-          "governor_address": 31.0
+          "budget_speech": 35.7,
+          "cag_report": 2.9,
+          "go": 52.9,
+          "governor_address": 8.6
+        }
+      },
+      "other_promises": {
+        "indicators": 754,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 118,
+        "pct_with_go_place": 14.3,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1.03,
+        "pct_no_overlap": 34.4,
+        "median_top1_cos": 0.6443,
+        "pct_cap_applied": 54.1,
+        "doc_type_mix_pct": {
+          "budget_speech": 25.8,
+          "cag_report": 4.1,
+          "go": 59.5,
+          "governor_address": 10.6
         }
       },
       "headline_promises": {
-        "indicators": 0
+        "indicators": 25,
+        "pct_with_k": 100.0,
+        "pct_with_go": 100.0,
+        "go_places_used": 2,
+        "pct_with_go_place": 8.0,
+        "pct_no_bm25_hit": 0.0,
+        "mean_overlap_bm25_dense_top_k": 1,
+        "pct_no_overlap": 32.0,
+        "median_top1_cos": 0.676,
+        "pct_cap_applied": 44.0,
+        "doc_type_mix_pct": {
+          "budget_speech": 24.0,
+          "cag_report": 1.6,
+          "go": 65.6,
+          "governor_address": 8.8
+        }
       },
       "sizing": {
-        "tasks": 20,
-        "mean_words": 2157,
-        "est_tokens": 2869
+        "tasks": 768,
+        "mean_words": 2172,
+        "est_tokens": 2888
       }
     }
   ],
   "sizing_per_term": {
     "AIADMK-2016": {
-      "tasks": 140,
-      "mean_words": 2060,
-      "est_tokens": 2740
+      "tasks": 2695,
+      "mean_words": 2078,
+      "est_tokens": 2764
     },
     "DMK-2021": {
-      "tasks": 140,
-      "mean_words": 2136,
-      "est_tokens": 2841
+      "tasks": 4970,
+      "mean_words": 2152,
+      "est_tokens": 2862
     },
     "TVK-2026": {
-      "tasks": 20,
-      "mean_words": 2157,
-      "est_tokens": 2869
+      "tasks": 768,
+      "mean_words": 2172,
+      "est_tokens": 2888
     }
   },
   "structure": {},
   "leakage": {
     "this_run": {
-      "rows": 1500,
+      "rows": 42165,
       "violations": 0,
       "undated": 0,
       "missing_chunks": 0,
       "examples": []
     },
     "all_runs": {
-      "rows": 1500,
+      "rows": 42165,
       "violations": 0,
       "undated": 0,
       "missing_chunks": 0,
