@@ -2,7 +2,7 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** Day 17 of 20 (deadline 2026-10-25). Stages 01–03 done (1,674 promises, 1,863 indicators, frozen). Stage 04 built and run 2026-10-21 (8,433 tasks, leakage 0). **Stage 04 spot-check pending** (`data/interim/spotcheck_04.csv`, 9 items; non-blocking, but it blocks strong-judge batches, D-080). **Spec 05 approved (v1.0, 2026-10-22, D-084–D-093).** Next: Claude Code builds stage 05 (spec 05 §4.15).
+**Today's position:** Day 17 of 20 (deadline 2026-10-25). Stages 01–03 done; stage 04 run (spot-check pending). **Stage 05 built and smoke-tested (2026-10-22, spec 05 v1.1, D-094/D-095); tier A bulk run in progress, stopped by the Gemini daily quota: resume after 12:30 IST** (exact command under Next step). Stage 04 spot-check still pending; it and the stage 05 spot-check (drawn once tier A is complete) block the strong-judge batches (D-080, D-086).
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
@@ -12,7 +12,7 @@ _Updated at the end of every session. Read this first._
 | 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
 | 03 | Classification & decomposition | ✅ v1.3 (D-064–D-074) | ✅ | ✅ 240 | ✅ | ✅ |
 | 04 | Evidence retrieval | ✅ v1.2 (D-075–D-083) | ✅ | ✅ 283 | ⏳ spot-check pending | ✅ (closing commit after verdicts) |
-| 05 | Judgment | ✅ v1.0 (D-084–D-093) | ☐ | ☐ | ☐ | ☐ |
+| 05 | Judgment | ✅ v1.1 (D-084–D-095) | ✅ | ✅ 373 | ⏳ smoke ✅; tier A 1,030/3,892 (quota) | ✅ code, limit-20 (tier A/B, strong, final pending) |
 | 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 07 | Survival modelling | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 08 | Website + deploy | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -30,15 +30,33 @@ _Updated at the end of every session. Read this first._
 - [ ] **Stage 04 spot-check** (D-080, non-blocking): `data/interim/spotcheck_04.csv`, 9 items, each with a page in `data/interim/spotcheck_04/{n}.md` (≤ 2 min each). Fill `verdict` (ok / wrong / unsure) and `note`; a phone review page can be made on request (global §12.4 item 7).
 - [ ] **Gold labelling stays blind:** don't browse stage 05 verdicts in the DB until labelling stops (spec 05 §5). The stage 05 sheet and report exclude gold promises.
 - [ ] **Stage 05 strong judge:** after the P2 usage report, decide how far down the queue (P3–P6) to go (spec 05 §4.9, D-086). A paid Gemini tier only if tier B runs out of free quota (decide then, OQ-3).
+- [ ] **Stage 05 schedule risk (decide soon):** measured cost is ≈ 1.5× the spec's estimate (calls ≈ 43k input tokens, retries add ≈ 40–60 %). Tier A still needs ≈ 400 calls (2,862 keys) of quota day 2 (Pacific 2026-10-22, from 12:30 IST today); tier B (DMK landmarks, 3,793 keys ≈ 550 calls) gets the ≈ 100 left that day and then needs quota day 3 (from 12:30 IST 2026-10-23), finishing ≈ 2026-10-23 evening IST. Under your rule (OQ-3) Claude stops and asks when day 2 runs out with tier B unfinished, so it helps to decide now. Tier B feeds only the forward backtest, which is item 3 of the cut order (global §12.3). Options: wait (finish ≈ 2026-10-24), a paid Gemini tier for tier B (OQ-3), or cut the forward backtest (D-041, your call).
+- [x] Stage 05 smoke-test decisions (2026-10-22, D-094): J3 ignores "Rupees … only" amount glosses; two solo retries; unresolved stop stays 3 %.
 - [x] Stage 04 sheet coverage: one group-e (date) place per term (D-083, 2026-10-21).
 - [x] TVK recall: documents fetched while the term is running count as available by their fetch date (D-082, 2026-10-21); TVK month 5 now has 3,895 eligible chunks. Interim budgets excluded (outgoing government).
 
 ## Next step
-1. **Stage 05 build (Claude Code)** from spec 05 v1.0 §4.15. First commit the Cowork changes of 2026-10-22 (spec 05, decision log D-084–D-093, global spec v0.13, CLAUDE.md, STATUS) as `stage 05: spec v1.0`. Then: code + tests → smoke test (`--limit 20`) → directional pass, probe, tier A after the Gemini quota reset (12:30 IST) → spot-check sheet → tier B the next quota day. Strong batches only after the stage 04 and 05 spot-check verdicts are in.
-2. **Gold set** (stage 06, part 1) continues in its own Cowork conversation (`data/gold/` and `specs/06-evaluation.md` are there, untracked: not committed by Claude Code). Two fixes for that conversation: its proposed D-081–D-086 clash with the log (renumber from D-094), and §G10's test should allow `ept.judge` to read the IDs in `gold_sample.csv` (spec 05 OQ-5, D-086).
-3. Closing stage 04 (spec §4.12 step 6, a later session): convert the verdicts, root causes, fixes and a re-run if needed, finish spec 04 §10, close STATUS. Also fix then: a no-op resume overwrites each term-cutoff's record in the run metadata (rows unaffected). The fix touches `run.py`, which changes the code fingerprint, so it waits for a re-run.
+1. **Resume tier A after the Gemini reset (12:30 IST, 2026-10-22).** In your terminal (or a Claude Code session), from the project folder:
+   ```
+   source .venv/bin/activate
+   caffeinate -i python -m ept judge run --tier A
+   ```
+   It resumes run `judge-20261021T203007Z` from the cache and the DB (exit 2 = quota again: re-run the same command after the next reset; exit 4 = a stop rule fired: ask Claude). When it prints `tier A: … 'complete': True`, run `python -m ept judge aggregate && python -m ept judge report && python -m ept judge spotcheck`, then Claude Code commits `stage 05: tier A (spot-check pending)` and the stage 05 spot-check sheet (`data/interim/spotcheck_05.csv`, gold promises excluded) goes to you.
+2. **Tier B** (`caffeinate -i python -m ept judge run --tier B`) on the same and the next quota day, unless you cut it (schedule risk above). If tier B is unfinished when the second quota day (Pacific 2026-10-22, i.e. until 12:30 IST 2026-10-23) is used up, Claude stops and asks (OQ-3).
+3. **Strong judge** only after both spot-checks (stage 04 and stage 05) have verdicts: `ept judge export` (P1 gold + P2 headline) → per batch `ept judge` staging + a fresh subagent (D-057/D-086 isolation, see spec 05 §4.9 and `src/ept/judge/strong.py`: `stage()` copies `instructions.md` + `batch.jsonl` to a neutral folder `sj-{stamp}-batch_NNN/`) → `ept judge import --run RUN --model <id>` → usage report to you.
+4. **Gold set** (stage 06, part 1) continues in its own Cowork conversation (`data/gold/` and `specs/06-evaluation.md` stay untracked). Two fixes for that conversation: its proposed decision entries must be numbered from **D-096** (D-094/D-095 are now taken by stage 05), and §G10's test should allow `ept.judge` to read the IDs in `gold_sample.csv` (spec 05 OQ-5).
+5. Closing stage 04 (spec §4.12 step 6, a later session), as before.
 
 **Schedule (as of 2026-10-21):** Day 16, stages 05–08 left in 4 days. The cut order (global §12.3) is the user's call (D-041).
+
+## Facts later stages need (from stage 05; details in spec 05 v1.1 §10, D-084–D-095, `reports/judgment_05.md`)
+- **Runs:** bulk run `judge-20261021T203007Z` (tiers A and B share it; `reports/runs/judge-20261021T203007Z.json` → `tiers`, `complete`); smoke-test runs `judge-20261021T19*`/`judge-20261021T200*` are superseded (still in the DB). Read runs with `ept.judge.store.latest_run(cfg, kind, complete_only=…, tier=…)`. Memory probe `judge-20261021T195852Z`: **0/40** evidence-needing answers.
+- **Keys:** 8,433 tasks → 7,685 judging keys (AIADMK 2,414, DMK 4,503, TVK 768); tier A 3,892 keys, tier B 3,793 new keys. `indicator_verdicts` holds one row per indicator × run × cutoff; `verdicts` one per promise × run × cutoff after `ept judge aggregate`.
+- **Directional flags:** `data/judgments/directional_{term}.jsonl` (prompt v1.1): AIADMK 43/312, DMK 79/667, TVK 50/695; some borderline flags remain (known limitation; stage 06 compares with the gold `[directional]` tag).
+- **Prompts:** `judge_indicator` v1.3 (the prompt version is part of every judging key; changing it re-judges everything), `directional_check` v1.1.
+- **Measured cost:** ≈ 43k input tokens and ≈ 2k output tokens per 10-task call (≈ 5 calls/min under 250k TPM); first-answer failure rate ≈ 0.09–0.11, mostly J3 quotes; retries pooled per group.
+- **Known limitations:** flash-lite quotes GO text imperfectly (reconstructed wording, dropped glosses; J3 rejects them); relevance is lenient on related schemes; a budget speech's "has been provided" can pass as `fulfilled` (spot-check group b); unresolved tasks are stored `unverifiable` + `needs_review` and go to the strong queue (P4–P6).
+- **Final verdicts:** `ept judge final` → `data/judgments/final_{run_id}.jsonl` (committed); human overrides only from approved spot-check fixes in `config/verdict_overrides.csv` (source `spotcheck_NN#n`, a reason, never gold).
 
 ## Facts later stages need (from stage 04; details in spec 04 v1.1, D-075–D-081, `reports/retrieval_04.md`)
 - **Retrievals:** run **`retrieve-20261020T191347Z`** (complete; it supersedes `retrieve-20261020T185504Z`, still in the DB, which predates D-082; `reports/runs/…json`, `complete: true`; stage 05 reads the latest complete run via `ept.retrieve.run.latest_run(cfg, complete_only=True)`). 8,433 indicator × cutoff tasks, each exactly 5 chunks (42,165 rows), ranks 1–5, ≤ 2 chunks per document, ≥ 2 GOs where the fused top 50 had them. `retrievals.cutoff_date` = the landmark date, null = full term; match null with `IS NULL`. Retrievals are not committed (rebuildable: `ept index` then `ept retrieve run`, ~4 min after a 14-min index).
@@ -168,3 +186,10 @@ _Updated at the end of every session. Read this first._
   - Final verdicts: human (spot-check fixes only) > strong > bulk, with leak-safe carry-forward (D-090). `indicator_verdicts` added to global §7 (D-091). Neutral templates and a memory probe (D-092). One spot-check from tier A, before strong batches, with gold excluded (D-093).
   - Strong judge in fresh Claude Code subagents, 20 tasks per batch, priority queue (P1 gold, P2 headline required); the user pays for extra Claude usage this week (D-086). Clarified with the user: the gold set is test data that grades the judges, not guidance for them.
   - Global spec v0.13; CLAUDE.md strong-judge section updated. Not committed (the shell here can't run git safely): Claude Code commits first.
+- **2026-10-22 — Stage 05 built (Claude Code).**
+  - Committed the Cowork spec (`8890c04`), then the judge code (`2c8cb91`): `indicator_verdicts` (global §7), tasks/keys/tiers, prompts, J1–J7, D1–D3, bulk runner, aggregation, final, probe, report, TPM throttle; then the strong-judge and spot-check modules. 373 tests pass offline.
+  - Real sizes match the spec: 7,685 keys; tier A 3,892 keys / 398 first-pass calls.
+  - Smoke test (`--limit 20`, four rounds): v1.0 failed both stop rules (first-answer failures 0.37; J3 quotes from titles, "..." elisions, reconstructed GO wording). Fixes: J3/J6 accept the title, quote rules, retry feedback (D-095); your decisions D-094 (amount glosses ignored, two solo tries, stop stays 3 %); relevance and budget-provision rules after reading verdicts against chunks (a related GO credited to an advocacy promise). Final round: first-answer failures 0.106, unresolved 7/265, leakage 0, neutral.
+  - Directional pass v1.0 flagged ~40 % (advocacy, concrete actions) → v1.1: 43/79/50. Memory probe 0/40.
+  - Tier A started; per-call retries cost 84 % extra calls, so retries are now pooled per group (`64d5595`, new run). Stopped by the daily quota at 1,030/3,892 tier A keys stored (AIADMK m5–m12; the m24 group's first-pass answers are cached), 14 unresolved (1.4 %), first-answer failures 0.129. Gemini requests on Pacific 2026-10-21: 500.
+  - Spec 05 v1.1 (§4.5 wording, §10), global spec v0.14, D-094, D-095.

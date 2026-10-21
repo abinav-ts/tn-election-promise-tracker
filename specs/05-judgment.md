@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.0** (2026-10-22; drafted as v0.1 the same night; every question settled with the user: A1–A8, B9–B13, OQ-1–OQ-5, §9) |
+| Status | **APPROVED v1.0** (2026-10-22; drafted as v0.1 the same night; every question settled with the user: A1–A8, B9–B13, OQ-1–OQ-5, §9). **v1.1 (2026-10-22, build):** smoke-test decisions D-094, build clarifications D-095, §10 |
 | Global spec | `specs/00-global-spec.md` v0.13 (amended with this spec, §9.4). This spec references §7/§8 and does not redefine them. §7 gains one table, `indicator_verdicts`, which §7 delegates to spec 05; the amendments are listed in §9.4 |
 | Draft spec 06 | Uses the status rules of `specs/06-evaluation.md` §G4 (advocacy, directional) word for word, at the user's instruction. Spec 06 is still a draft, so any change to §G4 there must be mirrored here |
 | Day plan | Days 9–11 in the plan; now Day 17 (2026-10-22). The deadline is 2026-10-25, and stages 05–08 remain |
@@ -111,15 +111,15 @@ Written by Claude Code in build step 1 from this section. It is self-contained, 
 - **Throttle.** `ept.llm` gains a client-side token-per-minute throttle (`llm.bulk.tpm` 250,000; estimate = words × `retrieve.tokens_per_word` + the prompt). In practice that allows about 7 calls per minute; `rpm` 14 and `rpd` 500 as before.
 - **Checks per task (J1–J7)**, each against the task's own input:
   - **J1 schema:** every alias answered exactly once; status in §8; confidence 0–1; rationale ≤ 80 words; date format valid.
-  - **J2 citations:** statuses other than `not_started` and `unverifiable` cite ≥ 1 extract; every cited extract and `date_extract` is one of *this task's* C1–C5.
-  - **J3 quotes:** each quote has 5–40 words and occurs in its chunk after normalisation (NFKC, lower case, non-alphanumerics → space, spaces collapsed). If there's no exact match, rapidfuzz `partial_ratio` ≥ `judge.quote_fuzzy_min` (95) passes with review reason `quote_fuzzy`.
+  - **J2 citations:** statuses other than `not_started` and `unverifiable` cite ≥ 1 extract; every cited extract and `date_extract` is one of *this task's* C1–C5, and the `date_extract` is itself cited (D-095).
+  - **J3 quotes:** each quote has 5–40 words and occurs in its chunk (text or document title, D-095) after normalisation (NFKC, lower case, non-alphanumerics → space, spaces collapsed, amount glosses "Rupees … only" removed on both sides, D-094). If there's no exact match, rapidfuzz `partial_ratio` ≥ `judge.quote_fuzzy_min` (95) passes with review reason `quote_fuzzy`.
   - **J4 date presence:** a date if and only if the status is `fulfilled`, `partial` or `diluted`; a date requires `date_extract`.
   - **J5 date window** (global §9.1): `period_end(date, precision)` ≥ `sworn_in`, and `period_start(date)` ≤ the latest `available_by` among the cited chunks (so the date is never after the cutoff).
   - **J6 date source:** the date, at its precision, matches the `date_extract` chunk's document date, or a date found in that chunk's text by `ept.corpus.datefind.find_dates` (for year precision, the 4-digit year in the text).
   - **J7 directional:** no `partial` or `diluted` when the promise is directional.
 - **Retries.**
   - Tasks failing any check are re-asked in mini-batches of up to `retry_tasks_per_call` (5), from the same group.
-  - Those still failing are asked once alone.
+  - Those still failing are asked alone, twice (a one-task mini-batch counts as the first try; D-094). Every retry shows the task's previous check failures (D-095).
   - A task still failing is **unresolved**: stored as `unverifiable` with `needs_review` and reason `unresolved`, listed in `judge_failures_05.csv`, and placed in the strong-judge queue.
   - **Stop and ask the user** if unresolved tasks exceed `judge.max_unresolved_share` (0.03) of a tier's keys, or the first-answer failure rate in the smoke test exceeds 0.25.
 - **Quota.** `QuotaExhausted` stops cleanly (exit code 2); re-running resumes from the cache and the DB.
@@ -408,3 +408,10 @@ Rules from the global warning box that apply here:
 - §14: Q-07 resolved.
 
 CLAUDE.md "Strong-judge sessions" gets the subagent route.
+
+## 10. Spec vs build (2026-10-22, Claude Code; D-094, D-095)
+- **Real sizes:** 8,433 tasks → 7,685 judging keys (AIADMK 2,414, DMK 4,503, TVK 768); tier A 3,892 keys = 398 first-pass calls, tier B 3,793 new keys = 381 calls. A 10-task call measures ≈ 40–48k input tokens (spec: ≈ 32k), so the TPM throttle allows ≈ 5 calls per minute; output ≈ 1.7–2.4k tokens.
+- **Smoke test (§4.13), four rounds.** v1.0: first-answer failure rate 0.37, retries 2.7× the first-pass calls; J3 dominated (quotes from the title, "..." elisions, > 40 words, quotes of another extract). v1.1 (title quotes accepted, quote rules, retry feedback): 0.27, 4 % unresolved. v1.2 (short exact quotes): 0.30, 8 %; the remaining J3 failures were dropped amount glosses and reconstructed GO wording → user's D-094. v1.3 (relevance, budget provisions): **0.106, 7/265 unresolved, leakage 0, neutral**. Reading verdicts against chunks showed lenient relevance (an advocacy promise credited with a related coaching-class GO), fixed in v1.3; a revised budget speech's "has been provided" can still pass as `fulfilled` (spot-check group b targets it).
+- **Directional pass:** `directional_check` v1.0 flagged ~40 % (advocacy, concrete actions); v1.1: AIADMK 43/312, DMK 79/667, TVK 50/695 (d3_override 1/13/10, unresolved 0). Some borderline flags remain (e.g. "improve … including <listed parts>"); stage 06 measures them against the gold `[directional]` tags.
+- **Memory probe (§4.6):** 0/40 evidence-needing first answers (all `unverifiable`).
+- **Build clarifications** (D-095): one bulk run for both tiers; row-shaping code fingerprint; retries per call with feedback; date extract must be cited; J3/J6 accept the title; TPM estimate scaled by measured tokens; strong batches by (term, unit cutoff) with key reuse only at the same or a later cutoff; `non_monotone` in the final rationale and export; new config keys; exit codes 2/3/4.

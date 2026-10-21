@@ -2,7 +2,7 @@
   "run_id": "judge-20261021T200929Z",
   "stage": "judge",
   "started_at": "2026-10-21T20:09:29+00:00",
-  "finished_at": "2026-10-21T20:15:56+00:00",
+  "finished_at": "2026-10-21T20:29:22+00:00",
   "status": "done",
   "git_commit": "d54cd1f881a22fbf037dcce22db537b437af0edb",
   "params": {
@@ -24,28 +24,22 @@
     "bulk": "gemini-3.5-flash-lite"
   },
   "counts": {
-    "resumed": false,
-    "keys_written": 265,
-    "rows_written": 300,
-    "unresolved": 7,
-    "llm_calls": 57,
+    "resumed": true,
+    "keys_written": 575,
+    "rows_written": 693,
+    "unresolved": 8,
+    "llm_calls": 102,
     "stopped": null,
     "stop_for_user": null,
     "tiers": {
       "A": {
-        "keys": 164,
-        "todo": 164,
-        "written": 164,
-        "unresolved_new": 7
-      },
-      "B": {
-        "keys": 107,
-        "todo": 101,
-        "written": 101,
-        "unresolved_new": 0
+        "keys": 3892,
+        "todo": 3728,
+        "written": 575,
+        "unresolved_new": 8
       }
     },
-    "first_fail_rate": 0.1057,
+    "first_fail_rate": 0.0976,
     "smoke_stop": false
   },
   "config": {
@@ -742,5 +736,8 @@
       "unresolved": 0,
       "unresolved_share": 0.0
     }
-  }
+  },
+  "resumed_at": [
+    "2026-10-22T01:46:39"
+  ]
 }
