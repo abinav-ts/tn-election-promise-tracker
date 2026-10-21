@@ -68,6 +68,9 @@ def test_table_fields_match_global_spec():
         "retrievals": "indicator_id chunk_id rank scores cutoff_date run_id",
         "verdicts": "promise_id run_id cutoff_date status realisation_date date_precision cited_chunk_ids "
         "rationale confidence needs_review judge_source judge_model prompt_version",
+        "indicator_verdicts": "indicator_id run_id cutoff_date judging_key status realisation_date date_precision "
+        "date_chunk_id cited_chunk_ids quotes rationale confidence needs_review review_reasons judge_source "
+        "judge_model prompt_version",
     }
     assert set(schema.TABLES) == set(expected)
     for name, fields in expected.items():
@@ -108,6 +111,11 @@ def _samples():
                        realisation_date=dt.date(2021, 6, 1), date_precision="day",
                        cited_chunk_ids=["0123456789abcdef-0000"], rationale="r", confidence=0.8,
                        judge_source="bulk"),
+        schema.IndicatorVerdict(indicator_id=f"{promise.promise_id}-I1", run_id="judge-20261007T000000Z",
+                                judging_key="k" * 64, status="fulfilled", realisation_date=dt.date(2021, 6, 1),
+                                date_precision="day", date_chunk_id="0123456789abcdef-0000",
+                                cited_chunk_ids=["0123456789abcdef-0000"], quotes={"0123456789abcdef-0000": "q"},
+                                rationale="r", confidence=0.8, review_reasons=["retried"], judge_source="bulk"),
     ]
 
 

@@ -71,6 +71,9 @@ class CallStats:
     first_valid: bool = False
     seconds: float = 0.0
     http_retries: int = 0  # 429/5xx backoffs; never counted as validation retries
+    est_tokens: int = 0  # input-token estimate used by the TPM throttle (all attempts)
+    prompt_tokens: int = 0  # measured by the backend, when it reports usage (all attempts)
+    output_tokens: int = 0
 
 
 @dataclass(frozen=True)
@@ -130,6 +133,7 @@ class LLMClient:
         self._sleep, self._clock = sleep, clock
         self._gemini = gemini_client  # injected in tests; built lazily from the key otherwise
         self._last_bulk_call: Optional[float] = None
+        self._tpm_window: list[tuple[float, int]] = []  # (clock, input tokens) of bulk calls in the last minute
         self._backends: dict[str, Callable[[Prompt, str, int, CallSpec], str]] = {
             "mock": self._mock,
             "bulk": self._bulk,
@@ -156,7 +160,39 @@ class LLMClient:
             self._gemini = genai.Client(api_key=key)
         return self._gemini
 
-    def _throttle(self, model: str) -> None:
+    def estimate_tokens(self, text: str) -> int:
+        """Input-token estimate for the TPM throttle (spec 05 §4.5): words × retrieve.tokens_per_word."""
+        return int(len(text.split()) * self.cfg.settings.retrieve.tokens_per_word) + 1
+
+    def _tpm_wait(self, tokens: int) -> None:
+        """Client-side tokens-per-minute throttle (D-085): sleep until the last minute's input tokens plus
+        this call's fit under `llm.bulk.tpm`. A call larger than the whole budget waits for an empty window."""
+        tpm = self.cfg.settings.llm.bulk.tpm
+        if not tpm:
+            return
+        while True:
+            now = self._clock()
+            self._tpm_window = [(t, n) for t, n in self._tpm_window if now - t < 60.0]
+            used = sum(n for _, n in self._tpm_window)
+            if not self._tpm_window or used + tokens <= tpm:
+                break
+            need = used + tokens - tpm
+            freed, wait = 0, 0.0
+            for t, n in self._tpm_window:  # oldest first
+                freed += n
+                wait = 60.0 - (now - t)
+                if freed >= need:
+                    break
+            self._sleep(max(wait, 0.01))
+        self._tpm_window.append((self._clock(), tokens))
+
+    def _record_tokens(self, measured: int) -> None:
+        """Replace the last window entry's estimate with the backend's measured input tokens."""
+        if self._tpm_window and measured:
+            t, est = self._tpm_window[-1]
+            self._tpm_window[-1] = (t, max(est, measured))
+
+    def _throttle(self, model: str, tokens: int = 0) -> None:
         bulk = self.cfg.settings.llm.bulk
         limit = bulk.rpd.get(model)
         if limit is not None and self._calls_today(model) >= limit:
@@ -166,6 +202,7 @@ class LLMClient:
             wait = 60.0 / bulk.rpm - (self._clock() - self._last_bulk_call)
             if wait > 0:
                 self._sleep(wait)
+        self._tpm_wait(tokens)
         self._last_bulk_call = self._clock()
 
     def _calls_today(self, model: str) -> int:
@@ -199,11 +236,18 @@ class LLMClient:
         )
         contents = [types.Part.from_bytes(data=i.data, mime_type=i.mime_type) for i in spec.images] + [rendered]
         delay = bulk.backoff_s
+        est = self.estimate_tokens(rendered)
         while True:
-            self._throttle(spec.model)
+            self._throttle(spec.model, est)
+            self.last.est_tokens += est
             try:
                 resp = self._gemini_client().models.generate_content(model=spec.model, contents=contents,
                                                                      config=config)
+                usage = getattr(resp, "usage_metadata", None)
+                measured = int(getattr(usage, "prompt_token_count", 0) or 0) if usage else 0
+                self.last.prompt_tokens += measured
+                self.last.output_tokens += int(getattr(usage, "candidates_token_count", 0) or 0) if usage else 0
+                self._record_tokens(measured)
                 return resp.text or ""
             except errors.APIError as e:
                 code = getattr(e, "code", None)
@@ -252,7 +296,9 @@ class LLMClient:
             stats = cached.get("stats", {})  # the original call's measurements (the backend test reads them)
             self.last = CallStats(cache_hit=True, attempts=stats.get("attempts", 0),
                                   first_valid=stats.get("first_valid", False), seconds=stats.get("seconds", 0.0),
-                                  http_retries=stats.get("http_retries", 0))
+                                  http_retries=stats.get("http_retries", 0), est_tokens=stats.get("est_tokens", 0),
+                                  prompt_tokens=stats.get("prompt_tokens", 0),
+                                  output_tokens=stats.get("output_tokens", 0))
             self._log(prompt, effective, model_name, key, cache_hit=True, attempts=0, ok=True, rendered=rendered)
             return result
 
@@ -282,7 +328,9 @@ class LLMClient:
                 json.dumps({"prompt": prompt.name, "version": prompt.version, "backend": effective,
                             "model": model_name, "raw": raw, "parsed": result.model_dump(mode="json"),
                             "stats": {"attempts": attempts, "first_valid": attempts == 1,
-                                      "seconds": self.last.seconds, "http_retries": self.last.http_retries}},
+                                      "seconds": self.last.seconds, "http_retries": self.last.http_retries,
+                                      "est_tokens": self.last.est_tokens, "prompt_tokens": self.last.prompt_tokens,
+                                      "output_tokens": self.last.output_tokens}},
                            ensure_ascii=False, indent=1),
                 encoding="utf-8",
             )
@@ -306,6 +354,8 @@ class LLMClient:
             "input_chars": len(rendered), "output_chars": output_chars,
             "http_retries": self.last.http_retries, "seconds": self.last.seconds,
         }
+        if not cache_hit and self.last.prompt_tokens:
+            line.update(prompt_tokens=self.last.prompt_tokens, output_tokens=self.last.output_tokens)
         if error:
             line["error"] = error[:300]
         with path.open("a", encoding="utf-8") as f:

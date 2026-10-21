@@ -421,3 +421,163 @@ def retrieve_report(term: Optional[str] = TermOpt, run: Optional[str] = RunOpt) 
 def retrieve_spotcheck(term: Optional[str] = TermOpt, run: Optional[str] = RunOpt) -> None:
     """The 7–10 most problematic items -> data/interim/spotcheck_04.csv + .md files (spec 04 §4.10)."""
     _retrieve_spotcheck(term, run)
+
+
+# --- stage 05: judgment (spec 05) ----------------------------------------------------
+
+judge_app = typer.Typer(help="Judgment (spec 05); no subcommand = directional, run, aggregate, final, report")
+app.add_typer(judge_app, name="judge")
+TierOpt = typer.Option("all", "--tier", help="A, B or all (A then B)")
+JudgeRunOpt = typer.Option(None, "--run", help="A judge run_id")
+
+
+def _judge_directional(term: Optional[str], limit: Optional[int]) -> None:
+    from ept import db
+    from ept.config import get_config
+    from ept.judge.directional import run_term
+    from ept.judge.tasks import Context, term_indicator_ids
+    from ept.llm import LLMClient, QuotaExhausted
+
+    cfg = get_config()
+    conn = db.connect()
+    db.init_schema(conn)
+    client = LLMClient(cfg)
+    ctx = Context(conn, cfg) if limit is not None else None
+    try:
+        for t in [term] if term else [x.term_id for x in cfg.settings.terms]:
+            pids = ({ctx.indicators[i]["promise_id"] for i in term_indicator_ids(ctx, t, limit)}
+                    if ctx is not None else None)
+            typer.echo(f"judge directional: {run_term(conn, client, cfg, t, pids)}")
+    except QuotaExhausted as e:
+        typer.echo(f"judge directional: stopped ({e}); re-run to continue")
+        raise typer.Exit(2)
+    finally:
+        conn.close()
+
+
+def _judge_run(tier: str, term: Optional[str], limit: Optional[int], force: bool) -> None:
+    from ept.judge.bulk import run_bulk
+
+    stats = run_bulk(tier=tier, term=term, limit=limit, force=force)
+    for t, s in stats.pop("tiers").items():
+        typer.echo(f"  tier {t}: {s}")
+    user = stats.pop("stop_for_user", None)
+    stopped = stats.get("stopped")
+    _report("judge run", stats)
+    if stopped:
+        raise typer.Exit(2)  # quota: re-run the same command after the reset (12:30 IST)
+    if user or stats.get("smoke_stop"):
+        typer.echo(f"judge run: STOP — {user or 'smoke-test first-answer failure rate above the limit'}; "
+                   "the user decides before the next step")
+        raise typer.Exit(4)
+
+
+def _judge_aggregate(run: Optional[str]) -> None:
+    from ept.judge.aggregate import run_aggregate
+
+    typer.echo(f"judge aggregate: {run_aggregate(run)}")
+
+
+def _judge_final(force: bool) -> None:
+    from ept.judge.final import run_final
+
+    typer.echo(f"judge final: {run_final(force)}")
+
+
+def _judge_report() -> None:
+    from ept.judge.report import run_report
+
+    out = run_report()
+    typer.echo(f"judge report: {out}")
+    if out["leakage"]:
+        typer.echo("judge report: STOP — the leakage line is not 0 (spec 05 §4.15): the user decides")
+        raise typer.Exit(3)
+
+
+@judge_app.callback(invoke_without_command=True)
+def judge(
+    ctx: typer.Context,
+    term: Optional[str] = TermOpt,
+    limit: Optional[int] = LimitOpt,
+    force: bool = ForceOpt,
+    tier: str = TierOpt,
+) -> None:
+    """directional -> run -> aggregate -> final -> report."""
+    if ctx.invoked_subcommand is not None:
+        return
+    _judge_directional(term, limit)
+    _judge_run(tier, term, limit, force)
+    _judge_aggregate(None)
+    _judge_final(force)
+    _judge_report()
+
+
+@judge_app.command("directional")
+def judge_directional(term: Optional[str] = TermOpt, limit: Optional[int] = LimitOpt) -> None:
+    """Directional flag per promise from its English text (spec 05 §4.2)."""
+    _judge_directional(term, limit)
+
+
+@judge_app.command("run")
+def judge_run(term: Optional[str] = TermOpt, limit: Optional[int] = LimitOpt, force: bool = ForceOpt,
+              tier: str = TierOpt) -> None:
+    """Bulk-judge every judging key of the tier(s), checks J1–J7 (spec 05 §4.5)."""
+    _judge_run(tier, term, limit, force)
+
+
+@judge_app.command("probe")
+def judge_probe(force: bool = ForceOpt) -> None:
+    """Memory probe: 40 full-term tasks with no extracts (spec 05 §4.6)."""
+    from ept.judge.probe import run_probe
+
+    out = run_probe(force)
+    typer.echo(f"judge probe: {out}")
+    if out["stopped"]:
+        raise typer.Exit(2)
+    if out["stop_for_user"]:
+        typer.echo("judge probe: STOP — evidence-needing share above the limit (spec 05 §4.15): the user decides")
+        raise typer.Exit(4)
+
+
+@judge_app.command("aggregate")
+def judge_aggregate(run: Optional[str] = JudgeRunOpt) -> None:
+    """Indicator verdicts -> promise verdicts (spec 05 §4.7)."""
+    _judge_aggregate(run)
+
+
+@judge_app.command("final")
+def judge_final(force: bool = ForceOpt) -> None:
+    """Final verdicts: human > strong > bulk, carry-forward (spec 05 §4.10)."""
+    _judge_final(force)
+
+
+@judge_app.command("report")
+def judge_report() -> None:
+    """reports/judgment_05.md + .json (spec 05 §4.11)."""
+    _judge_report()
+
+
+@judge_app.command("spotcheck")
+def judge_spotcheck() -> None:
+    """The 7–10 most problematic tier A items -> data/interim/spotcheck_05.csv (spec 05 §4.12)."""
+    from ept.judge.spotcheck import run_spotcheck
+
+    typer.echo(f"judge spotcheck: {run_spotcheck()}")
+
+
+@judge_app.command("export")
+def judge_export(levels: Optional[list[str]] = typer.Option(None, "--level", help="Priority level(s), e.g. gold"),
+                 run: Optional[str] = JudgeRunOpt) -> None:
+    """Strong-judge batches for the priority queue (spec 05 §4.9)."""
+    from ept.judge.strong import run_export
+
+    typer.echo(f"judge export: {run_export(levels, run)}")
+
+
+@judge_app.command("import")
+def judge_import(run: str = typer.Option(..., "--run"), batch: Optional[list[int]] = typer.Option(None, "--batch"),
+                 model: Optional[str] = typer.Option(None, "--model", help="Subagent model id for the manifest")) -> None:
+    """Validate strong-judge outputs with J1–J7 and load them (spec 05 §4.9)."""
+    from ept.judge.strong import run_import
+
+    typer.echo(f"judge import: {run_import(run, batch, model)}")

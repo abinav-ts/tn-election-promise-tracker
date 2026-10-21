@@ -9,7 +9,7 @@ import datetime as dt
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Optional, Union
 
 import yaml
 from pydantic import BaseModel, ConfigDict
@@ -70,6 +70,15 @@ class Paths(_Cfg):
     retrieval_json: str
     spotcheck_04_dir: str
     retrieve_diag: str
+    # stage 05 (spec 05 §4.14)
+    judgments: str
+    judge_failures: str
+    judge_calls: str
+    verdict_overrides: str
+    judgment_md: str
+    judgment_json: str
+    spotcheck_05_dir: str
+    gold_sample: str
 
 
 class EvidenceWindow(_Cfg):
@@ -293,10 +302,61 @@ class Retrieve(_Cfg):
     spotcheck: RetrieveSpotcheck
 
 
+class JudgeBulk(_Cfg):
+    tasks_per_call: int
+    retry_tasks_per_call: int
+
+
+class JudgeDirectional(_Cfg):
+    promises_per_call: int
+
+
+class QuoteCfg(_Cfg):
+    min_words: int
+    max_words: int
+
+
+class ProbeCfg(_Cfg):
+    n: int
+    seed: str
+    tasks_per_call: int
+
+
+class StrongCfg(_Cfg):
+    tasks_per_batch: int
+    priorities: list[str]
+
+
+class JudgeSpotcheck(_Cfg):
+    per_term: int
+    per_group: int
+    near_days: int
+
+
+class Judge(_Cfg):
+    """Spec 05 §4.14."""
+
+    tiers: dict[str, dict[str, Union[str, list[Union[str, int]]]]]  # tier -> term -> all | landmarks | [full, 5, …]
+    bulk: JudgeBulk
+    directional: JudgeDirectional
+    number_words: list[str]
+    quote: QuoteCfg
+    quote_fuzzy_min: float
+    review_confidence: float
+    max_unresolved_share: float
+    smoke_max_first_fail: float
+    probe_max_share: float
+    probe: ProbeCfg
+    strong: StrongCfg
+    spotcheck: JudgeSpotcheck
+    rationale_max_words: int
+
+
 class BulkCfg(_Cfg):
     api_key_env: str
     candidates: list[str]
     rpm: Optional[float] = None
+    tpm: Optional[int] = None  # input tokens per minute (D-085); estimated from words x retrieve.tokens_per_word
     rpd: dict[str, Optional[int]] = {}  # per model; free-tier quotas are per model (D-050)
     quota_tz: str  # the provider's daily-quota clock
     min_v1_pass: float
@@ -330,6 +390,7 @@ class Settings(_Cfg):
     extract: Extract
     classify: Classify
     retrieve: Retrieve
+    judge: Judge
     llm: Llm
 
 

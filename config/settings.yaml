@@ -48,6 +48,15 @@ paths:
   retrieval_json: reports/retrieval_04.json
   spotcheck_04_dir: data/interim/spotcheck_04
   retrieve_diag: data/interim/retrieve_diag_04/{run_id}.jsonl   # per indicator x cutoff diagnostics (report, spot-check)
+  # stage 05 (spec 05 §4.14)
+  judgments: data/judgments
+  judge_failures: data/interim/judge_failures_05.csv
+  judge_calls: data/interim/judge_calls_05/{run_id}.jsonl   # one line per judging call (leakage line, rates)
+  verdict_overrides: config/verdict_overrides.csv
+  judgment_md: reports/judgment_05.md
+  judgment_json: reports/judgment_05.json
+  spotcheck_05_dir: data/interim/spotcheck_05
+  gold_sample: data/gold/gold_sample.csv   # ept.judge reads only its promise_id and term_id columns (spec 05 §5)
 
 # Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
 terms:
@@ -223,6 +232,25 @@ retrieve:
   tokens_per_word: 1.33       # report: stage 05 sizing (English prose, approximate)
   spotcheck: {per_term: 3, per_group: 3, snippet_words: 150, near_cutoff_days: 31, reserve_per_term: {e: 1}}   # D-083
 
+# Spec 05 §4.14 (D-084–D-093).
+judge:
+  tiers:                      # D-084: tier A first, then tier B (order of global §8.1)
+    A: {AIADMK-2016: all, DMK-2021: [full], TVK-2026: all}
+    B: {DMK-2021: landmarks}
+  bulk: {tasks_per_call: 10, retry_tasks_per_call: 5}   # D-085
+  directional: {promises_per_call: 50}                  # D-089
+  number_words: [one, two, three, four, five, six, seven, eight, nine, ten, hundred, thousand, lakh, crore, million, billion]
+  quote: {min_words: 5, max_words: 40}                  # J3 (D-087)
+  quote_fuzzy_min: 95
+  review_confidence: 0.6
+  max_unresolved_share: 0.03  # per tier: above this the run stops for the user
+  smoke_max_first_fail: 0.25  # --limit run: first-answer failure rate above this stops for the user
+  probe_max_share: 0.25       # memory probe: evidence-needing first answers above this stop for the user
+  probe: {n: 40, seed: "ept-probe-2026-10-22", tasks_per_call: 10}   # D-092
+  strong: {tasks_per_batch: 20, priorities: [gold, headline, tvk_current, flagged_full, flagged_aiadmk_landmarks, flagged_dmk_landmarks]}   # D-086
+  spotcheck: {per_term: 3, per_group: 3, near_days: 31}   # D-093
+  rationale_max_words: 80     # global §7
+
 llm:
   retries: 1                  # one retry on schema-validation failure (global §6.1)
   temperature: 0
@@ -235,6 +263,7 @@ llm:
     api_key_env: GEMINI_API_KEY
     candidates: [gemini-3.8-flash, gemini-3.5-flash-lite]
     rpm: 14                   # bulk model gemini-3.5-flash-lite allows 15 rpm (AI Studio); one below for safety
+    tpm: 250000               # input tokens per minute, flash-lite free tier (AI Studio, user 2026-10-22; D-085)
     rpd:                      # requests per day, per model (free tier; D-050)
       gemini-3.8-flash: 20    # observed 2026-10-13: the 21st request of the day got a per-day 429
       gemini-3.5-flash-lite: 500    # AI Studio free tier: 15 rpm / 500 rpd (user, 2026-10-13; first read as 50)

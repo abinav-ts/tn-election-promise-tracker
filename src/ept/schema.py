@@ -213,6 +213,35 @@ class Verdict(_Row):
         return v
 
 
+class IndicatorVerdict(_Row):
+    """Global spec §7 `indicator_verdicts` (D-091): one row per indicator × run × cutoff (spec 05 §4.8)."""
+
+    indicator_id: str
+    run_id: str
+    cutoff_date: Optional[dt.date] = None
+    judging_key: str
+    status: Status
+    realisation_date: Optional[dt.date] = None
+    date_precision: Optional[DatePrecision] = None
+    date_chunk_id: Optional[str] = None
+    cited_chunk_ids: list[str] = []
+    quotes: dict[str, str] = {}
+    rationale: str = ""
+    confidence: float = Field(ge=0, le=1)
+    needs_review: bool = False
+    review_reasons: list[str] = []
+    judge_source: JudgeSource
+    judge_model: Optional[str] = None
+    prompt_version: Optional[str] = None
+
+    @field_validator("rationale")
+    @classmethod
+    def _rationale_len(cls, v: str) -> str:
+        if len(v.split()) > 80:
+            raise ValueError("rationale exceeds 80 words")
+        return v
+
+
 class GoldLabel(_Row):
     """Stored as CSV in data/gold/, not in SQLite."""
 
@@ -243,6 +272,7 @@ TABLES: dict[str, TableSpec] = {
         TableSpec(name="indicators", model=Indicator, pk=("indicator_id",), fks={"promise_id": "promises(promise_id)"}),
         TableSpec(name="retrievals", model=Retrieval, pk=("indicator_id", "chunk_id", "cutoff_date", "run_id")),
         TableSpec(name="verdicts", model=Verdict, pk=("promise_id", "run_id", "cutoff_date")),
+        TableSpec(name="indicator_verdicts", model=IndicatorVerdict, pk=("indicator_id", "run_id", "cutoff_date")),
     ]
 }
 
