@@ -1,4 +1,4 @@
-version: 1.0
+version: 1.2
 purpose: judge one indicator x cutoff from its retrieved extracts only: status, realisation date, cited extracts with verbatim quotes (spec 05 §4.4, D-087, D-092). One prompt for the bulk and the strong judge and for every term; no party, term, cutoff or promise ID in the template.
 
 # Judge whether a government commitment was put into effect, from the extracts only
@@ -35,14 +35,16 @@ A directional commitment promises only effort or direction ("promote", "encourag
 
 ## 6. Citations and quotes
 - Every status except `not_started` and `unverifiable` must cite at least one extract. You may also cite extracts for those two.
-- For each cited extract give one quote of 5 to 40 words copied exactly from that extract, character for character, including spelling mistakes, OCR errors and odd spacing. Do not fix, shorten inside, or paraphrase a quote.
-- Cite only the extracts of the same task (C1–C5 as numbered there).
+- For each cited extract give one quote copied exactly from that extract's text or its title: **one short continuous passage of 6 to 20 words** (never fewer than 5 or more than 40), character for character, including spelling mistakes, OCR errors, odd spacing and the way amounts and dates are written.
+- Pick a passage you can copy exactly, and copy it from the extract in front of you. Government orders repeat standard phrases; never write the phrase as such orders are usually worded ("accord sanction for a sum of …") if the extract words it differently ("sanction for an amount of …").
+- Never shorten a quote with "..." or "…", never join two separate passages, never expand an abbreviation, never fix a word.
+- A quote must come from the extract it is cited for, and copy a date or amount exactly as that extract prints it. Cite only the extracts of the same task (C1–C5 as numbered there).
 
 ## 7. The date
 - Give `realisation_date` only for `fulfilled`, `partial` or `diluted`; otherwise null.
 - Format `YYYY-MM-DD`, `YYYY-MM` or `YYYY`: use the precision the evidence supports (a year alone if only the year is known).
-- `date_extract` names the extract the date comes from, and it must be one of the extracts you cite. The date must be either a date written in that extract's text (for example "dated 14.08.2019") or that extract's document date when the document itself is the official step (for example the GO).
-- The date can't be before the date the government took office.
+- `date_extract` names the extract the date comes from, and it must be one of the extracts you cite. The date must be either a date written in that extract (for example "dated 14.08.2019") or that extract's document date when the document itself is the official step (for example the GO).
+- The date can't be before the date the government took office. The date the government took office is context, never a realisation date by itself.
 
 ## 8. Confidence and rationale
 - `confidence` between 0 and 1: how clearly the extracts settle the status (1 = no doubt; below 0.6 = a real doubt).
@@ -59,6 +61,8 @@ Answer: status `not_started`, realisation_date null, date_extract null, cited C1
 ## 10. Output
 Return one JSON object `{"verdicts": [...]}` with exactly one item per task, using the task's alias:
 `{"task": "T01", "status": "...", "realisation_date": "YYYY-MM-DD" | "YYYY-MM" | "YYYY" | null, "date_extract": "C1" | null, "cited": [{"extract": "C1", "quote": "..."}], "rationale": "...", "confidence": 0.0}`
+
+**Retries.** If a task has `previous_answer_failed`, your earlier answer for that task failed the listed checks. Answer that task again from its extracts and fix what is listed.
 
 **File handoff.** If you were given this file together with a batch file instead of the tasks below, each line of the batch file is one task. Write your output file with exactly one JSON object per line, one line per task, each line being one verdict item as above (no surrounding `{"verdicts": ...}`), and nothing else.
 

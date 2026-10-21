@@ -81,7 +81,8 @@ def test_rendered_task_has_no_ids_or_cutoff(root, conn, monkeypatch):
     run_bulk(limit=1)
     for call in fake.calls:
         for t in call:
-            assert set(t) <= {"task", "promise", "indicator", "directional", "context", "extracts", "note"}
+            assert set(t) <= {"task", "promise", "indicator", "directional", "context", "extracts", "note",
+                              "previous_answer_failed"}
             for e in t["extracts"]:
                 assert set(e) == {"extract", "title", "doc_type", "date", "text"}
                 assert "-" not in e["extract"]  # an alias, never a chunk_id

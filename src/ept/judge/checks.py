@@ -5,14 +5,14 @@
 - J2 citations: statuses other than `not_started` / `unverifiable` cite ≥ 1 extract; every cited extract and
   the `date_extract` is one of this task's extracts; the `date_extract` is itself cited (so the date's source
   carries a verified quote).
-- J3 quotes: 5–40 words, found in the cited chunk after normalisation (NFKC, lower case, non-alphanumerics →
-  space, spaces collapsed); else rapidfuzz `partial_ratio` ≥ `judge.quote_fuzzy_min` passes with review
-  reason `quote_fuzzy`.
+- J3 quotes: 5–40 words, found in the cited extract (its document title or chunk text, as shown to the judge
+  and as indexed in stage 04, D-079) after normalisation (NFKC, lower case, non-alphanumerics → space, spaces
+  collapsed); else rapidfuzz `partial_ratio` ≥ `judge.quote_fuzzy_min` passes with review reason `quote_fuzzy`.
 - J4 date presence: a date iff the status is fulfilled / partial / diluted; a date needs a `date_extract`.
 - J5 date window: period_end(date) ≥ sworn_in and period_start(date) ≤ the latest `available_by` among the
   cited chunks (never after the cutoff, since every retrieved chunk is eligible at it).
 - J6 date source: the date, at its precision, matches the date chunk's stored document date or a date written
-  in its text (`ept.corpus.datefind.find_dates`; for year precision the 4-digit year in the text).
+  in its title or text (`ept.corpus.datefind.find_dates`; for year precision the 4-digit year).
 - J7 directional: no `partial` / `diluted` for a directional promise.
 """
 
@@ -86,6 +86,34 @@ def rule_of(failure: str) -> str:
     return failure.split(":", 1)[0]
 
 
+_HINT = {
+    "J1": "the answer's format is invalid",
+    "J2": "a cited extract or date_extract is missing or not one of this task's extracts (the date extract must "
+          "also be cited)",
+    "J4": "a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed "
+          "otherwise",
+    "J5": "the realisation date is before the government took office or later than the cited extracts allow",
+    "J6": "the realisation date is neither the date extract's document date nor a date written in it",
+    "J7": "partial and diluted are not allowed for a directional commitment",
+}
+
+
+def feedback(failures: list[str]) -> list[str]:
+    """Model-facing retry notes (spec 05 §4.5 retries): the check and the extract alias, without internal values
+    such as availability dates."""
+    out = []
+    for f in failures:
+        rule = rule_of(f)
+        if rule in ("J3", "J1"):
+            msg = f.split(":", 1)[1].strip()
+            if rule == "J3" and "not found" in msg:
+                msg += " verbatim (copy one continuous passage exactly from that extract, no '...')"
+            out.append(f"{rule}: {msg}")
+        else:
+            out.append(f"{rule}: {_HINT.get(rule, f)}")
+    return list(dict.fromkeys(out))
+
+
 # --- J1 matching ----------------------------------------------------------------------------
 
 
@@ -131,14 +159,15 @@ def normalise(text: str) -> str:
     return " ".join(_NON_ALNUM.sub(" ", t).split())
 
 
-def quote_match(quote: str, chunk_text: str, fuzzy_min: float) -> Optional[str]:
-    """'exact' | 'fuzzy' | None (not found)."""
-    q, c = normalise(quote), normalise(chunk_text)
+def quote_match(quote: str, chunk_text: str, fuzzy_min: float, title: str = "") -> Optional[str]:
+    """'exact' | 'fuzzy' | None (not found), in the chunk text or the document title."""
+    q = normalise(quote)
     if not q:
         return None
-    if f" {q} " in f" {c} ":
+    parts = [normalise(x) for x in (chunk_text, title) if x]
+    if any(f" {q} " in f" {c} " for c in parts):
         return "exact"
-    return "fuzzy" if fuzz.partial_ratio(q, c) >= fuzzy_min else None
+    return "fuzzy" if any(fuzz.partial_ratio(q, c) >= fuzzy_min for c in parts) else None
 
 
 def same_period(d: dt.date, prec: str, other: dt.date, other_prec: str) -> bool:
@@ -153,12 +182,15 @@ def same_period(d: dt.date, prec: str, other: dt.date, other_prec: str) -> bool:
 
 
 def date_in_chunk(d: dt.date, prec: str, chunk: ChunkInfo) -> bool:
-    """J6: the chunk's stored document date, or a date written in its text, matches `d` at `prec`."""
+    """J6: the chunk's stored document date, or a date written in its title or text, matches `d` at `prec`."""
     if chunk.doc_date and chunk.date_precision and same_period(d, prec, chunk.doc_date, chunk.date_precision):
         return True
-    if any(same_period(d, prec, f.date, f.precision) for f in find_dates(chunk.text)):
-        return True
-    return prec == "year" and re.search(rf"(?<!\d){d.year}(?!\d)", chunk.text) is not None
+    for text in (chunk.text, chunk.title):
+        if any(same_period(d, prec, f.date, f.precision) for f in find_dates(text or "")):
+            return True
+        if prec == "year" and re.search(rf"(?<!\d){d.year}(?!\d)", text or "") is not None:
+            return True
+    return False
 
 
 # --- the checks ---------------------------------------------------------------------------------
@@ -199,7 +231,7 @@ def check_task(a: TaskVerdictOut, t: TaskInput, lim: Limits) -> Checked:
         if not lim.quote_min_words <= n <= lim.quote_max_words:
             f.append(f"J3: quote for {alias} has {n} words (allowed {lim.quote_min_words}–{lim.quote_max_words})")
             continue
-        how = quote_match(c.quote, chunk.text, lim.quote_fuzzy_min)
+        how = quote_match(c.quote, chunk.text, lim.quote_fuzzy_min, chunk.title)
         if how is None:
             f.append(f"J3: quote for {alias} not found in the extract")
         elif how == "fuzzy" and "quote_fuzzy" not in out.reasons:

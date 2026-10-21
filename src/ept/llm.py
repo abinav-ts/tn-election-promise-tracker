@@ -134,6 +134,7 @@ class LLMClient:
         self._gemini = gemini_client  # injected in tests; built lazily from the key otherwise
         self._last_bulk_call: Optional[float] = None
         self._tpm_window: list[tuple[float, int]] = []  # (clock, input tokens) of bulk calls in the last minute
+        self._tpm_scale = 1.0  # measured / estimated input tokens of the last measured call
         self._backends: dict[str, Callable[[Prompt, str, int, CallSpec], str]] = {
             "mock": self._mock,
             "bulk": self._bulk,
@@ -186,11 +187,14 @@ class LLMClient:
             self._sleep(max(wait, 0.01))
         self._tpm_window.append((self._clock(), tokens))
 
-    def _record_tokens(self, measured: int) -> None:
-        """Replace the last window entry's estimate with the backend's measured input tokens."""
+    def _record_tokens(self, measured: int, est: int) -> None:
+        """Replace the last window entry's estimate with the backend's measured input tokens, and scale later
+        estimates by the measured/estimated ratio (JSON and OCR text tokenise denser than prose)."""
         if self._tpm_window and measured:
-            t, est = self._tpm_window[-1]
-            self._tpm_window[-1] = (t, max(est, measured))
+            t, planned = self._tpm_window[-1]
+            self._tpm_window[-1] = (t, max(planned, measured))
+            if est:
+                self._tpm_scale = max(1.0, measured / est)
 
     def _throttle(self, model: str, tokens: int = 0) -> None:
         bulk = self.cfg.settings.llm.bulk
@@ -238,7 +242,7 @@ class LLMClient:
         delay = bulk.backoff_s
         est = self.estimate_tokens(rendered)
         while True:
-            self._throttle(spec.model, est)
+            self._throttle(spec.model, int(est * self._tpm_scale))
             self.last.est_tokens += est
             try:
                 resp = self._gemini_client().models.generate_content(model=spec.model, contents=contents,
@@ -247,7 +251,7 @@ class LLMClient:
                 measured = int(getattr(usage, "prompt_token_count", 0) or 0) if usage else 0
                 self.last.prompt_tokens += measured
                 self.last.output_tokens += int(getattr(usage, "candidates_token_count", 0) or 0) if usage else 0
-                self._record_tokens(measured)
+                self._record_tokens(measured, est)
                 return resp.text or ""
             except errors.APIError as e:
                 code = getattr(e, "code", None)

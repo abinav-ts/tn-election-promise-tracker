@@ -119,3 +119,22 @@ def test_directional_checks_d1_d2_d3():
         (False, "", "d3_override")
     assert check_item(DirItem(id="P01", directional=True, cue="Promote"), "Promote 5 parks.", nw)[2] == "d3_override"
     assert check_item(DirItem(id="P01", directional=False, cue="x"), "Promote parks.", nw)[:3] == (False, "", "")
+
+
+def test_quote_and_date_may_come_from_the_title(task):
+    t = TaskInput("T01", {"C1": ChunkInfo("go-0000", "G.O.Ms.No.9 dated 02.07.2017 - Free bus travel for women",
+                                          "go", dt.date(2017, 8, 14), "day", GO_TEXT, dt.date(2017, 8, 14))},
+                  task.sworn_in, False)
+    c = check_task(ans(cited=[{"extract": "C1", "quote": "Free bus travel for women"}], realisation_date="2017-07-02"),
+                   t, LIM)
+    assert c.ok, c.failures
+
+
+def test_feedback_names_the_check_without_internal_values():
+    from ept.judge.checks import feedback
+
+    out = feedback(["J3: quote for C3 not found in the extract",
+                    "J5: date 2017-09-01 after the latest availability date of the cited extracts (2017-08-14)",
+                    "J5: date 2017-09-02 after the latest availability date of the cited extracts (2017-08-14)"])
+    assert out[0].startswith("J3: quote for C3 not found in the extract verbatim")
+    assert len(out) == 2 and "2017-08-14" not in out[1]

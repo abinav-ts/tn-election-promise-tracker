@@ -29,7 +29,7 @@ from typing import Any, Optional
 from ept import db
 from ept.config import Config, get_config
 from ept.judge import directional as dirmod
-from ept.judge.checks import Checked, Limits, TaskInput, check_task, match_answers, rule_of
+from ept.judge.checks import Checked, Limits, TaskInput, check_task, feedback, match_answers, rule_of
 from ept.judge.prompt import PROMPT, JudgeOut, TaskVerdictOut, extract_alias, render_task, render_tasks, task_alias
 from ept.judge.store import (code_hash, file_sha, fp_hash, read_meta, start_or_resume, stored_keys, update_meta,
                              write_indicator_verdicts)
@@ -97,7 +97,8 @@ class Caller:
         self.body = load_prompt(PROMPT, ctx.cfg).body
         self.n = 0
 
-    def inputs(self, keys: list[Key], with_extracts: bool = True) -> tuple[list[dict], dict[str, TaskInput]]:
+    def inputs(self, keys: list[Key], with_extracts: bool = True, notes: Optional[dict[str, list[str]]] = None
+               ) -> tuple[list[dict], dict[str, TaskInput]]:
         items, inputs = [], {}
         for i, k in enumerate(keys, 1):
             alias = task_alias(i)
@@ -106,13 +107,16 @@ class Caller:
             ind = self.ctx.indicators[k.indicator_id]
             sworn = self.ctx.sworn_in(k.term_id)
             items.append(render_task(alias, self.ctx.promises[k.promise_id]["text"],
-                                     None if ind["is_self"] else ind["text"], k.directional, sworn, ext))
+                                     None if ind["is_self"] else ind["text"], k.directional, sworn, ext,
+                                     feedback((notes or {}).get(k.key, []))))
             inputs[alias] = TaskInput(alias, {extract_alias(j): c for j, c in enumerate(ext, 1)}, sworn, k.directional)
         return items, inputs
 
-    def __call__(self, keys: list[Key], stage: str, with_extracts: bool = True
+    def __call__(self, keys: list[Key], stage: str, with_extracts: bool = True,
+                 notes: Optional[dict[str, list[str]]] = None
                  ) -> dict[str, tuple[Optional[TaskVerdictOut], Optional[Checked], list[str]]]:
-        items, inputs = self.inputs(keys, with_extracts)
+        """`notes` = {key: failures of the previous answer}: shown to the model on a retry."""
+        items, inputs = self.inputs(keys, with_extracts, notes)
         tasks_str = render_tasks(items)
         before = self.client.calls
         try:
@@ -153,7 +157,8 @@ class Caller:
 
 
 def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome]:
-    """First call → failing tasks in mini-batches → still failing alone → unresolved."""
+    """First call → failing tasks in mini-batches → still failing alone → unresolved. Each retry shows the task's
+    previous check failures (`checks.feedback`), so the model can fix them; the checks are the same."""
     res = call(batch, "first")
     outcomes: dict[str, Outcome] = {}
     failing: list[Key] = []
@@ -168,7 +173,7 @@ def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome
         outcomes[k.key] = o
     still: list[Key] = []
     for mb in batches(failing, retry_size):
-        r2 = call(mb, "mini")
+        r2 = call(mb, "mini", notes={k.key: outcomes[k.key].first_failures for k in mb})
         for k in mb:
             _, chk, fails = r2[k.key]
             o = outcomes[k.key]
@@ -179,7 +184,7 @@ def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome
             else:
                 o.checked, o.stage = chk, "mini"
     for k in still:
-        _, chk, fails = call([k], "solo")[k.key]
+        _, chk, fails = call([k], "solo", notes={k.key: outcomes[k.key].last_failures})[k.key]
         o = outcomes[k.key]
         o.last_failures = fails
         if not fails:

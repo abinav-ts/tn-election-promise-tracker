@@ -77,9 +77,12 @@ def test_retry_mini_batch_then_alone_then_unresolved(judged, monkeypatch):
             return default_answer(t)  # passes alone
         return bad_quote(t)
 
-    install(monkeypatch, FakeJudge(respond))
+    fake = install(monkeypatch, FakeJudge(respond))
     get_config().settings.judge.bulk.retry_tasks_per_call = 2
     s = run_bulk()
+    retried = [t for call in fake.calls for t in call if "previous_answer_failed" in t]
+    assert retried and all(any(n.startswith("J3: quote for C1 not found") for n in t["previous_answer_failed"])
+                           for t in retried)
     rows = _rows(judged, s["run_id"])
     reasons = {(r["indicator_id"], r["cutoff_date"]): json.loads(r["review_reasons"]) for r in rows}
     unres = [r for r in rows if "unresolved" in json.loads(r["review_reasons"])]

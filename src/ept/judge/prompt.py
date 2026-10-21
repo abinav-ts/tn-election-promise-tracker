@@ -64,8 +64,9 @@ def task_alias(n: int) -> str:
 
 
 def render_task(alias: str, promise_text: str, indicator_text: Optional[str], directional: bool,
-                sworn_in: dt.date, extracts: list[ChunkInfo]) -> dict:
-    """One task as the judge sees it. `indicator_text` None = a self indicator (it equals the promise)."""
+                sworn_in: dt.date, extracts: list[ChunkInfo], retry_notes: Optional[list[str]] = None) -> dict:
+    """One task as the judge sees it. `indicator_text` None = a self indicator (it equals the promise);
+    `retry_notes` = the previous answer's check failures (retries only)."""
     d: dict = {"task": alias, "promise": promise_text}
     if indicator_text:
         d["indicator"] = indicator_text
@@ -76,6 +77,8 @@ def render_task(alias: str, promise_text: str, indicator_text: Optional[str], di
                      for i, c in enumerate(extracts, start=1)]
     if not extracts:
         d["note"] = NO_EXTRACTS
+    if retry_notes:
+        d["previous_answer_failed"] = retry_notes
     return d
 
 
