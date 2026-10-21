@@ -138,3 +138,9 @@ def test_feedback_names_the_check_without_internal_values():
                     "J5: date 2017-09-02 after the latest availability date of the cited extracts (2017-08-14)"])
     assert out[0].startswith("J3: quote for C3 not found in the extract verbatim")
     assert len(out) == 2 and "2017-08-14" not in out[1]
+
+
+def test_amount_gloss_is_ignored():
+    text = "accord permission to dovetail a sum of Rs.50.00 crore (Rupees fifty crore only) from the schemes"
+    assert quote_match("dovetail a sum of Rs.50.00 crore from the schemes", text, 95) == "exact"
+    assert quote_match("dovetail a sum of Rs.60.00 crore from the schemes", text, 99) is None

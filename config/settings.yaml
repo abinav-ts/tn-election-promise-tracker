@@ -237,7 +237,7 @@ judge:
   tiers:                      # D-084: tier A first, then tier B (order of global §8.1)
     A: {AIADMK-2016: all, DMK-2021: [full], TVK-2026: all}
     B: {DMK-2021: landmarks}
-  bulk: {tasks_per_call: 10, retry_tasks_per_call: 5}   # D-085
+  bulk: {tasks_per_call: 10, retry_tasks_per_call: 5, solo_retries: 2}   # D-085; 2 solo tries: user after the smoke test
   directional: {promises_per_call: 50}                  # D-089
   number_words: [one, two, three, four, five, six, seven, eight, nine, ten, hundred, thousand, lakh, crore, million, billion]
   quote: {min_words: 5, max_words: 40}                  # J3 (D-087)

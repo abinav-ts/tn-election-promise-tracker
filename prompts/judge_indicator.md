@@ -1,4 +1,4 @@
-version: 1.2
+version: 1.3
 purpose: judge one indicator x cutoff from its retrieved extracts only: status, realisation date, cited extracts with verbatim quotes (spec 05 §4.4, D-087, D-092). One prompt for the bulk and the strong judge and for every term; no party, term, cutoff or promise ID in the template.
 
 # Judge whether a government commitment was put into effect, from the extracts only
@@ -20,10 +20,12 @@ If an `indicator` is given, judge the indicator (it is one checkable part of the
 - `blocked_external`: the state acted, but delivery was blocked by the Union government, the President or Governor, or the courts.
 - `unverifiable`: no extract is about the commitment at all.
 
-**Realisation date.** For `fulfilled`, `partial` and `diluted`, give the date of the first official operationalisation: the earliest Government Order (GO), official scheme launch or enacted law that puts the commitment into effect. Budget announcements, policy-note plans and statements of intent ("will be", "is proposed", "steps are being taken") do not count as operationalisation; on their own they give at most `not_started` (or `in_progress` if they report a concrete official step such as a tender or a bill). A step dated before the date the government took office does not count for this government.
+**Relevance.** Credit an official step only if it is about this commitment: the same action for the same object and the same beneficiaries. A related or broader scheme, a step for a different group, or a step on a neighbouring subject does not fulfil it. If the extracts show only related activity, the status is `not_started` (or `unverifiable` if nothing is about the commitment); if a step clearly covers one part of the commitment, consider `partial`.
+
+**Realisation date.** For `fulfilled`, `partial` and `diluted`, give the date of the first official operationalisation: the earliest Government Order (GO), official scheme launch or enacted law that puts the commitment into effect. Budget announcements, policy-note plans and statements of intent ("will be", "is proposed", "steps are being taken") do not count as operationalisation, and neither does a budget speech or policy note saying that money "has been provided", "is allotted" or "is earmarked"; on their own they give at most `not_started` (or `in_progress` if they report a concrete official step such as a tender or a bill). A step dated before the date the government took office does not count for this government.
 
 ## 4. Advocacy and outcomes that depend on others
-Judge what was promised. If the promise is to *urge or press* someone (for example the Union government), the state's formal step (an Assembly resolution, the Chief Minister's letter, a GO) is the realisation, and the status is `fulfilled` if that step was taken. If the promise is an *outcome* that only someone else can deliver (for example a listing that only the Union can make), the status is `blocked_external` when the state acted and the outcome did not happen, and `fulfilled` when it did happen.
+Judge what was promised. If the promise is to *urge or press* someone (for example the Union government), the state's formal step on that same issue (an Assembly resolution, the Chief Minister's letter, a GO) is the realisation, and the status is `fulfilled` if that step was taken. A state scheme on a related subject is not a formal step of advocacy. If the promise is an *outcome* that only someone else can deliver (for example a listing that only the Union can make), the status is `blocked_external` when the state acted and the outcome did not happen, and `fulfilled` when it did happen.
 
 ## 5. Directional commitments (`directional: yes`)
 A directional commitment promises only effort or direction ("promote", "encourage", "strengthen", "take steps towards"), with no amount, target or list of parts. For these:

@@ -1,0 +1,693 @@
+{
+  "run_id": "judge-20261021T195852Z",
+  "stage": "judge",
+  "started_at": "2026-10-21T19:58:52+00:00",
+  "finished_at": "2026-10-21T19:59:07+00:00",
+  "status": "done",
+  "git_commit": "d54cd1f881a22fbf037dcce22db537b437af0edb",
+  "params": {
+    "force": false
+  },
+  "prompt_versions": {
+    "classify_promises": "1.2",
+    "dedup_check": "1.0",
+    "directional_check": "1.1",
+    "extract_promises": "1.3",
+    "judge_indicator": "1.2",
+    "smoke_test": "1.0",
+    "transcribe_page": "1.0"
+  },
+  "models": {
+    "bulk": "gemini-3.5-flash-lite"
+  },
+  "counts": {
+    "run_id": "judge-20261021T195852Z",
+    "resumed": false,
+    "tasks": 40,
+    "planned": 40,
+    "evidence_claims": 0,
+    "evidence_share": 0.0,
+    "realised_claims": 0,
+    "stop_for_user": false,
+    "stopped": null,
+    "llm_calls": 4
+  },
+  "config": {
+    "settings": {
+      "paths": {
+        "db": "data/ept.sqlite",
+        "raw_evidence": "data/raw/evidence",
+        "manual_dir": "data/raw/evidence/_manual",
+        "manual_manifest": "data/raw/evidence/_manual/manual_manifest.csv",
+        "trackers_raw": "data/raw/trackers",
+        "catalogue_dir": "data/interim/catalogue",
+        "text_dir": "data/interim/text",
+        "lang_pairs": "data/interim/lang_pairs.csv",
+        "tracker_leads": "data/interim/tracker_leads.csv",
+        "date_review": "data/interim/date_review.csv",
+        "quarantine": "data/raw/evidence/_quarantine",
+        "spotcheck": "data/interim/spotcheck_{stage}.csv",
+        "runs": "reports/runs",
+        "coverage_md": "reports/coverage_01.md",
+        "coverage_json": "reports/coverage_01.json",
+        "prompts": "prompts",
+        "llm_cache": "cache/llm",
+        "llm_usage_log": "reports/llm_usage.jsonl",
+        "llm_fixtures": "tests/fixtures/llm",
+        "http_cache": "cache/http",
+        "manifestos_raw": "data/raw/manifestos",
+        "manifesto_profiles": "config/manifestos.yaml",
+        "manifesto_interim": "data/interim/manifestos",
+        "frozen": "data/frozen",
+        "promise_overrides": "config/promise_overrides.csv",
+        "extract_dropped": "data/interim/extract_dropped_02.csv",
+        "extract_failures": "data/interim/extract_failures_02.csv",
+        "promise_dedup": "data/interim/promise_dedup.csv",
+        "extraction_md": "reports/extraction_02.md",
+        "extraction_json": "reports/extraction_02.json",
+        "backend_test_md": "reports/backend_test_02.md",
+        "classify_overrides": "config/classify_overrides.csv",
+        "classify_failures": "data/interim/classify_failures_03.csv",
+        "classify_interim": "data/interim/classify",
+        "classification_md": "reports/classification_03.md",
+        "classification_json": "reports/classification_03.json",
+        "classification_frozen": "data/frozen/classification_{term}.jsonl",
+        "embeddings_dir": "data/processed/embeddings",
+        "bm25_tokens": "data/processed/bm25_tokens.jsonl.gz",
+        "retrieval_md": "reports/retrieval_04.md",
+        "retrieval_json": "reports/retrieval_04.json",
+        "spotcheck_04_dir": "data/interim/spotcheck_04",
+        "retrieve_diag": "data/interim/retrieve_diag_04/{run_id}.jsonl",
+        "judgments": "data/judgments",
+        "judge_failures": "data/interim/judge_failures_05.csv",
+        "judge_calls": "data/interim/judge_calls_05/{run_id}.jsonl",
+        "verdict_overrides": "config/verdict_overrides.csv",
+        "judgment_md": "reports/judgment_05.md",
+        "judgment_json": "reports/judgment_05.json",
+        "spotcheck_05_dir": "data/interim/spotcheck_05",
+        "gold_sample": "data/gold/gold_sample.csv"
+      },
+      "terms": [
+        {
+          "term_id": "AIADMK-2016",
+          "party": "AIADMK",
+          "manifesto_year": 2016,
+          "sworn_in": "2016-05-23",
+          "term_end": "2021-05-06",
+          "role": "backtest"
+        },
+        {
+          "term_id": "DMK-2021",
+          "party": "DMK",
+          "manifesto_year": 2021,
+          "sworn_in": "2021-05-07",
+          "term_end": "2026-05-09",
+          "role": "train"
+        },
+        {
+          "term_id": "TVK-2026",
+          "party": "TVK",
+          "manifesto_year": 2026,
+          "sworn_in": "2026-05-10",
+          "term_end": null,
+          "role": "project"
+        }
+      ],
+      "evidence_window": {
+        "start": "2016-05-01",
+        "end": null
+      },
+      "http": {
+        "user_agent": "EPT-research-crawler/0.1 (Tamil Nadu election promise tracker, student course project; contact: 166200422+abinav-ts@users.noreply.github.com)",
+        "timeout_s": 60.0,
+        "retries": 3,
+        "backoff_s": 2.0,
+        "rate_per_host": 1.0,
+        "obey_robots": true,
+        "host_failures_to_trip": 3,
+        "host_cooldown_s": 120.0,
+        "host_max_cooldown_s": 1800.0,
+        "max_download_s": 600.0,
+        "chunk_bytes": 65536,
+        "listing_cache_ttl_days": 7.0
+      },
+      "wayback": {
+        "host": "web.archive.org",
+        "cdx_url": "https://web.archive.org/cdx/search/cdx",
+        "raw_template": "https://web.archive.org/web/{ts}id_/{url}",
+        "rate": 0.5,
+        "max_versions_tried": 3
+      },
+      "parse": {
+        "ocr_min_chars_per_page": 200,
+        "ocr_lang": "eng",
+        "ocr_dpi": 300,
+        "ocr_timeout_s": 120.0,
+        "front_matter_pages": 2
+      },
+      "lang": {
+        "tamil_ratio": 0.3,
+        "legacy_garbage_ratio": 0.25
+      },
+      "chunk": {
+        "target_words": 400,
+        "min_words": 300,
+        "max_words": 500
+      },
+      "date": {
+        "conflict_days": 7,
+        "fy_slack_months": 3,
+        "fy_bound": {
+          "doc_types": [
+            "policy_note",
+            "budget_speech"
+          ],
+          "title_prefixes": {
+            "other": [
+              "Performance Budget"
+            ]
+          }
+        },
+        "fetch_bound": {
+          "exclude_title_patterns": [
+            "interim budget"
+          ]
+        }
+      },
+      "tamil": {
+        "include_in_evidence": false
+      },
+      "coverage": {
+        "hole_fraction": 0.25
+      },
+      "progress": {
+        "every_items": 25,
+        "every_catalogued": 500
+      },
+      "spotcheck": {
+        "min_items": 7,
+        "max_items": 10,
+        "per_source": 3
+      },
+      "go": {
+        "download_mode": "all"
+      },
+      "extract": {
+        "ocr_lang": "tam",
+        "ocr_psm": 3,
+        "ocr_timeout_s": 180.0,
+        "overprint_px": 1.0,
+        "line_tol_px": 2.0,
+        "space_gap_px": 1.5,
+        "fontmap_min_tamil_share": 0.98,
+        "min_validity": 0.98,
+        "calibration_pages": 5,
+        "calibration_ppi": 150,
+        "ocr_gate": {
+          "max_cer": 0.02,
+          "min_conf": 80.0
+        },
+        "vision_disagree_cer": 0.25,
+        "vision": {
+          "max_attempts": 2,
+          "max_unreadable": 5
+        },
+        "transcribe_batch": 10,
+        "max_number_jump": 3,
+        "indent_tol_px": 3.0,
+        "backend_test": {
+          "seed": 20261013,
+          "per_term": {
+            "DMK-2021": 10,
+            "AIADMK-2016": 10
+          }
+        },
+        "spotcheck": {
+          "per_term": 5,
+          "per_term_group": 3
+        },
+        "units_per_call": 25,
+        "max_promises_per_unit": 5,
+        "max_text_words": 60,
+        "common_words": [
+          "Union",
+          "Government",
+          "Central",
+          "State",
+          "States",
+          "India",
+          "Indian",
+          "Tamil",
+          "Nadu",
+          "Rs",
+          "Rupees",
+          "Crore",
+          "Lakh",
+          "Lakhs",
+          "Act",
+          "Constitution",
+          "Assembly",
+          "Parliament",
+          "District",
+          "Districts",
+          "Department",
+          "Scheme",
+          "English",
+          "Hindi",
+          "Chief",
+          "Minister",
+          "Ministry",
+          "Board",
+          "Corporation",
+          "Council",
+          "Committee",
+          "Commission",
+          "Court",
+          "High",
+          "Supreme",
+          "National",
+          "Policy",
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ],
+        "dedup": {
+          "candidate_ratio": 0.8,
+          "pairs_per_call": 20
+        },
+        "frozen_terms": [
+          "AIADMK-2016",
+          "DMK-2021",
+          "TVK-2026"
+        ]
+      },
+      "classify": {
+        "promises_per_call": 20,
+        "headline_cap": 25,
+        "min_indicators": 2,
+        "max_indicators": 4,
+        "min_queries": 2,
+        "max_queries": 4,
+        "min_query_words": 2,
+        "max_query_words": 12,
+        "max_indicator_words": 40,
+        "extra_common_words": [
+          "MW",
+          "LPG"
+        ],
+        "vague_stop_share": 0.5,
+        "goal_verbs": [
+          "improve",
+          "strengthen",
+          "promote",
+          "ensure"
+        ],
+        "spotcheck": {
+          "per_term": 3,
+          "per_group": 3
+        },
+        "frozen_terms": [
+          "AIADMK-2016",
+          "DMK-2021",
+          "TVK-2026"
+        ]
+      },
+      "retrieve": {
+        "landmarks_months": {
+          "AIADMK-2016": [
+            5,
+            6,
+            12,
+            24,
+            36,
+            48
+          ],
+          "DMK-2021": [
+            5,
+            6,
+            12,
+            24,
+            36,
+            48
+          ],
+          "TVK-2026": [
+            5
+          ]
+        },
+        "full_term": true,
+        "k": 5,
+        "max_per_doc": 2,
+        "go_min": 2,
+        "go_pool": 50,
+        "bm25": {
+          "k1": 1.5,
+          "b": 0.75,
+          "epsilon": 0.25,
+          "depth": 100
+        },
+        "dense": {
+          "model": "BAAI/bge-small-en-v1.5",
+          "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+          "max_seq_length": 512,
+          "batch_size": 64,
+          "depth": 100,
+          "device": "auto",
+          "query_instruction": "Represent this sentence for searching relevant passages: ",
+          "mock": false,
+          "mock_dim": 64
+        },
+        "rrf": {
+          "k": 60.0,
+          "w_bm25": 1.0,
+          "w_dense": 1.0
+        },
+        "index_shard": 2000,
+        "tokens_per_word": 1.33,
+        "spotcheck": {
+          "per_term": 3,
+          "per_group": 3,
+          "reserve_per_term": {
+            "e": 1
+          },
+          "snippet_words": 150,
+          "near_cutoff_days": 31
+        }
+      },
+      "judge": {
+        "tiers": {
+          "A": {
+            "AIADMK-2016": "all",
+            "DMK-2021": [
+              "full"
+            ],
+            "TVK-2026": "all"
+          },
+          "B": {
+            "DMK-2021": "landmarks"
+          }
+        },
+        "bulk": {
+          "tasks_per_call": 10,
+          "retry_tasks_per_call": 5
+        },
+        "directional": {
+          "promises_per_call": 50
+        },
+        "number_words": [
+          "one",
+          "two",
+          "three",
+          "four",
+          "five",
+          "six",
+          "seven",
+          "eight",
+          "nine",
+          "ten",
+          "hundred",
+          "thousand",
+          "lakh",
+          "crore",
+          "million",
+          "billion"
+        ],
+        "quote": {
+          "min_words": 5,
+          "max_words": 40
+        },
+        "quote_fuzzy_min": 95.0,
+        "review_confidence": 0.6,
+        "max_unresolved_share": 0.03,
+        "smoke_max_first_fail": 0.25,
+        "probe_max_share": 0.25,
+        "probe": {
+          "n": 40,
+          "seed": "ept-probe-2026-10-22",
+          "tasks_per_call": 10
+        },
+        "strong": {
+          "tasks_per_batch": 20,
+          "priorities": [
+            "gold",
+            "headline",
+            "tvk_current",
+            "flagged_full",
+            "flagged_aiadmk_landmarks",
+            "flagged_dmk_landmarks"
+          ]
+        },
+        "spotcheck": {
+          "per_term": 3,
+          "per_group": 3,
+          "near_days": 31
+        },
+        "rationale_max_words": 80
+      },
+      "llm": {
+        "retries": 1,
+        "temperature": 0.0,
+        "models": {
+          "bulk": "gemini-3.5-flash-lite",
+          "vision": "gemini-3.8-flash",
+          "strong": "claude-cowork",
+          "mock": "mock"
+        },
+        "bulk": {
+          "api_key_env": "GEMINI_API_KEY",
+          "candidates": [
+            "gemini-3.8-flash",
+            "gemini-3.5-flash-lite"
+          ],
+          "rpm": 14.0,
+          "tpm": 250000,
+          "rpd": {
+            "gemini-3.8-flash": 20,
+            "gemini-3.5-flash-lite": 500
+          },
+          "quota_tz": "America/Los_Angeles",
+          "min_v1_pass": 0.9,
+          "backoff_s": 5.0,
+          "max_backoff_s": 120.0,
+          "timeout_s": 300.0
+        }
+      }
+    },
+    "sources": {
+      "order": [
+        "tn_policy_notes",
+        "tn_gos",
+        "tn_schemes",
+        "manual",
+        "tnbudget_speeches",
+        "governor_addresses",
+        "cag_reports"
+      ],
+      "departments": {
+        "1": "Social Justice Department",
+        "2": "Agriculture - Farmers Welfare Department",
+        "3": "Animal Husbandry, Dairying, Fisheries and Fishermen Welfare Department",
+        "4": "BC, MBC & Minorities Welfare Department",
+        "5": "Co-operation, Food and Consumer Protection Department",
+        "6": "Commercial Taxes and Registration Department",
+        "7": "Energy Department",
+        "8": "Environment, Climate Change and Forests Department",
+        "9": "Finance Department",
+        "10": "Handlooms, Handicrafts, Textiles and Khadi Department",
+        "11": "Health and Family Welfare Department",
+        "12": "Higher Education Department",
+        "13": "Highways and Minor Ports Department",
+        "14": "Home, Prohibition and Excise Department",
+        "15": "Housing and Urban Development Department",
+        "16": "Industries, Investment Promotion & Commerce Department",
+        "17": "Artificial Intelligence, Information Technology and Digital Services Department",
+        "18": "Labour Welfare and Skill Development Department",
+        "19": "Law Department",
+        "21": "Municipal Administration and Water Supply Department",
+        "22": "Human Resources Management Department",
+        "23": "Planning and Development Department",
+        "24": "Public Department",
+        "26": "Revenue and Disaster Management Department",
+        "27": "Rural Development and Panchayat Raj Department",
+        "28": "School Education Department",
+        "29": "Micro, Small and Medium Enterprises Department",
+        "30": "Social Welfare and Women Empowerment Department",
+        "31": "Tamil Dev. and Information Department",
+        "32": "Tourism, Culture and Special Initiatives Department",
+        "33": "Transport Department",
+        "34": "Youth Welfare and Sports Development Department",
+        "35": "Welfare of Differently Abled Persons",
+        "38": "Public (Elections) Department",
+        "41": "Special Programme Implementation",
+        "42": "Public Works Department",
+        "44": "Water Resources Department",
+        "45": "Natural Resources Department"
+      },
+      "sources": {
+        "tn_policy_notes": {
+          "enabled": true,
+          "doc_type": "policy_note",
+          "base_url": "https://www.tn.gov.in/",
+          "dept_list_url": "https://www.tn.gov.in/document_dept_list.php?cate_name=YWxs",
+          "dept_page": "document.php?dep_id={dep_id_b64}&year={fy_b64}&cate_name=YWxs",
+          "wayback_prefixes": [
+            "cms.tn.gov.in/cms_migrated/document/docfiles/",
+            "cms.tn.gov.in/sites/default/files/documents/"
+          ],
+          "wayback_legacy": {
+            "cms.tn.gov.in/cms_migrated/document/docfiles/": [
+              "cms.tn.gov.in/sites/default/files/documents/"
+            ]
+          },
+          "wayback_legacy_suffixes": [
+            "",
+            "_0",
+            "_1"
+          ]
+        },
+        "tnbudget_speeches": {
+          "enabled": true,
+          "doc_type": "budget_speech",
+          "cdx_prefix": "tnbudget.tn.gov.in/tnweb_files/",
+          "wayback_prefixes": [
+            "tnbudget.tn.gov.in/tnweb_files/"
+          ],
+          "dep_id": 9,
+          "skip_if_covered_by": "tn_policy_notes"
+        },
+        "governor_addresses": {
+          "enabled": true,
+          "doc_type": "governor_address"
+        },
+        "cag_reports": {
+          "enabled": true,
+          "doc_type": "cag_report",
+          "cdx_prefix": "cag.gov.in/uploads/download_audit_report/",
+          "cdx_filters": [
+            "original:.*[Tt]amil.*"
+          ]
+        },
+        "tn_schemes": {
+          "enabled": true,
+          "doc_type": "scheme_page",
+          "base_url": "https://www.tn.gov.in/",
+          "list_url": "schemes.php",
+          "dept_param": "dep_id",
+          "archived_prefix": "tn.gov.in/scheme/data_view/",
+          "wayback_prefixes": [
+            "tn.gov.in/scheme/data_view/"
+          ],
+          "html_main": "table.ng-table, .region-content",
+          "html_rows": "tr, .node_viewlist_even, .node_viewlist_odd",
+          "text_dating": false
+        },
+        "tn_gos": {
+          "enabled": true,
+          "doc_type": "go",
+          "base_url": "https://www.tn.gov.in/",
+          "dept_page": "go.php?dep_id={dep_id_b64}&year={year_b64}",
+          "wayback_prefixes": [
+            "cms.tn.gov.in/cms_migrated/document/GO/"
+          ]
+        },
+        "manual": {
+          "enabled": true,
+          "doc_type": null
+        }
+      },
+      "trackers": [
+        {
+          "name": "South First analysis, DMK 394 of 505 promises",
+          "url": "https://thesouthfirst.com/tamilnadu/south-first-analysis-dmk-delivers-394-of-505-poll-promises-women-centric-schemes-lag/",
+          "term_id": "DMK-2021"
+        },
+        {
+          "name": "Pudhiyavan DMK manifesto 2021 tracker",
+          "url": "https://dmk-manifesto-2021-tracker.pudhiyavan.com/",
+          "term_id": "DMK-2021"
+        },
+        {
+          "name": "RG Anand, DMK manifesto tracker (PDF)",
+          "url": "https://rganand.com/images/publications/DMK_manifesto_tracker.pdf",
+          "term_id": "DMK-2021",
+          "ext": ".pdf"
+        },
+        {
+          "name": "OnlyVotez DMK promise tracker (data bundle of the web app)",
+          "url": "https://onlyvotez.byvignesh.com/assets/index-CQsFjt6x.js",
+          "term_id": "DMK-2021",
+          "ext": ".js"
+        },
+        {
+          "name": "TNM status check, AIADMK 2016 water and infrastructure promises",
+          "url": "https://www.thenewsminute.com/article/tnm-status-check-aiadmk-s-2016-promises-water-and-infrastructure-145089",
+          "term_id": "AIADMK-2016"
+        },
+        {
+          "name": "TNM, AIADMK 2016 social welfare promises",
+          "url": "https://www.thenewsminute.com/article/amma-housing-scheme-free-washing-machine-aiadmk-s-social-welfare-promises-145231",
+          "term_id": "AIADMK-2016"
+        }
+      ]
+    }
+  },
+  "kind": "probe",
+  "fingerprint": {
+    "hash": "52551345f663965c79a053190b6550696b7002ef81b31647d46e8d3b1243226c",
+    "parts": {
+      "keys": [
+        "65421aba447108fe572623db3657662d29b431c45a3e5e35ca64a1cc13e4b066",
+        "750ca1c2a6afcb6acf6113ca92b1e7fda4a0a017f5904e33a40c63623129bb02",
+        "a2b9b405282cc253043dfe50598f23984b775ec606b7a967ea37df5c36d7cd24",
+        "17cb127b82b1afc04c4c42864a97d87b4864a661c812a84e5c7ec3fed2af04ac",
+        "1328d6a9b757a921ed2e2d338e74c0d1d64d8a3f7bbf428abf67e3db43222753",
+        "8837d8ed116b870109b0dd73d612856a049c38baeb0617069b156b2a94284fd1",
+        "dc13768e8195b225f3afea67ab38033f8559a95675b071eb47c3317f2c22e41b",
+        "51d1587631d9e5d660f4ff55be7b0a5766a1469dc1278c863621aee2cb878f5e",
+        "63e61224ed8e0d358bf35daa8eed9f1a186e0ff0a7bcefb55923f0f224ff6b5a",
+        "aa7e95a1ef1267af45ddf1b8abe6d0d126565a48673d7e03dc0ad1d2d7d9406e",
+        "f52ba6a8a748a5c563e5cba2b2f82d30687f4873ab63e37568508520c6e775c5",
+        "71a679f6da998010dea25444f3c271a54f98bd6be25e01074173b2f860b3dae8",
+        "451f1bc43dcaf2f990e40855ae8e58aaa2ce7892c8d6774df6d9dbabb0e49bf5",
+        "f73bd444eaa54aade12b20b651a5f8772d7474c96815423b3531ab28412bd25e",
+        "05bfc50a7feae932f2e7e343efaccabfbe6c602fa96a2ec8dbe265258e4d3eec",
+        "70e82aa2a779b6e3222f97e0ef83e1b743090f50c93a9fc74c39ca6c528d0c72",
+        "be6171b870c62c50515987f90ceb1e95cb7cda34d85962d1a3200081f3fa391e",
+        "b5586effd1e6742b036deae8166e3253eacdda27d52dedce7820ae0d1001fd77",
+        "9d86d36f9bf86d04cdd7e30cb8f72d9f548c9400f591047be7619c87b2a3017e",
+        "fa8f9a091536c0ef2dd66416f987190e3793c9c808f8bc2a0856af481561b159",
+        "ef999fe27661664d7bba528fdd7eadb6e9b9c8d4acadc72e4004f73b8db37eb5",
+        "ed6add90ec52978dfc67e4ba45126bed0b7b2391bc90b86de90bf644b0ed246b",
+        "96b9db13dba7d8dbee53ba1cc8a7d9c92bbb9adab22e7daedd6e91b53eed8b90",
+        "b4245df4a0234bd648e1016d8e83f7b682534f492e21d3157b4b05f6af4e4ae4",
+        "e84073ca0162641ada105369b4cb048dcabf3df317e1fdd6fa75baff20a9dff8",
+        "ab48845d45755683cd0d965cdbcfeb8127010700c1bb030008ae5b15542003d4",
+        "e6d38be903241101853ca39099e499863cc409125ff25f13b38115fc231f72e7",
+        "86bf8b621c2c10afda9096567b796f5b54b5073dd6fdaa1a5ab37409bb56b60f",
+        "89697abbaf7bddbb5bf7eec2cdb9796585b16a82b52f7cdab46bb94e4327f04e",
+        "7da161be7fe5e83ecbdfd02b6f62062b122ebd2df565981ba4b85388e89f3963",
+        "59e0a4b803a997b2393ef69048b38129e524aa97af51066ba4e4529ce64cef0a",
+        "8289c1b6532ce249e39fa3ab18b31602dc3bfdb2c40fd8fb01b5e9a202b6abfe",
+        "28f070ddd73b1e8b7aa8feacf602e94c9ea1f9c4b98a1c5029e80364be948e5c",
+        "6f8be6330897258dfe1478fb8704fa2b1fcc8ba84e9340e935f427d02bd3d416",
+        "26bafcfff85ec2e79279d6ea2ca51026e89ebaee2e52d940c1e2e08a0595c339",
+        "37108df5f2eaac7d95aa3bc00ebd189a4f9189665946327c275a52fd9c9a30ee",
+        "33573a86152c92c173db71f1503b69c5d8e0fdd67d9a308049d85c3ec1b25b49",
+        "6bd8a1ca8a1dc413ad8e2b82c5ecf2f42f3ac51f508a4b509aae3711255b3652",
+        "9ee1b3803f4c1ee54f01f38d9bdcbf02bafe8868da9bf211cd7b10555df68cbe",
+        "07bc25d7e734bd0d97987f4a05ed1cc50203a4d0f07f0cf9c58871dea590a8f5"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "version": "1.2"
+    }
+  },
+  "complete": true
+}

@@ -215,3 +215,24 @@ def test_report_writes_md_and_json(judged, monkeypatch):
     rep = json.loads(cfg.path("judgment_json").read_text())
     assert rep["per_term_cutoff"]["TVK-2026@m5"]["promise_verdicts"] == 1
     assert "Leakage line" in cfg.path("judgment_md").read_text()
+
+
+def test_two_solo_tries_with_feedback_before_unresolved(judged, monkeypatch):
+    from ept.config import get_config
+    from ept.judge.bulk import read_calls, run_bulk
+
+    get_config().settings.judge.max_unresolved_share = 1.0
+    get_config().settings.judge.bulk.retry_tasks_per_call = 5
+    bad = lambda t, n, size: default_answer(t) | {"confidence": 2.0} if "Waive crop" in t["promise"] else default_answer(t)
+    install(monkeypatch, FakeJudge(bad))
+    s = run_bulk(tier="A")
+    calls = read_calls(get_config(), s["run_id"])
+    solo = [c for c in calls if c["stage"] == "solo"]
+    minis = [c for c in calls if c["stage"] == "mini"]
+    unres = {r[0][:16] for r in judged.execute("SELECT DISTINCT judging_key FROM indicator_verdicts WHERE run_id = ? "
+                                               "AND review_reasons LIKE '%unresolved%'", (s["run_id"],))}
+    assert unres and minis
+    for k in unres:  # the crop-loan indicator fails everywhere: two solo tries each (unless its mini-batch was alone)
+        n_solo = sum(1 for c in solo if c["keys"] == [k])
+        alone_mini = any(c["keys"] == [k] for c in minis)
+        assert n_solo == (1 if alone_mini else 2)

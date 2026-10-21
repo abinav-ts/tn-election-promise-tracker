@@ -1,0 +1,555 @@
+{
+ "generated_at": "2026-10-21T20:15:57+00:00",
+ "bulk_run": "judge-20261021T200929Z",
+ "retrieval_run": "retrieve-20261020T191347Z",
+ "tiers": {
+  "A": {
+   "complete": false,
+   "keys": 3892,
+   "tasks": 4173,
+   "stored": 164,
+   "unresolved": 7,
+   "unresolved_share": 0.0018
+  },
+  "B": {
+   "complete": false,
+   "keys": 4040,
+   "tasks": 4260,
+   "stored": 107,
+   "unresolved": 0,
+   "unresolved_share": 0.0
+  }
+ },
+ "complete": false,
+ "per_term_cutoff": {
+  "AIADMK-2016@m5": {
+   "cutoff": "2016-10-23",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 15,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 3,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 11,
+    "partial": 3,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 2,
+    "blocked_external": 0,
+    "unverifiable": 0
+   },
+   "realised_share": 0.875,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "AIADMK-2016@m6": {
+   "cutoff": "2016-11-23",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 13,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 5,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 9,
+    "partial": 3,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 4,
+    "blocked_external": 0,
+    "unverifiable": 0
+   },
+   "realised_share": 0.75,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "AIADMK-2016@m12": {
+   "cutoff": "2017-05-23",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 14,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 5,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 11,
+    "partial": 1,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 4,
+    "blocked_external": 0,
+    "unverifiable": 0
+   },
+   "realised_share": 0.75,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "AIADMK-2016@m24": {
+   "cutoff": "2018-05-23",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 16,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 2,
+    "blocked_external": 0,
+    "unverifiable": 2
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 12,
+    "partial": 2,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 1,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "realised_share": 0.875,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "AIADMK-2016@m36": {
+   "cutoff": "2019-05-23",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 16,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 3,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 12,
+    "partial": 2,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 2,
+    "blocked_external": 0,
+    "unverifiable": 0
+   },
+   "realised_share": 0.875,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "AIADMK-2016@m48": {
+   "cutoff": "2020-05-23",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 16,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 2,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 12,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 2,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "realised_share": 0.75,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "AIADMK-2016@full": {
+   "cutoff": "full",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 17,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 2,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 16,
+   "promises_in_term": 312,
+   "promise_status": {
+    "fulfilled": 13,
+    "partial": 1,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 1,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "realised_share": 0.875,
+   "judge_source": {
+    "bulk": 16
+   }
+  },
+  "DMK-2021@m5": {
+   "cutoff": "2021-10-07",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 5,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 10,
+    "blocked_external": 0,
+    "unverifiable": 5
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 5,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 9,
+    "blocked_external": 0,
+    "unverifiable": 4
+   },
+   "realised_share": 0.2778,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "DMK-2021@m6": {
+   "cutoff": "2021-11-07",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 8,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 10,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 7,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 9,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "realised_share": 0.3889,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "DMK-2021@m12": {
+   "cutoff": "2022-05-07",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 8,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 8,
+    "blocked_external": 0,
+    "unverifiable": 4
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 8,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 6,
+    "blocked_external": 0,
+    "unverifiable": 4
+   },
+   "realised_share": 0.4444,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "DMK-2021@m24": {
+   "cutoff": "2023-05-07",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 9,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 9,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 9,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 1,
+    "not_started": 7,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "realised_share": 0.5,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "DMK-2021@m36": {
+   "cutoff": "2024-05-07",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 10,
+    "partial": 1,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 5,
+    "blocked_external": 0,
+    "unverifiable": 4
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 10,
+    "partial": 1,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 5,
+    "blocked_external": 0,
+    "unverifiable": 2
+   },
+   "realised_share": 0.6111,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "DMK-2021@m48": {
+   "cutoff": "2025-05-07",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 9,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 9,
+    "blocked_external": 0,
+    "unverifiable": 2
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 9,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 8,
+    "blocked_external": 0,
+    "unverifiable": 1
+   },
+   "realised_share": 0.5,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "DMK-2021@full": {
+   "cutoff": "full",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 10,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 8,
+    "blocked_external": 0,
+    "unverifiable": 2
+   },
+   "promise_verdicts": 18,
+   "promises_in_term": 667,
+   "promise_status": {
+    "fulfilled": 9,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 0,
+    "not_started": 7,
+    "blocked_external": 0,
+    "unverifiable": 2
+   },
+   "realised_share": 0.5,
+   "judge_source": {
+    "bulk": 18
+   }
+  },
+  "TVK-2026@m5": {
+   "cutoff": "2026-10-10",
+   "indicator_verdicts": 20,
+   "indicator_status": {
+    "fulfilled": 4,
+    "partial": 0,
+    "diluted": 0,
+    "in_progress": 3,
+    "not_started": 8,
+    "blocked_external": 0,
+    "unverifiable": 5
+   },
+   "promise_verdicts": 17,
+   "promises_in_term": 695,
+   "promise_status": {
+    "fulfilled": 3,
+    "partial": 1,
+    "diluted": 0,
+    "in_progress": 2,
+    "not_started": 7,
+    "blocked_external": 0,
+    "unverifiable": 4
+   },
+   "realised_share": 0.2353,
+   "judge_source": {
+    "bulk": 17
+   }
+  }
+ },
+ "checks": {
+  "keys_judged": 265,
+  "first_pass_tasks": 265,
+  "first_answer_fail_rate": 0.1057,
+  "fail_rate_after_mini": 0.0453,
+  "unresolved": 7,
+  "unresolved_share": 0.0264,
+  "first_failures_by_check": {
+   "J3": 26,
+   "J5": 1,
+   "J6": 8
+  },
+  "review_reasons_per_key": {
+   "quote_fuzzy": 5,
+   "retried": 21,
+   "unresolved": 7
+  }
+ },
+ "directional": {
+  "AIADMK-2016": {
+   "promises": 312,
+   "directional": 43,
+   "d3_override": 1,
+   "unresolved": 0
+  },
+  "DMK-2021": {
+   "promises": 667,
+   "directional": 79,
+   "d3_override": 13,
+   "unresolved": 0
+  },
+  "TVK-2026": {
+   "promises": 695,
+   "directional": 50,
+   "d3_override": 10,
+   "unresolved": 0
+  }
+ },
+ "date_chunk_doc_types": {
+  "go": 99,
+  "governor_address": 30,
+  "policy_note": 14,
+  "budget_speech": 9,
+  "scheme_page": 1
+ },
+ "non_monotone_promises_bulk": 10,
+ "final": {
+  "run_id": "judge-20261021T201556Z",
+  "resumed": false,
+  "written": 255,
+  "non_monotone": 20,
+  "sources": {
+   "bulk": 255,
+   "strong": 0,
+   "human": 0
+  },
+  "missing_promise_cutoffs": 7293,
+  "export": "data/judgments/final_judge-20261021T201556Z.jsonl"
+ },
+ "probe": {
+  "run_id": "judge-20261021T195852Z",
+  "resumed": false,
+  "tasks": 40,
+  "planned": 40,
+  "evidence_claims": 0,
+  "evidence_share": 0.0,
+  "realised_claims": 0,
+  "stop_for_user": false,
+  "stopped": null,
+  "llm_calls": 4
+ },
+ "usage": {
+  "calls_logged": 61,
+  "backend_calls": 57,
+  "cache_hits": 4,
+  "est_tokens_total": 921529,
+  "prompt_tokens_total": 1438592,
+  "output_tokens_total": 49705,
+  "prompt_tokens_per_first_call_median": 43670.0,
+  "est_tokens_per_first_call_max": 30090,
+  "tpm_limit": 250000,
+  "quota_days": [
+   "2026-10-21"
+  ]
+ },
+ "strong": {},
+ "leakage": {
+  "realised_uncited": 0,
+  "cited_outside_retrieval": 0,
+  "date_outside_window": 0,
+  "mixed_calls": 0,
+  "examples": [],
+  "total": 0
+ },
+ "neutrality": {
+  "by_term": {
+   "AIADMK-2016": [
+    "1.3|gemini-3.5-flash-lite"
+   ],
+   "DMK-2021": [
+    "1.3|gemini-3.5-flash-lite"
+   ],
+   "TVK-2026": [
+    "1.3|gemini-3.5-flash-lite"
+   ]
+  },
+  "same_for_every_term": true,
+  "config": "one judge config and check set (fingerprint fd69871e0bdf)"
+ }
+}

@@ -7,7 +7,8 @@
   carries a verified quote).
 - J3 quotes: 5–40 words, found in the cited extract (its document title or chunk text, as shown to the judge
   and as indexed in stage 04, D-079) after normalisation (NFKC, lower case, non-alphanumerics → space, spaces
-  collapsed); else rapidfuzz `partial_ratio` ≥ `judge.quote_fuzzy_min` passes with review reason `quote_fuzzy`.
+  collapsed, and amount glosses "(Rupees … only)" removed from both sides: user's decision after the smoke test);
+  else rapidfuzz `partial_ratio` ≥ `judge.quote_fuzzy_min` passes with review reason `quote_fuzzy`.
 - J4 date presence: a date iff the status is fulfilled / partial / diluted; a date needs a `date_extract`.
 - J5 date window: period_end(date) ≥ sworn_in and period_start(date) ≤ the latest `available_by` among the
   cited chunks (never after the cutoff, since every retrieved chunk is eligible at it).
@@ -36,6 +37,8 @@ REALISED = frozenset({"fulfilled", "partial", "diluted"})
 NO_CITATION_NEEDED = frozenset({"not_started", "unverifiable"})
 _DATE_RE = re.compile(r"^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$")
 _NON_ALNUM = re.compile(r"[^0-9a-z]+")
+# an amount written out in words after the figure, "Rs.50.00 crore (Rupees fifty crore only)" (user, 2026-10-22)
+_GLOSS = re.compile(r"\brupees(?: [a-z]+){1,20}? only\b")
 _PREC_RANK = {"day": 0, "month": 1, "year": 2}
 
 
@@ -159,12 +162,16 @@ def normalise(text: str) -> str:
     return " ".join(_NON_ALNUM.sub(" ", t).split())
 
 
+def strip_gloss(normalised: str) -> str:
+    return " ".join(_GLOSS.sub(" ", normalised).split())
+
+
 def quote_match(quote: str, chunk_text: str, fuzzy_min: float, title: str = "") -> Optional[str]:
-    """'exact' | 'fuzzy' | None (not found), in the chunk text or the document title."""
-    q = normalise(quote)
+    """'exact' | 'fuzzy' | None (not found), in the chunk text or the document title (amount glosses ignored)."""
+    q = strip_gloss(normalise(quote))
     if not q:
         return None
-    parts = [normalise(x) for x in (chunk_text, title) if x]
+    parts = [strip_gloss(normalise(x)) for x in (chunk_text, title) if x]
     if any(f" {q} " in f" {c} " for c in parts):
         return "exact"
     return "fuzzy" if any(fuzz.partial_ratio(q, c) >= fuzzy_min for c in parts) else None

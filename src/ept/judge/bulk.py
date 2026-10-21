@@ -157,7 +157,8 @@ class Caller:
 
 
 def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome]:
-    """First call → failing tasks in mini-batches → still failing alone → unresolved. Each retry shows the task's
+    """First call → failing tasks in mini-batches → still failing alone (`judge.bulk.solo_retries` tries, user's
+    decision after the smoke test) → unresolved. Each retry shows the task's
     previous check failures (`checks.feedback`), so the model can fix them; the checks are the same."""
     res = call(batch, "first")
     outcomes: dict[str, Outcome] = {}
@@ -171,7 +172,7 @@ def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome
         else:
             o.checked, o.stage = chk, "first"
         outcomes[k.key] = o
-    still: list[Key] = []
+    still: list[tuple[Key, int]] = []  # (key, tries alone already made)
     for mb in batches(failing, retry_size):
         r2 = call(mb, "mini", notes={k.key: outcomes[k.key].first_failures for k in mb})
         for k in mb:
@@ -179,16 +180,17 @@ def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome
             o = outcomes[k.key]
             o.last_failures = fails
             if fails:
-                if len(mb) > 1:
-                    still.append(k)  # a one-task mini-batch was already asked alone
+                still.append((k, 1 if len(mb) == 1 else 0))  # a one-task mini-batch counts as a try alone
             else:
                 o.checked, o.stage = chk, "mini"
-    for k in still:
-        _, chk, fails = call([k], "solo", notes={k.key: outcomes[k.key].last_failures})[k.key]
+    for k, done in still:
         o = outcomes[k.key]
-        o.last_failures = fails
-        if not fails:
-            o.checked, o.stage = chk, "solo"
+        for _ in range(call.ctx.cfg.settings.judge.bulk.solo_retries - done):  # each try sees the last failures
+            _, chk, fails = call([k], "solo", notes={k.key: o.last_failures})[k.key]
+            o.last_failures = fails
+            if not fails:
+                o.checked, o.stage = chk, "solo"
+                break
     return [outcomes[k.key] for k in batch]
 
 

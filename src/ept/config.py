@@ -305,6 +305,7 @@ class Retrieve(_Cfg):
 class JudgeBulk(_Cfg):
     tasks_per_call: int
     retry_tasks_per_call: int
+    solo_retries: int = 1  # tries alone after the mini-batch (2: user, 2026-10-22, after the smoke test)
 
 
 class JudgeDirectional(_Cfg):
