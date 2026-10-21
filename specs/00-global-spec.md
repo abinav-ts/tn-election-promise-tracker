@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**; **v0.10 (2026-10-20) = §9.1 C3 wording after the stage 03 limit-20 spot-check, D-072**; **v0.11 (2026-10-20) = spec 04 approved: availability date with fiscal-year bound, term-bounded retrieval windows, landmark months, Q-06 resolved, D-075–D-079; §12 spot-checks: one per stage, on the full run, non-blocking, phone review page, D-080**; **v0.12 (2026-10-21) = availability date also capped at the fetch date, D-082**) |
+| Status | APPROVED v0.6 (2026-10-11; v0.4 = spec 01 amendments D-016–D-022; v0.5 = spot-check rule D-027; v0.6 = stage 01 results that later stages rely on: date semantics, cutoff comparison, tracker-lead outcome, environment; **v0.7 (2026-10-11, with draft spec 02) = manifesto text routes, bulk backend, transcription (Gemini vision, Cowork fallback), `parent_group` meaning, frozen promises, D-035–D-046; approved with spec 02 v1.0/v1.1 on 2026-10-12; v1.2 build clarifications**; **v0.8 (2026-10-15) = stage 02 built and frozen: bulk model, free-tier limits, Claude-subagent transcription route, D-044–D-063**; **v0.9 (2026-10-18) = spec 03 approved: covariate rubrics (Q-05), classification snapshot frozen, stage 03 checks C3/C4, D-064–D-070**; **v0.10 (2026-10-20) = §9.1 C3 wording after the stage 03 limit-20 spot-check, D-072**; **v0.11 (2026-10-20) = spec 04 approved: availability date with fiscal-year bound, term-bounded retrieval windows, landmark months, Q-06 resolved, D-075–D-079; §12 spot-checks: one per stage, on the full run, non-blocking, phone review page, D-080**; **v0.12 (2026-10-21) = availability date also capped at the fetch date, D-082**; **v0.13 (2026-10-22) = spec 05 approved: `indicator_verdicts`, judging checks, call grouping, strong judge in fresh subagents as a priority queue, Q-07 resolved, D-084–D-093**) |
 | Owner | Abinav (solo), built with Claude (Pro plan): Claude Cowork drafts the specs, Claude Code implements them |
 | Created | 2026-10-06 |
 | Deadline | 20 days → **2026-10-25** |
@@ -41,7 +41,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 | Constraint | Consequence |
 |---|---|
 | Solo, 20 days | Strict scope (§3), a day plan (§12), a pre-agreed cut order |
-| Claude Pro plan, no paid API | Bulk LLM work runs on a free tier (Gemini free tier and/or open models on Kaggle). Claude in Cowork is the strong judge through a file handoff (§6) |
+| Claude Pro plan, no paid API | Bulk LLM work runs on a free tier (Gemini free tier and/or open models on Kaggle). Claude is the strong judge through a file handoff (§6), in fresh Claude Code subagents (D-086); the user pays for extra Claude usage in the week of 2026-10-22 |
 | Claude usage limits on Pro | Claude judges a **subset** (§6.3), not every indicator |
 | Environment | Specs are drafted in Claude Cowork, which reads the project folder. Code is written and run by Claude Code directly on the user's Mac (project venv `.venv/`, Python 3.11, Tesseract with `eng` + `tam`), with network access to PyPI, the source sites and Wayback. Multi-hour runs (e.g. the full crawl) are run by the user in their own terminal (D-021) |
 | Deliverable is a website | Pipeline runs offline in batch and exports JSON; a static site renders it (§5, stage 08) |
@@ -86,7 +86,7 @@ Build a reproducible pipeline that measures **whether and when** Tamil Nadu gove
 | **Month-in-term** | Whole months since the term's swearing-in |
 | **Landmark** | A month-in-term cutoff used to simulate what was knowable then (e.g. 6, 12, 24) |
 | **Bulk model** | Free-tier or Kaggle-hosted LLM for high-volume, simpler steps |
-| **Strong judge** | Claude in a Cowork session, judging through the file handoff (§6.2) |
+| **Strong judge** | Claude in a fresh Claude Code subagent (or a fresh Cowork session), judging through the file handoff (§6.2, D-086) |
 
 ## 5. Architecture
 
@@ -113,7 +113,7 @@ gov. sites ──► 01 crawl/parse ──► documents + chunks ──► 04 re
 | 02 | Promise extraction (done 2026-10-15: 1,674 promises frozen) | `ept extract` (`pages`, `units`, `transcribe export/import`, `promises`, `dedup`, `report`, `spotcheck`, `freeze`, `backend-test`) | `promises` (frozen per term in `data/frozen/`), extraction report, bulk backend |
 | 03 | Classification & decomposition (done 2026-10-20: 1,674 promises, 1,863 indicators, frozen) | `ept classify` (`run`, `report`, `spotcheck`, `freeze`) | covariates, `indicators` with search queries (frozen per term in `data/frozen/classification_{term}.jsonl`, D-064) |
 | 04 | Evidence retrieval (spec 04 approved 2026-10-20) | `ept index`, `ept retrieve` (`run`, `report`, `spotcheck`) | `retrievals`: top 5 chunks per indicator × cutoff (landmarks + full term, D-075, D-078), embedding index, retrieval report |
-| 05 | Judgment | `ept judge`, `ept judge export/import` | `verdicts` |
+| 05 | Judgment (spec 05 approved 2026-10-22) | `ept judge` (`directional`, `run`, `probe`, `aggregate`, `export`, `import`, `final`, `report`, `spotcheck`) | `indicator_verdicts`, `verdicts` (bulk, strong and final runs), committed strong-judge batches and final verdicts, judgment report |
 | 06 | Evaluation | `ept evaluate` | metrics + error analysis |
 | 07 | Survival modelling | `ept model` | curves, hazard ratios, backtest, projection |
 | 08 | Website | `ept export-site`, `site/` build | static site + whitepaper, deployed |
@@ -130,11 +130,11 @@ All LLM use goes through `ept.llm`, which hides the backend:
 
 The interface handles prompt loading from `prompts/` (each prompt file has a `version:` header), JSON-schema validation with one retry, response caching keyed on backend + model + prompt version + input hash, and a usage log. Temperature 0 wherever the backend allows it.
 
-**Bulk backend (Q-03, D-037; chosen in stage 02):** `gemini-3.5-flash-lite` on the Gemini API free tier, **15 rpm / 500 rpd** (D-055, D-060); `gemini-3.8-flash` (20 rpd) does manifesto vision transcription. Per-model daily limits are tracked client-side on Google's Pacific-time clock, so runs stop before a 429 and resume from the cache. General rule: the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`; manifesto-page transcription uses a separate `llm.models.vision` (D-044), with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
+**Bulk backend (Q-03, D-037; chosen in stage 02):** `gemini-3.5-flash-lite` on the Gemini API free tier, **15 rpm / 500 rpd** (D-055, D-060); `gemini-3.8-flash` (20 rpd) does manifesto vision transcription. Per-model daily limits are tracked client-side on Google's Pacific-time clock, so runs stop before a 429 and resume from the cache. A client-side tokens-per-minute throttle (`llm.bulk.tpm`, 250k on flash-lite's free tier) paces large calls (D-085). General rule: the **Gemini API free tier** (Flash-family models; the free tier offers no Pro model). The exact model is chosen by the stage 02 backend test (spec 02 §4.8) and stored in `llm.models.bulk`; manifesto-page transcription uses a separate `llm.models.vision` (D-044), with the free-tier rate limits in `llm.bulk`. The API key lives in the environment variable `GEMINI_API_KEY`, set in the project's `.env` (gitignored). It is never committed, printed, logged, or put in a cache key or run metadata. A Kaggle-hosted open model is the documented fallback if the free tier fails the test or its quota runs out.
 
-### 6.2 Strong-judge file handoff (Claude in Cowork)
+### 6.2 Strong-judge file handoff (Claude in fresh subagents, D-086)
 1. `ept judge export --run ID` writes batches of ~20 judging tasks to `data/judgments/{run_id}/in/batch_NNN.jsonl`. Each task contains the promise, the indicator, the cutoff date and the supplied chunks (id, title, type, date, text).
-2. In a Cowork session, Claude reads `prompts/judge_indicator.md` and one batch at a time, and writes `data/judgments/{run_id}/out/batch_NNN.jsonl`. **During these sessions Claude must not use web search or read any file other than the prompt and the batch** (leakage rule 1).
+2. For each batch, Claude Code starts a **fresh subagent** (never a fork; D-057 isolation). A neutral scratch folder (no party or term name in the path) holds only a copy of `prompts/judge_indicator.md` and the batch. The subagent reads only those two files, uses no web search and no shell, and writes its output to a separate folder, from which it is imported as `data/judgments/{run_id}/out/batch_NNN.jsonl`. A fresh Cowork session reading the same two files is an equivalent route. **The judge must not use web search or read any file other than the prompt and the batch** (leakage rule 1).
 3. `ept judge import --run ID` validates every output line (same rules as bulk verdicts) and loads it.
 4. Strong-judge outputs are committed to git. They can't be regenerated cheaply, so they are treated as frozen artefacts.
 
@@ -146,6 +146,12 @@ Because of Pro usage limits, Claude judges a subset:
 - TVK-2026 promises at the current landmark (small volume, high visibility).
 
 The final verdict for a promise is: human override > strong judge > bulk model. The source of each final verdict is stored and shown on the website.
+
+**As built (spec 05, D-086, D-090):**
+- The subset is a priority queue of promise × cutoff units: P1 gold promises (AIADMK/DMK full term, TVK month 5; IDs read from `gold_sample.csv` only, never labels); P2 headline; P3 the remaining TVK month-5 promises; P4–P6 bulk-flagged at full term, at AIADMK landmarks, at DMK landmarks.
+- P1 + P2 are required; further levels run as the Claude budget allows, and the report shows coverage per level.
+- Human overrides come only from approved spot-check fixes, never from gold labels.
+- Final verdicts carry realisations forward in time only.
 
 ### 6.4 Manifesto transcription (D-036, D-042, D-057)
 Stage 02 outcome: TVK pages 1–16 by Gemini, 17–96 by **fresh Claude Code subagents** (D-057: each gets one neutral scratch folder with the prompt and its page images only, no web, no other files; outputs pass the same validation and vision-vs-OCR check on import). That route is equivalent to a fresh Cowork session for this rule.
@@ -174,7 +180,7 @@ Storage: one SQLite file (`data/ept.sqlite`, rebuildable). Pydantic models in `s
 
 **`verdicts`** (one row per promise × run × cutoff): `promise_id` · `run_id` · `cutoff_date` (null = full term) · `status` (§8) · `realisation_date` · `date_precision` · `cited_chunk_ids` (json) · `rationale` (≤ 80 words) · `confidence` (0–1) · `needs_review` · `judge_source` (`bulk` | `strong` | `human`) · `judge_model` · `prompt_version`
 
-Indicator-level verdicts and their aggregation into promise verdicts are defined in spec 05.
+**`indicator_verdicts`** (one row per indicator × run × cutoff, D-091): `indicator_id` · `run_id` · `cutoff_date` (null = full term) · `judging_key` · `status` (§8) · `realisation_date` · `date_precision` · `date_chunk_id` · `cited_chunk_ids` (json) · `quotes` (json, chunk_id → quote) · `rationale` (≤ 80 words) · `confidence` (0–1) · `needs_review` · `review_reasons` (json) · `judge_source` · `judge_model` · `prompt_version`. Aggregation into `verdicts` and the final-verdict rules are in spec 05 §4.7 and §4.10.
 
 **`gold_labels`** (CSV in `data/gold/`): `promise_id` · `status` · `realisation_date` · `date_precision` · `evidence` (chunk_id or URL) · `in_corpus` · `notes` · `labelled_at`
 
@@ -211,7 +217,10 @@ Indicator-level verdicts and their aggregation into promise verdicts are defined
 | Judge sees only supplied chunks; uncited E1 verdicts rejected | Prompt wording + import validation (stage 05) |
 | Strong-judge sessions: no web search, no other files | Handoff protocol §6.2; written in the session instructions |
 | Cutoff runs: no chunk whose `available_by` > cutoff, where `ept.dates.available_by` = `period_end(doc_date, date_precision)`, tightened to the fiscal-year end for policy notes, performance budgets and budget speeches (D-077) and never later than the document's fetch date, except interim budgets (D-082; never compare the stored first-of-period date, §9.3); undated chunks excluded; every run is also bounded below by `sworn_in` and, for full-term runs, above by `term_end` (D-076) | Retrieval filter using `ept.dates.available_by` + unit tests + DB-wide check (stage 04) |
-| `realisation_date` ≤ the latest `available_by` among cited chunks (D-077), and ≥ `sworn_in` | Verdict validation (stage 05) |
+| `realisation_date` ≤ the latest `available_by` among cited chunks (D-077), and ≥ `sworn_in` | Verdict validation (stage 05, check J5) |
+| A judging call (bulk) or batch (strong) holds tasks of one term and one judging cutoff only; an identical chunk list shares one judgment only across cutoffs that retrieved it (D-085) | Task builder + leakage line (stage 05) |
+| Every cited chunk carries a verbatim quote found in it; a realisation date is the document date of, or a date written in, a cited chunk (D-087) | Checks J3, J6 (stage 05) |
+| Final verdicts carry realisations forward in time only (D-090); judge templates name no party, term or cutoff (D-092) | `ept judge final` + tests (stage 05) |
 | Promise text from manifesto text only: no number or name absent from the source span; few-shot examples invented, never from in-scope manifestos | Verbatim/number/name checks V1–V3 + spot-check (stage 02) |
 | Vision transcription (Gemini or Cowork fallback): only the prompt and page images; no web search, no knowledge-based "corrections" | Prompt + handoff protocol §6.4 + vision-vs-OCR disagreement check (stage 02) |
 | Promise list frozen per term after sign-off; later knowledge can't reshape it | `data/frozen/promises_{term}.jsonl` + refusal to re-extract (stage 02) |
@@ -340,8 +349,8 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Judge answers from memory, not evidence | §9.1 rules; citation spot-check |
 | Wrong or missing document dates break cutoffs | Dates required for evidence; date coverage in the corpus report. Stage 01: 95.6 % dated to the day, 220 undated |
 | Conservative (upper-bound) dates hide evidence at early landmarks | Policy notes and CAG reports are often Wayback-dated months or years late. Stage 04 reports evidence availability per landmark; stage 07 states it as a limitation. The fiscal-year bound (D-077) removes most of this for policy notes, performance budgets and budget speeches |
-| Free-tier rate limits slow bulk runs | Caching, batching (25 units per call), per-model client-side quota tracking, `--limit` runs; flash-lite's 500 rpd covers stage-scale volumes; Kaggle as a fallback backend. Stage 05 bulk judging still needs batching designed in |
-| Pro usage limits slow strong judging | Subset only (§6.3); batches sized to fit one session |
+| Free-tier rate limits slow bulk runs | Caching, batching (25 units per call), per-model client-side quota tracking, `--limit` runs; flash-lite's 500 rpd covers stage-scale volumes; Kaggle as a fallback backend. Stage 05: 10 tasks per call, one term and judging cutoff per call, a 250k TPM throttle, 7,685 judgments in about two quota days (D-085) |
+| Pro usage limits slow strong judging | Priority queue (§6.3), 20-task batches in fresh subagents, usage measured after P2; extra usage paid this week (D-086) |
 | Only two completed terms; independence assumption | Promise-level modelling, wide intervals, both backtest directions, limitations stated on the site |
 | Tamil manifestos with legacy fonts | Font-map conversion (D-035) with Tamil-share and validity checks; verbatim `source_text` kept for checking |
 | TVK manifesto is a 150-ppi image scan (no text layer) | Look for a better official copy first; else Tesseract `tam` with a calibrated quality gate, failing pages transcribed by Gemini vision (Cowork as last resort, §6.4), cross-checked against OCR |
@@ -360,6 +369,6 @@ Every stage that needs a human check asks for **7–10 items, never more**, chos
 | Q-10 | ✅ Resolved in spec 02: font mapping for legacy fonts, OCR + gate + Gemini vision (Cowork last resort) for scans, translation inside the extraction call (D-035, D-036) | 02 |
 | Q-05 | ✅ Resolved in spec 03: 13 sectors, 8 promise types, judged cost bands, headline cap 25 per term (D-064–D-070) | 03 |
 | Q-06 | ✅ Resolved in spec 04: `BAAI/bge-small-en-v1.5` (local); 5 chunks per indicator, the same for both judges (D-078, D-079) | 04 |
-| Q-07 | Strong-judge batch size that fits within one Cowork session | 05 |
+| Q-07 | ✅ Resolved in spec 05: 20 tasks per batch, fresh Claude Code subagents (D-086) | 05 |
 | Q-08 | Second annotator for agreement (none available solo → use the strong judge vs. bulk model as a proxy, or re-label a subset after a gap of several days) | 06 |
 | Q-09 | Hosting (GitHub Pages vs. Netlify) and charting library | 08 |

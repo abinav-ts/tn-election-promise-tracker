@@ -20,18 +20,18 @@ A solo course project (Data Science & AI), due 2026-10-25. Extract promises from
 - The judge uses **only** the supplied chunks. No model memory, no web search.
 - Cutoff runs see only documents dated on or before the cutoff; undated documents are excluded.
 - Covariates and indicators come from the manifesto text only.
-- Gold labels never appear in prompts, few-shot examples or training.
+- Gold labels never appear in prompts, few-shot examples or training. Judging code may read only the IDs in `data/gold/gold_sample.csv`, never labels; gold labels are never human overrides (D-090).
 - Backtest models are fitted on the training term only.
 - If any shortcut would bend these rules, stop and ask the user.
 
 ## Strong-judge sessions (global spec §6.2)
-These run in a **separate, fresh** conversation. In them: read only `prompts/judge_indicator.md` and the assigned batch file; **do not use web search or read other files**; write only the output batch file. Then stop.
+These run in **fresh Claude Code subagents** (D-086, with the D-057 isolation below; a fresh Cowork conversation is equivalent). The subagent reads only its copy of `prompts/judge_indicator.md` and the assigned batch file; **no web search, no shell, no other files**; it writes only the output batch file, then stops. Never judge in the main conversation. Strong batches wait for the stage 04 and 05 spot-check verdicts (D-080).
 
 ## Transcription sessions (global spec §6.4; Cowork, or fresh Claude Code subagents per D-057)
 Same discipline as strong-judge sessions: a **separate, fresh** conversation; read only `prompts/transcribe_page.md` and the assigned batch of page images; **no web search, no other files**; transcribe exactly what is printed (never fill in from memory); write only the `page_NNN.txt` outputs. Then stop.
 
 ## Isolated Claude work in Claude Code (D-057)
-When a step needs an isolated Claude session (transcription; possibly the strong judge, if a decision allows it), Claude Code may use **fresh subagents** (never a fork of the main conversation): copy the prompt file and the batch inputs to a neutral scratch folder (no party names in the path), tell the agent to read only those files, no web, no shell, and write only its outputs to a separate folder; then import with the stage's validation. Never transcribe or judge in the main conversation.
+When a step needs an isolated Claude session (transcription; the strong judge, D-086), Claude Code may use **fresh subagents** (never a fork of the main conversation): copy the prompt file and the batch inputs to a neutral scratch folder (no party names in the path), tell the agent to read only those files, no web, no shell, and write only its outputs to a separate folder; then import with the stage's validation. Never transcribe or judge in the main conversation.
 
 ## Code conventions
 - Python 3.10+, package `src/ept`, CLI `python -m ept <stage>`.
