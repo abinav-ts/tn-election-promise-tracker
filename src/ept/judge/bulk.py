@@ -2,7 +2,7 @@
 
 Per tier (A, then B): keys not yet stored in this run → groups of one term and one judging cutoff → calls of
 `judge.bulk.tasks_per_call` keys in indicator_id order (deterministic, so a re-run hits the cache) → checks
-J1–J7 per task. The failing tasks of a call are re-asked in mini-batches of `retry_tasks_per_call`, then alone;
+J1–J7 per task. A group's failing tasks are re-asked in mini-batches of `retry_tasks_per_call`, then alone;
 a task still failing is *unresolved*: stored as `unverifiable` with `needs_review` and reason `unresolved`, and
 listed in judge_failures_05.csv. Each key's verdict is written for every cutoff that retrieved its chunk list.
 
@@ -156,22 +156,27 @@ class Caller:
         return out
 
 
-def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome]:
-    """First call → failing tasks in mini-batches → still failing alone (`judge.bulk.solo_retries` tries, user's
-    decision after the smoke test) → unresolved. Each retry shows the task's
-    previous check failures (`checks.feedback`), so the model can fix them; the checks are the same."""
-    res = call(batch, "first")
+def judge_group(call: Caller, group: list[Key], per_call: int, retry_size: int,
+                on_batch=lambda b: None) -> list[Outcome]:
+    """First calls of `per_call` keys → the group's failing tasks pooled into mini-batches of `retry_size` (spec 05
+    §4.5: "from the same group") → still failing alone (`judge.bulk.solo_retries` tries, a one-task mini-batch
+    counting as the first; user's decision after the smoke test, D-094) → unresolved. Each retry shows the task's
+    previous check failures (`checks.feedback`); the checks are the same. Deterministic, so a resumed group is
+    answered from the cache."""
     outcomes: dict[str, Outcome] = {}
     failing: list[Key] = []
-    for k in batch:
-        ans, chk, fails = res[k.key]
-        o = Outcome(k, first_failures=fails, last_failures=fails,
-                    first_answer=ans.model_dump(mode="json") if ans else None)
-        if fails:
-            failing.append(k)
-        else:
-            o.checked, o.stage = chk, "first"
-        outcomes[k.key] = o
+    for batch in batches(group, per_call):
+        res = call(batch, "first")
+        for k in batch:
+            ans, chk, fails = res[k.key]
+            o = Outcome(k, first_failures=fails, last_failures=fails,
+                        first_answer=ans.model_dump(mode="json") if ans else None)
+            if fails:
+                failing.append(k)
+            else:
+                o.checked, o.stage = chk, "first"
+            outcomes[k.key] = o
+        on_batch(batch)
     still: list[tuple[Key, int]] = []  # (key, tries alone already made)
     for mb in batches(failing, retry_size):
         r2 = call(mb, "mini", notes={k.key: outcomes[k.key].first_failures for k in mb})
@@ -191,7 +196,7 @@ def judge_batch(call: Caller, batch: list[Key], retry_size: int) -> list[Outcome
             if not fails:
                 o.checked, o.stage = chk, "solo"
                 break
-    return [outcomes[k.key] for k in batch]
+    return [outcomes[k.key] for k in group]
 
 
 def _words(text: str, n: int) -> str:
@@ -306,25 +311,29 @@ def run_bulk(tier: str = "all", term: Optional[str] = None, limit: Optional[int]
             stats["tiers"][tr] = tstats
             done = 0
             for grp in groups(todo, all_terms):
-                for b in batches(grp, j.bulk.tasks_per_call):
-                    outcomes = judge_batch(call, b, j.bulk.retry_tasks_per_call)
-                    rows = [r for o in outcomes for r in rows_for(o, run_id, model, version, cfg)]
-                    write_indicator_verdicts(conn, rows)
-                    fails += [r for o in outcomes for r in failure_rows(o, run_id)]
-                    new_unres = sum(o.checked is None for o in outcomes)
-                    unresolved += new_unres
-                    tstats["written"] += len(b)
-                    tstats["unresolved_new"] += new_unres
-                    stats["keys_written"] += len(b)
-                    stats["rows_written"] += len(rows)
-                    stats["unresolved"] += new_unres
-                    done += len(b)
-                    progress(f"judge run: tier {tr} {b[0].term_id} {b[0].judging.label}: {done}/{len(todo)} keys, "
-                             f"{unresolved} unresolved, {client.calls} calls"
-                             f"{eta(done, len(todo), time.monotonic() - t0)}")
-                    if unresolved > j.max_unresolved_share * n_full:
-                        raise StopForUser(f"tier {tr}: {unresolved} unresolved keys > {j.max_unresolved_share:.0%} "
-                                          f"of {n_full} (spec 05 §4.15): the user decides before the run continues")
+                def tick(b: list[Key], n=[0]) -> None:  # progress per first-pass call
+                    n[0] += len(b)
+                    progress(f"judge run: tier {tr} {b[0].term_id} {b[0].judging.label}: {done + n[0]}/{len(todo)} "
+                             f"keys, {unresolved} unresolved, {client.calls} calls"
+                             f"{eta(done + n[0], len(todo), time.monotonic() - t0)}")
+
+                outcomes = judge_group(call, grp, j.bulk.tasks_per_call, j.bulk.retry_tasks_per_call, tick)
+                rows = [r for o in outcomes for r in rows_for(o, run_id, model, version, cfg)]
+                write_indicator_verdicts(conn, rows)
+                fails += [r for o in outcomes for r in failure_rows(o, run_id)]
+                new_unres = sum(o.checked is None for o in outcomes)
+                unresolved += new_unres
+                tstats["written"] += len(grp)
+                tstats["unresolved_new"] += new_unres
+                stats["keys_written"] += len(grp)
+                stats["rows_written"] += len(rows)
+                stats["unresolved"] += new_unres
+                done += len(grp)
+                progress(f"judge run: tier {tr} group {grp[0].term_id} {grp[0].judging.label} written: {len(grp)} "
+                         f"keys, {new_unres} unresolved")
+                if unresolved > j.max_unresolved_share * n_full:
+                    raise StopForUser(f"tier {tr}: {unresolved} unresolved keys > {j.max_unresolved_share:.0%} "
+                                      f"of {n_full} (spec 05 §4.15): the user decides before the run continues")
             _record_tier(cfg, conn, run_id, tr, full, unresolved)
     except QuotaExhausted as e:
         stats["stopped"] = str(e)
