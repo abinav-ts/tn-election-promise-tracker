@@ -311,6 +311,8 @@ SUBAGENT_BRIEF = """You are an isolated judge. Read exactly these two files and 
 1. {prompt} (your instructions)
 2. {batch} (the tasks: each "## Task Txx" section is one task with its extracts; it takes the place of the Tasks section of the instructions)
 
+The batch file is long: read it in consecutive parts (with offset and limit) until you have read every task.
+
 Rules: do not read any other file, do not list or search folders, do not search the web, do not run shell commands. Judge only from the extracts in the batch, never from what you know about Tamil Nadu, its governments or its schemes. Follow the instructions exactly; in particular, each quote is one continuous passage copied character for character from the extract it is cited for, and a date comes only from its cited date extract.
 
 Write exactly one file: {output}
