@@ -599,3 +599,17 @@ def judge_stage(run: str = typer.Option(..., "--run"), batch: str = typer.Option
     paths = stage(run, batch, Path(base))
     typer.echo(f"judge stage: {paths}")
     typer.echo("--- subagent brief ---\n" + brief(paths))
+
+
+@judge_app.command("run-b-reverse")
+def judge_run_b_reverse(stop_at: Optional[str] = typer.Option(None, "--stop-at",
+                                                              help="Stop before this cutoff date (Claude has it)")) -> None:
+    """Bulk-judge tier B from the latest landmark backwards, meeting the Claude tier_b batches (D-097)."""
+    from ept.judge.mix import run_reverse
+
+    stats = run_reverse("B", stop_at)
+    typer.echo(f"judge run-b-reverse: {stats}")
+    if stats["stopped"]:
+        raise typer.Exit(2)
+    if stats["stop_for_user"]:
+        raise typer.Exit(4)

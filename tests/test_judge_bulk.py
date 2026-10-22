@@ -236,3 +236,21 @@ def test_two_solo_tries_with_feedback_before_unresolved(judged, monkeypatch):
         n_solo = sum(1 for c in solo if c["keys"] == [k])
         alone_mini = any(c["keys"] == [k] for c in minis)
         assert n_solo == (1 if alone_mini else 2)
+
+
+def test_run_b_reverse_judges_latest_landmarks_first_into_the_same_run(judged, monkeypatch):
+    from ept.judge.bulk import read_calls, run_bulk
+    from ept.judge.mix import run_reverse
+    from ept.config import get_config
+
+    fake = install(monkeypatch, FakeJudge())
+    a = run_bulk(tier="A")
+    n_a = len(fake.calls)
+    s = run_reverse("B", stop_at="2021-11-07")
+    assert s["run_id"] == a["run_id"] and s["keys_written"] > 0
+    cuts = [g.split("@")[1] for g in s["groups"]]
+    assert cuts == sorted(cuts, reverse=True) and all(c > "2021-11-07" for c in cuts)
+    assert len(fake.calls) > n_a
+    rest = run_reverse("B")
+    assert rest["tiers"]["B"]["complete"]
+    assert all(len(c["groups"]) == 1 for c in read_calls(get_config(), a["run_id"]))
