@@ -682,7 +682,7 @@
     "tier_b": {
       "units": 4002,
       "exported": 4002,
-      "judged": 719,
+      "judged": 883,
       "tasks": 4260
     }
   },
@@ -1043,7 +1043,7 @@
       "groups": [
         "DMK-2021@2021-10-07"
       ],
-      "tokens": null,
+      "tokens": 169469,
       "model": "claude-opus-5-5",
       "status": "imported"
     },
@@ -1052,7 +1052,7 @@
       "groups": [
         "DMK-2021@2021-10-07"
       ],
-      "tokens": null,
+      "tokens": 166450,
       "model": "claude-opus-5-5",
       "status": "imported"
     },
@@ -1061,7 +1061,7 @@
       "groups": [
         "DMK-2021@2021-10-07"
       ],
-      "tokens": null,
+      "tokens": 162382,
       "model": "claude-opus-5-5",
       "status": "imported"
     },
@@ -1088,7 +1088,7 @@
       "groups": [
         "DMK-2021@2021-10-07"
       ],
-      "tokens": null,
+      "tokens": 164047,
       "model": "claude-opus-5-5",
       "status": "imported"
     },
@@ -1115,7 +1115,7 @@
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
+      "tokens": 168397,
       "model": "claude-opus-5-5",
       "status": "imported"
     },
@@ -1124,54 +1124,54 @@
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 164518,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_050",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 171205,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_051",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 170328,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_052",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 156611,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_053",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 172812,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_054",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 170502,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_055",
@@ -1179,8 +1179,8 @@
         "DMK-2021@2021-11-07"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_056",
@@ -1188,8 +1188,8 @@
         "DMK-2021@2021-11-07"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-opus-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_057",
