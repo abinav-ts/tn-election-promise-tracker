@@ -253,7 +253,19 @@ class LLMClient:
                 self.last.output_tokens += int(getattr(usage, "candidates_token_count", 0) or 0) if usage else 0
                 self._record_tokens(measured, est)
                 return resp.text or ""
-            except errors.APIError as e:
+            except Exception as e:  # noqa: BLE001 - network errors below, API errors next
+                import httpx
+
+                if isinstance(e, httpx.TransportError):  # dropped connection or timeout: back off like a 5xx
+                    if delay > bulk.max_backoff_s:
+                        raise QuotaExhausted(f"{spec.model}: network error after backing off "
+                                             f"{bulk.max_backoff_s}s ({type(e).__name__}); re-run later") from None
+                    self.last.http_retries += 1
+                    self._sleep(delay)
+                    delay *= 2
+                    continue
+                if not isinstance(e, errors.APIError):
+                    raise
                 code = getattr(e, "code", None)
                 if code == 429 and "PerDay" in str(e):
                     raise QuotaExhausted(f"daily quota spent for {spec.model}; re-run tomorrow") from None
