@@ -294,7 +294,26 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "AIADMK-2016-0257@full",
+    "AIADMK-2016-0254@full",
+    "AIADMK-2016-0265@full",
+    "AIADMK-2016-0167@full",
+    "AIADMK-2016-0197@full",
+    "AIADMK-2016-0182@full",
+    "AIADMK-2016-0172@full",
+    "AIADMK-2016-0274@full",
+    "AIADMK-2016-0141@full",
+    "AIADMK-2016-0117@full",
+    "AIADMK-2016-0049@full",
+    "AIADMK-2016-0054@full",
+    "AIADMK-2016-0133@full",
+    "AIADMK-2016-0097@full"
+   ],
+   "tokens": 172560
   },
   {
    "n": 3,
@@ -427,7 +446,30 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0098@full",
+    "DMK-2021-0606@full",
+    "DMK-2021-0069@full",
+    "DMK-2021-0549@full",
+    "DMK-2021-0399@full",
+    "DMK-2021-0188@full",
+    "DMK-2021-0249@full",
+    "DMK-2021-0082@full",
+    "DMK-2021-0633@full",
+    "DMK-2021-0118@full",
+    "DMK-2021-0401@full",
+    "DMK-2021-0273@full",
+    "DMK-2021-0610@full",
+    "DMK-2021-0661@full",
+    "DMK-2021-0463@full",
+    "DMK-2021-0212@full",
+    "DMK-2021-0301@full",
+    "DMK-2021-0290@full"
+   ],
+   "tokens": 169021
   },
   {
    "n": 4,
@@ -563,7 +605,28 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0096@full",
+    "DMK-2021-0233@full",
+    "DMK-2021-0375@full",
+    "DMK-2021-0338@full",
+    "DMK-2021-0171@full",
+    "DMK-2021-0163@full",
+    "DMK-2021-0477@full",
+    "DMK-2021-0255@full",
+    "DMK-2021-0336@full",
+    "DMK-2021-0568@full",
+    "DMK-2021-0427@full",
+    "DMK-2021-0628@full",
+    "DMK-2021-0263@full",
+    "DMK-2021-0320@full",
+    "DMK-2021-0662@full",
+    "DMK-2021-0648@full"
+   ],
+   "tokens": 172110
   },
   {
    "n": 5,
@@ -703,7 +766,31 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "AIADMK-2016-0067@full",
+    "AIADMK-2016-0190@full",
+    "AIADMK-2016-0149@full",
+    "AIADMK-2016-0123@full",
+    "AIADMK-2016-0111@full",
+    "AIADMK-2016-0108@full",
+    "AIADMK-2016-0118@full",
+    "AIADMK-2016-0029@full",
+    "AIADMK-2016-0081@full",
+    "AIADMK-2016-0223@full",
+    "AIADMK-2016-0094@full",
+    "AIADMK-2016-0160@full",
+    "AIADMK-2016-0002@full",
+    "AIADMK-2016-0100@full",
+    "AIADMK-2016-0114@full",
+    "AIADMK-2016-0092@full",
+    "AIADMK-2016-0040@full",
+    "AIADMK-2016-0032@full",
+    "AIADMK-2016-0096@full"
+   ],
+   "tokens": 173227
   },
   {
    "n": 6,
@@ -844,7 +931,43 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported_with_failures",
+   "failed": {
+    "T03": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T11": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T15": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T16": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T20": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ]
+   },
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0490@full",
+    "DMK-2021-0102@full",
+    "DMK-2021-0167@full",
+    "DMK-2021-0111@full",
+    "DMK-2021-0095@full",
+    "DMK-2021-0041@full",
+    "DMK-2021-0414@full",
+    "DMK-2021-0242@full",
+    "DMK-2021-0424@full",
+    "DMK-2021-0093@full",
+    "DMK-2021-0042@full",
+    "DMK-2021-0092@full",
+    "DMK-2021-0055@full",
+    "DMK-2021-0125@full",
+    "DMK-2021-0175@full"
+   ],
+   "tokens": 177088
   },
   {
    "n": 7,
@@ -984,7 +1107,31 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "TVK-2026-0098@2026-10-10",
+    "TVK-2026-0695@2026-10-10",
+    "TVK-2026-0209@2026-10-10",
+    "TVK-2026-0158@2026-10-10",
+    "TVK-2026-0061@2026-10-10",
+    "TVK-2026-0374@2026-10-10",
+    "TVK-2026-0420@2026-10-10",
+    "TVK-2026-0425@2026-10-10",
+    "TVK-2026-0105@2026-10-10",
+    "TVK-2026-0124@2026-10-10",
+    "TVK-2026-0154@2026-10-10",
+    "TVK-2026-0090@2026-10-10",
+    "TVK-2026-0091@2026-10-10",
+    "TVK-2026-0088@2026-10-10",
+    "TVK-2026-0259@2026-10-10",
+    "TVK-2026-0089@2026-10-10",
+    "TVK-2026-0214@2026-10-10",
+    "TVK-2026-0216@2026-10-10",
+    "TVK-2026-0195@2026-10-10"
+   ],
+   "tokens": 170040
   },
   {
    "n": 8,
@@ -1050,7 +1197,18 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "AIADMK-2016-0107@full",
+    "AIADMK-2016-0087@full",
+    "AIADMK-2016-0109@full",
+    "AIADMK-2016-0090@full",
+    "AIADMK-2016-0088@full",
+    "AIADMK-2016-0098@full"
+   ],
+   "tokens": 92363
   },
   {
    "n": 9,
@@ -1100,7 +1258,17 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0130@full",
+    "DMK-2021-0077@full",
+    "DMK-2021-0103@full",
+    "DMK-2021-0052@full",
+    "DMK-2021-0166@full"
+   ],
+   "tokens": 71130
   },
   {
    "n": 10,
@@ -1204,7 +1372,26 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "TVK-2026-0140@2026-10-10",
+    "TVK-2026-0145@2026-10-10",
+    "TVK-2026-0087@2026-10-10",
+    "TVK-2026-0133@2026-10-10",
+    "TVK-2026-0206@2026-10-10",
+    "TVK-2026-0122@2026-10-10",
+    "TVK-2026-0177@2026-10-10",
+    "TVK-2026-0120@2026-10-10",
+    "TVK-2026-0119@2026-10-10",
+    "TVK-2026-0173@2026-10-10",
+    "TVK-2026-0132@2026-10-10",
+    "TVK-2026-0176@2026-10-10",
+    "TVK-2026-0095@2026-10-10",
+    "TVK-2026-0556@2026-10-10"
+   ],
+   "tokens": 126653
   },
   {
    "n": 11,
@@ -1343,7 +1530,31 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0236@2021-10-07",
+    "DMK-2021-0269@2021-10-07",
+    "DMK-2021-0431@2021-10-07",
+    "DMK-2021-0336@2021-10-07",
+    "DMK-2021-0067@2021-10-07",
+    "DMK-2021-0062@2021-10-07",
+    "DMK-2021-0322@2021-10-07",
+    "DMK-2021-0349@2021-10-07",
+    "DMK-2021-0021@2021-10-07",
+    "DMK-2021-0179@2021-10-07",
+    "DMK-2021-0178@2021-10-07",
+    "DMK-2021-0599@2021-10-07",
+    "DMK-2021-0418@2021-10-07",
+    "DMK-2021-0347@2021-10-07",
+    "DMK-2021-0323@2021-10-07",
+    "DMK-2021-0516@2021-10-07",
+    "DMK-2021-0028@2021-10-07",
+    "DMK-2021-0132@2021-10-07",
+    "DMK-2021-0351@2021-10-07"
+   ],
+   "tokens": 170170
   },
   {
    "n": 12,
@@ -1481,7 +1692,29 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0237@2021-10-07",
+    "DMK-2021-0019@2021-10-07",
+    "DMK-2021-0321@2021-10-07",
+    "DMK-2021-0091@2021-10-07",
+    "DMK-2021-0189@2021-10-07",
+    "DMK-2021-0466@2021-10-07",
+    "DMK-2021-0083@2021-10-07",
+    "DMK-2021-0082@2021-10-07",
+    "DMK-2021-0356@2021-10-07",
+    "DMK-2021-0301@2021-10-07",
+    "DMK-2021-0024@2021-10-07",
+    "DMK-2021-0096@2021-10-07",
+    "DMK-2021-0114@2021-10-07",
+    "DMK-2021-0279@2021-10-07",
+    "DMK-2021-0609@2021-10-07",
+    "DMK-2021-0435@2021-10-07",
+    "DMK-2021-0283@2021-10-07",
+    "DMK-2021-0335@2021-10-07"
+   ]
   },
   {
    "n": 13,
@@ -1620,7 +1853,30 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-opus-5-5",
+   "complete_units": [
+    "DMK-2021-0010@2021-10-07",
+    "DMK-2021-0457@2021-10-07",
+    "DMK-2021-0247@2021-10-07",
+    "DMK-2021-0600@2021-10-07",
+    "DMK-2021-0155@2021-10-07",
+    "DMK-2021-0566@2021-10-07",
+    "DMK-2021-0652@2021-10-07",
+    "DMK-2021-0365@2021-10-07",
+    "DMK-2021-0601@2021-10-07",
+    "DMK-2021-0090@2021-10-07",
+    "DMK-2021-0219@2021-10-07",
+    "DMK-2021-0120@2021-10-07",
+    "DMK-2021-0299@2021-10-07",
+    "DMK-2021-0311@2021-10-07",
+    "DMK-2021-0632@2021-10-07",
+    "DMK-2021-0139@2021-10-07",
+    "DMK-2021-0216@2021-10-07",
+    "DMK-2021-0252@2021-10-07",
+    "DMK-2021-0204@2021-10-07"
+   ]
   },
   {
    "n": 14,
@@ -30718,19 +30974,80 @@
     }
    ],
    "status": "exported"
+  },
+  {
+   "n": 6,
+   "retry_of": 6,
+   "name": "batch_006_r",
+   "group": "DMK-2021@full",
+   "levels": [
+    "gold",
+    "headline"
+   ],
+   "units": [
+    "DMK-2021-0490@full",
+    "DMK-2021-0102@full",
+    "DMK-2021-0124@full",
+    "DMK-2021-0167@full",
+    "DMK-2021-0111@full",
+    "DMK-2021-0095@full",
+    "DMK-2021-0041@full",
+    "DMK-2021-0414@full",
+    "DMK-2021-0242@full",
+    "DMK-2021-0424@full",
+    "DMK-2021-0156@full",
+    "DMK-2021-0093@full",
+    "DMK-2021-0042@full",
+    "DMK-2021-0092@full",
+    "DMK-2021-0155@full",
+    "DMK-2021-0109@full",
+    "DMK-2021-0055@full",
+    "DMK-2021-0125@full",
+    "DMK-2021-0175@full",
+    "DMK-2021-0165@full"
+   ],
+   "tasks": [
+    {
+     "alias": "T01",
+     "key": "0b9d64dc3d0c5a90d9538d9a28ea0dc855c96dd694f1d783aef5ab12e51a3e9c",
+     "indicator_id": "DMK-2021-0124-I1"
+    },
+    {
+     "alias": "T02",
+     "key": "9e1b1d708bd1464d24c5c78518cd884c39a1afd4f36e1bb2f64d6ccdfb756fa7",
+     "indicator_id": "DMK-2021-0156-I1"
+    },
+    {
+     "alias": "T03",
+     "key": "01dce11ca79c1daf1a63844de31aad6dbd811c9313f8efbb6f577ed1f91f78b2",
+     "indicator_id": "DMK-2021-0155-I1"
+    },
+    {
+     "alias": "T04",
+     "key": "ffb134766412941093c8878c1d53da263acbf92db65611cd42e6d88c8f27606b",
+     "indicator_id": "DMK-2021-0109-I1"
+    },
+    {
+     "alias": "T05",
+     "key": "bfe338faa8e56cb4bb2a5033d0e6584dda983a44f3dd3ecf74447061dc97029e",
+     "indicator_id": "DMK-2021-0165-I1"
+    }
+   ],
+   "reused": [],
+   "status": "exported"
   }
  ],
  "levels": {
   "gold": {
    "units": 78,
    "exported": 78,
-   "judged": 18,
+   "judged": 78,
    "tasks": 92
   },
   "headline": {
    "units": 71,
    "exported": 71,
-   "judged": 0,
+   "judged": 66,
    "tasks": 74
   },
   "tvk_current": {
@@ -30742,7 +31059,7 @@
   "tier_b": {
    "units": 4002,
    "exported": 4002,
-   "judged": 0,
+   "judged": 56,
    "tasks": 4260
   }
  }
