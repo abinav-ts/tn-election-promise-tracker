@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **APPROVED v1.0** (2026-10-22; drafted as v0.1 the same night; every question settled with the user: A1–A8, B9–B13, OQ-1–OQ-5, §9). **v1.1 (2026-10-22, build):** smoke-test decisions D-094, build clarifications D-095, §10 |
+| Status | **APPROVED v1.0** (2026-10-22; drafted as v0.1 the same night; every question settled with the user: A1–A8, B9–B13, OQ-1–OQ-5, §9). **v1.1 (2026-10-22, build):** smoke-test decisions D-094, build clarifications D-095, §10. **v1.2:** tier B by Claude subagents (D-096) |
 | Global spec | `specs/00-global-spec.md` v0.13 (amended with this spec, §9.4). This spec references §7/§8 and does not redefine them. §7 gains one table, `indicator_verdicts`, which §7 delegates to spec 05; the amendments are listed in §9.4 |
 | Draft spec 06 | Uses the status rules of `specs/06-evaluation.md` §G4 (advocacy, directional) word for word, at the user's instruction. Spec 06 is still a draft, so any change to §G4 there must be mirrored here |
 | Day plan | Days 9–11 in the plan; now Day 17 (2026-10-22). The deadline is 2026-10-25, and stages 05–08 remain |
@@ -59,7 +59,7 @@
 - A key's **judging cutoff** is the earliest cutoff, among *all* configured cutoffs of its term, that retrieved it.
 - **Tiers** (order of global §8.1, user's A1):
   - **Tier A:** every AIADMK-2016 cutoff, DMK-2021 full term and TVK-2026 month 5: 4,173 tasks, ≈ 3,890 keys.
-  - **Tier B:** DMK-2021 landmarks, needed only for the forward backtest: 4,260 tasks, ≈ 3,800 new keys.
+  - **Tier B:** DMK-2021 landmarks, needed only for the forward backtest: 4,260 tasks, ≈ 3,800 new keys. **As decided (D-096): judged by Claude subagents as strong level `tier_b`** (4,002 promise × landmark units → 4,040 tasks, 206 batches), not by the bulk model.
   - `ept judge run --tier A|B|all` (default `all`, which runs A then B).
 
 ### 4.2 Directional flag (spec 06 §G4; OQ-1)
@@ -192,7 +192,8 @@ New table **`indicator_verdicts`**, one row per indicator × run × cutoff:
   - Run P1, then P2, then report the measured usage per batch to the user.
   - The user decides how far down P3–P6 to go.
   - The report states coverage per priority level.
-- **When.** Only after the stage 04 spot-check verdicts **and** this stage's spot-check verdicts are in (D-080, irreversible). Outputs are committed (global §6.2 item 4).
+- **When.** Only after the stage 04 spot-check verdicts **and** this stage's spot-check verdicts are in (D-080, irreversible). Exception (D-096): P1, P2 and `tier_b` start once the stage 04 verdicts are in, the user accepting that a prompt change from the stage 05 check would mean redoing them. Outputs are committed (global §6.2 item 4).
+- **Staging (as built):** `ept judge stage --run R --batch batch_NNN --base <scratch>` writes `sj-{stamp}-batch_NNN/in/{instructions.md, batch.md}` (the batch line-wrapped, because file tools truncate lines over 2,000 characters; the checks collapse whitespace) and prints the fixed subagent brief (`strong.SUBAGENT_BRIEF`); the subagent writes `out/verdicts.jsonl`; `ept judge import --run R --batch N --from <out> --model <id> [--tokens T]`.
 
 ### 4.10 Final verdicts (B9, B10)
 `ept judge final` writes a `final` run.

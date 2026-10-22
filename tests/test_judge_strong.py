@@ -42,14 +42,15 @@ def _queue(conn):
 def test_queue_priority_order_and_cutoffs(bulk_done):
     q, ctx = _queue(bulk_done)
     levels = [u.level for u in q]
-    order = ["gold", "headline", "tvk_current", "flagged_full", "flagged_aiadmk_landmarks", "flagged_dmk_landmarks"]
+    order = ["gold", "headline", "tvk_current", "tier_b", "flagged_full", "flagged_aiadmk_landmarks",
+             "flagged_dmk_landmarks"]
     assert levels == sorted(levels, key=order.index)
     gold = [u for u in q if u.level == "gold"]
     assert {u.uid for u in gold} == {"AIADMK-2016-0002@full", "TVK-2026-0001@2026-10-10"}
     assert [u.uid for u in q if u.level == "headline"] == ["DMK-2021-0001@full"]
     assert len({u.uid for u in q}) == len(q)
     assert all(len(u.keys) == len(ctx.by_promise[u.promise_id]) for u in q)
-    assert any(u.level == "flagged_dmk_landmarks" for u in q)
+    assert any(u.level == "tier_b" for u in q) and not any(u.level == "flagged_dmk_landmarks" for u in q)
 
 
 def test_batches_whole_units_one_cutoff_and_size(bulk_done):
@@ -83,8 +84,13 @@ def test_export_import_round_trip_checks_and_retry(bulk_done, root, tmp_path):
     for p in paths.values():
         for t in cfg.settings.terms:
             assert t.party not in p and t.term_id not in p
-    lines = [json.loads(x) for x in open(paths["batch"])]
-    assert all(set(t) >= {"task", "promise", "extracts"} and "DMK" not in json.dumps(t) for t in lines)
+    md = open(paths["batch"]).read()
+    assert "## Task T01" in md and "### Extract C1" in md and "DMK" not in md and "AIADMK" not in md
+    assert max(len(x) for x in md.splitlines()) < 2000  # file tools truncate longer lines
+    src = [json.loads(x) for x in (run_dir(cfg, run_id) / "in" / f"{names[0]}.jsonl").read_text().splitlines()]
+    from ept.judge.checks import normalise
+
+    assert normalise(src[0]["extracts"][0]["text"]) in normalise(md)  # wrapping never changes what a quote matches
     assert (cfg.root / "prompts" / "judge_indicator.md").read_text() == open(paths["prompt"]).read()
     # the "subagent" answers every batch; the first task of the first batch gets a bad quote
     for b in m["batches"]:
@@ -113,3 +119,21 @@ def test_export_import_round_trip_checks_and_retry(bulk_done, root, tmp_path):
     assert s2["failed_tasks"] == 0
     agg = run_aggregate(run_id)["runs"][0]
     assert agg["promise_cutoffs"] == 3  # the two gold units and the headline unit, judged in full
+
+
+def test_tier_b_level_covers_every_training_landmark_and_needs_no_bulk(root, conn):
+    from ept.config import get_config
+    from ept.judge.strong import read_manifest, run_export
+
+    setup_judge(root, conn)
+    out = run_export(["tier_b"])  # no bulk run at all
+    m = read_manifest(get_config(), out["run_id"])
+    units = {u for b in m["batches"] for u in b["units"]}
+    assert units and all(u.startswith("DMK-2021-") and not u.endswith("@full") for u in units)
+    assert len(units) == 3 * 6  # three DMK promises x six landmarks
+    for b in m["batches"]:
+        assert len({u.split("@")[1] for u in b["units"]}) == 1
+    import pytest as _pt
+
+    with _pt.raises(RuntimeError):
+        run_export(["flagged_full"])

@@ -567,17 +567,35 @@ def judge_spotcheck() -> None:
 
 @judge_app.command("export")
 def judge_export(levels: Optional[list[str]] = typer.Option(None, "--level", help="Priority level(s), e.g. gold"),
-                 run: Optional[str] = JudgeRunOpt) -> None:
+                 run: Optional[str] = JudgeRunOpt,
+                 retry: Optional[int] = typer.Option(None, "--retry", help="Re-export batch N's failing tasks")) -> None:
     """Strong-judge batches for the priority queue (spec 05 §4.9)."""
     from ept.judge.strong import run_export
 
-    typer.echo(f"judge export: {run_export(levels, run)}")
+    typer.echo(f"judge export: {run_export(levels, run, retry)}")
 
 
 @judge_app.command("import")
 def judge_import(run: str = typer.Option(..., "--run"), batch: Optional[list[int]] = typer.Option(None, "--batch"),
-                 model: Optional[str] = typer.Option(None, "--model", help="Subagent model id for the manifest")) -> None:
+                 model: Optional[str] = typer.Option(None, "--model", help="Subagent model id for the manifest"),
+                 from_dir: Optional[str] = typer.Option(None, "--from", help="Scratch out folder holding verdicts.jsonl"),
+                 tokens: Optional[int] = typer.Option(None, "--tokens", help="Measured subagent tokens")) -> None:
     """Validate strong-judge outputs with J1–J7 and load them (spec 05 §4.9)."""
+    from pathlib import Path
+
     from ept.judge.strong import run_import
 
-    typer.echo(f"judge import: {run_import(run, batch, model)}")
+    typer.echo(f"judge import: {run_import(run, batch, model, Path(from_dir) if from_dir else None, tokens)}")
+
+
+@judge_app.command("stage")
+def judge_stage(run: str = typer.Option(..., "--run"), batch: str = typer.Option(..., "--batch", help="e.g. batch_001"),
+                base: str = typer.Option(..., "--base", help="Scratch folder outside the project")) -> None:
+    """Copy the prompt and one strong batch into a neutral scratch folder for a fresh subagent (D-057, D-086)."""
+    from pathlib import Path
+
+    from ept.judge.strong import brief, stage
+
+    paths = stage(run, batch, Path(base))
+    typer.echo(f"judge stage: {paths}")
+    typer.echo("--- subagent brief ---\n" + brief(paths))

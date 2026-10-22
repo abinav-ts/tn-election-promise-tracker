@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import textwrap
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
@@ -28,7 +29,7 @@ from pydantic import ValidationError
 from ept import db
 from ept.config import Config, get_config
 from ept.judge import directional as dirmod
-from ept.judge.bulk import Caller, ROW_CODE
+from ept.judge.bulk import Caller
 from ept.judge.checks import Limits, TaskInput, check_task, feedback, match_answers
 from ept.judge.prompt import PROMPT, TaskVerdictOut, extract_alias, render_task, task_alias
 from ept.judge.store import (code_hash, file_sha, fp_hash, latest_run, read_meta, start_or_resume, update_meta,
@@ -36,6 +37,7 @@ from ept.judge.store import (code_hash, file_sha, fp_hash, latest_run, read_meta
 from ept.judge.tasks import FULL, Context, Key, build_keys, cutoff_order, gold_promise_ids, load_retrievals
 from ept.llm import load_prompt
 from ept.retrieve import eligible as el
+from ept.retrieve.run import latest_run as latest_retrieval
 from ept.schema import IndicatorVerdict
 
 FORBIDDEN_IN_PATHS_NOTE = "scratch paths carry no party or term name (D-057)"
@@ -93,6 +95,9 @@ def queue(ctx: Context, cfg: Config, keys: list[Key], bulk_run: Optional[str], g
     level("headline", [(pid, headline_cut(p["term_id"])) for pid, p in promises.items() if p["headline"]])
     level("tvk_current", [(pid, headline_cut(p["term_id"])) for pid, p in promises.items()
                           if terms[p["term_id"]].role == "project"])
+    # D-096: tier B (the training term's landmarks) is judged by Claude subagents instead of the bulk model
+    level("tier_b", [(pid, c) for pid, p in promises.items() if terms[p["term_id"]].role == "train"
+                     for c in ctx.cutoffs(p["term_id"]) if c.label != FULL])
     level("flagged_full", [(pid, c) for pid, p in promises.items() for c in ctx.cutoffs(p["term_id"])
                            if c.label == FULL and (pid, FULL) in flagged])
     for name, role in (("flagged_aiadmk_landmarks", "backtest"), ("flagged_dmk_landmarks", "train")):
@@ -180,11 +185,15 @@ def _write_batch(path: Path, call: Caller, keys: list[Key], notes: Optional[dict
     path.write_text("".join(json.dumps(i, ensure_ascii=False) + "\n" for i in items), encoding="utf-8")
 
 
+STRONG_CODE = ["dates.py", "judge/tasks.py", "judge/prompt.py", "judge/checks.py", "judge/strong.py"]
+NEEDS_BULK = {"flagged_full", "flagged_aiadmk_landmarks", "flagged_dmk_landmarks"}
+
+
 def strong_fingerprint(cfg: Config, retrieval_run: str, version: str) -> dict[str, Any]:
     terms = [t.term_id for t in cfg.settings.terms]
     return fp_hash({"prompt_version": version, "retrieval_run": retrieval_run,
                     "directional": {t: file_sha(dirmod.path_for(cfg, t)) for t in terms},
-                    "strong": cfg.settings.judge.strong.model_dump(mode="json"), "code": code_hash(ROW_CODE)})
+                    "strong": cfg.settings.judge.strong.model_dump(mode="json"), "code": code_hash(STRONG_CODE)})
 
 
 def run_export(levels: Optional[list[str]] = None, run_id: Optional[str] = None,
@@ -195,14 +204,17 @@ def run_export(levels: Optional[list[str]] = None, run_id: Optional[str] = None,
     conn = db.connect()
     db.init_schema(conn)
     ctx = Context(conn, cfg)
+    want = set(levels or ["gold", "headline"])
     bulk = latest_run(cfg, "bulk", tier="A")
-    if not bulk:
-        raise RuntimeError("strong batches wait for a bulk run with tier A complete")
-    keys, version = _keys_index(ctx, cfg, bulk["retrieval_run"])
-    fp = strong_fingerprint(cfg, bulk["retrieval_run"], version)
+    if want & NEEDS_BULK and not bulk:
+        raise RuntimeError("the flagged levels wait for a bulk run with tier A complete")
+    rmeta = latest_retrieval(cfg, complete_only=True)
+    retrieval_run = bulk["retrieval_run"] if bulk else rmeta["run_id"]
+    keys, version = _keys_index(ctx, cfg, retrieval_run)
+    fp = strong_fingerprint(cfg, retrieval_run, version)
     if run_id is None:
         run_id, _ = start_or_resume(cfg, "strong", fp, False, {"levels": levels},
-                                    extra={"retrieval_run": bulk["retrieval_run"], "bulk_run": bulk["run_id"]})
+                                    extra={"retrieval_run": retrieval_run, "bulk_run": bulk["run_id"] if bulk else None})
     elif read_meta(cfg, run_id).get("fingerprint", {}).get("hash") != fp["hash"]:
         raise RuntimeError(f"{run_id}: inputs changed since it was started (prompt, directional flags or code)")
     m = read_manifest(cfg, run_id)
@@ -230,8 +242,11 @@ def run_export(levels: Optional[list[str]] = None, run_id: Optional[str] = None,
     if unknown:
         raise ValueError(f"unknown level(s) {sorted(unknown)}; levels: {cfg.settings.judge.strong.priorities}")
     exported_units = {u for b in m["batches"] if not b.get("retry_of") for u in b["units"]}
-    units = [u for u in queue(ctx, cfg, keys, bulk["run_id"], gold_promise_ids(cfg))
+    bulk_id = bulk["run_id"] if bulk else None
+    units = [u for u in queue(ctx, cfg, keys, bulk_id, gold_promise_ids(cfg))
              if u.level in levels and u.uid not in exported_units]
+    # within a level, earlier cutoffs first, so a chunk list shared by later landmarks is judged once (reuse)
+    units.sort(key=lambda u: (levels.index(u.level), _order(u.cutoff)))
     done = {t["key"]: (b["term"], b["order"]) for b in m["batches"] if not b.get("retry_of") for t in b["tasks"]}
     new = make_batches(units, cfg.settings.judge.strong.tasks_per_batch, done)
     n0 = max([b["n"] for b in m["batches"]] or [0])
@@ -246,7 +261,7 @@ def run_export(levels: Optional[list[str]] = None, run_id: Optional[str] = None,
             "tasks": [{"alias": task_alias(j), "key": k.key, "indicator_id": k.indicator_id} for j, k in
                       enumerate(b["keys"], 1)],
             "reused": b["reused"], "status": "exported"})
-    m["levels"] = _coverage(m, queue(ctx, cfg, keys, bulk["run_id"], gold_promise_ids(cfg)))
+    m["levels"] = _coverage(m, queue(ctx, cfg, keys, bulk_id, gold_promise_ids(cfg)))
     write_manifest(cfg, run_id, m)
     update_meta(cfg, run_id, coverage=m["levels"], batches=[{"name": b["name"], "groups": [b["group"]]}
                                                             for b in m["batches"]])
@@ -286,9 +301,50 @@ def stage(run_id: str, name: str, base: Path) -> dict[str, str]:
     in_dir.mkdir(parents=True)
     out_dir.mkdir(parents=True)
     shutil.copy(cfg.path("prompts") / f"{PROMPT}.md", in_dir / "instructions.md")
-    shutil.copy(src, in_dir / "batch.jsonl")
-    return {"prompt": str(in_dir / "instructions.md"), "batch": str(in_dir / "batch.jsonl"),
-            "output": str(out_dir / "verdicts.jsonl")}
+    tasks = [json.loads(x) for x in src.read_text(encoding="utf-8").splitlines() if x.strip()]
+    (in_dir / "batch.md").write_text(batch_markdown(tasks), encoding="utf-8")
+    return {"prompt": str(in_dir / "instructions.md"), "batch": str(in_dir / "batch.md"),
+            "output": str(out_dir / "verdicts.jsonl"), "tasks": str(len(tasks))}
+
+
+SUBAGENT_BRIEF = """You are an isolated judge. Read exactly these two files and nothing else:
+1. {prompt} (your instructions)
+2. {batch} (the tasks: each "## Task Txx" section is one task with its extracts; it takes the place of the Tasks section of the instructions)
+
+Rules: do not read any other file, do not list or search folders, do not search the web, do not run shell commands. Judge only from the extracts in the batch, never from what you know about Tamil Nadu, its governments or its schemes. Follow the instructions exactly; in particular, each quote is one continuous passage copied character for character from the extract it is cited for, and a date comes only from its cited date extract.
+
+Write exactly one file: {output}
+It holds one JSON object per line, one line per task, in batch order, each with the keys task, status, realisation_date, date_extract, cited, rationale, confidence, and nothing else (no code fences, no commentary). Then reply with only: done <number of lines written>."""
+
+
+def brief(paths: dict[str, str]) -> str:
+    """The message a fresh subagent gets for one staged batch (D-057, D-086)."""
+    return SUBAGENT_BRIEF.format(**paths)
+
+
+def _wrap(text: str, width: int = 150) -> str:
+    return textwrap.fill(" ".join(str(text).split()), width=width, break_long_words=False, break_on_hyphens=False)
+
+
+def batch_markdown(tasks: list[dict[str, Any]]) -> str:
+    """The batch as the subagent reads it: the same fields as the .jsonl tasks, with long text wrapped (file-reading
+    tools truncate very long lines). The checks collapse whitespace, so wrapping can't change a quote's match."""
+    L = [f"# Batch of {len(tasks)} tasks", "",
+         "Each `## Task` section is one task with the fields described in the instructions. Long text is wrapped "
+         "at spaces: treat a line break inside a field as a space.", ""]
+    for t in tasks:
+        L += [f"## Task {t['task']}", "", "promise:", _wrap(t["promise"]), ""]
+        if t.get("indicator"):
+            L += ["indicator:", _wrap(t["indicator"]), ""]
+        L += [f"directional: {t['directional']}", "", f"context: {t['context']}", ""]
+        if t.get("note"):
+            L += [f"note: {t['note']}", ""]
+        if t.get("previous_answer_failed"):
+            L += ["previous_answer_failed:"] + [f"- {x}" for x in t["previous_answer_failed"]] + [""]
+        for e in t["extracts"]:
+            L += [f"### Extract {e['extract']} (of task {t['task']})", "", "title:", _wrap(e["title"]), "",
+                  f"doc_type: {e['doc_type']}", "", f"date: {e['date']}", "", "text:", _wrap(e["text"]), ""]
+    return "\n".join(L) + "\n"
 
 
 def _parse_out(path: Path) -> tuple[list[TaskVerdictOut], list[str]]:
