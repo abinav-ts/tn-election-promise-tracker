@@ -682,7 +682,7 @@
     "tier_b": {
       "units": 4002,
       "exported": 4002,
-      "judged": 883,
+      "judged": 1192,
       "tasks": 4260
     }
   },
@@ -1178,7 +1178,7 @@
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
+      "tokens": 165879,
       "model": "claude-opus-5-5",
       "status": "imported"
     },
@@ -1187,7 +1187,7 @@
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
+      "tokens": 156649,
       "model": "claude-opus-5-5",
       "status": "imported_with_failures"
     },
@@ -1196,108 +1196,108 @@
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 168438,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_058",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 169308,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_059",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 166076,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_060",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 164085,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_061",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 170517,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_062",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 168747,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_063",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 170771,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_064",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 168457,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_065",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 169380,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_066",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 166256,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_067",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 169646,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_068",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 172960,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_069",
@@ -1305,8 +1305,8 @@
         "DMK-2021@2021-11-07"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_070",
@@ -1314,8 +1314,8 @@
         "DMK-2021@2021-11-07"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_071",
