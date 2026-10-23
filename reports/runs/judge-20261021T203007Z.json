@@ -2,8 +2,8 @@
   "run_id": "judge-20261021T203007Z",
   "stage": "judge",
   "started_at": "2026-10-21T20:30:07+00:00",
-  "finished_at": "2026-10-22T09:14:46+00:00",
-  "status": "stopped",
+  "finished_at": "2026-10-23T07:03:13+00:00",
+  "status": "done",
   "git_commit": "a4b044708f2092b12ec8603f2df916cbdfcaa984",
   "params": {
     "tier": "A",
@@ -25,21 +25,21 @@
   },
   "counts": {
     "resumed": true,
-    "keys_written": 0,
-    "rows_written": 0,
-    "unresolved": 0,
-    "llm_calls": 8,
-    "stopped": "llm.bulk.rpd[gemini-3.5-flash-lite] = 500 requests already made today (America/Los_Angeles day); re-run after the reset",
+    "keys_written": 768,
+    "rows_written": 768,
+    "unresolved": 8,
+    "llm_calls": 13,
+    "stopped": null,
     "stop_for_user": null,
     "tiers": {
       "A": {
         "keys": 3892,
         "todo": 768,
-        "written": 0,
-        "unresolved_new": 0
+        "written": 768,
+        "unresolved_new": 8
       }
     },
-    "first_fail_rate": 0.1497,
+    "first_fail_rate": 0.1454,
     "smoke_stop": false
   },
   "config": {
@@ -719,9 +719,20 @@
   },
   "complete": false,
   "retrieval_run": "retrieve-20261020T191347Z",
-  "tiers": {},
+  "tiers": {
+    "A": {
+      "complete": true,
+      "keys": 3892,
+      "tasks": 4173,
+      "stored": 3892,
+      "unresolved": 57,
+      "unresolved_share": 0.0146
+    }
+  },
   "resumed_at": [
     "2026-10-22T12:35:48",
-    "2026-10-22T14:44:12"
+    "2026-10-22T14:44:12",
+    "2026-10-23T12:32:19",
+    "2026-10-23T12:33:15"
   ]
 }

@@ -1,464 +1,459 @@
 {
- "generated_at": "2026-10-21T20:15:57+00:00",
- "bulk_run": "judge-20261021T200929Z",
+ "generated_at": "2026-10-23T07:03:14+00:00",
+ "bulk_run": "judge-20261021T203007Z",
  "retrieval_run": "retrieve-20261020T191347Z",
  "tiers": {
   "A": {
-   "complete": false,
+   "complete": true,
    "keys": 3892,
    "tasks": 4173,
-   "stored": 164,
-   "unresolved": 7,
-   "unresolved_share": 0.0018
-  },
-  "B": {
-   "complete": false,
-   "keys": 4040,
-   "tasks": 4260,
-   "stored": 107,
-   "unresolved": 0,
-   "unresolved_share": 0.0
+   "stored": 3892,
+   "unresolved": 57,
+   "unresolved_share": 0.0146
   }
  },
  "complete": false,
  "per_term_cutoff": {
   "AIADMK-2016@m5": {
    "cutoff": "2016-10-23",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 15,
+    "fulfilled": 124,
     "partial": 0,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 3,
+    "in_progress": 18,
+    "not_started": 175,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 68
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 11,
-    "partial": 3,
+    "fulfilled": 94,
+    "partial": 14,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 2,
+    "in_progress": 13,
+    "not_started": 133,
     "blocked_external": 0,
-    "unverifiable": 0
+    "unverifiable": 58
    },
-   "realised_share": 0.875,
+   "realised_share": 0.3462,
    "judge_source": {
     "bulk": 16
    }
   },
   "AIADMK-2016@m6": {
    "cutoff": "2016-11-23",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 13,
+    "fulfilled": 139,
     "partial": 0,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 5,
+    "in_progress": 19,
+    "not_started": 167,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 60
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 9,
-    "partial": 3,
+    "fulfilled": 103,
+    "partial": 13,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 4,
+    "in_progress": 15,
+    "not_started": 131,
     "blocked_external": 0,
-    "unverifiable": 0
+    "unverifiable": 50
    },
-   "realised_share": 0.75,
+   "realised_share": 0.3718,
    "judge_source": {
     "bulk": 16
    }
   },
   "AIADMK-2016@m12": {
    "cutoff": "2017-05-23",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 14,
-    "partial": 0,
-    "diluted": 0,
-    "in_progress": 0,
-    "not_started": 5,
-    "blocked_external": 0,
-    "unverifiable": 1
+    "fulfilled": 184,
+    "partial": 1,
+    "diluted": 1,
+    "in_progress": 37,
+    "not_started": 128,
+    "blocked_external": 1,
+    "unverifiable": 33
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 11,
-    "partial": 1,
-    "diluted": 0,
-    "in_progress": 0,
-    "not_started": 4,
-    "blocked_external": 0,
-    "unverifiable": 0
+    "fulfilled": 143,
+    "partial": 16,
+    "diluted": 1,
+    "in_progress": 29,
+    "not_started": 95,
+    "blocked_external": 1,
+    "unverifiable": 27
    },
-   "realised_share": 0.75,
+   "realised_share": 0.5128,
    "judge_source": {
     "bulk": 16
    }
   },
   "AIADMK-2016@m24": {
    "cutoff": "2018-05-23",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 16,
-    "partial": 0,
-    "diluted": 0,
-    "in_progress": 0,
-    "not_started": 2,
+    "fulfilled": 230,
+    "partial": 6,
+    "diluted": 1,
+    "in_progress": 30,
+    "not_started": 94,
     "blocked_external": 0,
-    "unverifiable": 2
+    "unverifiable": 24
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 12,
-    "partial": 2,
-    "diluted": 0,
-    "in_progress": 0,
-    "not_started": 1,
+    "fulfilled": 180,
+    "partial": 13,
+    "diluted": 1,
+    "in_progress": 22,
+    "not_started": 75,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 21
    },
-   "realised_share": 0.875,
+   "realised_share": 0.6218,
    "judge_source": {
     "bulk": 16
    }
   },
   "AIADMK-2016@m36": {
    "cutoff": "2019-05-23",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 16,
-    "partial": 0,
-    "diluted": 0,
-    "in_progress": 0,
-    "not_started": 3,
+    "fulfilled": 242,
+    "partial": 10,
+    "diluted": 1,
+    "in_progress": 33,
+    "not_started": 69,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 30
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 12,
-    "partial": 2,
-    "diluted": 0,
-    "in_progress": 0,
-    "not_started": 2,
+    "fulfilled": 190,
+    "partial": 22,
+    "diluted": 1,
+    "in_progress": 23,
+    "not_started": 51,
     "blocked_external": 0,
-    "unverifiable": 0
+    "unverifiable": 25
    },
-   "realised_share": 0.875,
+   "realised_share": 0.6827,
    "judge_source": {
     "bulk": 16
    }
   },
   "AIADMK-2016@m48": {
    "cutoff": "2020-05-23",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 16,
-    "partial": 0,
+    "fulfilled": 269,
+    "partial": 3,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 2,
+    "in_progress": 27,
+    "not_started": 68,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 18
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 12,
-    "partial": 0,
+    "fulfilled": 211,
+    "partial": 13,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 2,
+    "in_progress": 22,
+    "not_started": 50,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 16
    },
-   "realised_share": 0.75,
+   "realised_share": 0.7179,
    "judge_source": {
     "bulk": 16
    }
   },
   "AIADMK-2016@full": {
    "cutoff": "full",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 385,
    "indicator_status": {
-    "fulfilled": 17,
-    "partial": 0,
+    "fulfilled": 271,
+    "partial": 3,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 2,
+    "in_progress": 25,
+    "not_started": 63,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 23
    },
-   "promise_verdicts": 16,
+   "promise_verdicts": 312,
    "promises_in_term": 312,
    "promise_status": {
-    "fulfilled": 13,
-    "partial": 1,
+    "fulfilled": 214,
+    "partial": 13,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 1,
+    "in_progress": 22,
+    "not_started": 44,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 19
    },
-   "realised_share": 0.875,
+   "realised_share": 0.7276,
    "judge_source": {
     "bulk": 16
    }
   },
   "DMK-2021@m5": {
    "cutoff": "2021-10-07",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 0,
    "indicator_status": {
-    "fulfilled": 5,
+    "fulfilled": 0,
     "partial": 0,
     "diluted": 0,
     "in_progress": 0,
-    "not_started": 10,
+    "not_started": 0,
     "blocked_external": 0,
-    "unverifiable": 5
+    "unverifiable": 0
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 0,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 5,
+    "fulfilled": 0,
     "partial": 0,
     "diluted": 0,
     "in_progress": 0,
-    "not_started": 9,
+    "not_started": 0,
     "blocked_external": 0,
-    "unverifiable": 4
+    "unverifiable": 0
    },
-   "realised_share": 0.2778,
+   "realised_share": null,
    "judge_source": {
     "bulk": 18
    }
   },
   "DMK-2021@m6": {
    "cutoff": "2021-11-07",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 1,
    "indicator_status": {
-    "fulfilled": 8,
+    "fulfilled": 1,
     "partial": 0,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 10,
+    "in_progress": 0,
+    "not_started": 0,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 0
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 0,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 7,
+    "fulfilled": 0,
     "partial": 0,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 9,
+    "in_progress": 0,
+    "not_started": 0,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 0
    },
-   "realised_share": 0.3889,
+   "realised_share": null,
    "judge_source": {
     "bulk": 18
    }
   },
   "DMK-2021@m12": {
    "cutoff": "2022-05-07",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 4,
    "indicator_status": {
-    "fulfilled": 8,
+    "fulfilled": 3,
     "partial": 0,
     "diluted": 0,
     "in_progress": 0,
-    "not_started": 8,
+    "not_started": 1,
     "blocked_external": 0,
-    "unverifiable": 4
+    "unverifiable": 0
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 3,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 8,
+    "fulfilled": 2,
     "partial": 0,
     "diluted": 0,
     "in_progress": 0,
-    "not_started": 6,
+    "not_started": 1,
     "blocked_external": 0,
-    "unverifiable": 4
+    "unverifiable": 0
    },
-   "realised_share": 0.4444,
+   "realised_share": 0.6667,
    "judge_source": {
     "bulk": 18
    }
   },
   "DMK-2021@m24": {
    "cutoff": "2023-05-07",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 6,
    "indicator_status": {
-    "fulfilled": 9,
+    "fulfilled": 3,
     "partial": 0,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 9,
+    "in_progress": 0,
+    "not_started": 0,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 3
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 5,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 9,
+    "fulfilled": 2,
     "partial": 0,
     "diluted": 0,
-    "in_progress": 1,
-    "not_started": 7,
+    "in_progress": 0,
+    "not_started": 0,
     "blocked_external": 0,
-    "unverifiable": 1
+    "unverifiable": 3
    },
-   "realised_share": 0.5,
+   "realised_share": 0.4,
    "judge_source": {
     "bulk": 18
    }
   },
   "DMK-2021@m36": {
    "cutoff": "2024-05-07",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 30,
    "indicator_status": {
-    "fulfilled": 10,
+    "fulfilled": 14,
     "partial": 1,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 5,
+    "in_progress": 2,
+    "not_started": 10,
     "blocked_external": 0,
-    "unverifiable": 4
+    "unverifiable": 3
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 29,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 10,
+    "fulfilled": 13,
     "partial": 1,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 5,
+    "in_progress": 2,
+    "not_started": 10,
     "blocked_external": 0,
-    "unverifiable": 2
+    "unverifiable": 3
    },
-   "realised_share": 0.6111,
+   "realised_share": 0.4828,
    "judge_source": {
     "bulk": 18
    }
   },
   "DMK-2021@m48": {
    "cutoff": "2025-05-07",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 241,
    "indicator_status": {
-    "fulfilled": 9,
-    "partial": 0,
+    "fulfilled": 110,
+    "partial": 8,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 9,
-    "blocked_external": 0,
-    "unverifiable": 2
+    "in_progress": 16,
+    "not_started": 83,
+    "blocked_external": 1,
+    "unverifiable": 23
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 220,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 9,
-    "partial": 0,
+    "fulfilled": 97,
+    "partial": 10,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 8,
-    "blocked_external": 0,
-    "unverifiable": 1
+    "in_progress": 13,
+    "not_started": 78,
+    "blocked_external": 1,
+    "unverifiable": 21
    },
-   "realised_share": 0.5,
+   "realised_share": 0.4864,
    "judge_source": {
     "bulk": 18
    }
   },
   "DMK-2021@full": {
    "cutoff": "full",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 710,
    "indicator_status": {
-    "fulfilled": 10,
-    "partial": 0,
+    "fulfilled": 305,
+    "partial": 21,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 8,
-    "blocked_external": 0,
-    "unverifiable": 2
+    "in_progress": 40,
+    "not_started": 269,
+    "blocked_external": 1,
+    "unverifiable": 74
    },
-   "promise_verdicts": 18,
+   "promise_verdicts": 667,
    "promises_in_term": 667,
    "promise_status": {
-    "fulfilled": 9,
-    "partial": 0,
+    "fulfilled": 282,
+    "partial": 26,
     "diluted": 0,
-    "in_progress": 0,
-    "not_started": 7,
-    "blocked_external": 0,
-    "unverifiable": 2
+    "in_progress": 37,
+    "not_started": 252,
+    "blocked_external": 1,
+    "unverifiable": 69
    },
-   "realised_share": 0.5,
+   "realised_share": 0.4618,
    "judge_source": {
     "bulk": 18
    }
   },
   "TVK-2026@m5": {
    "cutoff": "2026-10-10",
-   "indicator_verdicts": 20,
+   "indicator_verdicts": 768,
    "indicator_status": {
-    "fulfilled": 4,
-    "partial": 0,
+    "fulfilled": 163,
+    "partial": 12,
     "diluted": 0,
-    "in_progress": 3,
-    "not_started": 8,
+    "in_progress": 71,
+    "not_started": 417,
     "blocked_external": 0,
-    "unverifiable": 5
+    "unverifiable": 105
    },
-   "promise_verdicts": 17,
+   "promise_verdicts": 695,
    "promises_in_term": 695,
    "promise_status": {
-    "fulfilled": 3,
-    "partial": 1,
+    "fulfilled": 135,
+    "partial": 24,
     "diluted": 0,
-    "in_progress": 2,
-    "not_started": 7,
+    "in_progress": 68,
+    "not_started": 369,
     "blocked_external": 0,
-    "unverifiable": 4
+    "unverifiable": 99
    },
-   "realised_share": 0.2353,
+   "realised_share": 0.2288,
    "judge_source": {
     "bulk": 17
    }
   }
  },
  "checks": {
-  "keys_judged": 265,
-  "first_pass_tasks": 265,
-  "first_answer_fail_rate": 0.1057,
-  "fail_rate_after_mini": 0.0453,
-  "unresolved": 7,
-  "unresolved_share": 0.0264,
+  "keys_judged": 3892,
+  "first_pass_tasks": 5812,
+  "first_answer_fail_rate": 0.1454,
+  "fail_rate_after_mini": 0.0459,
+  "unresolved": 57,
+  "unresolved_share": 0.0146,
   "first_failures_by_check": {
-   "J3": 26,
-   "J5": 1,
-   "J6": 8
+   "J1": 21,
+   "J2": 4,
+   "J3": 424,
+   "J4": 8,
+   "J5": 120,
+   "J6": 140
   },
   "review_reasons_per_key": {
-   "quote_fuzzy": 5,
-   "retried": 21,
-   "unresolved": 7
+   "quote_fuzzy": 128,
+   "retried": 539,
+   "unresolved": 57
   }
  },
  "directional": {
@@ -482,13 +477,14 @@
   }
  },
  "date_chunk_doc_types": {
-  "go": 99,
-  "governor_address": 30,
-  "policy_note": 14,
-  "budget_speech": 9,
-  "scheme_page": 1
+  "go": 1055,
+  "policy_note": 560,
+  "budget_speech": 113,
+  "governor_address": 69,
+  "other": 19,
+  "scheme_page": 12
  },
- "non_monotone_promises_bulk": 10,
+ "non_monotone_promises_bulk": 106,
  "final": {
   "run_id": "judge-20261021T201556Z",
   "resumed": false,
@@ -515,20 +511,49 @@
   "llm_calls": 4
  },
  "usage": {
-  "calls_logged": 61,
-  "backend_calls": 57,
-  "cache_hits": 4,
-  "est_tokens_total": 921529,
-  "prompt_tokens_total": 1438592,
-  "output_tokens_total": 49705,
-  "prompt_tokens_per_first_call_median": 43670.0,
-  "est_tokens_per_first_call_max": 30090,
+  "calls_logged": 1081,
+  "backend_calls": 682,
+  "cache_hits": 399,
+  "est_tokens_total": 12392687,
+  "prompt_tokens_total": 20290588,
+  "output_tokens_total": 683091,
+  "prompt_tokens_per_first_call_median": 46728.5,
+  "est_tokens_per_first_call_max": 57810,
   "tpm_limit": 250000,
   "quota_days": [
-   "2026-10-21"
+   "2026-10-21",
+   "2026-10-22",
+   "2026-10-23"
   ]
  },
- "strong": {},
+ "strong": {
+  "judge-20261022T070634Z": {
+   "gold": {
+    "units": 78,
+    "exported": 78,
+    "judged": 78,
+    "tasks": 92
+   },
+   "headline": {
+    "units": 71,
+    "exported": 71,
+    "judged": 71,
+    "tasks": 74
+   },
+   "tvk_current": {
+    "units": 662,
+    "exported": 0,
+    "judged": 0,
+    "tasks": 734
+   },
+   "tier_b": {
+    "units": 4002,
+    "exported": 4002,
+    "judged": 1906,
+    "tasks": 4260
+   }
+  }
+ },
  "leakage": {
   "realised_uncited": 0,
   "cited_outside_retrieval": 0,
@@ -550,6 +575,6 @@
    ]
   },
   "same_for_every_term": true,
-  "config": "one judge config and check set (fingerprint fd69871e0bdf)"
+  "config": "one judge config and check set (fingerprint b38f9b2f86e0)"
  }
 }
