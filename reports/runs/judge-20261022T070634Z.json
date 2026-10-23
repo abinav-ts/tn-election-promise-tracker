@@ -675,14 +675,14 @@
     },
     "tvk_current": {
       "units": 662,
-      "exported": 0,
+      "exported": 662,
       "judged": 0,
       "tasks": 734
     },
     "tier_b": {
       "units": 4002,
       "exported": 4002,
-      "judged": 1906,
+      "judged": 1934,
       "tasks": 4260
     }
   },
@@ -1637,7 +1637,7 @@
       "groups": [
         "DMK-2021@2022-05-07"
       ],
-      "tokens": null,
+      "tokens": 169613,
       "model": "claude-sonnet-5-5",
       "status": "imported"
     },
@@ -1646,7 +1646,7 @@
       "groups": [
         "DMK-2021@2022-05-07"
       ],
-      "tokens": null,
+      "tokens": 171316,
       "model": "claude-sonnet-5-5",
       "status": "imported"
     },
@@ -2582,18 +2582,18 @@
       "groups": [
         "DMK-2021@2021-10-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 118090,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_212",
       "groups": [
         "DMK-2021@2021-11-07"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 107801,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_213",
@@ -2639,6 +2639,384 @@
       "tokens": null,
       "model": "claude-opus-5-5",
       "status": "imported"
+    },
+    {
+      "name": "batch_033_r",
+      "groups": [
+        "DMK-2021@2021-10-07"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_056_r",
+      "groups": [
+        "DMK-2021@2021-11-07"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_093_r",
+      "groups": [
+        "DMK-2021@2022-05-07"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_098_r",
+      "groups": [
+        "DMK-2021@2022-05-07"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_104_r",
+      "groups": [
+        "DMK-2021@2022-05-07"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
+    },
+    {
+      "name": "batch_217",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_218",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_219",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_220",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_221",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_222",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_223",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_224",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_225",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_226",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_227",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_228",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_229",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_230",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_231",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_232",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_233",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_234",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_235",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_236",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_237",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_238",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_239",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_240",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_241",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_242",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_243",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_244",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_245",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_246",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_247",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_248",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_249",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_250",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_251",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_252",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_253",
+      "groups": [
+        "TVK-2026@2026-10-10"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     }
   ]
 }
