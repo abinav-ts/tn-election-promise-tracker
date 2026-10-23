@@ -676,7 +676,7 @@
     "tvk_current": {
       "units": 662,
       "exported": 662,
-      "judged": 181,
+      "judged": 363,
       "tasks": 734
     },
     "tier_b": {
@@ -2762,7 +2762,7 @@
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
+      "tokens": 167574,
       "model": "claude-sonnet-5-5",
       "status": "imported"
     },
@@ -2771,7 +2771,7 @@
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
+      "tokens": 165453,
       "model": "claude-sonnet-5-5",
       "status": "imported"
     },
@@ -2780,72 +2780,72 @@
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 167605,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_228",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 169576,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_229",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 167262,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_230",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 171217,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_231",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 171006,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_232",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 165356,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_233",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 168626,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_234",
       "groups": [
         "TVK-2026@2026-10-10"
       ],
-      "tokens": null,
-      "model": null,
-      "status": "exported"
+      "tokens": 172463,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_235",
@@ -2853,8 +2853,8 @@
         "TVK-2026@2026-10-10"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_236",
@@ -2862,8 +2862,8 @@
         "TVK-2026@2026-10-10"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_237",
