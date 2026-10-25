@@ -17,7 +17,7 @@ const SCENARIOS = [
    says: "TVK's documented month-5 count is compared with the documented month-5 share of the term judged by the same judge at the same landmark (DMK 2021–26).",
    weak: "Chosen after scenario A's result was seen, and rests on one term. Its pace factor is then applied to hindsight-based hazards."}];
 function nav(page) {
-  const links = [["index.html", "Overview", "index"], ["promises.html", "Promise explorer", "promises"], ["whitepaper.html", "Whitepaper", "whitepaper"]];
+  const links = [["index.html", "Overview", "index"], ["promises.html", "Promise explorer", "promises"], ["whitepaper.html", "Whitepaper", "whitepaper"], ["work.html", "Work done", "work"]];
   return `<header class="site"><a class="brand" href="index.html">UMC 301 Course Project 1 - Election Promise Tracking</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></header>`;
 }
 function footer(sum) {

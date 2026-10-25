@@ -32,3 +32,6 @@ node_modules/
 # gold labels stay private (user, 2026-10-25); the committed reports are aggregate only
 data/gold/gold_labels.csv
 data/gold/gold_relabel.csv
+
+# private viva preparation
+docs/VIVA_SHEET.md

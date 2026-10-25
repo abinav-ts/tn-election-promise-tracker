@@ -140,6 +140,34 @@ def build(cfg: Config) -> dict:
     return {"promises": items, "summary": summary, "summary_bulk": bsum}
 
 
+def work_stats(cfg: Config) -> dict:
+    """Counts for the 'Work done' page, computed from the repository and the DB (nothing typed by hand)."""
+    import re
+    import subprocess
+
+    conn = db.connect()
+    one = lambda q: conn.execute(q).fetchone()[0]
+    docs = dict(conn.execute("select doc_type, count(*) from documents group by 1").fetchall())
+    promises = dict(conn.execute("select term_id, count(*) from promises group by 1").fetchall())
+    rr = conn.execute("select run_id from retrievals order by rowid desc limit 1").fetchone()[0]
+    manifest = json.loads((cfg.path("judgments") / "judge-20261022T070634Z" / "manifest.json").read_text(encoding="utf-8"))
+    imported = [b for b in manifest["batches"] if str(b.get("status", "")).startswith("imported")]
+    log = (cfg.root / "docs/decisions/log.md").read_text(encoding="utf-8")
+    sh = lambda *a: subprocess.run(a, cwd=cfg.root, capture_output=True, text=True).stdout.strip()
+    loc = sum(len(p.read_text(encoding="utf-8").splitlines()) for p in (cfg.root / "src/ept").rglob("*.py"))
+    tests = re.findall(r"(\d+) tests? collected", sh("python", "-m", "pytest", "--collect-only", "-q") or "")
+    return {"documents": one("select count(*) from documents"), "documents_by_type": docs, "chunks": one("select count(*) from chunks"),
+            "promises": promises, "promises_total": sum(promises.values()), "indicators": one("select count(*) from indicators"),
+            "retrieval_tasks": one(f"select count(*) from (select distinct indicator_id, cutoff_date from retrievals where run_id='{rr}')"),
+            "indicator_verdicts": one("select count(*) from indicator_verdicts"),
+            "strong_batches_run": len({b["n"] for b in imported if not b.get("retry_of")}),
+            "strong_batches_exported": len({b["n"] for b in manifest["batches"] if not b.get("retry_of")}),
+            "subagent_tokens": int(sum(b.get("tokens") or 0 for b in imported)),
+            "decisions": len(re.findall(r"^- \*\*D-\d+", log, flags=re.M)),
+            "specs": len(list((cfg.root / "specs").glob("0*.md"))), "commits": int(sh("git", "rev-list", "--count", "HEAD") or 0),
+            "python_lines": loc, "tests": int(tests[-1]) if tests else None}
+
+
 def export(cfg: Optional[Config] = None) -> dict:
     cfg = cfg or get_config()
     out = cfg.root / SITE / "data"
@@ -147,6 +175,7 @@ def export(cfg: Optional[Config] = None) -> dict:
     built = build(cfg)
     (out / "promises.json").write_text(_json(built["promises"]), encoding="utf-8")
     (out / "summary.json").write_text(_json(built["summary"]), encoding="utf-8")
+    (out / "work.json").write_text(_json(work_stats(cfg)), encoding="utf-8")
     if built["summary_bulk"]:
         (out / "summary_bulk.json").write_text(_json(built["summary_bulk"]), encoding="utf-8")
     model = json.loads(cfg.path("model_outputs").read_text(encoding="utf-8"))

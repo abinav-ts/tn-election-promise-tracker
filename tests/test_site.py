@@ -23,7 +23,7 @@ def test_build_shape_and_no_gold():
 
 
 def test_pages_reference_existing_local_assets():
-    for page in ("index.html", "promises.html", "whitepaper.html"):
+    for page in ("index.html", "promises.html", "whitepaper.html", "work.html"):
         html = (SITE / page).read_text()
         for ref in re.findall(r'(?:src|href)="(assets/[^"]+)"', html):
             assert (SITE / ref).exists(), (page, ref)
