@@ -79,6 +79,12 @@ class Paths(_Cfg):
     judgment_json: str
     spotcheck_05_dir: str
     gold_sample: str
+    # stage 07 (spec 07 §4.8)
+    final_verdicts_glob: str
+    model_report_md: str
+    model_report_json: str
+    model_outputs: str
+    model_figures: str
 
 
 class EvidenceWindow(_Cfg):
@@ -353,6 +359,26 @@ class Judge(_Cfg):
     rationale_max_words: int
 
 
+class Bootstrap(_Cfg):
+    n: int
+    band: list[float]
+    seed: str
+
+
+class ModelCfg(_Cfg):
+    covariates: list[str]
+    reference: dict[str, str]
+    landmarks_months: list[int]
+    horizon_months: int
+    min_group_size: int
+    pace_prior_events: float          # c in k = (O + c) / (E + c), spec 07 §4.5
+    pace_prior_sensitivity: list[float]
+    bootstrap: Bootstrap
+    coarse_dates: Literal["midpoint", "start", "end"]
+    days_per_month: float
+    group_vars: list[str]
+
+
 class BulkCfg(_Cfg):
     api_key_env: str
     candidates: list[str]
@@ -392,6 +418,7 @@ class Settings(_Cfg):
     classify: Classify
     retrieve: Retrieve
     judge: Judge
+    model: ModelCfg
     llm: Llm
 
 

@@ -613,3 +613,19 @@ def judge_run_b_reverse(stop_at: Optional[str] = typer.Option(None, "--stop-at",
         raise typer.Exit(2)
     if stats["stop_for_user"]:
         raise typer.Exit(4)
+
+
+model_app = typer.Typer(help="Survival modelling (spec 07): KM, Cox, reverse backtest, TVK projection, report")
+app.add_typer(model_app, name="model")
+
+
+@model_app.callback(invoke_without_command=True)
+def model(ctx: typer.Context, quick: bool = typer.Option(False, "--quick", help="20 bootstrap resamples (smoke test)")) -> None:
+    """Run everything and write reports/modelling_07.* and data/processed/model_outputs.json."""
+    if ctx.invoked_subcommand is not None:
+        return
+    from ept.config import get_config
+    from ept.model.report import run_all, write_outputs
+
+    cfg = get_config()
+    typer.echo(f"model: {write_outputs(cfg, run_all(cfg, quick=quick))}")

@@ -55,8 +55,27 @@ paths:
   verdict_overrides: config/verdict_overrides.csv
   judgment_md: reports/judgment_05.md
   judgment_json: reports/judgment_05.json
+  final_verdicts_glob: data/judgments/final_*.jsonl   # stage 07 reads the newest (stage 05 final export)
+  model_report_md: reports/modelling_07.md
+  model_report_json: reports/modelling_07.json
+  model_outputs: data/processed/model_outputs.json
+  model_figures: reports/figures_07
   spotcheck_05_dir: data/interim/spotcheck_05
   gold_sample: data/gold/gold_sample.csv   # ept.judge reads only its promise_id and term_id columns (spec 05 §5)
+
+# Spec 07 §4.8 (D-110–D-113).
+model:
+  covariates: [promise_type, cost_band, specificity, union_dependent, continues_existing]
+  reference: {promise_type: administrative, cost_band: none}
+  landmarks_months: [5, 6, 12, 24, 36, 48]
+  horizon_months: 60
+  min_group_size: 20
+  pace_prior_events: 20          # c in k = (O + c) / (E + c); fixed in advance, not tuned
+  pace_prior_sensitivity: [5, 80]
+  bootstrap: {n: 200, band: [0.10, 0.90], seed: "ept-model-2026-10-25"}
+  coarse_dates: midpoint         # sensitivity runs: start | end
+  days_per_month: 30.4375
+  group_vars: [promise_type, cost_band, specificity, union_dependent, continues_existing, headline, sector]
 
 # Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
 terms:
