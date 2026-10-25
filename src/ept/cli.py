@@ -629,3 +629,20 @@ def model(ctx: typer.Context, quick: bool = typer.Option(False, "--quick", help=
 
     cfg = get_config()
     typer.echo(f"model: {write_outputs(cfg, run_all(cfg, quick=quick))}")
+
+
+evaluate_app = typer.Typer(help="Evaluation of the judges against the gold set (spec 06 Part 2)")
+app.add_typer(evaluate_app, name="evaluate")
+
+
+@evaluate_app.command("run")
+def evaluate_run(allow_short: bool = typer.Option(False, "--allow-short", help="accept fewer than the minimum labels (fixtures only)")) -> None:
+    """Read data/gold/gold_labels.csv, score bulk, strong and final verdicts, write reports/evaluation_06.*"""
+    from ept.evaluate.run import run_and_write
+    from ept.evaluate.gold import LabelError
+
+    try:
+        typer.echo(f"evaluate: {run_and_write(allow_short=allow_short)}")
+    except (LabelError, FileNotFoundError) as e:
+        typer.echo(f"evaluate: STOP — {e}")
+        raise typer.Exit(4)

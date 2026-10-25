@@ -85,6 +85,12 @@ class Paths(_Cfg):
     model_report_json: str
     model_outputs: str
     model_figures: str
+    # stage 06 (spec 06 §H6)
+    gold_labels: str
+    gold_relabel: str
+    gold_dir: str
+    evaluation_md: str
+    evaluation_json: str
 
 
 class EvidenceWindow(_Cfg):
@@ -380,6 +386,14 @@ class ModelCfg(_Cfg):
     group_vars: list[str]
 
 
+class EvaluateCfg(_Cfg):
+    min_labels: int
+    date_within_days: int
+    small_n: int
+    bulk_run_id: Optional[str] = None      # null = latest bulk run with tier A complete
+    strong_run_id: Optional[str] = None    # null = latest strong run
+
+
 class BulkCfg(_Cfg):
     api_key_env: str
     candidates: list[str]
@@ -420,6 +434,7 @@ class Settings(_Cfg):
     retrieve: Retrieve
     judge: Judge
     model: ModelCfg
+    evaluate: EvaluateCfg
     llm: Llm
 
 

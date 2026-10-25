@@ -60,6 +60,11 @@ paths:
   model_report_json: reports/modelling_07.json
   model_outputs: data/processed/model_outputs.json
   model_figures: reports/figures_07
+  gold_labels: data/gold/gold_labels.csv
+  gold_relabel: data/gold/gold_relabel.csv
+  gold_dir: data/gold
+  evaluation_md: reports/evaluation_06.md
+  evaluation_json: reports/evaluation_06.json
   spotcheck_05_dir: data/interim/spotcheck_05
   gold_sample: data/gold/gold_sample.csv   # ept.judge reads only its promise_id and term_id columns (spec 05 §5)
 
@@ -77,6 +82,14 @@ model:
   coarse_dates: midpoint         # sensitivity runs: start | end
   days_per_month: 30.4375
   group_vars: [promise_type, cost_band, specificity, union_dependent, continues_existing, headline, sector]
+
+# Spec 06 Part 2 (§H4).
+evaluate:
+  min_labels: 40
+  date_within_days: 90
+  small_n: 5               # groups smaller than this print as 'too few'
+  bulk_run_id: null
+  strong_run_id: null
 
 # Spec 01 §2.1 (D-016). term_end = day before the next swearing-in.
 terms:
