@@ -1,6 +1,6 @@
 # Stage 06 — Evaluation report
 
-Generated 2026-10-25T17:46:09+00:00 · runs {'bulk': 'judge-20261021T203007Z', 'strong': 'judge-20261022T070634Z', 'final': 'final_judge-20261025T102013Z.jsonl'}
+Generated 2026-10-25T19:11:38+00:00 · runs {'bulk': 'judge-20261021T203007Z', 'strong': 'judge-20261022T070634Z', 'final': 'final_judge-20261025T102013Z.jsonl'}
 
 Gold labels used: **40** (gap-free prefix of the sample order); per term {'AIADMK-2016': 20, 'DMK-2021': 20}. Human rows among the final verdicts of gold promises: 0 (must be 0).
 
@@ -63,6 +63,26 @@ Splits (E1 accuracy; n<5 = too few): directional: directional n=11 91%, other n=
 Re-weighted for DMK's oversampled vague promises: pooled E1 accuracy 76% (per term {'AIADMK-2016': 0.95, 'DMK-2021': 0.56}).
 
 Disagreements on status: 19; buckets {'evidence_outside_corpus': 8, 'judge_error': 7, 'retrieval_miss': 4}.
+
+## Judge: final_bulk
+
+(promises without a verdict from this judge: 0)
+
+| group | n | E1 accuracy | recall | precision | specificity | exact status | status (not_started = unverifiable) |
+|---|---|---|---|---|---|---|---|
+| pooled_AIADMK_DMK | 40 | 72% (29/40; 57–84%) | 83% (25/30; 66–93%) | 81% (25/31; 64–91%) | 40% (4/10; 17–69%) | 60% (24/40; 45–74%) | 62% (25/40; 47–76%) |
+| AIADMK-2016 | 20 | 90% (18/20; 70–97%) | 94% (16/17; 73–99%) | 94% (16/17; 73–99%) | 67% (2/3; 21–94%) | 80% (16/20; 58–92%) | 80% (16/20; 58–92%) |
+| DMK-2021 | 20 | 55% (11/20; 34–74%) | 69% (9/13; 42–87%) | 64% (9/14; 39–84%) | 29% (2/7; 8–64%) | 40% (8/20; 22–61%) | 45% (9/20; 26–66%) |
+
+E1 counts (gold realised/not × judge realised/not), pooled AIADMK+DMK: tp=25, fn=5, fp=6, tn=4
+
+Date error (both say realised): pooled_AIADMK_DMK: n=25, median |diff| 178.0 d, median signed -155.0 d, within 90 d 32% (8/25; 17–52%); AIADMK-2016: n=16, median |diff| 158.5 d, median signed -135.0 d, within 90 d 31% (5/16; 14–56%); DMK-2021: n=9, median |diff| 235.0 d, median signed -178.0 d, within 90 d 33% (3/9; 12–65%)
+
+Splits (E1 accuracy; n<5 = too few): directional: directional n=11 82%, other n=29 69%; specificity: specific n=33 67%, vague n=7 100%; in_corpus: false n=10 40%, none n=5 40%, true n=25 92%; unsure: sure n=40 72%
+
+Re-weighted for DMK's oversampled vague promises: pooled E1 accuracy 70% (per term {'AIADMK-2016': 0.9, 'DMK-2021': 0.5}).
+
+Disagreements on status: 16; buckets {'evidence_outside_corpus': 7, 'judge_error': 6, 'retrieval_miss': 3}.
 
 ## Landmark agreement (final run, 'realised by month m' vs gold dates; AIADMK bulk, DMK mixed judges)
 

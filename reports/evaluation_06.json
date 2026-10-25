@@ -1361,6 +1361,450 @@
     },
     "bucket_sum_ok": true
    }
+  },
+  "final_bulk": {
+   "missing_verdicts": 0,
+   "groups": {
+    "pooled_AIADMK_DMK": {
+     "e1": {
+      "tp": 25,
+      "fn": 5,
+      "fp": 6,
+      "tn": 4,
+      "n": 40,
+      "accuracy": {
+       "k": 29,
+       "n": 40,
+       "p": 0.725,
+       "lo": 0.5716474916687543,
+       "hi": 0.8389214656685691
+      },
+      "recall": {
+       "k": 25,
+       "n": 30,
+       "p": 0.8333333333333334,
+       "lo": 0.6643529481431982,
+       "hi": 0.9266356575964831
+      },
+      "precision": {
+       "k": 25,
+       "n": 31,
+       "p": 0.8064516129032258,
+       "lo": 0.6371939644454012,
+       "hi": 0.9081311641365236
+      },
+      "specificity": {
+       "k": 4,
+       "n": 10,
+       "p": 0.4,
+       "lo": 0.16817758120350967,
+       "hi": 0.6873304525498135
+      }
+     },
+     "status": {
+      "exact": {
+       "k": 24,
+       "n": 40,
+       "p": 0.6,
+       "lo": 0.44595619827393507,
+       "hi": 0.7365188938759865
+      },
+      "exact_merging_not_started_unverifiable": {
+       "k": 25,
+       "n": 40,
+       "p": 0.625,
+       "lo": 0.4703216005453191,
+       "hi": 0.7577722646420829
+      },
+      "confusion": [
+       {
+        "gold": "blocked_external",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "diluted",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "diluted",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "fulfilled",
+        "n": 19
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "not_started",
+        "n": 2
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "partial",
+        "n": 2
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "unverifiable",
+        "n": 1
+       },
+       {
+        "gold": "in_progress",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "not_started",
+        "judge": "fulfilled",
+        "n": 2
+       },
+       {
+        "gold": "not_started",
+        "judge": "not_started",
+        "n": 3
+       },
+       {
+        "gold": "not_started",
+        "judge": "unverifiable",
+        "n": 1
+       },
+       {
+        "gold": "partial",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "partial",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "partial",
+        "judge": "partial",
+        "n": 2
+       },
+       {
+        "gold": "unverifiable",
+        "judge": "fulfilled",
+        "n": 2
+       }
+      ]
+     },
+     "date": {
+      "n": 25,
+      "median_abs_days": 178.0,
+      "median_signed_days": -155.0,
+      "within_90_days": {
+       "k": 8,
+       "n": 25,
+       "p": 0.32,
+       "lo": 0.17204987516891146,
+       "hi": 0.515900862654233
+      }
+     }
+    },
+    "AIADMK-2016": {
+     "e1": {
+      "tp": 16,
+      "fn": 1,
+      "fp": 1,
+      "tn": 2,
+      "n": 20,
+      "accuracy": {
+       "k": 18,
+       "n": 20,
+       "p": 0.9,
+       "lo": 0.6989617935882066,
+       "hi": 0.9721341060158467
+      },
+      "recall": {
+       "k": 16,
+       "n": 17,
+       "p": 0.9411764705882353,
+       "lo": 0.730174547964372,
+       "hi": 0.9895398693548358
+      },
+      "precision": {
+       "k": 16,
+       "n": 17,
+       "p": 0.9411764705882353,
+       "lo": 0.730174547964372,
+       "hi": 0.9895398693548358
+      },
+      "specificity": {
+       "k": 2,
+       "n": 3,
+       "p": 0.6666666666666666,
+       "lo": 0.20765495512648788,
+       "hi": 0.9385096847238393
+      }
+     },
+     "status": {
+      "exact": {
+       "k": 16,
+       "n": 20,
+       "p": 0.8,
+       "lo": 0.5839782779742402,
+       "hi": 0.9193436467288001
+      },
+      "exact_merging_not_started_unverifiable": {
+       "k": 16,
+       "n": 20,
+       "p": 0.8,
+       "lo": 0.5839782779742402,
+       "hi": 0.9193436467288001
+      },
+      "confusion": [
+       {
+        "gold": "diluted",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "fulfilled",
+        "n": 13
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "partial",
+        "n": 1
+       },
+       {
+        "gold": "not_started",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "not_started",
+        "judge": "not_started",
+        "n": 2
+       },
+       {
+        "gold": "partial",
+        "judge": "partial",
+        "n": 1
+       }
+      ]
+     },
+     "date": {
+      "n": 16,
+      "median_abs_days": 158.5,
+      "median_signed_days": -135.0,
+      "within_90_days": {
+       "k": 5,
+       "n": 16,
+       "p": 0.3125,
+       "lo": 0.14164435051961052,
+       "hi": 0.5559606813326594
+      }
+     }
+    },
+    "DMK-2021": {
+     "e1": {
+      "tp": 9,
+      "fn": 4,
+      "fp": 5,
+      "tn": 2,
+      "n": 20,
+      "accuracy": {
+       "k": 11,
+       "n": 20,
+       "p": 0.55,
+       "lo": 0.34208200830759966,
+       "hi": 0.741804979142907
+      },
+      "recall": {
+       "k": 9,
+       "n": 13,
+       "p": 0.6923076923076923,
+       "lo": 0.4236888781333764,
+       "hi": 0.873195028383819
+      },
+      "precision": {
+       "k": 9,
+       "n": 14,
+       "p": 0.6428571428571429,
+       "lo": 0.3876400468214041,
+       "hi": 0.8365550926279727
+      },
+      "specificity": {
+       "k": 2,
+       "n": 7,
+       "p": 0.2857142857142857,
+       "lo": 0.08221716570901548,
+       "hi": 0.6410709098517873
+      }
+     },
+     "status": {
+      "exact": {
+       "k": 8,
+       "n": 20,
+       "p": 0.4,
+       "lo": 0.21880396741419272,
+       "hi": 0.613422057684794
+      },
+      "exact_merging_not_started_unverifiable": {
+       "k": 9,
+       "n": 20,
+       "p": 0.45,
+       "lo": 0.25819502085709295,
+       "hi": 0.6579179916924003
+      },
+      "confusion": [
+       {
+        "gold": "blocked_external",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "diluted",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "fulfilled",
+        "n": 6
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "partial",
+        "n": 1
+       },
+       {
+        "gold": "fulfilled",
+        "judge": "unverifiable",
+        "n": 1
+       },
+       {
+        "gold": "in_progress",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "not_started",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "not_started",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "not_started",
+        "judge": "unverifiable",
+        "n": 1
+       },
+       {
+        "gold": "partial",
+        "judge": "fulfilled",
+        "n": 1
+       },
+       {
+        "gold": "partial",
+        "judge": "not_started",
+        "n": 1
+       },
+       {
+        "gold": "partial",
+        "judge": "partial",
+        "n": 1
+       },
+       {
+        "gold": "unverifiable",
+        "judge": "fulfilled",
+        "n": 2
+       }
+      ]
+     },
+     "date": {
+      "n": 9,
+      "median_abs_days": 235.0,
+      "median_signed_days": -178.0,
+      "within_90_days": {
+       "k": 3,
+       "n": 9,
+       "p": 0.3333333333333333,
+       "lo": 0.12058159868274292,
+       "hi": 0.6458026525009103
+      }
+     }
+    }
+   },
+   "splits": {
+    "directional": {
+     "directional": {
+      "n": 11,
+      "accuracy": 0.8181818181818182
+     },
+     "other": {
+      "n": 29,
+      "accuracy": 0.6896551724137931
+     }
+    },
+    "specificity": {
+     "specific": {
+      "n": 33,
+      "accuracy": 0.6666666666666666
+     },
+     "vague": {
+      "n": 7,
+      "accuracy": 1.0
+     }
+    },
+    "in_corpus": {
+     "false": {
+      "n": 10,
+      "accuracy": 0.4
+     },
+     "none": {
+      "n": 5,
+      "accuracy": 0.4
+     },
+     "true": {
+      "n": 25,
+      "accuracy": 0.92
+     }
+    },
+    "unsure": {
+     "sure": {
+      "n": 40,
+      "accuracy": 0.725
+     }
+    }
+   },
+   "weighted": {
+    "per_term": {
+     "AIADMK-2016": 0.9030448717948718,
+     "DMK-2021": 0.5039245083340683
+    },
+    "pooled": 0.70348469006447
+   },
+   "disagreements": {
+    "n": 16,
+    "buckets": {
+     "evidence_outside_corpus": 7,
+     "judge_error": 6,
+     "retrieval_miss": 3
+    },
+    "bucket_sum_ok": true
+   }
   }
  },
  "landmarks_final": {
@@ -1485,7 +1929,7 @@
   "The final verdicts combine judges: a realisation found at an earlier landmark is carried forward (D-090) even where the full-term judge said not started. This raises recall (final 87 % vs Claude alone 40 %) at the cost of precision, and it means 'final' is not the same judge as 'strong'. Realisation dates are the weak point: the median gap to the hand-labelled date is about five to six months and fewer than a third are within 90 days, so event times in the survival models are approximate.",
   "Judges and the labeller both know Tamil Nadu politics: the citation and quote checks stop unsupported claims, not memory-driven choices between supported statuses. The memory probe (0/40 evidence-needing answers) is the only direct measurement."
  ],
- "generated_at": "2026-10-25T17:46:09+00:00",
+ "generated_at": "2026-10-25T19:11:38+00:00",
  "runs": {
   "bulk": "judge-20261021T203007Z",
   "strong": "judge-20261022T070634Z",

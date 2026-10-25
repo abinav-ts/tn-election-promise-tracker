@@ -7,6 +7,8 @@
 <main>
 <section><h1>Did the promises get kept, and how fast?</h1>
 <p class="lede">Every promise in the manifestos of the parties that formed the Tamil Nadu government in 2016, 2021 and 2026, checked against official documents: policy notes, budget speeches, Government Orders and audit reports. A promise counts as <em>realised</em> when an official step puts it into operation, with the date of the earliest such step. Nothing here ranks parties or rates governments.</p></section>
+<section><h2>Which judge?</h2><p class="muted small">The answers depend on who judged the evidence. Both views are shown; neither is "the truth". The whitepaper compares them against a hand-labelled sample.</p>
+<div id="regime" class="filters" role="group" aria-label="Judging setting"><button type="button" class="pill" data-r="final" style="cursor:pointer;padding:8px 14px;border:1px solid var(--line)">Claude-preferred judging</button><button type="button" class="pill" data-r="bulk" style="cursor:pointer;padding:8px 14px;border:1px solid var(--line)">Gemini-only judging</button></div><p id="regimeText" class="note small" style="margin-top:10px"></p></section>
 <section id="cards" class="grid" aria-label="Headline numbers"></section>
 <section><h2>Share of promises realised, by month of tenure</h2>
 <p class="muted small">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The dots are what was documented at each landmark month; the gap between line and dots is evidence that appeared only later.</p>
@@ -23,52 +25,57 @@
 <script src="assets/vendor/chart.umd.min.js"></script><script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("index");
-Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null)]).then(([sum, model, ev]) => {
-  $("#foot").innerHTML = footer(sum);
-  const c = COLORS();
-  const cells = sum.cells;
+const REGIMES = {
+  final: {name: "Claude-preferred judging", text: "Claude's verdicts are used wherever Claude judged (the hand-labelled sample, headline promises, all TVK promises at month 5, DMK's first landmarks); the lighter Gemini model fills the rest. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."},
+  bulk: {name: "Gemini-only judging", text: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised."}};
+let regime = "final", D = null, charts = [];
+function mixText(sum, t, m) { const x = sum.cells.find(y => y.term === t && y.month === m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : ""; }
+function render() {
+  charts.forEach(c => c.destroy()); charts = [];
+  const sum = regime === "bulk" ? D.sumB : D.sum, model = regime === "bulk" ? D.modelB : D.model, ev = D.ev, c = COLORS(), cells = sum.cells;
+  $("#regimeText").innerHTML = `<strong>${REGIMES[regime].name}.</strong> ${REGIMES[regime].text}`;
+  document.querySelectorAll("#regime button").forEach(b => { b.setAttribute("aria-pressed", b.dataset.r === regime); b.style.fontWeight = b.dataset.r === regime ? 700 : 400; b.style.borderColor = b.dataset.r === regime ? c.accent : c.line; });
   $("#cards").innerHTML = Object.entries(sum.terms).map(([t, info]) => {
     const full = cells.find(x => x.term === t && x.month === 0), m5 = cells.find(x => x.term === t && x.month === 5);
     const main = info.term_end ? `<div class="stat">${pct(full.realised)}</div><div class="muted small">realised by the end of the term (${full.n} promises)</div>` : `<div class="stat">${pct(m5.realised, 1)}</div><div class="muted small">documented as realised after 5 months (${m5.n} promises)</div>`;
     return `<div class="card"><div class="muted small"><span class="sw" style="background:${c[t]}"></span>${TERMS[t]}</div>${main}<div class="muted small" style="margin-top:6px">${info.term_end ? "Month 5: " + pct(m5.realised) + " documented" : "Term in progress"}</div></div>`;
   }).join("");
-  const km = model.km.terms, ds = [];
-  for (const [t, e] of Object.entries(km)) {
+  const ds = [];
+  for (const [t, e] of Object.entries(model.km.terms)) {
     if (t === "TVK-2026") continue;
     ds.push({label: TERMS[t] + " (curve)", data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c[t], backgroundColor: c[t], tension: .2, pointRadius: 2});
-    const pts = cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised}));
-    ds.push({label: TERMS[t] + " (documented at the time)", data: pts, borderColor: c[t], backgroundColor: c[t], showLine: false, pointStyle: "rectRot", pointRadius: 5});
+    ds.push({label: TERMS[t] + " (documented at the time)", data: cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised})), borderColor: c[t], backgroundColor: c[t], showLine: false, pointStyle: "rectRot", pointRadius: 5});
   }
   const tv = cells.find(x => x.term === "TVK-2026");
   ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c["TVK-2026"], backgroundColor: c["TVK-2026"], pointRadius: 7, showLine: false});
-  lineChart($("#kmChart"), ds);
-  const mix = (t, m) => { const x = cells.find(y => y.term === t && y.month === m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by the lighter bulk model" : "human fix")).join(", ") : ""; };
-  $("#judgeNote").innerHTML = `<strong>Read across terms with care.</strong> The terms were judged by different mixes of judges. At month 5: DMK, ${mix("DMK-2021", 5)}; TVK, ${mix("TVK-2026", 5)}; AIADMK, ${mix("AIADMK-2016", 5)}. Part of AIADMK's early lead may be judge leniency; see the whitepaper.`;
-  // projection
-  const p = model.projection, xs = p.months;
-  const pd = [];
+  charts.push(lineChart($("#kmChart"), ds));
+  $("#judgeNote").innerHTML = `<strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${regime === "final" ? "The terms were judged by different mixes of judges, so part of AIADMK's early lead may be judge leniency. Switch to Gemini-only judging to compare the terms with one judge." : "Every term has the same judge here. Compare with Claude-preferred judging: how large the realised shares are depends heavily on the judge."}`;
+  const p = model.projection, xs = p.months, pd = [];
   for (const s of SCENARIOS) {
     const r = p[s.key]; if (!r) continue; const col = c[s.color] || s.color;
-    const pts = xs.map((x, i) => ({x, y: 100 * r.share[i]}));
-    pd.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...pts], borderColor: col, backgroundColor: col, pointRadius: 0, borderWidth: 2.5});
+    pd.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: col, backgroundColor: col, pointRadius: 0, borderWidth: 2.5});
     if (r.lo) {
-      pd.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: col + "26", pointRadius: 0, fill: "+1", showLegend: false});
+      pd.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: col + "26", pointRadius: 0, fill: "+1"});
       pd.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0});
     }
   }
-  const ch = lineChart($("#projChart"), pd);
-  ch.options.plugins.legend.labels.filter = (item) => !/band/.test(item.text); ch.update();
-  const cols = [6, 12, 24, 36, 48, 60];
-  $("#proj-table").innerHTML = `<table><thead><tr><th>Line</th><th>Pace factor</th>${cols.map(m => `<th>${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${SCENARIOS.filter(s => p[s.key]).map(s => `<tr><td>${s.name}</td><td>${p[s.key].k.toFixed(2)}</td>${cols.map(m => `<td>${pct(p[s.key].share[xs.indexOf(m)])}${p[s.key].lo ? `<br><span class="muted small">${pct(p[s.key].lo[xs.indexOf(m)])}–${pct(p[s.key].hi[xs.indexOf(m)])}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
-  $("#assume").innerHTML = SCENARIOS.filter(s => p[s.key]).map(s => `<div class="card"><h3><span class="sw" style="background:${c[s.color] || s.color}"></span>${s.name}</h3><p><strong>Assumes:</strong> ${s.says}</p><p class="muted"><strong>Weakness:</strong> ${s.weak}</p></div>`).join("");
-  // trust
-  const b = model.backtest, lm = b.landmarks;
-  const kk = Object.keys(lm["5"]).find(k => /^k_c=20/.test(k));
-  const cards = [`<div class="card"><div class="stat">${lm["5"].mae_model_pace.toFixed(1)} pts</div><div class="muted small">average gap between predicted and actual share realised, predicting AIADMK 2016–21 from its first 5 months (${lm["5"].mae_model.toFixed(1)} pts without the pace update; ${lm["5"].mae_baseline.toFixed(1)} pts with no promise characteristics)</div></div>`];
+  const ch = lineChart($("#projChart"), pd); ch.options.plugins.legend.labels.filter = (item) => !/band/.test(item.text); ch.update(); charts.push(ch);
+  const cols = [6, 12, 24, 36, 48, 60], rows = SCENARIOS.filter(s => p[s.key]);
+  $("#proj-table").innerHTML = `<table><thead><tr><th>Line</th><th>Pace factor</th>${cols.map(m => `<th>${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rows.map(s => `<tr><td>${s.name}</td><td>${p[s.key].k.toFixed(2)}</td>${cols.map(m => `<td>${pct(p[s.key].share[xs.indexOf(m)])}${p[s.key].lo ? `<br><span class="muted small">${pct(p[s.key].lo[xs.indexOf(m)])}–${pct(p[s.key].hi[xs.indexOf(m)])}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  const scenText = regime === "bulk" ? {matched_update: {says: "TVK's documented month-5 count is compared with the documented month-5 share of the completed terms judged by the same judge (here both, since one judge judged everything).", weak: "Added after scenario A's result was seen; with one judge for all terms it is close to the no-update line."}} : {};
+  $("#assume").innerHTML = rows.map(s => { const t = scenText[s.key] || s; return `<div class="card"><h3><span class="sw" style="background:${c[s.color] || s.color}"></span>${s.name}</h3><p><strong>Assumes:</strong> ${t.says}</p><p class="muted"><strong>Weakness:</strong> ${t.weak}</p></div>`; }).join("");
+  const lm = model.backtest.landmarks;
+  const cards = [`<div class="card"><div class="stat">${lm["5"].mae_model_pace.toFixed(1)} pts</div><div class="muted small">average gap between predicted and actual share realised, predicting AIADMK 2016–21 from its first 5 months with the pace update (${lm["5"].mae_model.toFixed(1)} pts without it; ${lm["5"].mae_baseline.toFixed(1)} pts using no promise characteristics)</div></div>`];
   if (ev && ev.judges) {
-    const g = ev.judges.final && ev.judges.final.groups.pooled_AIADMK_DMK.e1;
-    if (g) cards.push(`<div class="card"><div class="stat">${pct(g.accuracy.p)}</div><div class="muted small">of ${g.n} hand-labelled promises (AIADMK and DMK) agree with the final verdicts on <em>realised or not</em> (95% interval ${pct(g.accuracy.lo)}–${pct(g.accuracy.hi)})</div></div>`);
+    const j = ev.judges[regime === "bulk" ? "final_bulk" : "final"]; const g = j && j.groups.pooled_AIADMK_DMK.e1;
+    if (g) cards.push(`<div class="card"><div class="stat">${pct(g.accuracy.p)}</div><div class="muted small">of ${g.n} hand-labelled promises (AIADMK and DMK) agree with these verdicts on <em>realised or not</em> (95% interval ${pct(g.accuracy.lo)}–${pct(g.accuracy.hi)})</div></div>`);
   }
   $("#trust").innerHTML = cards.join("");
+}
+Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB]) => {
+  D = {sum, model, ev, sumB, modelB}; $("#foot").innerHTML = footer(sum);
+  if (!sumB || !modelB) $("#regime").hidden = true;
+  document.querySelectorAll("#regime button").forEach(b => b.onclick = () => { regime = b.dataset.r; render(); });
+  render();
 }).catch(e => { document.body.insertAdjacentHTML("beforeend", "<p class='note'>Data failed to load: " + esc(e.message) + ". Serve the folder with a static server.</p>"); });
 </script></body></html>

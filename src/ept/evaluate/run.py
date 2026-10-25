@@ -42,9 +42,9 @@ def _run_verdicts(cfg: Config, run_id: str) -> dict[tuple[str, Optional[str]], d
     return {(r[0], r[1]): {"status": r[2], "date": r[3], "precision": r[4]} for r in rows}
 
 
-def _final_verdicts(cfg: Config) -> dict[tuple[str, Optional[str]], dict]:
+def _final_verdicts(cfg: Config, source: str = "final") -> dict[tuple[str, Optional[str]], dict]:
     return {(r["promise_id"], r["cutoff_date"]): {"status": r["status"], "date": r["realisation_date"],
-                                                 "precision": r["date_precision"]} for r in mdata.load_final(cfg)}
+                                                 "precision": r["date_precision"]} for r in mdata.load_final(cfg, source)}
 
 
 def _retrieved(cfg: Config, pids: list[str], cutoffs: dict[str, Optional[str]]) -> dict[str, set[str]]:
@@ -173,6 +173,10 @@ def run(cfg: Optional[Config] = None, allow_short: bool = False) -> dict:
     strong = ec.strong_run_id or store.latest_run(cfg, "strong")["run_id"]
     final = _final_verdicts(cfg)
     judges = {"bulk": _run_verdicts(cfg, bulk), "strong": _run_verdicts(cfg, strong), "final": final}
+    try:  # the Gemini-consistent variant (D-119), when it has been built
+        judges["final_bulk"] = _final_verdicts(cfg, "bulk")
+    except FileNotFoundError:
+        pass
     pids = [r["promise_id"] for r in labels]
     cut = {p: _cutoff_key(cfg, p.rsplit("-", 1)[0]) for p in pids}
     cov = mdata.load_covariates(cfg)

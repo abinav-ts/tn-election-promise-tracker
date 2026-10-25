@@ -20,16 +20,19 @@ E1_STATUSES = {"fulfilled", "partial", "diluted"}
 E2_STATUSES = {"fulfilled"}
 
 
-def newest_final(cfg: Config) -> Path:
+def newest_final(cfg: Config, source: str = "final") -> Path:
+    """Newest final export; `source="bulk"` selects the Gemini-consistent variant (`bulkfinal_*.jsonl`, D-119)."""
     pattern = cfg.settings.paths.final_verdicts_glob
+    if source == "bulk":
+        pattern = pattern.replace("final_", "bulkfinal_")
     files = sorted(cfg.root.glob(pattern))
     if not files:
         raise FileNotFoundError(f"no final verdict export matches {pattern} (run `ept judge final`)")
     return files[-1]
 
 
-def load_final(cfg: Config) -> list[dict]:
-    with newest_final(cfg).open(encoding="utf-8") as f:
+def load_final(cfg: Config, source: str = "final") -> list[dict]:
+    with newest_final(cfg, source).open(encoding="utf-8") as f:
         return [json.loads(line) for line in f if line.strip()]
 
 

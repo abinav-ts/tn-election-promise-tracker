@@ -46,16 +46,21 @@
 <div id="scen"></div>
 <p>The bands show fitting uncertainty only. Nothing here predicts what TVK will do: it states what historical patterns would imply.</p>
 
-<h2>10. Limitations</h2>
+<h2 id="judge-dependence">10. How much depends on the judge</h2>
+<p>The same evidence was judged two ways: with Claude's verdicts preferred wherever Claude judged, and with the lighter Gemini model alone for every term (so all terms are treated identically). Neither is the truth. On the hand-labelled sample Gemini over-claims realisation (it calls some not-realised promises realised), while Claude almost never over-claims but misses many realised promises. The results of the two settings:</p>
+<div id="regimeCmp" class="scroll"></div>
+<p id="regimeText2"></p>
+
+<h2>11. Limitations</h2>
 <ol id="lims"></ol>
 
-<h2>11. Reproducibility and licences</h2>
+<h2>12. Reproducibility and licences</h2>
 <p>Every stage is a command in <code>python -m ept</code>, every prompt is a versioned file and every strong-judge batch is committed. Code: GPL v3. Data exports and this text: CC BY 4.0. Quoted excerpts of government documents are linked to their official sources and remain their publishers' property.</p>
 </article></main><div id="foot"></div></div>
 <script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("whitepaper");
-Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null)]).then(([sum, model, ev]) => {
+Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB]) => {
   $("#foot").innerHTML = footer(sum);
   const n = {}; sum.cells.filter(c => c.month === 0 || (c.term === "TVK-2026")).forEach(c => n[c.term] = c.n);
   document.querySelectorAll("[data-b]").forEach(el => { const k = el.dataset.b; if (k.startsWith("n.")) el.textContent = n[k.slice(2)]; });
@@ -66,7 +71,7 @@ Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").c
     const rows = [];
     for (const [j, jj] of Object.entries(ev.judges)) for (const [g, e] of Object.entries(jj.groups)) {
       const t = e.e1; const f = (c) => c && c.p != null ? `${pct(c.p)} <span class="muted small">(${pct(c.lo)}–${pct(c.hi)})</span>` : "–";
-      rows.push(`<tr><td>${j === "strong" ? "Claude" : j === "bulk" ? "bulk model" : "final verdicts"}</td><td>${g.replace(/_/g, " ")}</td><td>${t.n}</td><td>${f(t.accuracy)}</td><td>${f(t.recall)}</td><td>${f(t.precision)}</td><td>${f(e.status.exact)}</td></tr>`);
+      rows.push(`<tr><td>${j === "strong" ? "Claude" : j === "bulk" ? "Gemini (raw)" : j === "final_bulk" ? "Gemini-only final" : "Claude-preferred final"}</td><td>${g.replace(/_/g, " ")}</td><td>${t.n}</td><td>${f(t.accuracy)}</td><td>${f(t.recall)}</td><td>${f(t.precision)}</td><td>${f(e.status.exact)}</td></tr>`);
     }
     $("#acc").innerHTML = `<table><thead><tr><th>Judge</th><th>Group</th><th>n</th><th>Realised-or-not agreement</th><th>Recall</th><th>Precision</th><th>Exact status</th></tr></thead><tbody>${rows.join("")}</tbody></table><p class="small muted">Recall: of promises the human says were realised, the share the judge also says were. Precision: of those the judge says were realised, the share the human agrees with.</p>`;
     const fd = ev.judges.final && ev.judges.final.groups.pooled_AIADMK_DMK.date;
@@ -79,6 +84,20 @@ Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").c
   const lm = model.backtest.landmarks;
   $("#bt").innerHTML = `<table><thead><tr><th>Predicting from</th><th>Model</th><th>Model + pace update</th><th>No promise characteristics</th></tr></thead><tbody>${Object.entries(lm).map(([m, e]) => `<tr><td>month ${m}</td><td>${e.mae_model.toFixed(1)} pts</td><td>${e.mae_model_pace.toFixed(1)} pts</td><td>${e.mae_baseline.toFixed(1)} pts</td></tr>`).join("")}</tbody></table><p class="small muted">The pace update scales future hazards by how fast the target term was going at the landmark compared with the model's expectation. The model under-predicts AIADMK throughout (for example, from month 5 it predicts ${pct(lm["5"].pred_model_pace[lm["5"].t_months.indexOf(48)])} realised by month 48; the actual figure is ${pct(lm["5"].observed[lm["5"].t_months.indexOf(48)])}).</p>`;
   $("#scen").innerHTML = SCENARIOS.filter(s => model.projection[s.key]).map(s => `<p><strong>${s.name}</strong> (month 60: ${pct(model.projection[s.key].share.slice(-1)[0])}). <em>Assumes:</em> ${s.says} <em>Weakness:</em> ${s.weak}</p>`).join("");
+  if (sumB && modelB) {
+    const cell = (S, t, m) => S.cells.find(c => c.term === t && c.month === m);
+    const row = (name, f) => `<tr><td>${name}</td><td>${f(sum, model, "final")}</td><td>${f(sumB, modelB, "final_bulk")}</td></tr>`;
+    const acc = (k) => { const g = ev && ev.judges[k] && ev.judges[k].groups.pooled_AIADMK_DMK.e1; return g ? `${pct(g.accuracy.p)} (${pct(g.recall.p)} recall, ${pct(g.specificity.p)} specificity)` : "–"; };
+    const proj = (m, key) => (m.projection[key] ? pct(m.projection[key].share.slice(-1)[0]) : "–");
+    $("#regimeCmp").innerHTML = `<table><thead><tr><th></th><th>Claude-preferred</th><th>Gemini-only</th></tr></thead><tbody>
+      ${row("Realised by month 5: AIADMK / DMK / TVK", (S) => [cell(S, "AIADMK-2016", 5), cell(S, "DMK-2021", 5), cell(S, "TVK-2026", 5)].map(c => pct(c.realised)).join(" / "))}
+      ${row("Realised by end of term: AIADMK / DMK", (S) => [cell(S, "AIADMK-2016", 0), cell(S, "DMK-2021", 0)].map(c => pct(c.realised)).join(" / "))}
+      ${row("Agreement with 40 hand labels (realised or not)", (S, M, k) => acc(k))}
+      ${row("Backtest error predicting AIADMK from month 5 (pts), model / with pace update", (S, M) => `${M.backtest.landmarks["5"].mae_model.toFixed(1)} / ${M.backtest.landmarks["5"].mae_model_pace.toFixed(1)}`)}
+      ${row("TVK projection at month 60: no update / A / B", (S, M) => `${proj(M, "no_update")} / ${proj(M, "pace_update")} / ${proj(M, "matched_update")}`)}
+      </tbody></table>`;
+    $("#regimeText2").innerHTML = `Three things follow. (1) <strong>The level of "realised" depends on the judge:</strong> TVK at month 5 is ${pct(cell(sum, "TVK-2026", 5).realised, 1)} under Claude and ${pct(cell(sumB, "TVK-2026", 5).realised, 1)} under Gemini, and no TVK promise is in the hand-labelled sample, so this project cannot say which is closer. (2) <strong>The backtest's pace update most likely helped because of the judge mismatch:</strong> it cut the month-5 error from ${model.backtest.landmarks["5"].mae_model.toFixed(1)} to ${model.backtest.landmarks["5"].mae_model_pace.toFixed(1)} points when DMK and AIADMK were judged by different judges, but with one judge for both it does not help (${modelB.backtest.landmarks["5"].mae_model.toFixed(1)} to ${modelB.backtest.landmarks["5"].mae_model_pace.toFixed(1)}). (3) <strong>Promise characteristics explain little either way:</strong> the model beats a baseline that ignores them only modestly, and the concordance is about 0.56 in both settings.`;
+  }
   const lims = [...model.limitations, ...((ev && ev.limitations) || [])];
   $("#lims").innerHTML = lims.map(t => `<li>${esc(t).replace(/`/g, "")}</li>`).join("");
 }).catch(e => { $("#judgeTable").innerHTML = "<p class='note'>Data failed to load: " + esc(e.message) + ". Serve the folder with a static server.</p>"; });

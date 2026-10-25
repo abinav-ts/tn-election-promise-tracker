@@ -153,21 +153,24 @@ def _date_chunks(conn, run_id: str) -> dict[tuple[str, Optional[str]], Optional[
     return {k: v[1] for k, v in best.items()}
 
 
-def run_final(force: bool = False) -> dict[str, Any]:
+def run_final(force: bool = False, bulk_only: bool = False) -> dict[str, Any]:
+    """`bulk_only` (D-119): the Gemini-consistent variant, bulk verdicts only for every term, no strong rows and no
+    human overrides; kind `final_bulk`, exported to `bulkfinal_{run_id}.jsonl` (never matched by the `final_*` glob)."""
+    kind = "final_bulk" if bulk_only else "final"
     cfg = get_config()
     conn = db.connect()
     db.init_schema(conn)
     bulk = latest_run(cfg, "bulk", complete_only=True) or latest_run(cfg, "bulk")
     if not bulk:
         raise RuntimeError("no bulk run: run `ept judge run` first")
-    strong = runs(cfg, "strong")
-    overrides = read_overrides(cfg)
+    strong = [] if bulk_only else runs(cfg, "strong")
+    overrides = [] if bulk_only else read_overrides(cfg)
     fp = fp_hash({"bulk": bulk["run_id"], "bulk_complete": bool(bulk.get("complete")),
                   "bulk_rows": conn.execute("SELECT count(*) FROM verdicts WHERE run_id = ?", (bulk["run_id"],)).fetchone()[0],
                   "strong": [(m["run_id"], conn.execute("SELECT count(*) FROM verdicts WHERE run_id = ?",
                                                         (m["run_id"],)).fetchone()[0]) for m in strong],
-                  "overrides": file_sha(cfg.path("verdict_overrides")), "code": code_hash(FINAL_CODE)})
-    run_id, resumed = start_or_resume(cfg, "final", fp, force, {"force": force},
+                  "overrides": file_sha(cfg.path("verdict_overrides")), "code": code_hash(FINAL_CODE), "bulk_only": bulk_only})
+    run_id, resumed = start_or_resume(cfg, kind, fp, force, {"force": force},
                                       extra={"bulk_run": bulk["run_id"], "strong_runs": [m["run_id"] for m in strong]})
     if resumed and read_meta(cfg, run_id).get("complete"):
         conn.close()
@@ -201,7 +204,7 @@ def run_final(force: bool = False) -> dict[str, Any]:
             finals.append((p, p.verdict.judge_source))
     rows = [p.verdict.model_copy(update={"run_id": run_id}) for p, _ in finals]
     write_verdicts(conn, rows)
-    out_path = cfg.path("judgments") / f"final_{run_id}.jsonl"
+    out_path = cfg.path("judgments") / (f"bulkfinal_{run_id}.jsonl" if bulk_only else f"final_{run_id}.jsonl")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8") as f:
         for p, _ in finals:
@@ -214,7 +217,7 @@ def run_final(force: bool = False) -> dict[str, Any]:
              "sources": {s: sum(1 for _, x in finals if x == s) for s in ("bulk", "strong", "human")},
              "missing_promise_cutoffs": missing, "export": str(out_path.relative_to(cfg.root))}
     finish_run(run_id, counts=stats)
-    update_meta(cfg, run_id, kind="final", fingerprint=fp, complete=missing == 0, bulk_run=bulk["run_id"],
+    update_meta(cfg, run_id, kind=kind, fingerprint=fp, complete=missing == 0, bulk_run=bulk["run_id"],
                 strong_runs=[m["run_id"] for m in strong])
     conn.close()
     return stats

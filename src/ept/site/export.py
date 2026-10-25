@@ -74,6 +74,26 @@ def chunk_docs(cfg: Config, chunk_ids: set[str]) -> dict[str, dict]:
     return out
 
 
+def summary_for(cfg: Config, rows: list[dict], months: dict) -> dict:
+    summary = {"statuses": STATUS_ORDER, "cells": []}
+    cell: dict[tuple, Counter] = defaultdict(Counter)
+    src: dict[tuple, Counter] = defaultdict(Counter)
+    for r in rows:
+        term = r["promise_id"].rsplit("-", 1)[0]
+        k = (term, months.get((term, r["cutoff_date"]), 0))
+        cell[k][r["status"]] += 1
+        src[k][r["judge_source"]] += 1
+    for (term, m), c in sorted(cell.items()):
+        n = sum(c.values())
+        summary["cells"].append({"term": term, "month": m, "n": n, "status": dict(c), "realised": sum(c[s] for s in E1) / n,
+                                 "judge_source": dict(src[(term, m)])})
+    summary["terms"] = {t.term_id: {"party": t.party, "sworn_in": t.sworn_in.isoformat(),
+                                    "term_end": t.term_end.isoformat() if t.term_end else None, "role": str(t.role)}
+                        for t in cfg.settings.terms}
+    summary["final_export"] = mdata.newest_final(cfg).name
+    return summary
+
+
 def build(cfg: Config) -> dict:
     rows = mdata.load_final(cfg)
     prom = load_promises(cfg)
@@ -105,23 +125,19 @@ def build(cfg: Config) -> dict:
         p.update(v=v, shown=str(months.get((term, s["cutoff_date"]), 0)), why=s["rationale"], conf=round(s["confidence"], 2),
                  review=bool(s["needs_review"]), reasons=s.get("review_reasons") or [], model=s["judge_model"], ev=ev)
         items.append(p)
-    summary = {"statuses": STATUS_ORDER, "cells": []}
-    cell: dict[tuple, Counter] = defaultdict(Counter)
-    src: dict[tuple, Counter] = defaultdict(Counter)
-    for r in rows:
-        term = r["promise_id"].rsplit("-", 1)[0]
-        k = (term, months.get((term, r["cutoff_date"]), 0))
-        cell[k][r["status"]] += 1
-        src[k][r["judge_source"]] += 1
-    for (term, m), c in sorted(cell.items()):
-        n = sum(c.values())
-        summary["cells"].append({"term": term, "month": m, "n": n, "status": dict(c), "realised": sum(c[s] for s in E1) / n,
-                                 "judge_source": dict(src[(term, m)])})
-    summary["terms"] = {t.term_id: {"party": t.party, "sworn_in": t.sworn_in.isoformat(),
-                                    "term_end": t.term_end.isoformat() if t.term_end else None, "role": str(t.role)}
-                        for t in cfg.settings.terms}
-    summary["final_export"] = mdata.newest_final(cfg).name
-    return {"promises": items, "summary": summary}
+    summary = summary_for(cfg, rows, months)
+    alt = {}
+    try:
+        brows = mdata.load_final(cfg, "bulk")
+        bsum = summary_for(cfg, brows, months)
+        for r in brows:
+            if r["promise_id"] in show and r["cutoff_date"] == show[r["promise_id"]]["cutoff_date"]:
+                alt[r["promise_id"]] = [r["status"], r["realisation_date"] or "", r["date_precision"] or ""]
+        for it in items:
+            it["alt"] = alt.get(it["id"])
+    except FileNotFoundError:
+        bsum = None
+    return {"promises": items, "summary": summary, "summary_bulk": bsum}
 
 
 def export(cfg: Optional[Config] = None) -> dict:
@@ -131,8 +147,13 @@ def export(cfg: Optional[Config] = None) -> dict:
     built = build(cfg)
     (out / "promises.json").write_text(_json(built["promises"]), encoding="utf-8")
     (out / "summary.json").write_text(_json(built["summary"]), encoding="utf-8")
+    if built["summary_bulk"]:
+        (out / "summary_bulk.json").write_text(_json(built["summary_bulk"]), encoding="utf-8")
     model = json.loads(cfg.path("model_outputs").read_text(encoding="utf-8"))
     (out / "model.json").write_text(_json(model), encoding="utf-8")
+    mb = cfg.path("model_outputs").with_name("model_outputs_bulk.json")
+    if mb.exists():
+        (out / "model_bulk.json").write_text(_json(json.loads(mb.read_text(encoding="utf-8"))), encoding="utf-8")
     ev_path = cfg.path("evaluation_json")
     if ev_path.exists():
         ev = json.loads(ev_path.read_text(encoding="utf-8"))

@@ -61,14 +61,14 @@ def _fits(cfg: Config, tbl: pd.DataFrame) -> dict:
     return out
 
 
-def run_all(cfg: Config, quick: bool = False) -> dict:
+def run_all(cfg: Config, quick: bool = False, source: str = "final") -> dict:
     m = cfg.settings.model
-    rows = data.load_final(cfg)
+    rows = data.load_final(cfg, source)
     tbl = data.analysis_table(cfg, rows=rows)
     if quick:
         cfg.settings.model.bootstrap.n = min(cfg.settings.model.bootstrap.n, 20)
     res: dict = {"generated_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-                 "final_export": data.newest_final(cfg).name, "settings": m.model_dump(mode="json"),
+                 "final_export": data.newest_final(cfg, source).name, "source": source, "settings": m.model_dump(mode="json"),
                  "counts": {t: {"n": int(len(d)), "E1": int(d["E1"].sum()), "E2": int(d["E2"].sum()),
                                 "day1": int((d[d.E1 == 1]["T"] == 1).sum()),
                                 "coarse_dates": int(((d.E1 == 1) & (d.date_precision != "day")).sum()),
@@ -165,8 +165,13 @@ def write_markdown(cfg: Config, res: dict, path: Path) -> None:
     path.write_text("\n".join(L), encoding="utf-8")
 
 
+def _suffixed(p: Path, source: str) -> Path:
+    return p if source == "final" else p.with_name(p.stem + "_" + source + p.suffix)
+
+
 def write_outputs(cfg: Config, res: dict) -> dict:
-    jp, mp, op = cfg.path("model_report_json"), cfg.path("model_report_md"), cfg.path("model_outputs")
+    src = res.get("source", "final")
+    jp, mp, op = (_suffixed(cfg.path(k), src) for k in ("model_report_json", "model_report_md", "model_outputs"))
     for p in (jp, op):
         p.parent.mkdir(parents=True, exist_ok=True)
     jp.write_text(json.dumps(res, indent=1), encoding="utf-8")
@@ -175,15 +180,15 @@ def write_outputs(cfg: Config, res: dict) -> dict:
             "judge_sources": res["judge_sources"]}
     op.write_text(json.dumps(site), encoding="utf-8")
     write_markdown(cfg, res, mp)
-    _figures(cfg, res)
+    _figures(cfg, res, src)
     return {"report": str(mp), "json": str(jp), "site": str(op)}
 
 
-def _figures(cfg: Config, res: dict) -> None:
+def _figures(cfg: Config, res: dict, source: str = "final") -> None:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    d = cfg.path("model_figures")
+    d = cfg.path("model_figures") / ("" if source == "final" else source)
     d.mkdir(parents=True, exist_ok=True)
     p = res["projection"]
     fig, ax = plt.subplots(figsize=(7, 4))
