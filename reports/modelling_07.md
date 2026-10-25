@@ -1,6 +1,6 @@
 # Stage 07 — Survival modelling report
 
-Generated 2026-10-25T12:51:09+00:00 · final verdicts `final_judge-20261025T102013Z.jsonl`
+Generated 2026-10-25T13:04:51+00:00 · final verdicts `final_judge-20261025T102013Z.jsonl`
 
 ## Counts (E1 = fulfilled, partial or diluted with a date)
 
@@ -140,10 +140,21 @@ Snapshot day 153 (month 5): 23 of 695 promises realised (3.3%). Bootstrap: 200 o
 |---|---|---|---|---|---|---|---|---|
 | no_update | 1.000 | 236 | 8.7% | 32.7% | 53.5% | 60.9% | 63.1% | 65.2% |
 | pace_update | 0.168 | 236 | 4.2% | 9.1% | 14.8% | 17.4% | 18.2% | 19.0% |
+| matched_update | 0.806 | 33 | 7.7% | 27.9% | 46.6% | 53.6% | 55.8% | 57.8% |
 | pace_update_c5.0 | 0.116 | 236 | 4.0% | 7.3% | 11.4% | 13.3% | 13.9% | 14.5% |
 | pace_update_c80.0 | 0.326 | 236 | 5.1% | 14.2% | 24.2% | 28.5% | 30.0% | 31.3% |
+| matched_update_c5.0 | 0.730 | 33 | 7.3% | 25.9% | 43.6% | 50.4% | 52.5% | 54.5% |
+| matched_update_c80.0 | 0.909 | 33 | 8.3% | 30.5% | 50.3% | 57.6% | 59.8% | 61.9% |
 | no_update band | | | 7.6%-10.0% | 30.2%-35.4% | 50.8%-56.5% | 58.1%-63.7% | 60.6%-65.9% | 62.7%-68.1% |
 | pace_update band | | | 4.0%-4.5% | 8.6%-9.8% | 13.8%-16.1% | 16.4%-19.0% | 17.2%-19.9% | 18.0%-20.9% |
+| matched_update band | | | 6.8%-8.7% | 25.7%-30.2% | 44.1%-49.5% | 51.1%-56.4% | 53.4%-58.7% | 55.4%-60.8% |
+
+### How to read the three TVK lines (assumptions)
+
+- **no update.** Assumes TVK will realise promises at the *average historical pace of the two completed terms*, whatever happened in its first five months.
+- **Scenario A, pace update, pre-specified (k = 0.17).** Assumes the average of the completed terms predicts how many promises should have been realised by month 5, and that TVK's relative speed since then continues. Its weakness: the expectation comes from *hindsight* event dates (promises later found realised early), while TVK's 3.3 % counts only what is documented now. Part of the apparent slowness is therefore documentation lag, not slow delivery.
+- **Scenario B, judge-matched pace update (k = 0.81), added after seeing scenario A (D-114).** Assumes TVK's month-5 count should be compared with the *documented* month-5 share of terms judged by the same judge at the same landmark (DMK-2021: 4.8%), so it compares like with like. Its weakness: it was chosen after seeing A's result, it rests on one term, and its k is then applied to hindsight-based hazards.
+- All three are 'projection under historical patterns'. The bands show fitting uncertainty only.
 
 ## Limitations
 

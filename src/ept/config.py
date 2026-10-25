@@ -373,6 +373,7 @@ class ModelCfg(_Cfg):
     min_group_size: int
     pace_prior_events: float          # c in k = (O + c) / (E + c), spec 07 §4.5
     pace_prior_sensitivity: list[float]
+    matched_min_same_judge: float     # scenario B: a term counts as judge-matched if >= this share of its landmark rows used TVK's judge
     bootstrap: Bootstrap
     coarse_dates: Literal["midpoint", "start", "end"]
     days_per_month: float

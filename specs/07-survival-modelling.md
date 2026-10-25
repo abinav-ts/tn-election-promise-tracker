@@ -82,6 +82,8 @@ The model is fitted on **DMK-2021 only** (global rule 5). The target term never 
 - **Band:** a percentile bootstrap over the training promises (resample both terms' promises with replacement, refit, re-project; 200 resamples; 10th–90th percentile). It shows fitting uncertainty only; the scenario range (DMK-only to AIADMK-only) is shown separately, and the site labels the whole as "projection under historical patterns" (global §9.2).
 - Output: projected share realised by months 6, 12, 24, 36, 48, 60 and the monthly curve, overall and by `promise_type`.
 
+**Scenario B (added 2026-10-25 after the build, D-114; shown beside A with its assumptions stated).** The expected month-5 count *E* is replaced by *N* × the **documented** month-5 share of the completed terms judged by the same judge at the same landmark (≥ 90 % of that landmark's rows from TVK's judge; here DMK-2021, Claude, 4.8 %). It is a like-for-like comparison of documented counts. The rule uses the judge-source table, but it was written after scenario A's result was seen, so it is labelled post-hoc. A, B and "no update" are all reported; the report and the site state each one's assumption and weakness (`SCENARIO_TEXT` in `report.py`).
+
 ### 4.6 Forward backtest: cut
 Not built (user, 2026-10-25). The report says the model was validated in one direction only, so the AIADMK-only scenario is untested as a predictor.
 

@@ -89,3 +89,15 @@ def test_model_package_never_opens_gold_labels():
     root = pathlib.Path(__file__).resolve().parents[1] / "src" / "ept" / "model"
     for f in root.glob("*.py"):
         assert not re.search(r"gold_(labels|relabel)|data/gold", f.read_text()), f.name
+
+
+def test_matched_terms_picks_same_judge_term():
+    from ept.model import project
+    cfg = load_config()
+    mk = lambda pid, cutoff, src, st: {"promise_id": pid, "cutoff_date": cutoff, "judge_source": src, "status": st}
+    rows = [mk("TVK-2026-0001", "2026-10-10", "strong", "fulfilled"), mk("TVK-2026-0002", "2026-10-10", "strong", "not_started"),
+            mk("DMK-2021-0001", "2021-10-07", "strong", "fulfilled"), mk("DMK-2021-0002", "2021-10-07", "strong", "not_started"),
+            mk("DMK-2021-0003", "2021-10-07", "strong", "not_started"), mk("DMK-2021-0004", "2021-10-07", "strong", "not_started"),
+            mk("AIADMK-2016-0001", "2016-10-23", "bulk", "fulfilled")]
+    ids, share = project.matched_terms(cfg, rows, "TVK-2026", 5, 0.9)
+    assert ids == ["DMK-2021"] and share == pytest.approx(0.25)

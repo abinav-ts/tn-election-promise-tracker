@@ -72,6 +72,7 @@ model:
   min_group_size: 20
   pace_prior_events: 20          # c in k = (O + c) / (E + c); fixed in advance, not tuned
   pace_prior_sensitivity: [5, 80]
+  matched_min_same_judge: 0.9    # scenario B (D-114, post-hoc): terms judged by the same judge at the same landmark
   bootstrap: {n: 200, band: [0.10, 0.90], seed: "ept-model-2026-10-25"}
   coarse_dates: midpoint         # sensitivity runs: start | end
   days_per_month: 30.4375

@@ -30,6 +30,14 @@ LIMITATIONS = [
 ]
 
 
+SCENARIO_TEXT = """### How to read the three TVK lines (assumptions)
+
+- **no update.** Assumes TVK will realise promises at the *average historical pace of the two completed terms*, whatever happened in its first five months.
+- **Scenario A, pace update, pre-specified (k = {kA:.2f}).** Assumes the average of the completed terms predicts how many promises should have been realised by month 5, and that TVK's relative speed since then continues. Its weakness: the expectation comes from *hindsight* event dates (promises later found realised early), while TVK's 3.3 % counts only what is documented now. Part of the apparent slowness is therefore documentation lag, not slow delivery.
+- **Scenario B, judge-matched pace update (k = {kB:.2f}), added after seeing scenario A (D-114).** Assumes TVK's month-5 count should be compared with the *documented* month-5 share of terms judged by the same judge at the same landmark ({matched}: {share}), so it compares like with like. Its weakness: it was chosen after seeing A's result, it rests on one term, and its k is then applied to hindsight-based hazards.
+- All three are 'projection under historical patterns'. The bands show fitting uncertainty only."""
+
+
 def _fits(cfg: Config, tbl: pd.DataFrame) -> dict:
     m = cfg.settings.model
     out = {}
@@ -77,7 +85,7 @@ def run_all(cfg: Config, quick: bool = False) -> dict:
         sens[mode] = {lm: {k: e[k] for k in ("mae_model", "mae_model_pace", "mae_baseline")}
                       for lm, e in b["landmarks"].items()}
     res["backtest_date_sensitivity"] = sens
-    res["projection"] = project.project(cfg, tbl, "E1")
+    res["projection"] = project.project(cfg, tbl, "E1", rows)
     return res
 
 
@@ -137,14 +145,20 @@ def write_markdown(cfg: Config, res: dict, path: Path) -> None:
           f"({_pct(p['observed_share_snapshot'])}). Bootstrap: {p['bootstrap']['n_ok']} of {p['bootstrap']['n_requested']} resamples fitted; band = "
           f"{int(p['bootstrap']['band'][0]*100)}th-{int(p['bootstrap']['band'][1]*100)}th percentile (fitting uncertainty only).", "",
           "| variant | k | expected by month 5 | m6 | m12 | m24 | m36 | m48 | m60 |", "|---|---|---|---|---|---|---|---|---|"]
-    for label in ("no_update", "pace_update", *[k for k in p if k.startswith("pace_update_c")]):
+    for label in ("no_update", "pace_update", "matched_update",
+                  *[k for k in p if k.startswith(("pace_update_c", "matched_update_c"))]):
+        if label not in p:
+            continue
         r = p[label]
         cells = [_pct(r["share"][p["months"].index(x)]) for x in (6, 12, 24, 36, 48, 60)]
         L.append(f"| {label} | {r['k']:.3f} | {r['expected']:.0f} | " + " | ".join(cells) + " |")
-    for label in ("no_update", "pace_update"):
-        if "lo" in p[label]:
+    for label in ("no_update", "pace_update", "matched_update"):
+        if label in p and "lo" in p[label]:
             idx = [p["months"].index(x) for x in (6, 12, 24, 36, 48, 60)]
             L.append(f"| {label} band | | | " + " | ".join(f"{_pct(p[label]['lo'][i])}-{_pct(p[label]['hi'][i])}" for i in idx) + " |")
+    L += ["", SCENARIO_TEXT.format(matched=", ".join(p.get("matched", {}).get("terms", [])) or "none",
+                                    share=_pct(p.get("matched", {}).get("documented_share_month5", float("nan"))),
+                                    kA=p["pace_update"]["k"], kB=p.get("matched_update", {}).get("k", float("nan")))]
     L += ["", "## Limitations", ""] + [f"{i}. {t}" for i, t in enumerate(res["limitations"], 1)] + [""]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(L), encoding="utf-8")
@@ -173,7 +187,9 @@ def _figures(cfg: Config, res: dict) -> None:
     p = res["projection"]
     fig, ax = plt.subplots(figsize=(7, 4))
     x = p["months"]
-    for label, color in (("no_update", "#7a8a99"), ("pace_update", "#1f6b52")):
+    for label, color in (("no_update", "#7a8a99"), ("pace_update", "#1f6b52"), ("matched_update", "#a35a1f")):
+        if label not in p:
+            continue
         ax.plot(x, [100 * v for v in p[label]["share"]], color=color, label=label.replace("_", " "))
         if "lo" in p[label]:
             ax.fill_between(x, [100 * v for v in p[label]["lo"]], [100 * v for v in p[label]["hi"]], color=color, alpha=0.15)
