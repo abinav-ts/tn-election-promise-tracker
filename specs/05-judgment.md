@@ -416,3 +416,12 @@ CLAUDE.md "Strong-judge sessions" gets the subagent route.
 - **Directional pass:** `directional_check` v1.0 flagged ~40 % (advocacy, concrete actions); v1.1: AIADMK 43/312, DMK 79/667, TVK 50/695 (d3_override 1/13/10, unresolved 0). Some borderline flags remain (e.g. "improve … including <listed parts>"); stage 06 measures them against the gold `[directional]` tags.
 - **Memory probe (§4.6):** 0/40 evidence-needing first answers (all `unverifiable`).
 - **Build clarifications** (D-095): one bulk run for both tiers; row-shaping code fingerprint; retries per call with feedback; date extract must be cited; J3/J6 accept the title; TPM estimate scaled by measured tokens; strong batches by (term, unit cutoff) with key reuse only at the same or a later cutoff; `non_monotone` in the final rationale and export; new config keys; exit codes 2/3/4.
+
+## 10b. Closing (2026-10-25, Claude Code; D-096, D-097, D-098)
+- **Strong run `judge-20261022T070634Z` (262 batches exported, no P5):** P1 gold 78/78 units, P2 headline 71/71, P3 TVK month 5 662/662, P4 flagged full-term 9/9 batches. Tier B: months 5–6 by Claude (batches 011–075, 211–212); batches 108–110 and 213–216 deliberately not run (months 12–48 are Gemini's, D-097). Models: batches 001–084 `claude-opus-5-5`, 085 onward `claude-sonnet-5-5` (D-098).
+- **Retries:** 006, 033, 056, 093, 098, 229, 239, 250, 257 retried and passed; **104_r and 255_r failed again → `strong_failed`**, both keep their bulk verdict.
+- **Gemini month-6 group** of tier B was never written (quota); Claude covered months 5–6 instead.
+- **Final run `judge-20261025T082554Z`:** 7,548 promise × cutoffs (AIADMK 2,184, DMK 4,669, TVK 695), 0 missing. Judge source: bulk 4,694, strong 2,854, human 0. Realised-by-cutoff monotone for all 1,674 promises; status realised iff dated; 511 rows carry `non_monotone` (a later verdict disagreed with an earlier realisation; the earlier one is carried). Leakage line 0, neutrality True. First-answer failure rate 0.137, unresolved 104 keys (1.6 %).
+- **Mixed judges (state in the whitepaper):** AIADMK full term is bulk except 79 strong promise × cutoffs; DMK landmarks mix Claude Opus, Claude Sonnet and Gemini; TVK month 5 is all strong (Sonnet). Stage 06 measures the bulk–strong gap on gold promises at full term only, not at landmarks.
+- **Human spot-check (D-093):** sheet of 9 items issued as a review page on 2026-10-25; verdicts pending at the time of this note. Overrides, if any, enter only through `config/verdict_overrides.csv` and a re-run of `ept judge final`.
+
