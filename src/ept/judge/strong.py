@@ -98,6 +98,15 @@ def queue(ctx: Context, cfg: Config, keys: list[Key], bulk_run: Optional[str], g
     # D-096: tier B (the training term's landmarks) is judged by Claude subagents instead of the bulk model
     level("tier_b", [(pid, c) for pid, p in promises.items() if terms[p["term_id"]].role == "train"
                      for c in ctx.cutoffs(p["term_id"]) if c.label != FULL])
+    # D-120: the Claude-only regime. Every completed-term promise at full term, then AIADMK's early landmarks
+    # (the reverse backtest's states); units already judged by Claude are skipped as already exported.
+    completed = [(pid, p) for pid, p in promises.items() if terms[p["term_id"]].role in ("train", "backtest")]
+    level("claude_full", [(pid, c) for pid, p in completed for c in ctx.cutoffs(p["term_id"]) if c.label == FULL])
+    for lab in ("m5", "m6", "m12"):
+        level(f"claude_aiadmk_{lab}", [(pid, c) for pid, p in completed if terms[p["term_id"]].role == "backtest"
+                                       for c in ctx.cutoffs(p["term_id"]) if c.label == lab])
+    level("claude_dmk_m12", [(pid, c) for pid, p in completed if terms[p["term_id"]].role == "train"
+                             for c in ctx.cutoffs(p["term_id"]) if c.label == "m12"])
     level("flagged_full", [(pid, c) for pid, p in promises.items() for c in ctx.cutoffs(p["term_id"])
                            if c.label == FULL and (pid, FULL) in flagged])
     for name, role in (("flagged_aiadmk_landmarks", "backtest"), ("flagged_dmk_landmarks", "train")):
