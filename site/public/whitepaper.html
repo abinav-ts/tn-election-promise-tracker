@@ -54,7 +54,11 @@
 <h2>11. Limitations</h2>
 <ol id="lims"></ol>
 
-<h2>12. Reproducibility and licences</h2>
+<h2>12. Community corrections, now and later</h2>
+<p><strong>Now.</strong> Every promise in the explorer has a <em>Suggest a correction</em> link that opens a pre-filled GitHub issue (promise ID, the verdict shown, a form for the suggested status, date and evidence). Issues are reviewed by hand. They are stored separately from the verdicts, never change a verdict automatically, and are never used by the judging or survival models.</p>
+<p><strong>Possible extension (designed, not built).</strong> A public judgement feature would store each submission as a separate record (promise ID, suggested status and date, evidence link, timestamp, a hashed anonymous contributor key) in its own table, never in the verdict tables. The rules would be: (1) community records are never inputs to a prompt, a threshold, a fit or the gold set; (2) they are shown beside, not instead of, the evidence-based verdict, labelled "visitor suggestions, unverified"; (3) anti-abuse limits per contributor and per promise, and moderation before anything is displayed; (4) only evidence-bearing suggestions can trigger a re-check of a promise, and a re-check uses the same evidence-only judging as everything else; (5) counts are never presented as a measurement, since self-selected visitors are not a sample. Open voting on a political topic invites coordinated campaigns, which is why this was left as a design rather than a feature.</p>
+
+<h2>13. Reproducibility and licences</h2>
 <p>Every stage is a command in <code>python -m ept</code>, every prompt is a versioned file and every strong-judge batch is committed. Code: GPL v3. Data exports and this text: CC BY 4.0. Quoted excerpts of government documents are linked to their official sources and remain their publishers' property.</p>
 </article></main><div id="foot"></div></div>
 <script src="assets/site.js"></script>

@@ -29,3 +29,11 @@ def test_pages_reference_existing_local_assets():
             assert (SITE / ref).exists(), (page, ref)
         for ref in re.findall(r'load\("([a-z]+\.json)"\)', html):
             assert (SITE / "data" / ref).exists() or ref == "evaluation.json", (page, ref)
+
+
+def test_correction_issue_template_and_link():
+    root = pathlib.Path(__file__).resolve().parents[1]
+    t = (root / ".github" / "ISSUE_TEMPLATE" / "correction.yml").read_text()
+    for field in ("promise_id", "current", "suggested_status", "evidence"):
+        assert f"id: {field}" in t
+    assert "template" in (SITE / "promises.html").read_text() and "correction.yml" in (SITE / "promises.html").read_text()

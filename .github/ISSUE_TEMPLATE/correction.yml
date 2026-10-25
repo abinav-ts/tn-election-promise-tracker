@@ -1,0 +1,54 @@
+name: Suggest a correction to a promise verdict
+description: Tell us a status, date or piece of evidence for a promise looks wrong. Suggestions are reviewed by the maintainer and never change a verdict automatically.
+title: "Correction: "
+labels: ["community-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Please give evidence we can check (an official document, a Government Order number, a link). Opinions without evidence cannot be used. Suggestions are **never** used by the judging models or the survival models; they are reviewed by hand and listed separately.
+  - type: input
+    id: promise_id
+    attributes:
+      label: Promise ID
+      description: Filled in by the link from the Promise explorer.
+    validations:
+      required: true
+  - type: input
+    id: current
+    attributes:
+      label: Verdict shown on the site
+      description: Filled in by the link (status, date, judge).
+  - type: dropdown
+    id: suggested_status
+    attributes:
+      label: What do you think the status should be?
+      options:
+        - fulfilled
+        - partial
+        - diluted
+        - in progress
+        - not started
+        - blocked by an outside authority
+        - cannot tell from official documents
+    validations:
+      required: true
+  - type: input
+    id: suggested_date
+    attributes:
+      label: Date of the first official step (if realised)
+      description: YYYY-MM-DD, or month or year if that is all you know.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Document title, Government Order number or link, and the sentence that shows it.
+    validations:
+      required: true
+  - type: checkboxes
+    id: ack
+    attributes:
+      label: Acknowledgement
+      options:
+        - label: I understand this is a suggestion that will be reviewed by hand and may not be used.
+          required: true

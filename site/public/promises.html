@@ -5,7 +5,7 @@
 <body data-page="promises"><div class="wrap"><div id="nav"></div>
 <main><section><h1>Promise explorer</h1>
 <p class="lede">Every promise with its status, date and the evidence behind it. Statuses at earlier months show only what was documented by then. "No evidence found" means the corpus held nothing showing an official step, not that nothing happened.</p></section>
-<section><div class="filters" role="search">
+<section><p class="note small">Think a verdict is wrong? Every promise has a <strong>Suggest a correction</strong> link. Suggestions are reviewed by hand, are stored separately as GitHub issues, never change a verdict automatically, and are never used by the judging or survival models.</p><div class="filters" role="search" style="margin-top:12px">
 <input id="q" type="search" placeholder="Search promise text" aria-label="Search promise text">
 <select id="fterm" aria-label="Term"><option value="">All terms</option></select>
 <select id="fsector" aria-label="Sector"><option value="">All sectors</option></select>
@@ -19,6 +19,12 @@
 <script>
 $("#nav").innerHTML = nav("promises");
 const PAGE = 40; let shown = PAGE, view = [];
+const REPO = "https://github.com/abinav-ts/tn-election-promise-tracker";
+function correctionLink(p, s) {
+  const cur = s ? `${label(s[0])}${s[1] ? ", " + s[1] : ""}, judged by ${({strong: "Claude", bulk: "Gemini", human: "human fix"})[s[3]] || s[3]}` : "not judged at this month";
+  const q = new URLSearchParams({template: "correction.yml", title: "Correction: " + p.id, promise_id: p.id, current: cur});
+  return REPO + "/issues/new?" + q.toString();
+}
 Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
   $("#foot").innerHTML = footer(sum);
   const uniq = (k) => [...new Set(P.map(p => p[k]))].sort();
@@ -46,7 +52,8 @@ Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
         <p class="small muted">${TERMS[p.term]} · ${esc(p.section)} · ${label(p.sector)} · ${label(p.type)} · ${p.spec}${p.head ? " · headline" : ""}</p>
         ${p.src ? `<p class="tl small">${esc(p.src)}</p>` : ""}
         <p><strong>Why this status:</strong> ${esc(p.why)} <span class="muted small">(confidence ${p.conf}; ${esc(p.model || "")}${p.review ? "; flagged for review: " + esc((p.reasons || []).join(", ")) : ""})</span></p>
-        ${ev}<p class="small muted">${hist}</p></details>`;
+        ${ev}<p class="small muted">${hist}</p>
+        <p class="small"><a href="${correctionLink(p, s)}" rel="noopener">Suggest a correction</a> <span class="muted">(opens a GitHub issue; reviewed by hand, never changes a verdict automatically)</span></p></details>`;
     }).join("");
     $("#more").hidden = shown >= view.length;
   }
