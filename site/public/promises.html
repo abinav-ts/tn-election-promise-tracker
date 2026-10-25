@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Promise explorer · Tamil Nadu Election Promise Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Tamil:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+<link rel="stylesheet" href="assets/site.css"></head>
+<body data-page="promises"><div class="wrap"><div id="nav"></div>
+<main><section><h1>Promise explorer</h1>
+<p class="lede">Every promise with its status, date and the evidence behind it. Statuses at earlier months show only what was documented by then. "No evidence found" means the corpus held nothing showing an official step, not that nothing happened.</p></section>
+<section><div class="filters" role="search">
+<input id="q" type="search" placeholder="Search promise text" aria-label="Search promise text">
+<select id="fterm" aria-label="Term"><option value="">All terms</option></select>
+<select id="fsector" aria-label="Sector"><option value="">All sectors</option></select>
+<select id="ftype" aria-label="Promise type"><option value="">All types</option></select>
+<select id="fstatus" aria-label="Status"><option value="">Any status</option></select>
+<select id="fcut" aria-label="Status as of"><option value="shown">Status at end of term (TVK: month 5)</option></select>
+<select id="fjudge" aria-label="Judge"><option value="">Any judge</option><option value="bulk">bulk model</option><option value="strong">Claude</option><option value="human">human fix</option></select>
+</div><p id="count" class="muted small" aria-live="polite" style="margin-top:8px"></p><div id="list"></div><p><button id="more" type="button" class="pill" style="cursor:pointer;padding:8px 14px">Show more</button></p></section>
+</main><div id="foot"></div></div>
+<script src="assets/site.js"></script>
+<script>
+$("#nav").innerHTML = nav("promises");
+const PAGE = 40; let shown = PAGE, view = [];
+Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
+  $("#foot").innerHTML = footer(sum);
+  const uniq = (k) => [...new Set(P.map(p => p[k]))].sort();
+  const fill = (id, vals, fmt) => vals.forEach(v => $(id).insertAdjacentHTML("beforeend", `<option value="${esc(v)}">${esc(fmt ? fmt(v) : label(v))}</option>`));
+  fill("#fterm", Object.keys(TERMS), t => TERMS[t]); fill("#fsector", uniq("sector")); fill("#ftype", uniq("type")); fill("#fstatus", sum.statuses);
+  const mset = new Set(); P.forEach(p => Object.keys(p.v).forEach(m => mset.add(+m)));
+  [...mset].filter(m => m > 0).sort((a, b) => a - b).forEach(m => $("#fcut").insertAdjacentHTML("beforeend", `<option value="${m}">Status at month ${m}</option>`));
+  const ids = ["q", "fterm", "fsector", "ftype", "fstatus", "fcut", "fjudge"];
+  const stat = (p) => { const k = $("#fcut").value; if (k === "shown") return p.v[p.shown]; return p.v[k] || null; };
+  function apply() {
+    const q = $("#q").value.trim().toLowerCase();
+    view = P.filter(p => (!$("#fterm").value || p.term === $("#fterm").value) && (!$("#fsector").value || p.sector === $("#fsector").value) &&
+      (!$("#ftype").value || p.type === $("#ftype").value) && (!q || p.text.toLowerCase().includes(q) || (p.src && p.src.includes(q))) &&
+      (() => { const s = stat(p); if (!s) return !$("#fstatus").value && !$("#fjudge").value; return (!$("#fstatus").value || s[0] === $("#fstatus").value) && (!$("#fjudge").value || s[3] === $("#fjudge").value); })());
+    shown = PAGE; draw();
+  }
+  function draw() {
+    $("#count").textContent = view.length + " of " + P.length + " promises";
+    $("#list").innerHTML = view.slice(0, shown).map(p => {
+      const s = stat(p);
+      const head = s ? `<span class="pill ${s[0]}">${label(s[0])}</span> <span class="muted small">${s[1] ? s[1] + " · " : ""}${s[3]}</span>` : `<span class="muted small">not judged at this month</span>`;
+      const hist = Object.entries(p.v).filter(([m]) => m !== "0").sort((a, b) => a[0] - b[0]).map(([m, v]) => `m${m}: ${label(v[0])}`).join(" · ");
+      const ev = p.ev.length ? p.ev.map(e => `<div class="ev"><div class="small muted">${esc(e.type.replace("_", " "))} · ${esc(e.date || "undated")} · ${e.url ? `<a href="${esc(e.url)}" rel="noopener">${esc(e.title || "source")}</a>` : esc(e.title)}</div>${e.quote ? `<q>${esc(e.quote)}</q>` : ""}</div>`).join("") : `<p class="muted small">No evidence found in the corpus for this promise.</p>`;
+      return `<details class="item"><summary><span class="t">${esc(p.text)}</span> ${head}</summary>
+        <p class="small muted">${TERMS[p.term]} · ${esc(p.section)} · ${label(p.sector)} · ${label(p.type)} · ${p.spec}${p.head ? " · headline" : ""}</p>
+        ${p.src ? `<p class="tl small">${esc(p.src)}</p>` : ""}
+        <p><strong>Why this status:</strong> ${esc(p.why)} <span class="muted small">(confidence ${p.conf}; ${esc(p.model || "")}${p.review ? "; flagged for review: " + esc((p.reasons || []).join(", ")) : ""})</span></p>
+        ${ev}<p class="small muted">${hist}</p></details>`;
+    }).join("");
+    $("#more").hidden = shown >= view.length;
+  }
+  ids.forEach(i => $("#" + i).addEventListener("input", apply)); $("#more").onclick = () => { shown += PAGE; draw(); };
+  apply();
+}).catch(e => { $("#list").innerHTML = "<p class='note'>Data failed to load: " + esc(e.message) + ". Serve the folder with a static server.</p>"; });
+</script></body></html>

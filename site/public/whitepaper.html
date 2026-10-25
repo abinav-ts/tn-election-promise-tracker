@@ -1,0 +1,83 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Whitepaper · Tamil Nadu Election Promise Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="assets/site.css"></head>
+<body data-page="whitepaper"><div class="wrap"><div id="nav"></div>
+<main><article class="prose">
+<h1>Whitepaper: method, accuracy and limits</h1>
+<p class="muted small">Course project, Data Science &amp; AI, 2026. This page states what was done, how it was checked and what it cannot tell you. Numbers on this page are read from the published data files.</p>
+
+<h2>1. Question and scope</h2>
+<p>Do Tamil Nadu governments realise their manifesto promises, how fast, and what can the past say about the current government? Three terms are studied: DMK 2021–26 (<span data-b="n.DMK-2021"></span> promises), AIADMK 2016–21 (<span data-b="n.AIADMK-2016"></span>) and TVK 2026– (<span data-b="n.TVK-2026"></span>, in progress). Only the party that formed the government is analysed. The project does not judge whether a policy was good, and it does not rank parties.</p>
+
+<h2>2. Data</h2>
+<p>Promises come from the manifestos (DMK in English; AIADMK and TVK in Tamil, translated to English with the original text kept beside each promise). Evidence is a corpus of 9,254 English official documents (about 60,000 passages): departmental policy notes, budget speeches, Governor's addresses, Government Orders, audit reports and official scheme pages. Documents are dated, and a document counts as available only from the date it could have been public. About 220 documents have no usable date and are excluded. Newspapers and party trackers are not evidence.</p>
+
+<h2>3. Pipeline</h2>
+<ol><li><strong>Promise extraction.</strong> Each manifesto is cut into items and each item into atomic, independently checkable promises (1,674 in total). The lists were frozen before any evidence was read.</li>
+<li><strong>Classification.</strong> Each promise gets features read only from the manifesto text: sector, type, cost band, vague or specific, whether it depends on the Union government, whether it continues an existing scheme. A vague promise is split into two to four checkable indicators.</li>
+<li><strong>Retrieval.</strong> For each indicator and each landmark date, the five most relevant passages are found (keyword and meaning-based search combined), only among documents available by that date.</li>
+<li><strong>Judging.</strong> A language model reads only those five passages and returns a status, a date, the passages it relies on and a word-for-word quote from each. Code rejects any verdict whose quote is not in the passage, whose date is not written in a cited passage, or that claims delivery without a citation.</li></ol>
+<h3>Status and date</h3>
+<p>Statuses: fulfilled, partial, diluted, in progress, not started, blocked by an outside authority, unverifiable. A promise is <em>realised</em> (the event analysed) when it is fulfilled, partial or diluted with a date. The date is the first official step that put it into operation: a Government Order, a scheme launch or an enacted law. Budget announcements and statements of intent do not count. "Not started" means documents on the topic exist and show no official step; "unverifiable" means nothing in the corpus was about it.</p>
+
+<h2>4. Keeping the answers leak-free</h2>
+<p>Language models already know a lot about Tamil Nadu. The controls: (1) the judge sees only the supplied passages and must quote them; (2) at each landmark month only documents available by that date are shown, and a verdict at an earlier date is never revised from later evidence except by carrying an earlier finding forward; (3) promise features use only manifesto text; (4) the hand-labelled test set is never shown to any model; (5) every model fit uses the training term only. A test with no evidence at all (the "memory probe") found <span data-b="probe">0 of 40</span> answers that claimed a status without evidence.</p>
+
+<h2>5. Who judged what</h2>
+<p>A lighter, free model (Gemini 3.5 Flash-Lite, the "bulk" judge) judged every task at full term; Claude (the "strong" judge, in fresh isolated sessions that read only the instructions and the passages) judged the hand-labelled promises, headline promises, all TVK promises at month 5, the first landmarks of DMK 2021–26 and the bulk judge's flagged cases. A human can override only after a spot-check, and never from the test set. Every status on the tracker shows its judge. The terms therefore carry different mixes of judges, which matters when comparing them.</p>
+<div id="judgeTable" class="scroll"></div>
+
+<h2 id="accuracy">6. How accurate are the verdicts?</h2>
+<p>A random, stratified sample of promises was labelled by hand from the manifesto text, the corpus and the web, without seeing any verdict. The judges' verdicts at the end of the term (TVK: month 5) are compared with these labels. Reported: how often the judge agrees on <em>realised or not</em> (the event the survival models use), and on the exact status. Intervals are 95% Wilson intervals; with a sample this small they are wide.</p>
+<div id="acc" class="scroll"><p class="note">Accuracy figures appear here when the hand-labelled evaluation is published.</p></div>
+<p>Before this, the worst cases from each stage were reviewed by hand: retrieval (3 of 9 wrong, all search-query misses), judging (4 of 9 wrong: a date a few days outside the availability cap, an unresolved case, a general committee taken as evidence, and a cumulative amount that cannot be checked from five passages).</p>
+
+<h2>7. Survival analysis</h2>
+<p>For each term, time to realisation is measured in days from the swearing-in. A Kaplan–Meier curve shows the share realised by each month. A Cox model estimates which promise characteristics go with faster delivery (hazard ratio above 1 = faster). Promises with no realisation date are treated as not yet realised at the end of the observation period. Coarse dates (year or month only) are placed at the middle of their period.</p>
+<div id="hr" class="scroll"></div>
+
+<h2>8. Reverse backtest</h2>
+<p>The model is fitted on DMK 2021–26 only and asked to predict AIADMK 2016–21 from what was documented at its landmark months. Under the assumption that terms are independent draws, this is a fair test across terms, but it is not a forecast forward in time. The error is the average gap, in percentage points, between predicted and actual share realised.</p>
+<div id="bt" class="scroll"></div>
+
+<h2>9. The TVK projection</h2>
+<p>The projection starts from what is documented for TVK after five months and adds the number of further promises the historical hazards would realise, using a model fitted on both completed terms with equal weight. Three lines are shown because the result depends on one assumption, how to read TVK's slow documented start:</p>
+<div id="scen"></div>
+<p>The bands show fitting uncertainty only. Nothing here predicts what TVK will do: it states what historical patterns would imply.</p>
+
+<h2>10. Limitations</h2>
+<ol id="lims"></ol>
+
+<h2>11. Reproducibility and licences</h2>
+<p>Every stage is a command in <code>python -m ept</code>, every prompt is a versioned file and every strong-judge batch is committed. Code: GPL v3. Data exports and this text: CC BY 4.0. Quoted excerpts of government documents are linked to their official sources and remain their publishers' property.</p>
+</article></main><div id="foot"></div></div>
+<script src="assets/site.js"></script>
+<script>
+$("#nav").innerHTML = nav("whitepaper");
+Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null)]).then(([sum, model, ev]) => {
+  $("#foot").innerHTML = footer(sum);
+  const n = {}; sum.cells.filter(c => c.month === 0 || (c.term === "TVK-2026")).forEach(c => n[c.term] = c.n);
+  document.querySelectorAll("[data-b]").forEach(el => { const k = el.dataset.b; if (k.startsWith("n.")) el.textContent = n[k.slice(2)]; });
+  const ts = Object.keys(TERMS);
+  $("#judgeTable").innerHTML = `<table><thead><tr><th>Term</th><th>Month</th><th>Bulk</th><th>Claude</th><th>Human fix</th></tr></thead><tbody>${sum.cells.filter(c => [5, 12, 24, 0].includes(c.month)).map(c => `<tr><td>${TERMS[c.term]}</td><td>${monthLabel(c.month)}</td><td>${c.judge_source.bulk || 0}</td><td>${c.judge_source.strong || 0}</td><td>${c.judge_source.human || 0}</td></tr>`).join("")}</tbody></table>`;
+  // accuracy
+  if (ev && ev.judges) {
+    const rows = [];
+    for (const [j, jj] of Object.entries(ev.judges)) for (const [g, e] of Object.entries(jj.groups)) {
+      const t = e.e1; const f = (c) => c && c.p != null ? `${pct(c.p)} <span class="muted small">(${pct(c.lo)}–${pct(c.hi)})</span>` : "–";
+      rows.push(`<tr><td>${j === "strong" ? "Claude" : j === "bulk" ? "bulk model" : "final verdicts"}</td><td>${g.replace(/_/g, " ")}</td><td>${t.n}</td><td>${f(t.accuracy)}</td><td>${f(t.recall)}</td><td>${f(t.precision)}</td><td>${f(e.status.exact)}</td></tr>`);
+    }
+    $("#acc").innerHTML = `<table><thead><tr><th>Judge</th><th>Group</th><th>n</th><th>Realised-or-not agreement</th><th>Recall</th><th>Precision</th><th>Exact status</th></tr></thead><tbody>${rows.join("")}</tbody></table><p class="small muted">Recall: of promises the human says were realised, the share the judge also says were. Precision: of those the judge says were realised, the share the human agrees with.</p>`;
+    if (ev.bulk_vs_strong) $("#acc").insertAdjacentHTML("beforeend", `<p class="small">Bulk and Claude agree on the realised-or-not question for ${pct(ev.bulk_vs_strong.same_e1.p)} of ${ev.bulk_vs_strong.n} promises both judged (Claude is a reference here, not the truth).</p>`);
+  }
+  // hazard ratios
+  const hr = model.cox["both_terms_strata"].hazard_ratios;
+  $("#hr").innerHTML = `<table><thead><tr><th>Characteristic (vs reference)</th><th>Hazard ratio</th><th>95% interval</th></tr></thead><tbody>${hr.map(r => `<tr><td>${esc(r.covariate.replace(/_/g, " "))}</td><td>${r.hr.toFixed(2)}</td><td>${r.lo.toFixed(2)}–${r.hi.toFixed(2)}</td></tr>`).join("")}</tbody></table><p class="small muted">Both completed terms, each with its own baseline. References: administrative promises, no cost, specific promises. Concordance of the DMK-fitted model on AIADMK: ${model.backtest.concordance.toFixed(2)} (0.5 is chance), so promise characteristics explain little of the timing.</p>`;
+  const lm = model.backtest.landmarks;
+  $("#bt").innerHTML = `<table><thead><tr><th>Predicting from</th><th>Model</th><th>Model + pace update</th><th>No promise characteristics</th></tr></thead><tbody>${Object.entries(lm).map(([m, e]) => `<tr><td>month ${m}</td><td>${e.mae_model.toFixed(1)} pts</td><td>${e.mae_model_pace.toFixed(1)} pts</td><td>${e.mae_baseline.toFixed(1)} pts</td></tr>`).join("")}</tbody></table><p class="small muted">The pace update scales future hazards by how fast the target term was going at the landmark compared with the model's expectation. The model under-predicts AIADMK throughout (for example, from month 5 it predicts ${pct(lm["5"].pred_model_pace[lm["5"].t_months.indexOf(48)])} realised by month 48; the actual figure is ${pct(lm["5"].observed[lm["5"].t_months.indexOf(48)])}).</p>`;
+  $("#scen").innerHTML = SCENARIOS.filter(s => model.projection[s.key]).map(s => `<p><strong>${s.name}</strong> (month 60: ${pct(model.projection[s.key].share.slice(-1)[0])}). <em>Assumes:</em> ${s.says} <em>Weakness:</em> ${s.weak}</p>`).join("");
+  const lims = [...model.limitations, ...((ev && ev.limitations) || [])];
+  $("#lims").innerHTML = lims.map(t => `<li>${esc(t).replace(/`/g, "")}</li>`).join("");
+}).catch(e => { $("#judgeTable").innerHTML = "<p class='note'>Data failed to load: " + esc(e.message) + ". Serve the folder with a static server.</p>"; });
+</script></body></html>

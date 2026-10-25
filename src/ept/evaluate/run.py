@@ -34,7 +34,7 @@ def _cutoff_key(cfg: Config, term_id: str) -> Optional[str]:
 
 
 def _run_verdicts(cfg: Config, run_id: str) -> dict[tuple[str, Optional[str]], dict]:
-    with db.connect(cfg) as conn:
+    with db.connect() as conn:
         rows = conn.execute("select promise_id,cutoff_date,status,realisation_date,date_precision from verdicts "
                             "where run_id=?", (run_id,)).fetchall()
     return {(r[0], r[1]): {"status": r[2], "date": r[3], "precision": r[4]} for r in rows}
@@ -48,7 +48,7 @@ def _final_verdicts(cfg: Config) -> dict[tuple[str, Optional[str]], dict]:
 def _retrieved(cfg: Config, pids: list[str], cutoffs: dict[str, Optional[str]]) -> dict[str, set[str]]:
     rr = latest_retrieval(cfg, complete_only=True)
     out: dict[str, set[str]] = defaultdict(set)
-    with db.connect(cfg) as conn:
+    with db.connect() as conn:
         for pid in pids:
             c = cutoffs[pid]
             q = "select chunk_id from retrievals where run_id=? and indicator_id like ? and " + \

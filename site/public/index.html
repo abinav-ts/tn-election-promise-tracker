@@ -1,0 +1,74 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tamil Nadu Election Promise Tracker</title>
+<meta name="description" content="Did Tamil Nadu governments keep their manifesto promises, and how fast? Evidence-based verdicts, survival curves and a projection for TVK 2026.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+<link rel="stylesheet" href="assets/site.css"></head>
+<body data-page="index"><div class="wrap"><div id="nav"></div>
+<main>
+<section><h1>Did the promises get kept, and how fast?</h1>
+<p class="lede">Every promise in the manifestos of the parties that formed the Tamil Nadu government in 2016, 2021 and 2026, checked against official documents: policy notes, budget speeches, Government Orders and audit reports. A promise counts as <em>realised</em> when an official step puts it into operation, with the date of the earliest such step. Nothing here ranks parties or rates governments.</p></section>
+<section id="cards" class="grid" aria-label="Headline numbers"></section>
+<section><h2>Share of promises realised, by month of tenure</h2>
+<p class="muted small">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The dots are what was documented at each landmark month; the gap between line and dots is evidence that appeared only later.</p>
+<div class="chart"><canvas id="kmChart" role="img" aria-label="Share of promises realised by month for each term"></canvas></div>
+<div id="judgeNote" class="note small" style="margin-top:10px"></div></section>
+<section><h2>TVK 2026: a projection, with its assumptions</h2>
+<p class="muted">Projection under historical patterns, built from the two completed terms. It shows what the past would imply, with the assumptions stated below each line; it is not a prediction of what TVK will do. Bands show fitting uncertainty only.</p>
+<div class="chart"><canvas id="projChart" role="img" aria-label="Projected share of TVK promises realised by month under three assumptions"></canvas></div>
+<div id="proj-table" class="scroll" style="margin-top:12px"></div>
+<div id="assume" class="assume" style="margin-top:12px"></div></section>
+<section><h2>How well do these methods work?</h2><div id="trust" class="grid"></div>
+<p class="small muted" style="margin-top:8px">Reverse backtest: the model is fitted on DMK 2021–26 only and asked to predict AIADMK 2016–21 from its early months. <a href="whitepaper.html#accuracy">Accuracy against a hand-labelled sample</a> and all limitations are in the whitepaper.</p></section>
+</main><div id="foot"></div></div>
+<script src="assets/vendor/chart.umd.min.js"></script><script src="assets/site.js"></script>
+<script>
+$("#nav").innerHTML = nav("index");
+Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null)]).then(([sum, model, ev]) => {
+  $("#foot").innerHTML = footer(sum);
+  const c = COLORS();
+  const cells = sum.cells;
+  $("#cards").innerHTML = Object.entries(sum.terms).map(([t, info]) => {
+    const full = cells.find(x => x.term === t && x.month === 0), m5 = cells.find(x => x.term === t && x.month === 5);
+    const main = info.term_end ? `<div class="stat">${pct(full.realised)}</div><div class="muted small">realised by the end of the term (${full.n} promises)</div>` : `<div class="stat">${pct(m5.realised, 1)}</div><div class="muted small">documented as realised after 5 months (${m5.n} promises)</div>`;
+    return `<div class="card"><div class="muted small"><span class="sw" style="background:${c[t]}"></span>${TERMS[t]}</div>${main}<div class="muted small" style="margin-top:6px">${info.term_end ? "Month 5: " + pct(m5.realised) + " documented" : "Term in progress"}</div></div>`;
+  }).join("");
+  const km = model.km.terms, ds = [];
+  for (const [t, e] of Object.entries(km)) {
+    if (t === "TVK-2026") continue;
+    ds.push({label: TERMS[t] + " (curve)", data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c[t], backgroundColor: c[t], tension: .2, pointRadius: 2});
+    const pts = cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised}));
+    ds.push({label: TERMS[t] + " (documented at the time)", data: pts, borderColor: c[t], backgroundColor: c[t], showLine: false, pointStyle: "rectRot", pointRadius: 5});
+  }
+  const tv = cells.find(x => x.term === "TVK-2026");
+  ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c["TVK-2026"], backgroundColor: c["TVK-2026"], pointRadius: 7, showLine: false});
+  lineChart($("#kmChart"), ds);
+  const mix = (t, m) => { const x = cells.find(y => y.term === t && y.month === m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by the lighter bulk model" : "human fix")).join(", ") : ""; };
+  $("#judgeNote").innerHTML = `<strong>Read across terms with care.</strong> The terms were judged by different mixes of judges. At month 5: DMK, ${mix("DMK-2021", 5)}; TVK, ${mix("TVK-2026", 5)}; AIADMK, ${mix("AIADMK-2016", 5)}. Part of AIADMK's early lead may be judge leniency; see the whitepaper.`;
+  // projection
+  const p = model.projection, xs = p.months;
+  const pd = [];
+  for (const s of SCENARIOS) {
+    const r = p[s.key]; if (!r) continue; const col = c[s.color] || s.color;
+    const pts = xs.map((x, i) => ({x, y: 100 * r.share[i]}));
+    pd.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...pts], borderColor: col, backgroundColor: col, pointRadius: 0, borderWidth: 2.5});
+    if (r.lo) {
+      pd.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: col + "26", pointRadius: 0, fill: "+1", showLegend: false});
+      pd.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0});
+    }
+  }
+  const ch = lineChart($("#projChart"), pd);
+  ch.options.plugins.legend.labels.filter = (item) => !/band/.test(item.text); ch.update();
+  const cols = [6, 12, 24, 36, 48, 60];
+  $("#proj-table").innerHTML = `<table><thead><tr><th>Line</th><th>Pace factor</th>${cols.map(m => `<th>${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${SCENARIOS.filter(s => p[s.key]).map(s => `<tr><td>${s.name}</td><td>${p[s.key].k.toFixed(2)}</td>${cols.map(m => `<td>${pct(p[s.key].share[xs.indexOf(m)])}${p[s.key].lo ? `<br><span class="muted small">${pct(p[s.key].lo[xs.indexOf(m)])}–${pct(p[s.key].hi[xs.indexOf(m)])}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  $("#assume").innerHTML = SCENARIOS.filter(s => p[s.key]).map(s => `<div class="card"><h3><span class="sw" style="background:${c[s.color] || s.color}"></span>${s.name}</h3><p><strong>Assumes:</strong> ${s.says}</p><p class="muted"><strong>Weakness:</strong> ${s.weak}</p></div>`).join("");
+  // trust
+  const b = model.backtest, lm = b.landmarks;
+  const kk = Object.keys(lm["5"]).find(k => /^k_c=20/.test(k));
+  const cards = [`<div class="card"><div class="stat">${lm["5"].mae_model_pace.toFixed(1)} pts</div><div class="muted small">average gap between predicted and actual share realised, predicting AIADMK 2016–21 from its first 5 months (${lm["5"].mae_model.toFixed(1)} pts without the pace update; ${lm["5"].mae_baseline.toFixed(1)} pts with no promise characteristics)</div></div>`];
+  if (ev && ev.judges) {
+    const g = ev.judges.final && ev.judges.final.groups.pooled_AIADMK_DMK.e1;
+    if (g) cards.push(`<div class="card"><div class="stat">${pct(g.accuracy.p)}</div><div class="muted small">of ${g.n} hand-labelled promises (AIADMK and DMK) agree with the final verdicts on <em>realised or not</em> (95% interval ${pct(g.accuracy.lo)}–${pct(g.accuracy.hi)})</div></div>`);
+  }
+  $("#trust").innerHTML = cards.join("");
+}).catch(e => { document.body.insertAdjacentHTML("beforeend", "<p class='note'>Data failed to load: " + esc(e.message) + ". Serve the folder with a static server.</p>"); });
+</script></body></html>

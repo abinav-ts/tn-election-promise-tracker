@@ -646,3 +646,11 @@ def evaluate_run(allow_short: bool = typer.Option(False, "--allow-short", help="
     except (LabelError, FileNotFoundError) as e:
         typer.echo(f"evaluate: STOP — {e}")
         raise typer.Exit(4)
+
+
+@app.command("export-site")
+def export_site() -> None:
+    """Write site/public/data/*.json from the committed results (spec 08 §4.1)."""
+    from ept.site.export import export
+
+    typer.echo(f"export-site: {export()}")
