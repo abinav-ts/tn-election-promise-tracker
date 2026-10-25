@@ -21,6 +21,8 @@ LIMITATIONS = [
     "One labeller and no second annotator: self-agreement is the only ceiling, and the labeller saw the corpus and the web, which the judges cannot (`in_corpus`).",
     "Strong-judge verdicts for gold promises come from Claude Opus; TVK and later levels partly from Sonnet. Opus vs Sonnet cannot be measured here.",
     "DMK landmark verdicts mix Claude and Gemini judges (D-097); gold measures full-term quality, and landmark agreement uses gold dates that carry the same labelling error.",
+    "No TVK promise is in the labelled prefix (positions 41-48 were not reached), so TVK-2026 verdicts have no measured accuracy of their own. The 8-promise self-agreement re-label was not done (user, 2026-10-25), so the human ceiling is not measured.",
+    "The final verdicts combine judges: a realisation found at an earlier landmark is carried forward (D-090) even where the full-term judge said not started. This raises recall (final 87 % vs Claude alone 40 %) at the cost of precision, and it means 'final' is not the same judge as 'strong'. Realisation dates are the weak point: the median gap to the hand-labelled date is about five to six months and fewer than a third are within 90 days, so event times in the survival models are approximate.",
     "Judges and the labeller both know Tamil Nadu politics: the citation and quote checks stop unsupported claims, not memory-driven choices between supported statuses. The memory probe (0/40 evidence-needing answers) is the only direct measurement.",
 ]
 
@@ -221,7 +223,7 @@ def write_markdown(res: dict, path) -> None:
                   f"(per term {({k: round(v, 2) for k, v in j['weighted']['per_term'].items()})}).", ""]
         d = j["disagreements"]
         L += [f"Disagreements on status: {d['n']}; buckets {d['buckets']}.", ""]
-        if d["listed"]:
+        if d.get("listed"):
             L += ["Judge errors and retrieval misses (labelling is closed): " +
                   "; ".join(f"{x['promise_id']} ({x['bucket']}: gold {x['gold']}, judge {x['judge']})" for x in d["listed"]), ""]
     L += ["## Landmark agreement (final run, 'realised by month m' vs gold dates; AIADMK bulk, DMK mixed judges)", "",
@@ -245,6 +247,11 @@ def write_markdown(res: dict, path) -> None:
 def run_and_write(cfg: Optional[Config] = None, allow_short: bool = False) -> dict:
     cfg = cfg or get_config()
     res = run(cfg, allow_short)
+    # per-promise gold-vs-judge listings stay local (gitignored): the published report is aggregate only
+    private = {j: v["disagreements"].pop("listed", []) for j, v in res["judges"].items()}
+    local = cfg.root / "data" / "interim" / "evaluation_06_listed.json"
+    local.parent.mkdir(parents=True, exist_ok=True)
+    local.write_text(json.dumps(private, indent=1), encoding="utf-8")
     cfg.path("evaluation_json").write_text(json.dumps(res, indent=1), encoding="utf-8")
     write_markdown(res, cfg.path("evaluation_md"))
     return {"labels": res["n_labels"], "report": str(cfg.path("evaluation_md"))}

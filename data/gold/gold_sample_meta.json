@@ -1,0 +1,24 @@
+{
+  "algo": "gold-draw-v1",
+  "seed": "ept-gold-2026-10-20",
+  "core_terms": [
+    "AIADMK-2016",
+    "DMK-2021"
+  ],
+  "core_per_term": 35,
+  "floor": 40,
+  "tail_term": "TVK-2026",
+  "tail_n": 8,
+  "tail_after": 40,
+  "vague_floor": 0.15,
+  "n": 78,
+  "script_sha256": "4026ec812eed3c1d4566788176bac4f07c0270612f56a64d46ef6a234b284bde",
+  "snapshot_sha256": {
+    "promises_AIADMK-2016.jsonl": "7cba6e11764e029b20c9982d2f36f27f11b81bdfb28f006a0343c5e5042143ad",
+    "classification_AIADMK-2016.jsonl": "0f06ef8055d3a1e1bd45eb9321e6b10fa9fa1103bb4f74c02dd7e1d33c64214e",
+    "promises_DMK-2021.jsonl": "9d7e39ef25fff2295d72f7ce955dfc17d9fad7d1ebef69ce9c5b83b021e48c61",
+    "classification_DMK-2021.jsonl": "351859ee587a39023ba884f29c3eacc76fd27154070d87a8eab91c18bb899218",
+    "promises_TVK-2026.jsonl": "a6496d9787bc017d5952dd6bb099c534aa871eb0533e17509ea8c6a8c7298911",
+    "classification_TVK-2026.jsonl": "00ea4278dc16366896dc60f76550882752c26e9c96324b10b64c400b37446fdb"
+  }
+}

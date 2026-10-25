@@ -1,0 +1,443 @@
+<title>Promise Gold Labels</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: one promise per screen, a reading column (max 640px), a fixed save bar at the bottom. */
+:root{
+  --bg:#f5f6f4; --surface:#ffffff; --sunk:#eceeea; --fg:#1d2420; --muted:#5d6862; --line:#d5dad5;
+  --accent:#1f6b52; --accent-ink:#ffffff; --accent-soft:#dcebe4;
+  --warn:#9a5b00; --warn-soft:#f6e7cc; --bad:#a33a2c; --bad-soft:#f5dcd7; --mark:#fbe69a;
+  --s-ful:#1f6b52; --s-par:#3d6aa0; --s-dil:#7a5aa0; --s-prog:#9a6b00; --s-not:#6b6f6c; --s-blk:#a33a2c; --s-unv:#4b5a63;
+  --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-read:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-ta:"Noto Sans Tamil","Tamil Sangam MN","Latha",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141917; --surface:#1c2320; --sunk:#232b28; --fg:#e4e9e5; --muted:#9aa59f; --line:#34403b;
+  --accent:#5fbf98; --accent-ink:#0d1a14; --accent-soft:#1f3a2f;
+  --warn:#e2a64a; --warn-soft:#3a2d15; --bad:#e8806f; --bad-soft:#3d221d; --mark:#5b4d12;
+  --s-ful:#5fbf98; --s-par:#7fa8db; --s-dil:#b59adb; --s-prog:#e2b04a; --s-not:#a3a9a5; --s-blk:#e8806f; --s-unv:#93a7b3;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141917; --surface:#1c2320; --sunk:#232b28; --fg:#e4e9e5; --muted:#9aa59f; --line:#34403b;
+  --accent:#5fbf98; --accent-ink:#0d1a14; --accent-soft:#1f3a2f;
+  --warn:#e2a64a; --warn-soft:#3a2d15; --bad:#e8806f; --bad-soft:#3d221d; --mark:#5b4d12;
+  --s-ful:#5fbf98; --s-par:#7fa8db; --s-dil:#b59adb; --s-prog:#e2b04a; --s-not:#a3a9a5; --s-blk:#e8806f; --s-unv:#93a7b3;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:15px/1.45 var(--f-ui);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px 8px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.toprow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pos{font:600 13px var(--f-mono);letter-spacing:.02em}
+.meter{flex:1;min-width:120px;height:6px;background:var(--sunk);border-radius:3px;position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--accent)}
+.meter b{position:absolute;top:0;bottom:0;width:2px;background:var(--fg);opacity:.5}
+.sync{font-size:12px;color:var(--muted);white-space:nowrap}
+.sync.err{color:var(--bad)}
+.timer{font:500 12px var(--f-mono);padding:2px 7px;border-radius:10px;background:var(--sunk);color:var(--muted);font-variant-numeric:tabular-nums}
+.timer.amber{background:var(--warn-soft);color:var(--warn)}
+.timer.red{background:var(--bad-soft);color:var(--bad)}
+button{font:inherit;color:inherit;cursor:pointer}
+.ghost{background:none;border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:13px}
+.ghost:focus-visible,.st:focus-visible,.chip:focus-visible,.primary:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.banner{border-radius:8px;padding:10px 12px;font-size:13px;background:var(--warn-soft);color:var(--warn)}
+.banner.bad{background:var(--bad-soft);color:var(--bad)}
+.eyebrow{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.eyebrow .blk{color:var(--accent);font-weight:600}
+.promise{font:400 20px/1.4 var(--f-read);text-wrap:pretty;margin:2px 0 0}
+.pid{font:12px var(--f-mono);color:var(--muted)}
+.ta{font:15px/1.65 var(--f-ta);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+details.unit{background:var(--surface);border:1px solid var(--line);border-radius:8px}
+details.unit summary{padding:9px 12px;font-size:13px;color:var(--muted);cursor:pointer}
+details.unit pre{margin:0;padding:0 12px 12px;white-space:pre-wrap;font:14px/1.6 var(--f-ta)}
+.asof{font-size:13px;color:var(--muted)}
+.asof strong{color:var(--fg);font-weight:600}
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
+h2{font:600 12px var(--f-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0}
+.stgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.st{border:1.5px solid var(--line);background:var(--bg);border-radius:8px;padding:9px 10px;text-align:left;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;min-height:44px}
+.st::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.st[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--surface));font-weight:600}
+.def{font-size:13px;color:var(--muted);margin:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+label.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);flex:1;min-width:140px}
+input[type=date],input[type=text],input[type=url],input[type=search],select,textarea{font:15px var(--f-ui);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;min-height:42px}
+textarea{min-height:64px;resize:vertical}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;border:0;background:var(--bg);padding:9px 6px;font-size:13px;min-height:42px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.cites{display:flex;flex-direction:column;gap:6px}
+.cite{display:flex;gap:8px;align-items:flex-start;background:var(--sunk);border-radius:8px;padding:7px 9px;font-size:13px}
+.cite .t{flex:1;min-width:0;overflow-wrap:anywhere}
+.cite .k{font:11px var(--f-mono);color:var(--muted)}
+.cite .first{font-size:11px;font-weight:600;color:var(--accent)}
+.x{border:0;background:none;color:var(--muted);font-size:13px;padding:2px 4px}
+.incorp{font:500 13px var(--f-mono)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:16px;padding:6px 12px;font-size:13px;min-height:36px}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--fg);font-weight:600}
+.cands{display:flex;flex-direction:column;gap:10px}
+.cand{border:1px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.cand.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.cand .ttl{font-weight:600;font-size:14px;overflow-wrap:anywhere}
+.cand .meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.cand .txt{font:14px/1.55 var(--f-read);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.cand.open .txt{display:block}
+mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 1px}
+.small{font-size:12.5px}
+a{color:var(--accent)}
+.res{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow:auto}
+.ri{display:flex;gap:8px;align-items:flex-start;border-bottom:1px solid var(--line);padding-block:6px}
+.ri .t{flex:1;min-width:0;font-size:13.5px;overflow-wrap:anywhere}
+.badge{font:500 11px var(--f-mono);padding:1px 6px;border-radius:8px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.badge.in{background:var(--accent-soft);color:var(--accent)}
+.badge.out{background:var(--warn-soft);color:var(--warn)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar .in{max-width:640px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.bar .err{max-width:640px;margin:0 auto 8px;font-size:13px;color:var(--bad)}
+.primary{flex:1;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:15px;min-height:48px}
+.primary[disabled]{opacity:.5;cursor:not-allowed}
+.sheet{position:fixed;inset:0;z-index:20;background:color-mix(in srgb,var(--fg) 35%,transparent);display:flex;align-items:flex-end;justify-content:center}
+.sheet .pan{background:var(--surface);width:100%;max-width:640px;max-height:85%;overflow:auto;border-radius:14px 14px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:10px}
+.olist{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
+.ob{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:6px 0;font:500 13px var(--f-mono);text-align:center}
+.ob.done{background:var(--accent-soft);border-color:var(--accent)}
+.ob.draft{border-style:dashed;border-color:var(--warn)}
+.ob.here{outline:2px solid var(--fg)}
+.ob[disabled]{opacity:.35;cursor:not-allowed}
+.rules{font-size:13.5px;margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+@media (prefers-reduced-motion:no-preference){.meter i{transition:width .3s}}
+</style>
+
+<div class="wrap" id="app">
+  <header class="top">
+    <div class="toprow">
+      <span class="pos" id="pos">Loading…</span>
+      <div class="meter" aria-hidden="true"><i id="meterFill" style="width:0"></i><b id="meterFloor"></b></div>
+      <span class="timer" id="timer">0:00</span>
+    </div>
+    <div class="toprow">
+      <span class="sync" id="sync">Connecting to storage…</span>
+      <span style="flex:1"></span>
+      <button class="ghost" id="btnList" type="button">All positions</button>
+      <button class="ghost" id="btnRules" type="button">Rules</button>
+    </div>
+  </header>
+  <div id="banner"></div>
+  <main id="screen" class="wrap"></main>
+</div>
+<div class="bar">
+  <div class="err" id="err" hidden></div>
+  <div class="in">
+    <button class="ghost" id="btnPrev" type="button">Back</button>
+    <button class="primary" id="btnSave" type="button">Save &amp; next</button>
+  </div>
+</div>
+<div class="sheet" id="sheet" hidden><div class="pan" id="sheetPan"></div></div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(function(){
+"use strict";
+const D = JSON.parse(document.getElementById("data").textContent);
+const ITEMS = D.items;
+const FLOOR = (D.sample_meta && D.sample_meta.floor) || 40;
+const DOCS = D.docs.map(function(r){return {id:r[0],type:r[1],avail:r[2],title:r[3],url:r[4],tl:r[3].toLowerCase()};});
+const DOC = {}; DOCS.forEach(function(d){DOC[d.id]=d;});
+const CMETA = D.cand_doc_meta;
+const STATUSES = [
+  ["fulfilled","Fulfilled","--s-ful","Done substantially as promised: scope, beneficiaries and amount."],
+  ["partial","Partial","--s-par","Some components done, others not."],
+  ["diluted","Diluted","--s-dil","Done, but with materially smaller scope, eligibility or amount."],
+  ["in_progress","In progress","--s-prog","Official step (GO, tender, bill) taken, but not operational by the end of the term."],
+  ["not_started","Not started","--s-not","No official step found."],
+  ["blocked_external","Blocked","--s-blk","The state acted; the Union, President/Governor or a court blocked delivery."],
+  ["unverifiable","Unverifiable","--s-unv","Neither the corpus nor the web settles it."]
+];
+const E1 = {fulfilled:1,partial:1,diluted:1};
+const NO_EVID = {not_started:1,unverifiable:1};
+const STOP = new Set(("a an and are as at be been by for from has have in into is it its of on or that the their this to was were will with within all any each every more new other such than these those through under upto up also per who which whose shall can may provide providing provided ensure take taken make made given give tamil nadu government state govt scheme schemes").split(" "));
+function toks(s){return (s.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(function(t){return t.length>1 && !STOP.has(t);});}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function hl(text, words){
+  return String(text).split(/([A-Za-z0-9]+)/).map(function(p,i){
+    if(i%2 && words.has(p.toLowerCase())) return "<mark>"+esc(p)+"</mark>";
+    return esc(p);
+  }).join("");
+}
+function fmtDate(iso){ if(!iso) return "undated"; const d=new Date(iso+"T00:00:00"); return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }
+function pad(n){return n<10?"0"+n:""+n;}
+function isChunk(e){return /^[0-9a-f]{16}-\d{4}$/.test(e);}
+function isDoc(e){return e.indexOf("doc:")===0;}
+function inWindow(avail, it){return !!avail && avail>=it.term_window[0] && avail<=it.term_window[1];}
+
+// ---------- state ----------
+let labels = {};      // promise_id -> stored body
+let idx = 0;          // current screen
+let form = null;      // working copy for the current screen
+let dirty = false;
+let db = null, dbState = "connecting", firstSnap = false;
+let openedAt = Date.now(), baseSeconds = 0;
+let autosaveT = null;
+const queue = {}, busy = {};
+
+function blank(it){return {status:"",realisation_date:"",date_precision:"day",evidence:[],unsure:false,web_checked:false,after_term:"",note:""};}
+function fromStored(b){return {status:b.status||"",realisation_date:b.realisation_date||"",date_precision:b.date_precision||"day",evidence:(b.evidence||[]).slice(),unsure:!!b.unsure,web_checked:!!b.web_checked,after_term:b.after_term||"",note:b.note||""};}
+function firstOpenIndex(){for(let i=0;i<ITEMS.length;i++){const b=labels[ITEMS[i].id]; if(!b||!b.complete) return i;} return ITEMS.length-1;}
+function doneCount(){let n=0; for(const it of ITEMS){if(labels[it.id]&&labels[it.id].complete) n++; else break;} return n;}
+
+function inCorpus(it, ev){
+  if(!ev.length) return "";
+  for(const e of ev){
+    if(isChunk(e)) continue;
+    if(isDoc(e)){const d=DOC[e.slice(4)]; if(d && inWindow(d.avail,it)) continue; return "false";}
+    return "false";
+  }
+  return "true";
+}
+function normDate(v,prec){ if(!v) return ""; if(prec==="month") return v.slice(0,7)+"-01"; if(prec==="year") return v.slice(0,4)+"-01-01"; return v; }
+function periodEnd(v,prec){ if(prec==="year") return v.slice(0,4)+"-12-31"; if(prec==="month"){const y=+v.slice(0,4),m=+v.slice(5,7); return v.slice(0,7)+"-"+pad(new Date(y,m,0).getDate());} return v; }
+function validate(it,f){
+  const errs=[]; const lo=it.term_window[0], hi=it.term_window[1];
+  if(!f.status) errs.push("Pick a status.");
+  if(E1[f.status]){
+    if(!f.realisation_date) errs.push("Add the realisation date (first GO, launch or enacted law).");
+    else{
+      const s=normDate(f.realisation_date,f.date_precision), e=periodEnd(s,f.date_precision);
+      if(e<lo || s>hi) errs.push("The realisation date is outside the term ("+fmtDate(lo)+" – "+fmtDate(hi)+"). If it happened only after the term, label the status at term end and use “Realised after term”.");
+    }
+  }
+  if(f.status && !NO_EVID[f.status] && !f.evidence.length) errs.push("Cite at least one source: a candidate, a document from the title search, or a web URL.");
+  if(f.after_term && f.after_term<=hi) errs.push("“Realised after term” needs a date after "+fmtDate(hi)+".");
+  return errs;
+}
+function bodyFor(it,f,complete){
+  const e1=!!E1[f.status];
+  return {promise_id:it.id, order:it.order, term_id:it.term, status:f.status,
+    realisation_date: e1? normDate(f.realisation_date,f.date_precision):"",
+    date_precision: e1&&f.realisation_date? f.date_precision:"",
+    evidence:f.evidence.slice(), in_corpus:inCorpus(it,f.evidence),
+    unsure:f.unsure, web_checked:f.web_checked, after_term:f.after_term||"", note:f.note,
+    complete:complete, labelled_at:new Date().toISOString(),
+    seconds: Math.round(baseSeconds + (Date.now()-openedAt)/1000), v:1};
+}
+
+// ---------- storage ----------
+function setSync(t,err){const s=document.getElementById("sync"); s.textContent=t; s.classList.toggle("err",!!err);}
+function persist(pid, body){
+  if(!db) return Promise.resolve(false);
+  queue[pid]=body;
+  if(busy[pid]) return busy[pid];
+  busy[pid]=(async function(){
+    let ok=true;
+    while(queue[pid]){
+      const b=queue[pid]; delete queue[pid];
+      setSync("Saving…");
+      try{ await db.collection("labels").doc(pid).set(b); }
+      catch(e){
+        if(e && e.code==="unavailable"){
+          await new Promise(function(r){setTimeout(r,600+Math.random()*900);});
+          try{ await db.collection("labels").doc(pid).set(b); }catch(e2){ ok=false; setSync("Not saved. Check your connection, then tap Save again.",true); }
+        } else { ok=false; setSync(e&&e.code==="invalid_argument"?"This view can't save labels (read-only access).":"Not saved ("+((e&&e.code)||"error")+"). Tap Save again.",true); }
+      }
+    }
+    busy[pid]=null; if(ok) setSync("Saved "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}));
+    return ok;
+  })();
+  return busy[pid];
+}
+function scheduleAutosave(){
+  dirty=true; clearTimeout(autosaveT);
+  autosaveT=setTimeout(function(){
+    const it=ITEMS[idx]; const prev=labels[it.id];
+    const keep = !!(prev && prev.complete) && validate(it,form).length===0;
+    persist(it.id, bodyFor(it,form,keep)); dirty=false;
+  },1500);
+}
+
+// ---------- rendering ----------
+function renderHeader(){
+  const it=ITEMS[idx], n=doneCount();
+  document.getElementById("pos").textContent = "#"+it.order+" · "+n+" done · "+Math.max(0,FLOOR-n)+" to minimum";
+  document.getElementById("meterFill").style.width = (100*n/ITEMS.length)+"%";
+  document.getElementById("meterFloor").style.left = (100*FLOOR/ITEMS.length)+"%";
+  document.getElementById("btnPrev").disabled = idx===0;
+}
+function blockLabel(it){return it.block==="tvk_tail"?"TVK block (41–48)":(it.block==="core_floor"?"Minimum set (1–40)":"Extra (49–78)");}
+function asOf(it){return it.term==="TVK-2026" ? "Status as of <strong>"+esc(fmtDate(it.term_window[1]))+"</strong> (month 5, corpus snapshot)" : "Status as of <strong>"+esc(fmtDate(it.term_window[1]))+"</strong>, the end of the term (sworn in "+esc(fmtDate(it.term_window[0]))+")";}
+
+function render(){
+  const it=ITEMS[idx], f=form, words=new Set(toks(it.text));
+  const sdef = STATUSES.find(function(s){return s[0]===f.status;});
+  let h="";
+  h+='<div class="eyebrow"><span class="blk">'+esc(blockLabel(it))+'</span><span>'+esc(it.term)+'</span><span>Manifesto p. '+esc(it.page)+'</span></div>';
+  h+='<div class="eyebrow"><span>'+esc(it.section||"")+'</span></div>';
+  h+='<p class="promise">'+esc(it.text)+'</p><div class="pid">'+esc(it.id)+'</div>';
+  if(it.lang==="ta") h+='<p class="ta" lang="ta">'+esc(it.src)+'</p>';
+  if(it.unit) h+='<details class="unit"><summary>Full manifesto item</summary><pre lang="'+(it.lang==="ta"?"ta":"en")+'">'+esc(it.unit)+'</pre></details>';
+  h+='<div class="asof">'+asOf(it)+'</div>';
+
+  // status
+  h+='<section class="card"><h2>Status</h2><div class="stgrid">';
+  STATUSES.forEach(function(s){h+='<button type="button" class="st" style="--c:var('+s[2]+')" data-st="'+s[0]+'" aria-pressed="'+(f.status===s[0])+'">'+s[1]+'</button>';});
+  h+='</div><p class="def">'+(sdef?esc(sdef[3]):"Judge the promise as a whole, as of the date above.")+'</p>';
+  if(E1[f.status]){
+    h+='<div class="row"><label class="fld">Realisation date<input type="date" id="rdate" value="'+esc(f.realisation_date)+'" min="'+it.term_window[0]+'" max="'+it.term_window[1]+'"></label></div>';
+    h+='<div class="seg" role="group" aria-label="Date precision">';
+    ["day","month","year"].forEach(function(p){h+='<button type="button" data-prec="'+p+'" aria-pressed="'+(f.date_precision===p)+'">'+p[0].toUpperCase()+p.slice(1)+'</button>';});
+    h+='</div><p class="hint">First official operationalisation: the earliest GO, scheme launch or enacted law. Budget announcements and statements of intent don’t count. For month or year precision, any day in that month or year is fine.</p>';
+  }
+  h+='</section>';
+
+  // evidence
+  const ic=inCorpus(it,f.evidence);
+  h+='<section class="card"><h2>Evidence</h2>';
+  if(!f.evidence.length) h+='<p class="hint">'+(NO_EVID[f.status]?"Not needed for this status. Tick “Checked web” if you searched beyond the corpus.":"Cite a candidate below, a document from the title search, or a web URL. The first one listed should be the one that fixes the date.")+'</p>';
+  else{
+    h+='<div class="cites">';
+    f.evidence.forEach(function(e,i){
+      let t=e, k="web";
+      if(isChunk(e)){const c=it.cands.find(function(c){return c.cid===e;}); const m=c&&CMETA[c.doc]; t=m?m.title:e; k="chunk "+e;}
+      else if(isDoc(e)){const d=DOC[e.slice(4)]; t=d?d.title:e; k="document "+e.slice(4)+(d&&inWindow(d.avail,it)?"":" · outside the term window");}
+      h+='<div class="cite"><div class="t">'+(i===0?'<div class="first">Fixes the date</div>':'')+esc(t)+'<div class="k">'+esc(k)+'</div></div>'+(i>0?'<button type="button" class="x" data-first="'+i+'">Make first</button>':'')+'<button type="button" class="x" data-rm="'+i+'" aria-label="Remove">✕</button></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="row"><label class="fld">Web source<input type="url" id="url" placeholder="https://…" inputmode="url"></label><button type="button" class="ghost" id="addUrl" style="align-self:flex-end;min-height:42px">Add URL</button></div>';
+  h+='<div class="small">In corpus: <span class="incorp">'+(ic===""?"—":ic)+'</span> <span class="hint">(set automatically: true only if every source is a corpus chunk or document dated within the term)</span></div>';
+  h+='<div class="chips"><button type="button" class="chip" data-tag="unsure" aria-pressed="'+f.unsure+'">Unsure</button><button type="button" class="chip" data-tag="web_checked" aria-pressed="'+f.web_checked+'">Checked web</button><button type="button" class="chip" data-tag="after" aria-pressed="'+(!!f.after_term||f._showAfter===true)+'">Realised after term</button></div>';
+  if(f.after_term || f._showAfter) h+='<label class="fld">Date it was realised after the term<input type="date" id="after" value="'+esc(f.after_term)+'" min="'+it.term_window[1]+'"></label>';
+  h+='<label class="fld">Note<textarea id="note" placeholder="Anything that explains the label">'+esc(f.note)+'</textarea></label>';
+  h+='</section>';
+
+  // candidates
+  h+='<section class="card"><h2>Corpus candidates</h2><p class="hint">Plain keyword matches on the promise’s own words, from documents dated within the term. Not model output, and not the pipeline’s retrieval. Highlighted: words shared with the promise.</p><div class="cands">';
+  it.cands.forEach(function(c,i){
+    const m=CMETA[c.doc]||{}; const on=f.evidence.indexOf(c.cid)>=0;
+    h+='<div class="cand'+(on?" on":"")+'" data-ci="'+i+'"><div class="ttl">'+esc(m.title||c.doc)+'</div>';
+    h+='<div class="meta"><span>'+esc((m.type||"").replace("_"," "))+'</span><span>'+esc(fmtDate(m.avail))+'</span><span>pp. '+esc(c.p[0])+(c.p[1]!==c.p[0]?"–"+esc(c.p[1]):"")+'</span>'+(m.dept?'<span>'+esc(m.dept)+'</span>':'')+'</div>';
+    h+='<div class="txt">'+hl(c.text,words)+'</div>';
+    h+='<div class="row"><button type="button" class="ghost" data-more="'+i+'">Show all</button><button type="button" class="ghost" data-cite="'+i+'" aria-pressed="'+on+'">'+(on?"Cited ✓":"Cite")+'</button>'+(m.url?'<a class="small" href="'+esc(m.url)+'" target="_blank" rel="noopener">Open document</a>':'')+'</div></div>';
+  });
+  if(!it.cands.length) h+='<p class="hint">No keyword matches in this term’s documents.</p>';
+  h+='</div></section>';
+
+  // title search
+  h+='<section class="card"><h2>Search all document titles</h2><input type="search" id="q" placeholder="e.g. crop loan waiver, G.O. Ms. No. 59" autocomplete="off"><div class="res" id="res"><p class="hint">'+DOCS.length.toLocaleString()+' English evidence documents. Words must all appear in the title.</p></div></section>';
+
+  document.getElementById("screen").innerHTML=h;
+  renderHeader(); showErr([]);
+}
+function showErr(errs){const e=document.getElementById("err"); e.hidden=!errs.length; e.innerHTML=errs.map(esc).join("<br>");}
+function search(q){
+  const it=ITEMS[idx], ts=(q.toLowerCase().match(/[a-z0-9.]+/g)||[]).map(function(t){return t.replace(/\.+$/,"");}).filter(Boolean);
+  const res=document.getElementById("res"); if(!res) return;
+  if(!ts.length){res.innerHTML='<p class="hint">'+DOCS.length.toLocaleString()+' English evidence documents. Words must all appear in the title.</p>';return;}
+  const out=[]; for(const d of DOCS){ if(ts.every(function(t){return d.tl.indexOf(t)>=0;})){ out.push(d); if(out.length>=40) break; } }
+  out.sort(function(a,b){return (inWindow(b.avail,it)-inWindow(a.avail,it)) || (a.avail<b.avail?-1:1);});
+  if(!out.length){res.innerHTML='<p class="hint">No title contains all of these words.</p>';return;}
+  res.innerHTML=out.map(function(d){
+    const inw=inWindow(d.avail,it), cited=form.evidence.indexOf("doc:"+d.id)>=0;
+    return '<div class="ri"><div class="t">'+esc(d.title)+'<div class="row small" style="margin-top:3px"><span class="badge '+(inw?"in":"out")+'">'+(d.avail?esc(fmtDate(d.avail)):"undated")+(inw?"":" · outside term")+'</span><span class="badge">'+esc(d.type.replace("_"," "))+'</span>'+(d.url?'<a href="'+esc(d.url)+'" target="_blank" rel="noopener">Open</a>':'')+'</div></div><button type="button" class="ghost" data-doc="'+esc(d.id)+'">'+(cited?"Cited ✓":"Cite")+'</button></div>';
+  }).join("")+(out.length>=40?'<p class="hint">First 40 matches. Add a word to narrow.</p>':'');
+}
+
+// ---------- navigation ----------
+function go(i){
+  if(dirty){ clearTimeout(autosaveT); const it=ITEMS[idx]; const prev=labels[it.id]; persist(it.id, bodyFor(it,form,!!(prev&&prev.complete)&&validate(it,form).length===0)); dirty=false; }
+  idx=Math.max(0,Math.min(ITEMS.length-1,i));
+  const b=labels[ITEMS[idx].id];
+  form = b? fromStored(b): blank(ITEMS[idx]);
+  baseSeconds = b&&b.seconds? b.seconds:0; openedAt=Date.now();
+  render(); window.scrollTo(0,0);
+}
+function canOpen(i){ return i<=firstOpenIndex() || !!labels[ITEMS[i].id]; }
+
+// ---------- events ----------
+document.getElementById("screen").addEventListener("click",function(ev){
+  const t=ev.target.closest("button"); if(!t) return;
+  const it=ITEMS[idx];
+  if(t.dataset.st){ form.status=t.dataset.st; if(!E1[form.status]) form.realisation_date=""; scheduleAutosave(); render(); return; }
+  if(t.dataset.prec){ form.date_precision=t.dataset.prec; scheduleAutosave(); render(); return; }
+  if(t.dataset.rm){ form.evidence.splice(+t.dataset.rm,1); scheduleAutosave(); render(); return; }
+  if(t.dataset.first){ const e=form.evidence.splice(+t.dataset.first,1)[0]; form.evidence.unshift(e); scheduleAutosave(); render(); return; }
+  if(t.dataset.cite){ const c=it.cands[+t.dataset.cite]; const k=form.evidence.indexOf(c.cid); if(k>=0) form.evidence.splice(k,1); else form.evidence.push(c.cid); scheduleAutosave(); render(); return; }
+  if(t.dataset.more){ const card=t.closest(".cand"); const o=card.classList.toggle("open"); t.textContent=o?"Show less":"Show all"; return; }
+  if(t.dataset.doc){ const e="doc:"+t.dataset.doc; const k=form.evidence.indexOf(e); if(k>=0) form.evidence.splice(k,1); else form.evidence.push(e); scheduleAutosave(); const q=document.getElementById("q").value; render(); const qi=document.getElementById("q"); qi.value=q; search(q); return; }
+  if(t.dataset.tag){ const g=t.dataset.tag; if(g==="after"){ if(form.after_term||form._showAfter){form.after_term="";form._showAfter=false;} else form._showAfter=true; } else form[g]=!form[g]; scheduleAutosave(); render(); return; }
+  if(t.id==="addUrl"){ const u=document.getElementById("url").value.trim(); if(!/^https?:\/\/\S+\.\S+/.test(u)){ showErr(["Enter a full web address starting with http:// or https://."]); return; } if(form.evidence.indexOf(u)<0) form.evidence.push(u); scheduleAutosave(); render(); return; }
+});
+let qT=null;
+document.getElementById("screen").addEventListener("input",function(ev){
+  const t=ev.target;
+  if(t.id==="q"){ clearTimeout(qT); qT=setTimeout(function(){search(t.value);},180); return; }
+  if(t.id==="note"){ form.note=t.value; scheduleAutosave(); return; }
+  if(t.id==="rdate"){ form.realisation_date=t.value; scheduleAutosave(); return; }
+  if(t.id==="after"){ form.after_term=t.value; scheduleAutosave(); return; }
+});
+document.getElementById("btnSave").addEventListener("click",async function(){
+  const it=ITEMS[idx]; const errs=validate(it,form);
+  if(errs.length){ showErr(errs); return; }
+  if(!db){ showErr(["Labels can’t be saved in this view. Open the page in claude.ai while signed in."]); return; }
+  clearTimeout(autosaveT); dirty=false;
+  const body=bodyFor(it,form,true); labels[it.id]=body;
+  const ok=await persist(it.id, body);
+  if(!ok){ showErr(["Not saved. Check your connection and tap Save again."]); return; }
+  const nxt=firstOpenIndex(); go(nxt>idx?nxt:Math.min(idx+1,ITEMS.length-1));
+});
+document.getElementById("btnPrev").addEventListener("click",function(){ go(idx-1); });
+function openSheet(html){ const s=document.getElementById("sheet"); document.getElementById("sheetPan").innerHTML=html; s.hidden=false; }
+document.getElementById("sheet").addEventListener("click",function(ev){
+  if(ev.target.id==="sheet"||ev.target.closest("[data-close]")){ document.getElementById("sheet").hidden=true; return; }
+  const b=ev.target.closest("[data-go]"); if(b && !b.disabled){ document.getElementById("sheet").hidden=true; go(+b.dataset.go); }
+});
+document.getElementById("btnList").addEventListener("click",function(){
+  let h='<div class="row"><h2 style="flex:1">All positions</h2><button class="ghost" data-close type="button">Close</button></div><p class="hint">Label in order. You can go back to any saved label; the next open one is the furthest you can go.</p>';
+  [["Minimum set","core_floor"],["TVK block","tvk_tail"],["Extra","core_extra"]].forEach(function(g){
+    h+='<h2>'+g[0]+'</h2><div class="olist">';
+    ITEMS.forEach(function(it,i){ if(it.block!==g[1]) return; const b=labels[it.id]; const cls=b&&b.complete?"done":(b?"draft":"");
+      h+='<button type="button" class="ob '+cls+(i===idx?" here":"")+'" data-go="'+i+'" '+(canOpen(i)?"":"disabled")+' aria-label="Position '+it.order+'">'+it.order+'</button>'; });
+    h+='</div>';
+  });
+  openSheet(h);
+});
+document.getElementById("btnRules").addEventListener("click",function(){
+  openSheet('<div class="row"><h2 style="flex:1">Labelling rules</h2><button class="ghost" data-close type="button">Close</button></div><ul class="rules">'+
+  '<li>Label in order. Never skip: if a promise can’t be settled, give your best status (or Unverifiable) and tick Unsure.</li>'+
+  '<li>Judge the promise as a whole, as of the end of the term (TVK: 10 Oct 2026).</li>'+
+  '<li>Realisation date = first official operationalisation: the earliest GO, scheme launch or enacted law. Budget announcements and statements of intent don’t count.</li>'+
+  '<li>Realised only after the term? Label the status at term end and add the later date under “Realised after term”.</li>'+
+  '<li>“Urge / press” promises: the state’s formal step (Assembly resolution, CM’s letter, GO) is the realisation. Outcome promises that only others can deliver: Blocked if the state acted and it didn’t happen in the term.</li>'+
+  '<li>Corpus first, web allowed. Tick Checked web whenever you searched the web.</li>'+
+  '<li>About 4 minutes a promise. The timer turns amber at 6. At 8, pick the best label, tick Unsure, move on.</li>'+
+  '<li>No model verdicts are shown, and Claude doesn’t suggest labels.</li></ul>'+
+  STATUSES.map(function(s){return '<p class="def"><strong style="color:var('+s[2]+')">'+s[1]+'</strong>: '+esc(s[3])+'</p>';}).join(""));
+});
+setInterval(function(){
+  const s=Math.round(baseSeconds+(Date.now()-openedAt)/1000); const t=document.getElementById("timer");
+  t.textContent=Math.floor(s/60)+":"+pad(s%60); t.classList.toggle("amber",s>=360&&s<480); t.classList.toggle("red",s>=480);
+  t.title = s>=480? "Pick the best label, tick Unsure, move on." : "";
+},1000);
+document.addEventListener("visibilitychange",function(){ if(document.hidden && dirty){ clearTimeout(autosaveT); const it=ITEMS[idx]; const prev=labels[it.id]; persist(it.id, bodyFor(it,form,!!(prev&&prev.complete)&&validate(it,form).length===0)); dirty=false; } });
+
+// ---------- boot ----------
+form=blank(ITEMS[0]); render();
+const cl = window.claude && window.claude.use ? window.claude.use("db") : Promise.resolve(null);
+cl.then(function(d){
+  db=d;
+  if(!db){ setSync("Storage unavailable",true); document.getElementById("banner").innerHTML='<div class="banner bad">Labels can’t be saved in this view. Open this page in claude.ai while signed in. You can still read the promises.</div>'; return; }
+  db.collection("labels").onSnapshot(function(snap){
+    const next={}; snap.docs.forEach(function(d){ if(d.exists) next[d.id]=d.data(); });
+    labels=next;
+    if(!firstSnap){ firstSnap=true; setSync(snap.size? "Loaded "+doneCount()+" saved labels":"Ready, nothing saved yet"); go(firstOpenIndex()); return; }
+    if(!dirty){ const it=ITEMS[idx], b=labels[it.id]; if(b && JSON.stringify(fromStored(b))!==JSON.stringify(Object.assign({},form,{_showAfter:undefined}))){ form=fromStored(b); render(); } else renderHeader(); }
+  }, function(e){ setSync("Live sync stopped ("+e.code+"). Reload the page.",true); });
+}).catch(function(){ setSync("Storage unavailable",true); });
+})();
+</script>

@@ -2,7 +2,7 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** 2026-10-25 (deadline extended to Tue 2026-10-27 10:00; aim Mon midnight). **Stages 01–05 closed.** Stages 06–08 not started.
+**Today's position:** 2026-10-25 night (deadline Tue 2026-10-27 10:00). **Stages 01–07 done; stage 06 run on 40 gold labels; stage 08 site built locally** (`site/public/`, http://localhost:8765 while the server runs). Not yet done: publish check, GitHub repo and Pages (after the user's go), final end-to-end check.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
@@ -13,9 +13,9 @@ _Updated at the end of every session. Read this first._
 | 03 | Classification & decomposition | ✅ v1.3 (D-064–D-074) | ✅ | ✅ 240 | ✅ | ✅ |
 | 04 | Evidence retrieval | ✅ v1.2 (D-075–D-083) | ✅ | ✅ 283 | ✅ spot-check 3 ok / 3 partial / 3 wrong, limitations logged | ✅ |
 | 05 | Judgment | ✅ v1.2 + §10b (D-084–D-099) | ✅ | ✅ 373 | ✅ spot-check 5 ok / 4 wrong, 3 overrides | ✅ |
-| 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 07 | Survival modelling | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 08 | Website + deploy | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 06 | Evaluation | ✅ v1.0 | ✅ | ✅ 394 | ✅ 40 gold labels, report | ✅ |
+| 07 | Survival modelling | ✅ v0.3 (D-110–D-114) | ✅ | ✅ | ✅ report, backtest, projection (3 lines) | ✅ |
+| 08 | Website + deploy | ✅ v0.2 draft (D-115–D-117 proposed) | ✅ local | ✅ | ⏳ publish check + GitHub Pages pending | ✅ local |
 
 ## Waiting on the user
 - [x] Network access (Claude Code now runs on the Mac directly; PyPI, tn.gov.in and Wayback reachable, 2026-10-08).
@@ -35,9 +35,10 @@ _Updated at the end of every session. Read this first._
 - [x] Stage 04 sheet coverage: one group-e (date) place per term (D-083, 2026-10-21).
 - [x] TVK recall: documents fetched while the term is running count as available by their fetch date (D-082, 2026-10-21); TVK month 5 now has 3,895 eligible chunks. Interim budgets excluded (outgoing government).
 
-## Next step (2026-10-25)
-1. Stage 06 (evaluation): new conversation. The gold set comes from the Cowork conversation; judging code never reads gold labels. Then stage 07 (survival; spec not written) and stage 08 (website; spec not written). Cut order: global §12.3.
-2. Final verdicts for stages 06–08: `data/judgments/final_judge-20261025T102013Z.jsonl` (7,548 rows; judge_source bulk/strong/human). Facts and limitations: spec 05 §10b, D-097–D-099.
+## Next step (2026-10-25 night)
+1. **Publish check** (list of tracked files and sizes, secret scan), shown to the user; then `gh repo create abinav-ts/tn-election-promise-tracker --public`, push, deploy `site/public/` to the `gh-pages` branch, enable Pages (spec 08 §4.3).
+2. Log D-115–D-117, final STATUS, end-to-end check of the public URL.
+3. Optional if time: self-agreement re-label (not done), TVK gold labels (none), whitepaper wording pass.
 
 _Older next-step notes (superseded):_
 1. **Resume tier A after the Gemini reset (12:30 IST, 2026-10-22).** In your terminal (or a Claude Code session), from the project folder:
@@ -202,3 +203,4 @@ _Older next-step notes (superseded):_
 - **2026-10-22 (evening) — Tier B split (D-097).** Strong run `judge-20261022T070634Z`: 48/216 batches imported (P1 gold complete; month 5 done, month 6 started), failures only in batches 006 (retried, passed) and 033 (1 task, retry pending). Claude batches continue automatically across session windows (limit hit at ~20–25 batches per window; next reset 00:20 IST) until the user says stop. **Gemini (unattended, detached script `scratchpad/gemini_day.sh`, log `gemini_day.log`) starts at 12:32 IST 2026-10-23:** tier A tail (TVK retries) → aggregate → report → `ept judge spotcheck` (stage 05 sheet for the user, Sat 11:30) → `ept judge run-b-reverse` (tier B from month 48 backwards until the quota ends). The Mac must stay on (caffeinate keeps it from idle sleep). If the script didn't run, do it by hand: `python -m ept judge run --tier A && python -m ept judge aggregate && python -m ept judge report && python -m ept judge spotcheck && python -m ept judge run-b-reverse`.
 - **2026-10-25 — Stage 05 judging finished; stage 04 closed.** Strong batches 261, 262 and retry 257 imported; 255 retry failed again (`strong_failed`). P5 dropped (D-098). `aggregate`, `final` (7,548 rows, monotone, leakage 0) and `report` run. Stage 04 closing note added to spec 04 §10 (3 wrong = query-quality misses, no re-retrieval). Spot-check page issued as an artifact; verdicts pending.
 - **2026-10-25 (later) — Stage 05 closed.** Spot-check read back from the review page: 5 ok, 4 wrong; three overrides applied (D-099), one absorbed by carry-forward. Final run `judge-20261025T102013Z` exported and committed.
+- **2026-10-25 (night) — Stages 06, 07, 08 built.** Stage 07: KM, Cox (five covariates), reverse backtest (pace update cuts the month-5 error from 14.5 to 6.7 points), TVK projection with three lines (no update 65 %, scenario A 19 %, scenario B 58 % by month 60; D-112, D-114). Stage 06: 40 gold labels read via an export panel; final E1 agreement 78 %, Claude precision 100 % but recall 40 %, dates ±5–6 months (D-100–D-109). Stage 08: exporter, overview, promise explorer, whitepaper (local). Not published yet.

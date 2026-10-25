@@ -24,6 +24,7 @@ LIMITATIONS = [
     "not a forecast; the forward direction was not built, so the AIADMK-only model is not validated as a predictor.",
     "Year- and month-precision dates (about 16 % of events) and conservative document dates blur event times.",
     "`unverifiable` is censored, not an event; it is 124 of TVK's 695 promises.",
+    "Realisation dates are approximate: against 40 hand-labelled promises (stage 06) the median gap is about five to six months and fewer than a third are within 90 days, so the timing in these curves and in the backtest is blurred.",
     "Five covariates leave most variation unexplained; the bootstrap band shows fitting uncertainty only.",
     "TVK starts with a different coalition, Union-State relationship and fiscal position; the projection is "
     "'projection under historical patterns' and extrapolates from month 5.",

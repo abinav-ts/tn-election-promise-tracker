@@ -18,10 +18,10 @@ const SCENARIOS = [
    weak: "Chosen after scenario A's result was seen, and rests on one term. Its pace factor is then applied to hindsight-based hazards."}];
 function nav(page) {
   const links = [["index.html", "Overview", "index"], ["promises.html", "Promise explorer", "promises"], ["whitepaper.html", "Whitepaper", "whitepaper"]];
-  return `<header class="site"><a class="brand" href="index.html">Tamil Nadu Election Promise Tracker</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></header>`;
+  return `<header class="site"><a class="brand" href="index.html">UMC 301 Course Project 1 - Election Promise Tracking</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></header>`;
 }
 function footer(sum) {
-  return `<footer class="site"><p>Course project (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10. Code: GPL v3. Data and text: CC BY 4.0. Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure. ${sum ? "Verdicts file: " + esc(sum.final_export) + "." : ""}</p></footer>`;
+  return `<footer class="site"><p>UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10. Code: GPL v3. Data and text: CC BY 4.0. Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure. ${sum ? "Verdicts file: " + esc(sum.final_export) + "." : ""}</p></footer>`;
 }
 function lineChart(el, datasets, opts = {}) {
   const c = COLORS();

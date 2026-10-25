@@ -28,3 +28,7 @@ node_modules/
 # OS / editor
 .DS_Store
 .ipynb_checkpoints/
+
+# gold labels stay private (user, 2026-10-25); the committed reports are aggregate only
+data/gold/gold_labels.csv
+data/gold/gold_relabel.csv

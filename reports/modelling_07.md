@@ -1,6 +1,6 @@
 # Stage 07 — Survival modelling report
 
-Generated 2026-10-25T13:04:51+00:00 · final verdicts `final_judge-20261025T102013Z.jsonl`
+Generated 2026-10-25T17:22:13+00:00 · final verdicts `final_judge-20261025T102013Z.jsonl`
 
 ## Counts (E1 = fulfilled, partial or diluted with a date)
 
@@ -162,5 +162,6 @@ Snapshot day 153 (month 5): 23 of 695 promises realised (3.3%). Bootstrap: 200 o
 2. Only two completed terms, treated as independent draws. The reverse backtest is cross-term validation, not a forecast; the forward direction was not built, so the AIADMK-only model is not validated as a predictor.
 3. Year- and month-precision dates (about 16 % of events) and conservative document dates blur event times.
 4. `unverifiable` is censored, not an event; it is 124 of TVK's 695 promises.
-5. Five covariates leave most variation unexplained; the bootstrap band shows fitting uncertainty only.
-6. TVK starts with a different coalition, Union-State relationship and fiscal position; the projection is 'projection under historical patterns' and extrapolates from month 5.
+5. Realisation dates are approximate: against 40 hand-labelled promises (stage 06) the median gap is about five to six months and fewer than a third are within 90 days, so the timing in these curves and in the backtest is blurred.
+6. Five covariates leave most variation unexplained; the bootstrap band shows fitting uncertainty only.
+7. TVK starts with a different coalition, Union-State relationship and fiscal position; the projection is 'projection under historical patterns' and extrapolates from month 5.

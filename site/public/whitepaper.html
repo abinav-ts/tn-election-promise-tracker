@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Whitepaper · Tamil Nadu Election Promise Tracker</title>
+<title>Whitepaper · UMC 301 Course Project 1 - Election Promise Tracking</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <link rel="stylesheet" href="assets/site.css"></head>
 <body data-page="whitepaper"><div class="wrap"><div id="nav"></div>
@@ -69,6 +69,8 @@ Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").c
       rows.push(`<tr><td>${j === "strong" ? "Claude" : j === "bulk" ? "bulk model" : "final verdicts"}</td><td>${g.replace(/_/g, " ")}</td><td>${t.n}</td><td>${f(t.accuracy)}</td><td>${f(t.recall)}</td><td>${f(t.precision)}</td><td>${f(e.status.exact)}</td></tr>`);
     }
     $("#acc").innerHTML = `<table><thead><tr><th>Judge</th><th>Group</th><th>n</th><th>Realised-or-not agreement</th><th>Recall</th><th>Precision</th><th>Exact status</th></tr></thead><tbody>${rows.join("")}</tbody></table><p class="small muted">Recall: of promises the human says were realised, the share the judge also says were. Precision: of those the judge says were realised, the share the human agrees with.</p>`;
+    const fd = ev.judges.final && ev.judges.final.groups.pooled_AIADMK_DMK.date;
+    if (fd && fd.n) $("#acc").insertAdjacentHTML("beforeend", `<p class="small"><strong>Dates are the weak point.</strong> Where both the label and the final verdict say a promise was realised (n=${fd.n}), the median gap between the two dates is ${Math.round(fd.median_abs_days)} days (about ${(fd.median_abs_days / 30.4).toFixed(0)} months), and ${pct(fd["within_90_days"].p)} are within 90 days. The final verdicts combine judges and carry an earlier finding forward, which raises how many realised promises are found; Claude alone found fewer of them but was almost never wrong when it did. Of ${ev.n_labels} labelled promises, none are TVK promises, so TVK verdicts have no accuracy figure of their own.</p>`);
     if (ev.bulk_vs_strong) $("#acc").insertAdjacentHTML("beforeend", `<p class="small">Bulk and Claude agree on the realised-or-not question for ${pct(ev.bulk_vs_strong.same_e1.p)} of ${ev.bulk_vs_strong.n} promises both judged (Claude is a reference here, not the truth).</p>`);
   }
   // hazard ratios

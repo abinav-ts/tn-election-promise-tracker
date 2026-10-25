@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | **DRAFT v0.1 (2026-10-25).** Defaults below are used to build unless the user objects; the questions are in §9 |
+| Status | **v0.2 (2026-10-25): built locally with the §9 defaults; publishing waits for the publish check and the user's go** |
 | Global spec | `specs/00-global-spec.md` v0.14: §9.2 neutrality, §12.3 cut order (item 4: three pages), Q-09 |
 | Inputs | Final verdicts (stage 05), `data/processed/model_outputs.json` (stage 07), `reports/evaluation_06.json` (stage 06), frozen promises and classification, `indicator_verdicts` quotes, `documents` (titles, URLs) |
 | CLI | `python -m ept export-site` (data + whitepaper), then `site/public/` is static and served as is |
