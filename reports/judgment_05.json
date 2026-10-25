@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-25T08:25:55+00:00",
+ "generated_at": "2026-10-25T10:20:14+00:00",
  "bulk_run": "judge-20261021T203007Z",
  "retrieval_run": "retrieve-20261020T191347Z",
  "tiers": {
@@ -123,7 +123,8 @@
    },
    "realised_share": 0.6218,
    "judge_source": {
-    "bulk": 312
+    "bulk": 311,
+    "human": 1
    }
   },
   "AIADMK-2016@m36": {
@@ -408,8 +409,9 @@
    },
    "realised_share": 0.4618,
    "judge_source": {
-    "bulk": 574,
-    "strong": 93
+    "bulk": 573,
+    "strong": 93,
+    "human": 1
    }
   },
   "TVK-2026@m5": {
@@ -437,7 +439,8 @@
    },
    "realised_share": 0.2288,
    "judge_source": {
-    "strong": 695
+    "strong": 694,
+    "human": 1
    }
   }
  },
@@ -493,17 +496,17 @@
  },
  "non_monotone_promises_bulk": 277,
  "final": {
-  "run_id": "judge-20261025T082554Z",
+  "run_id": "judge-20261025T102013Z",
   "resumed": false,
   "written": 7548,
-  "non_monotone": 511,
+  "non_monotone": 510,
   "sources": {
-   "bulk": 4694,
-   "strong": 2854,
-   "human": 0
+   "bulk": 4692,
+   "strong": 2853,
+   "human": 3
   },
   "missing_promise_cutoffs": 0,
-  "export": "data/judgments/final_judge-20261025T082554Z.jsonl"
+  "export": "data/judgments/final_judge-20261025T102013Z.jsonl"
  },
  "probe": {
   "run_id": "judge-20261021T195852Z",

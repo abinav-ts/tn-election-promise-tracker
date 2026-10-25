@@ -1,1 +1,5 @@
 promise_id,cutoff,status,realisation_date,date_precision,cited_chunk_ids,source,reason
+AIADMK-2016-0003,2018-05-23,fulfilled,2018-03-31,day,96e8295d8d66632a-0005,spotcheck_05#1,"User: directional, the State bears the interest subsidy (C1); rejected only because the policy note is dated 5 days past its availability cap. Date set to the cap."
+DMK-2021-0040,full,fulfilled,2023-08-23,day,d91198bd9b85db69-0001;ba315ad417e11a16-0011,spotcheck_05#2,"User: indicator I2 is achieved per C3, C4 and the rejected answer (Tholkudi scheme sanction, animal husbandry loans); with I1 fulfilled the promise is fulfilled."
+TVK-2026-0106,2026-10-10,unverifiable,,,,spotcheck_05#4,"User: C3 is a general price-watch committee, not specific to the commitment; term not complete."
+AIADMK-2016-0002,2016-11-23,unverifiable,,,,spotcheck_05#7,"User: needs a cumulative sum of crop loans over five years from yearly reports; cannot be checked from five extracts."

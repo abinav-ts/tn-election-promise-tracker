@@ -2,7 +2,7 @@
 
 _Updated at the end of every session. Read this first._
 
-**Today's position:** 2026-10-25 (deadline extended to Tue 2026-10-27 10:00; aim Mon midnight). Stages 01–04 closed. **Stage 05 complete except the user's spot-check (9 items, review page issued) and the closing commit after any overrides.** Stages 06–08 not started.
+**Today's position:** 2026-10-25 (deadline extended to Tue 2026-10-27 10:00; aim Mon midnight). **Stages 01–05 closed.** Stages 06–08 not started.
 
 ## Stage checklist
 | # | Stage | Spec | Code | Tests | Run checked | Committed |
@@ -12,7 +12,7 @@ _Updated at the end of every session. Read this first._
 | 02 | Promise extraction | ✅ v1.2 (+D-044–D-063) | ✅ | ✅ 195 | ✅ | ✅ |
 | 03 | Classification & decomposition | ✅ v1.3 (D-064–D-074) | ✅ | ✅ 240 | ✅ | ✅ |
 | 04 | Evidence retrieval | ✅ v1.2 (D-075–D-083) | ✅ | ✅ 283 | ✅ spot-check 3 ok / 3 partial / 3 wrong, limitations logged | ✅ |
-| 05 | Judgment | ✅ v1.2 + §10b (D-084–D-098) | ✅ | ✅ 373 | ✅ tier A, strong P1–P4, final run; ⏳ user spot-check | ✅ except closing commit |
+| 05 | Judgment | ✅ v1.2 + §10b (D-084–D-099) | ✅ | ✅ 373 | ✅ spot-check 5 ok / 4 wrong, 3 overrides | ✅ |
 | 06 | Evaluation | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 07 | Survival modelling | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 08 | Website + deploy | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -36,9 +36,8 @@ _Updated at the end of every session. Read this first._
 - [x] TVK recall: documents fetched while the term is running count as available by their fetch date (D-082, 2026-10-21); TVK month 5 now has 3,895 eligible chunks. Interim budgets excluded (outgoing government).
 
 ## Next step (2026-10-25)
-1. **User:** fill the stage 05 spot-check page (9 items). Claude reads it back from the artifact database, converts it to `config/verdict_overrides.csv` rows only for fixes the user approves (source `spotcheck_05#n`), re-runs `python -m ept judge final && python -m ept judge report`, then commits `stage 05: judgment`.
-2. Stage 06 (evaluation; gold labels from the Cowork conversation, never read by judging code), 07 (survival, spec not written), 08 (website, spec not written). Cut order: global §12.3.
-3. Final verdicts to use: `data/judgments/final_judge-20261025T082554Z.jsonl` (committed with the closing commit). Facts: spec 05 §10b.
+1. Stage 06 (evaluation): new conversation. The gold set comes from the Cowork conversation; judging code never reads gold labels. Then stage 07 (survival; spec not written) and stage 08 (website; spec not written). Cut order: global §12.3.
+2. Final verdicts for stages 06–08: `data/judgments/final_judge-20261025T102013Z.jsonl` (7,548 rows; judge_source bulk/strong/human). Facts and limitations: spec 05 §10b, D-097–D-099.
 
 _Older next-step notes (superseded):_
 1. **Resume tier A after the Gemini reset (12:30 IST, 2026-10-22).** In your terminal (or a Claude Code session), from the project folder:
@@ -202,3 +201,4 @@ _Older next-step notes (superseded):_
   - **Resume:** (1) `zsh data/judgments/judge-20261022T070634Z/imp_all.sh` imports every finished scratch output (J1–J7) and prints progress; (2) check the tier A log / re-run `caffeinate -i python -m ept judge run --tier A` (exit 0 = done); (3) continue tier B from the first batch without an output: `ept judge stage --run judge-20261022T070634Z --batch batch_NNN --base <scratch>/sj`, one fresh subagent per batch with the printed brief, then the import script; retries via `ept judge export --run judge-20261022T070634Z --retry N`; (4) after tier A: `ept judge aggregate && ept judge report && ept judge spotcheck` (stage 05 sheet).
 - **2026-10-22 (evening) — Tier B split (D-097).** Strong run `judge-20261022T070634Z`: 48/216 batches imported (P1 gold complete; month 5 done, month 6 started), failures only in batches 006 (retried, passed) and 033 (1 task, retry pending). Claude batches continue automatically across session windows (limit hit at ~20–25 batches per window; next reset 00:20 IST) until the user says stop. **Gemini (unattended, detached script `scratchpad/gemini_day.sh`, log `gemini_day.log`) starts at 12:32 IST 2026-10-23:** tier A tail (TVK retries) → aggregate → report → `ept judge spotcheck` (stage 05 sheet for the user, Sat 11:30) → `ept judge run-b-reverse` (tier B from month 48 backwards until the quota ends). The Mac must stay on (caffeinate keeps it from idle sleep). If the script didn't run, do it by hand: `python -m ept judge run --tier A && python -m ept judge aggregate && python -m ept judge report && python -m ept judge spotcheck && python -m ept judge run-b-reverse`.
 - **2026-10-25 — Stage 05 judging finished; stage 04 closed.** Strong batches 261, 262 and retry 257 imported; 255 retry failed again (`strong_failed`). P5 dropped (D-098). `aggregate`, `final` (7,548 rows, monotone, leakage 0) and `report` run. Stage 04 closing note added to spec 04 §10 (3 wrong = query-quality misses, no re-retrieval). Spot-check page issued as an artifact; verdicts pending.
+- **2026-10-25 (later) — Stage 05 closed.** Spot-check read back from the review page: 5 ok, 4 wrong; three overrides applied (D-099), one absorbed by carry-forward. Final run `judge-20261025T102013Z` exported and committed.

@@ -1,6 +1,6 @@
 # Stage 05 — Judgment report
 
-Generated 2026-10-25T08:25:55+00:00 · bulk run `judge-20261021T203007Z` · retrieval run `retrieve-20261020T191347Z` · complete: False
+Generated 2026-10-25T10:20:14+00:00 · bulk run `judge-20261021T203007Z` · retrieval run `retrieve-20261020T191347Z` · complete: False
 
 Aggregates only: no per-promise verdicts are listed (gold labelling is blind, spec 05 §5).
 
@@ -23,7 +23,7 @@ Same prompt version and model for every term: **True** (AIADMK-2016: ['1.3|gemin
 | AIADMK-2016@m5 | 312/312 | 94 | 14 | 0 | 13 | 133 | 0 | 58 | 0.3462 | {'bulk': 312} |
 | AIADMK-2016@m6 | 312/312 | 103 | 13 | 0 | 15 | 131 | 0 | 50 | 0.3718 | {'bulk': 312} |
 | AIADMK-2016@m12 | 312/312 | 143 | 16 | 1 | 29 | 95 | 1 | 27 | 0.5128 | {'bulk': 312} |
-| AIADMK-2016@m24 | 312/312 | 180 | 13 | 1 | 22 | 75 | 0 | 21 | 0.6218 | {'bulk': 312} |
+| AIADMK-2016@m24 | 312/312 | 180 | 13 | 1 | 22 | 75 | 0 | 21 | 0.6218 | {'bulk': 311, 'human': 1} |
 | AIADMK-2016@m36 | 312/312 | 190 | 22 | 1 | 23 | 51 | 0 | 25 | 0.6827 | {'bulk': 312} |
 | AIADMK-2016@m48 | 312/312 | 211 | 13 | 0 | 22 | 50 | 0 | 16 | 0.7179 | {'bulk': 312} |
 | AIADMK-2016@full | 312/312 | 214 | 13 | 0 | 22 | 44 | 0 | 19 | 0.7276 | {'strong': 79, 'bulk': 233} |
@@ -33,8 +33,8 @@ Same prompt version and model for every term: **True** (AIADMK-2016: ['1.3|gemin
 | DMK-2021@m24 | 667/667 | 225 | 18 | 1 | 50 | 265 | 1 | 107 | 0.3658 | {'bulk': 636, 'strong': 31} |
 | DMK-2021@m36 | 667/667 | 253 | 28 | 0 | 52 | 261 | 0 | 73 | 0.4213 | {'bulk': 655, 'strong': 12} |
 | DMK-2021@m48 | 667/667 | 277 | 29 | 1 | 36 | 234 | 1 | 89 | 0.4603 | {'bulk': 660, 'strong': 7} |
-| DMK-2021@full | 667/667 | 282 | 26 | 0 | 37 | 252 | 1 | 69 | 0.4618 | {'bulk': 574, 'strong': 93} |
-| TVK-2026@m5 | 695/695 | 135 | 24 | 0 | 68 | 369 | 0 | 99 | 0.2288 | {'strong': 695} |
+| DMK-2021@full | 667/667 | 282 | 26 | 0 | 37 | 252 | 1 | 69 | 0.4618 | {'bulk': 573, 'strong': 93, 'human': 1} |
+| TVK-2026@m5 | 695/695 | 135 | 24 | 0 | 68 | 369 | 0 | 99 | 0.2288 | {'strong': 694, 'human': 1} |
 
 ## Indicator status per term × cutoff (bulk)
 
@@ -65,7 +65,7 @@ Same prompt version and model for every term: **True** (AIADMK-2016: ['1.3|gemin
 - Directional: {'AIADMK-2016': {'promises': 312, 'directional': 43, 'd3_override': 1, 'unresolved': 0}, 'DMK-2021': {'promises': 667, 'directional': 79, 'd3_override': 13, 'unresolved': 0}, 'TVK-2026': {'promises': 695, 'directional': 50, 'd3_override': 10, 'unresolved': 0}}
 - Date chunks by doc_type (per key): {'go': 1590, 'policy_note': 850, 'budget_speech': 155, 'governor_address': 111, 'other': 31, 'scheme_page': 12}
 - Non-monotone promises (raw bulk): 277
-- Final run: {'run_id': 'judge-20261025T082554Z', 'resumed': False, 'written': 7548, 'non_monotone': 511, 'sources': {'bulk': 4694, 'strong': 2854, 'human': 0}, 'missing_promise_cutoffs': 0, 'export': 'data/judgments/final_judge-20261025T082554Z.jsonl'}
+- Final run: {'run_id': 'judge-20261025T102013Z', 'resumed': False, 'written': 7548, 'non_monotone': 510, 'sources': {'bulk': 4692, 'strong': 2853, 'human': 3}, 'missing_promise_cutoffs': 0, 'export': 'data/judgments/final_judge-20261025T102013Z.jsonl'}
 - Memory probe: {'run_id': 'judge-20261021T195852Z', 'resumed': False, 'tasks': 40, 'planned': 40, 'evidence_claims': 0, 'evidence_share': 0.0, 'realised_claims': 0, 'stop_for_user': False, 'stopped': None, 'llm_calls': 4}
 
 ## Usage
