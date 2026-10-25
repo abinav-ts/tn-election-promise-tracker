@@ -240,8 +240,16 @@ D-075 (cutoffs), D-076 (term window, undated excluded), D-077 (`available_by` wi
 
 **Open:** none.
 
-## 10. Spec vs build (in progress; completed when the stage closes)
+## 10. Spec vs build (stage closed 2026-10-25)
 
 Build clarifications D-081 (Claude Code, 2026-10-21): fingerprint also covers the terms config and the row-shaping code; `ept index --limit N` is a timing run that writes nothing; per-pair diagnostics in `data/interim/retrieve_diag_04/{run_id}.jsonl` (path `retrieve_diag`) and `retrieve.tokens_per_word` 1.33 for sizing; the corpus snapshot is also capped at the latest `fetched_at`; a new run waits for a fresh `run_id` second; `ept retrieve report` exits 3 on a non-zero leakage line; stage 03's freeze regex fixed (DOTALL backtracking). Model revision pinned: `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`. Corpus counts at build: 97 documents tightened (policy notes 87, performance budgets 10) and 87 newly dated (policy notes 70, performance budgets 15, budget speeches 2), vs 103 / 89 in §4.2; D-077 counter-example scan: 0.
 
 v1.2 (2026-10-21, user decisions after the first sheet): fetch-date bound D-082 (TVK month 5: 3,895 eligible chunks; AIADMK and DMK retrievals byte-for-byte the same ranks), one reserved group-e place per term D-083. Run `retrieve-20261020T191347Z` replaces `retrieve-20261020T185504Z` (kept in the DB, superseded). After v1.2: 97 tightened, 78 newly dated (9 undated 2026-27 notes now count as fetch-capped), 61 fetch-capped documents.
+
+### Closing note (2026-10-25): spot-check verdicts and root causes
+Full-run spot-check (9 items, converted from the user's free-form answers, D-080): **3 ok, 3 "Partial" recorded as ok (the user's words kept in the sheet notes), 3 wrong**. Pass rule (global §12.4): not more than half wrong, so the stage passes.
+- **The 3 wrong items are all group a** (BM25 and dense top 5 share no chunk, weak top-1 cosine). Root cause in each: the indicator's search queries match the individual words, not the phrase or the sense ("Night Shelter", "bars" meaning liquor bars versus other uses, a festival named only by its place). Dense retrieval is pulled by recurring words in the same way. These are query-quality misses of stage 03's English keyword queries, not eligibility or date errors.
+- **The 3 "Partial" items** (groups b, c): the top 1–2 chunks are on topic and the rest are not; BM25 was right where dense drifted. This is the expected cost of fixed k = 5 with ≤ 2 chunks per document.
+- **Group e (3 items, date-sensitive): all ok** on dates. One note says the flagged document does not help as evidence for its promise; it is a relevance remark, not a date error.
+- **Decision:** no re-retrieval and no query expansion (D-078, D-079, global rule 6; a re-run would also invalidate stage 05, which is already judged). The misses are recorded as known limitations (§4.7), to be stated in the whitepaper: (1) multi-word names are matched word by word; (2) generic or ambiguous words ("bar") need context the query lacks; (3) a promise whose evidence sits at ranks 3–5 only is judged on weak extracts, which shows up in stage 05 as `not_started` or `unverifiable` rather than as a wrong `fulfilled`. Leakage and eligibility checks: 0 violations.
+- **Acceptance:** report leakage line 0 over 84,330 rows in the DB (`reports/retrieval_04.md`); criterion 8 met (every `wrong` has a root cause, logged as a limitation). Stage 04 is closed; the frozen snapshots were untouched (git clean).
