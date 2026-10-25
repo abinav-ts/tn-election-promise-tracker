@@ -75,8 +75,8 @@ No second annotator is available, and a gap of several days doesn't fit the dead
 |---|---|---|
 | `data/gold/gold_sample.csv` | yes | `order, promise_id, term_id, block, specificity, sector, headline, parent_group` |
 | `data/gold/gold_sample_meta.json` | yes | seed, parameters, hashes of the script and snapshots |
-| `data/gold/gold_labels.csv` | yes | §7 columns, one row per labelled promise, in order |
-| `data/gold/gold_relabel.csv` | yes | §G7 |
+| `data/gold/gold_labels.csv` | **no (private, D-118)** | §7 columns, one row per labelled promise, in order |
+| `data/gold/gold_relabel.csv` | **no (private, D-118)** | §G7 |
 | `data/gold/draw_gold.py`, `gold_page_data.py`, `label_page.template.html` | yes | standalone prototypes (stdlib + PyYAML); Claude Code ports them to `ept evaluate gold draw` and `ept evaluate gold page-data` |
 | `data/interim/gold_page/page_data.json` | no | page bundle (78 promises, 624 candidate chunks, 9,186 titles; ≈ 4.6 MB) |
 
