@@ -42,8 +42,8 @@ def _queue(conn):
 def test_queue_priority_order_and_cutoffs(bulk_done):
     q, ctx = _queue(bulk_done)
     levels = [u.level for u in q]
-    order = ["gold", "headline", "tvk_current", "tier_b", "flagged_full", "flagged_aiadmk_landmarks",
-             "flagged_dmk_landmarks"]
+    order = ["gold", "headline", "tvk_current", "tier_b", "claude_full", "claude_aiadmk_m5", "claude_aiadmk_m6",
+             "claude_aiadmk_m12", "claude_dmk_m12", "flagged_full", "flagged_aiadmk_landmarks", "flagged_dmk_landmarks"]
     assert levels == sorted(levels, key=order.index)
     gold = [u for u in q if u.level == "gold"]
     assert {u.uid for u in gold} == {"AIADMK-2016-0002@full", "TVK-2026-0001@2026-10-10"}
