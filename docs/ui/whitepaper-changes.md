@@ -87,3 +87,13 @@ No whitepaper text changed in this round. The overview changed as follows (wordi
 - **Explorer text.** New: "Why this website exists" ("Election manifestos are promises made in public. This site lets anyone check, promise by promise, whether an official step followed, when, and on what evidence, with the judge named beside every verdict. It also lets readers push back: question a verdict, add evidence, or say what is missing. Nothing here ranks parties or rates governments.") This is my summary of spec 08 §1; please confirm it states the purpose you want. The old correction note is now a full section, with the same sentence kept verbatim. The "No evidence found …" sentence is unchanged but now smaller and red.
 - **Footer disclaimer** now says "Verdicts are made by LLMs from official documents …" (was "language models").
 - **No data or number changed.** Result pages: 10 promises per page with numbered pagination.
+
+---
+
+# Update 2026-10-27 (heroes, outline, cuts): what to check
+
+- **No new wording.** The whitepaper and work page now open with a hero band. Their existing title and existing intro paragraph moved into it at a larger font size; the words are identical. The whitepaper intro was previously small grey text and is now the hero lede, so the sentence "This page states what was done, how it was checked and what it cannot tell you. Numbers on this page are read from the published data files." is much more prominent than before. Its meaning is unchanged.
+- **Removed from the explorer hero:** the "1,674 promises" and "3 terms" figures (the same count still appears in the results line, "Showing 1–10 of 1,674 promises").
+- **Removed from the work page:** the "9 specifications" card (the other 12 numbers are unchanged), so the grid is a complete rectangle at every width.
+- **Overview:** the multicolour frames and the "Headline result" badges are gone; the two headline sections keep the larger heading size.
+- **Whitepaper outline:** a decorative Tamil Nadu outline (the same shape as the overview) stays fixed at the right on screens 1080 px and wider. Tables are opaque cards, so the outline disappears behind them only where they are; it is hidden on narrower screens.

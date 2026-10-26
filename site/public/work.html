@@ -3,10 +3,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/site.css"></head>
-<body data-page="work"><div id="nav"></div><div class="wrap">
-<main id="main">
-<section><h1>Work done</h1>
-<p class="lede">The tracker on the other pages is the visible end of a larger piece of work: a pipeline that collects official documents, extracts every manifesto promise, finds evidence for it as of any past date, has language models judge it under strict checks, validates the judges against hand labels, and fits survival models. This page shows what was built, how each stage was checked, and where to find it. Every count below is computed from the repository and database when the site is built.</p></section>
+<body data-page="work"><div id="nav"></div>
+<main id="main" class="bands">
+<section class="hero hero-ex" aria-labelledby="h-wk"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in"><div class="hero-text">
+<h1 id="h-wk">Work done</h1>
+<p class="lede">The tracker on the other pages is the visible end of a larger piece of work: a pipeline that collects official documents, extracts every manifesto promise, finds evidence for it as of any past date, has language models judge it under strict checks, validates the judges against hand labels, and fits survival models. This page shows what was built, how each stage was checked, and where to find it. Every count below is computed from the repository and database when the site is built.</p>
+</div></div></section>
+<div class="wrap stackwrap">
 <section aria-labelledby="h-num"><p class="eyebrow">In numbers</p><h2 id="h-num" class="vh">In numbers</h2><div id="kv" class="kv"></div></section>
 <section aria-labelledby="h-stages"><p class="eyebrow">The pipeline</p><h2 id="h-stages">Stage by stage, and how each was checked</h2>
 <p class="sub">Open a stage for what it did and how it was checked.</p>
@@ -31,7 +34,8 @@
 <p class="sub" style="max-width:70ch">Each stage began with a written specification: purpose, inputs, outputs, behaviour, a leakage warning, acceptance criteria and tests. Open questions were put to the project owner before code depended on them, and every settled choice is in a numbered decision log. If the code had to differ from the spec, the spec was changed in the same step. The rules that protect the results from leakage (no memory-based judging, hard date cutoffs, manifesto-only covariates, the test set kept out of everything, training-term-only fits) were repeated in every spec and enforced in code and tests.</p>
 <p class="sub" style="max-width:70ch"><strong>Who did what.</strong> The project owner set the questions, approved every decision, did the hand reviews and labelled the test set. Claude (an AI assistant) drafted specifications, wrote and tested the code, and acted as one of the two judges inside the isolation rules above. Gemini acted as the other judge and as a bulk text processor. The measured accuracy of both judges against the owner's labels is on the <a href="whitepaper.html#accuracy">whitepaper</a>.</p></section>
 <section aria-labelledby="h-find"><p class="eyebrow">Sources</p><h2 id="h-find">Where to find things</h2><ul id="links"></ul></section>
-</main></div><div id="foot"></div>
+</div></main>
+<div id="foot"></div>
 <script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("work");
@@ -39,7 +43,7 @@ const REPO = "https://github.com/abinav-ts/tn-election-promise-tracker";
 Promise.all([load("work.json"), load("summary.json"), load("evaluation.json").catch(() => null)]).then(([w, sum, ev]) => {
   $("#foot").innerHTML = footer(sum);
   const f = int;
-  const items = [[f(w.documents - (w.documents_by_type.manifesto || 0)), "official documents collected"], [f(w.chunks), "searchable passages"], [f(w.promises_total), "promises extracted"], [f(w.indicators), "checkable indicators"], [f(w.retrieval_tasks), "evidence searches (indicator × date)"], [f(w.indicator_verdicts), "judge verdict rows"], [f(w.strong_batches_run), "Claude judging batches run (" + f(w.strong_batches_exported) + " prepared)"], [(w.subagent_tokens / 1e6).toFixed(0) + " M", "tokens used by Claude subagents"], [f(w.decisions), "logged decisions"], [w.specs, "specifications"], [f(w.tests), "automated tests"], [f(w.python_lines), "lines of Python"], [f(w.commits), "version-control commits"]];
+  const items = [[f(w.documents - (w.documents_by_type.manifesto || 0)), "official documents collected"], [f(w.chunks), "searchable passages"], [f(w.promises_total), "promises extracted"], [f(w.indicators), "checkable indicators"], [f(w.retrieval_tasks), "evidence searches (indicator × date)"], [f(w.indicator_verdicts), "judge verdict rows"], [f(w.strong_batches_run), "Claude judging batches run (" + f(w.strong_batches_exported) + " prepared)"], [(w.subagent_tokens / 1e6).toFixed(0) + " M", "tokens used by Claude subagents"], [f(w.decisions), "logged decisions"], [f(w.tests), "automated tests"], [f(w.python_lines), "lines of Python"], [f(w.commits), "version-control commits"]];
   $("#kv").innerHTML = items.map(([n, l]) => `<div class="card"><div class="stat">${n}</div><div class="muted small">${l}</div></div>`).join("");
   bind(Object.assign({}, w, {ev}));
   const p = (x) => `<li><a href="${REPO}/blob/main/${x[0]}" rel="noopener">${x[1]}</a> <span class="muted small">${x[2]}</span></li>`;

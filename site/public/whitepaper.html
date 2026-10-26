@@ -3,10 +3,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/site.css"></head>
-<body data-page="whitepaper"><div id="nav"></div><div class="wrap">
-<main id="main"><article class="prose">
-<h1>Whitepaper: method, accuracy and limits</h1>
-<p class="muted small">Course project, Data Science &amp; AI, 2026. <a href="work.html">See everything that was built and checked, stage by stage</a>. This page states what was done, how it was checked and what it cannot tell you. Numbers on this page are read from the published data files.</p>
+<body data-page="whitepaper"><div id="nav"></div>
+<main id="main" class="bands">
+<section class="hero hero-ex has-map" aria-labelledby="h-wp"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in"><div class="hero-text">
+<h1 id="h-wp">Whitepaper: method, accuracy and limits</h1>
+<p class="lede">Course project, Data Science &amp; AI, 2026. <a href="work.html">See everything that was built and checked, stage by stage</a>. This page states what was done, how it was checked and what it cannot tell you. Numbers on this page are read from the published data files.</p>
+</div></div></section>
+<div class="mapfix" id="mapfix" aria-hidden="true"></div>
+<div class="wrap"><article class="prose">
 
 <div class="abstract" id="abstract"><h2>In short</h2><ul id="abstractList"></ul></div>
 
@@ -87,10 +91,11 @@
 
 <h2 id="s13">13. Reproducibility and licences</h2>
 <p>Every stage is a command in <code>python -m ept</code>, every prompt is a versioned file and every strong-judge batch is committed. Code: GPL v3. Data exports and this text: CC BY 4.0. Quoted excerpts of government documents are linked to their official sources and remain their publishers' property.</p>
-</article></main></div><div id="foot"></div>
+</article></div></main>
+<div id="foot"></div>
 <script src="assets/site.js"></script>
 <script>
-$("#nav").innerHTML = nav("whitepaper");
+$("#nav").innerHTML = nav("whitepaper"); tnMap($("#mapfix"));
 Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null), load("work.json").catch(() => null), load("pace.json").catch(() => null), load("model_claude.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB, work, pace, mclaude]) => {
   $("#foot").innerHTML = footer(sum);
   const n = {}; sum.cells.filter(c => c.month === 0 || (c.term === "TVK-2026")).forEach(c => n[c.term] = c.n);

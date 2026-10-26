@@ -10,7 +10,6 @@
 <h1 id="h-ex">Promise <span class="acc">explorer</span></h1>
 <p class="lede">Every promise with its status, date and the evidence behind it. Statuses at earlier months show only what was documented by then.</p>
 <p class="redsmall">"No evidence found" means the corpus held nothing showing an official step, not that nothing happened.</p>
-<ul class="facts" aria-label="The explorer in numbers"><li><b id="exN">–</b>promises</li><li><b id="exT">–</b>terms</li></ul>
 </div></div></section>
 
 <section class="band b-white t-light" id="find" aria-labelledby="h-find"><div class="band-in">
@@ -80,7 +79,6 @@ function correctionLink(p, s) {
 }
 Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
   $("#foot").innerHTML = footer();
-  $("#exN").textContent = int(P.length); $("#exT").textContent = Object.keys(TERMS).length;
   const uniq = (k) => [...new Set(P.map(p => p[k]))].sort();
   const fill = (id, vals, fmt) => vals.forEach(v => $(id).insertAdjacentHTML("beforeend", `<option value="${esc(v)}">${esc(fmt ? fmt(v) : label(v))}</option>`));
   fill("#fterm", Object.keys(TERMS), t => TERMS[t]); fill("#fsector", uniq("sector")); fill("#ftype", uniq("type")); fill("#fstatus", sum.statuses);
