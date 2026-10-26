@@ -7,7 +7,7 @@ PAGE=$1; W=$2; OUT=$3; THEME=${4:-light}; SL=7000
 D=${TMPDIR:-/tmp}/ept_shot_$$; mkdir -p $D
 for i in 0 1 2 3; do
   echo "<body style='margin:0;background:#777;overflow:hidden'><iframe src='http://localhost:${PORT:-8765}/$PAGE?theme=$THEME&palette=${PAL:-purple}' width=$W height=30000 style='border:0;display:block;margin-top:-$((i*SL))px'></iframe>" > $D/w.html
-  "$CH" --headless=new --hide-scrollbars --virtual-time-budget=8000 --window-size=$((W>520?W:520)),$SL --screenshot="$D/s$i.png" "file://$D/w.html" >/dev/null 2>&1
+  "$CH" --headless=new --hide-scrollbars --force-prefers-reduced-motion --virtual-time-budget=8000 --window-size=$((W>520?W:520)),$SL --screenshot="$D/s$i.png" "file://$D/w.html" >/dev/null 2>&1
 done
 python3 - "$D" "$OUT" "$W" <<'P'
 import sys, glob

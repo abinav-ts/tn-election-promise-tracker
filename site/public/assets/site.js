@@ -3,18 +3,11 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const pct = (x, d = 0) => (x == null || isNaN(x)) ? "–" : (100 * x).toFixed(d) + "%";
 const int = (n) => n == null ? "–" : Number(n).toLocaleString("en-IN");
 const TERMS = {"AIADMK-2016": "AIADMK 2016–21", "DMK-2021": "DMK 2021–26", "TVK-2026": "TVK 2026–"};
-const COLORS = (el = document.documentElement) => { const s = getComputedStyle(el), g = (k) => s.getPropertyValue(k).trim(); return {"AIADMK-2016": g("--c-a"), "DMK-2021": g("--c-d"), "TVK-2026": g("--c-t"), muted: g("--muted"), accent: g("--accent"), fg: g("--fg"), line: g("--line"), surface: g("--surface"), bg: g("--bg")}; };
+const COLORS = (el = document.documentElement) => { const s = getComputedStyle(el), g = (k) => s.getPropertyValue(k).trim(); return {"AIADMK-2016": g("--c-a"), "DMK-2021": g("--c-d"), "TVK-2026": g("--c-t"), muted: g("--muted"), accent: g("--accent"), fg: g("--fg"), line: g("--line"), surface: g("--surface"), bg: g("--bg"), sg: g("--s-g"), sc: g("--s-c")}; };
 const load = (f) => fetch("data/" + f).then(r => { if (!r.ok) throw new Error(f); return r.json(); });
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const label = (s) => s.replace(/_/g, " ");
 const monthLabel = (m) => m === 0 ? "end of term" : "month " + m;
-
-// ?palette=blue|purple picks the colour palette and remembers it in this browser, so the tabs keep it.
-try { const q = new URLSearchParams(location.search).get("palette"); if (q === "blue" || q === "purple") localStorage.setItem("palette", q); const pal = localStorage.getItem("palette"); if (pal === "blue") document.documentElement.dataset.palette = "blue"; } catch (e) {}
-// ?theme=light|dark forces a theme (used for screenshots); otherwise the OS setting applies.
-try { const t = new URLSearchParams(location.search).get("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
-// Charts read their colours from CSS tokens, so redraw when the OS theme flips.
-const onTheme = (fn) => { try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", fn); } catch (e) {} };
 
 // Fill <span data-b="path" data-f="int|pct|pct1"> from a context object. If a value is missing the
 // hand-written fallback text stays and the path is listed in the console (so it can be added to the exporter).
@@ -46,8 +39,8 @@ function nav(page) {
   setTimeout(() => { const c = document.querySelector("header.site nav a[aria-current]"); if (c && c.scrollIntoView) c.scrollIntoView({inline: "center", block: "nearest"}); }, 0);
   return `<a class="skip" href="#main">Skip to content</a><header class="site"><div class="hdr-in"><a class="brand" href="index.html">Tamil Nadu Election Promise Tracker</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></div></header>`;
 }
-function footer(sum) {
-  return `<footer class="site"><p>UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10. Code: GPL v3. Data and text: CC BY 4.0. Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure. ${sum ? "Verdicts file: " + esc(sum.final_export) + "." : ""}</p></footer>`;
+function footer() {
+  return `<footer class="site"><div class="ft-in"><p class="disc">Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure.</p><p class="lic">UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10.<br>Code: GPL v3. Data and text: CC BY 4.0.</p></div></footer>`;
 }
 function lineChart(el, datasets, opts = {}) {
   const c = COLORS(el);

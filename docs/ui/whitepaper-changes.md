@@ -64,3 +64,17 @@ Check each against spec 07 §12 and D-121. All numbers are read from `pace.json`
 - The 73% for Gemini-only agreement (29/40 = 72.5%) is rounded half up by the page; D-119 and the reports say 72%.
 - The overview toggle is ordered Gemini-only, Claude-only (the complete setting first, and the default); the brief wrote "Claude-only / Gemini-only".
 - Terms are compared with 100% stacked horizontal status bars (no pies), in a blue ramp for realised statuses and greys for the rest, so nothing resembles party colours.
+
+---
+
+# Update 2026-10-26 (late): one look, new section order. Changes to check
+
+No whitepaper text changed in this round. The overview changed as follows (wording that could carry meaning):
+- **Order and names.** Completed terms (section 1) → promise characteristics (2) → TVK pace and projection (3) → **Conclusions (4, was "robust findings")** → accuracy (5) → work link. The two columns inside Conclusions keep their titles, "Holds under both judges" and "Depends on the judge", and their contents are unchanged.
+- **Section 1 intro (new sentence, replaces the old Kaplan–Meier paragraph, which moved under the curve chart unchanged):** "Each bar is 100% of a term's promises, split by what the evidence shows. Cool colours are realised (fulfilled, partial or diluted, with a date); warm colours are not. Switch the judge to see how much the answer depends on it." Check "warm colours are not": the warm statuses are in progress, not started, blocked external; **unverifiable (grey) is neither**, and the legend says "Not realised, or no evidence".
+- **Legend labels** "Realised" / "Not realised, or no evidence" are new.
+- **"Headline result" pill** on sections 1 and 3 is new labelling (it says these two are the headline results); the user asked for those two to stand out.
+- **Projection panels:** the sentence "by month 60: X% … band …" became two large numbers with the same values and captions ("at historical pace by month 60", "if current pace persists by month 60 (extrapolation)"). Content unchanged; the extrapolation caveat is kept under each panel.
+- **Footer (all pages):** the disclaimer ("Verdicts are made by language models from official documents and checked on small human samples; read the whitepaper before relying on any figure.") now comes first, then the licence and course line. The "Verdicts file: final_….jsonl" text is removed (user's request). Nothing else in the footer changed.
+- **Colour meaning (not wording):** status colours are now violet, blue and cyan (realised) against gold, orange and pink (not realised) with grey stripes for unverifiable; term colours are blue (AIADMK), orchid (DMK), cyan (TVK); setting colours are orange (Gemini-only) and violet (Claude-only). The user relaxed the party-colour rule as long as no party colour is prominent; orange, gold and pink do appear, in small areas.
+- **Width of intro text:** short intro paragraphs on the overview now use the full width; the whitepaper's long-form text keeps a 68-character line length.
