@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <link rel="stylesheet" href="assets/site.css"></head>
 <body data-page="index"><div id="nav"></div>
-
+<main id="main" class="bands">
 <section class="hero" aria-labelledby="h-top"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in">
 <div class="hero-text">
 <h1 id="h-top">Promises made. <span class="acc">Promises kept?</span></h1>
@@ -16,166 +16,255 @@
 <div class="hero-map" aria-hidden="true"><svg viewBox="0 0 400 541" focusable="false"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--map)"/><stop offset="1" stop-color="var(--map2)"/></linearGradient></defs><path d="M373.9 1.1 L381.3 5.8 L389.9 6.7 L393.3 14.7 L396.8 16.7 L397.0 10.8 L398.7 15.9 L398.2 9.4 L400.0 26.2 L398.7 29.9 L397.3 30.3 L397.0 28.8 L396.3 31.9 L398.9 30.0 L395.5 39.4 L396.0 44.3 L392.4 51.9 L393.4 52.1 L390.6 72.5 L389.1 68.4 L389.0 74.5 L390.6 72.8 L391.2 75.1 L384.5 95.0 L383.1 94.3 L384.1 91.8 L382.5 92.4 L382.2 94.3 L384.4 95.3 L381.7 106.0 L371.4 119.9 L372.2 115.8 L368.2 118.5 L367.9 120.3 L372.6 117.5 L367.4 126.8 L367.5 125.2 L361.1 130.4 L362.3 131.2 L367.2 127.1 L355.3 145.8 L350.7 158.1 L348.2 157.9 L347.1 155.7 L345.9 158.3 L344.4 157.5 L341.0 161.4 L340.6 157.4 L338.9 155.4 L341.5 155.5 L342.2 153.6 L340.7 152.8 L337.9 154.4 L335.3 150.3 L332.3 152.5 L331.8 154.6 L337.3 155.0 L337.5 156.9 L335.3 158.5 L337.2 160.5 L336.9 159.0 L338.0 159.3 L339.8 162.9 L338.9 164.6 L336.6 164.2 L337.6 161.9 L335.7 161.6 L335.4 164.2 L333.4 165.5 L337.0 164.7 L337.7 168.2 L340.3 167.4 L340.1 168.8 L342.2 166.0 L342.4 169.6 L345.3 168.0 L347.2 171.3 L342.9 195.4 L348.2 208.6 L349.7 215.3 L348.1 213.2 L348.1 214.5 L350.8 215.9 L351.6 227.0 L347.5 227.8 L351.0 228.5 L351.7 227.2 L352.4 253.4 L347.2 252.6 L345.5 254.4 L340.5 252.5 L341.8 256.8 L337.7 256.0 L337.8 257.6 L339.4 257.6 L337.8 259.2 L341.6 261.2 L341.6 262.9 L342.0 261.6 L342.4 263.0 L344.5 262.1 L343.9 263.8 L348.0 264.3 L346.1 264.9 L347.8 265.8 L346.2 266.5 L348.4 269.6 L352.1 269.6 L355.1 320.3 L350.6 322.9 L341.5 323.0 L342.8 322.9 L342.3 321.5 L345.6 322.4 L342.9 319.6 L345.0 320.2 L338.4 318.0 L331.2 318.7 L330.6 314.2 L328.7 316.4 L329.8 317.1 L329.0 318.8 L323.1 319.5 L333.7 321.6 L334.8 320.3 L340.3 323.1 L320.5 320.0 L323.8 317.3 L326.6 317.3 L322.3 315.8 L322.2 318.1 L320.5 318.7 L318.6 318.0 L320.7 318.1 L319.2 316.8 L317.5 318.6 L316.6 317.0 L313.7 316.3 L316.6 317.9 L313.8 318.5 L319.2 319.6 L306.9 318.8 L305.3 321.0 L304.2 320.3 L304.9 321.3 L303.2 320.9 L298.0 324.4 L295.4 327.2 L296.7 329.0 L292.9 332.1 L291.6 335.9 L291.6 341.1 L295.4 346.4 L284.5 356.9 L281.0 362.3 L281.2 364.6 L267.6 380.8 L262.5 390.4 L261.1 400.3 L259.5 400.8 L263.5 409.0 L272.7 417.7 L279.4 420.5 L287.9 421.3 L278.5 423.5 L265.0 422.2 L260.3 424.5 L253.4 424.9 L253.2 422.6 L253.1 425.1 L243.0 428.5 L242.1 430.4 L236.2 430.1 L234.7 432.0 L236.1 433.6 L228.4 436.2 L219.3 436.5 L219.8 434.3 L219.1 436.6 L212.2 438.1 L208.3 441.2 L207.8 440.1 L207.9 441.6 L200.3 447.7 L198.6 448.6 L197.6 447.3 L198.2 448.9 L192.6 453.2 L188.7 460.9 L187.6 471.8 L190.5 471.3 L190.8 472.4 L191.6 470.1 L191.6 472.5 L194.6 474.1 L191.5 472.6 L194.0 474.3 L188.9 474.4 L184.7 483.8 L184.2 482.6 L182.5 483.7 L181.7 490.6 L185.5 489.6 L184.9 488.5 L183.3 490.2 L182.2 489.5 L183.0 487.6 L184.2 489.0 L184.7 485.0 L185.8 489.9 L184.2 496.5 L185.0 499.0 L178.6 506.6 L177.1 510.5 L178.8 511.5 L170.6 514.4 L161.5 521.1 L153.3 523.6 L151.1 528.3 L147.7 530.6 L131.1 534.7 L128.7 540.6 L105.9 536.2 L104.0 533.4 L98.4 530.7 L84.0 518.7 L87.0 516.2 L90.7 517.2 L90.2 513.4 L88.4 514.0 L88.3 510.7 L90.1 510.8 L93.5 505.1 L95.5 504.8 L93.3 499.3 L99.2 498.5 L100.9 495.0 L90.3 475.2 L92.3 475.4 L93.0 472.8 L96.0 471.4 L99.2 465.8 L98.6 462.6 L95.2 459.8 L95.1 457.4 L92.7 457.5 L92.7 454.4 L88.0 448.0 L90.1 445.6 L92.9 445.6 L94.2 440.4 L99.6 435.0 L98.2 431.4 L101.1 428.5 L101.1 420.4 L102.7 419.4 L102.8 416.8 L105.4 416.7 L107.6 406.5 L112.0 404.6 L113.7 400.0 L112.7 398.0 L111.2 398.8 L109.2 397.1 L107.8 394.1 L109.3 391.0 L108.3 390.3 L106.7 393.4 L104.7 390.5 L100.0 393.3 L96.8 392.5 L94.2 389.4 L89.9 389.2 L93.8 381.3 L93.6 378.4 L95.4 377.7 L95.6 372.0 L97.9 371.1 L95.5 368.6 L96.9 365.1 L94.5 363.5 L95.0 360.7 L100.6 353.8 L98.6 350.2 L99.3 348.2 L93.5 340.7 L97.0 338.5 L100.4 338.4 L102.4 329.7 L101.4 328.0 L99.1 328.4 L99.5 325.1 L96.0 319.9 L96.8 316.5 L91.0 315.9 L80.2 321.9 L78.5 323.3 L78.9 325.6 L72.3 329.5 L68.2 327.5 L66.0 327.9 L61.8 323.8 L62.0 321.5 L59.5 322.7 L57.7 321.0 L59.6 314.6 L56.5 309.1 L58.7 292.3 L56.6 291.3 L56.2 288.2 L62.8 287.9 L61.2 283.3 L63.9 280.2 L65.2 273.9 L64.3 271.0 L59.7 270.2 L60.2 268.4 L57.5 264.9 L49.2 263.0 L41.1 258.7 L46.7 248.1 L51.6 248.8 L55.0 247.0 L52.6 248.0 L49.7 246.5 L50.7 243.8 L49.4 242.0 L49.8 239.2 L45.2 236.9 L45.0 234.9 L48.1 232.9 L48.5 230.5 L45.8 228.3 L38.6 232.8 L25.4 231.1 L22.0 233.4 L20.6 231.9 L21.4 228.4 L27.9 225.3 L30.5 222.3 L29.4 221.2 L30.3 216.4 L27.6 216.9 L27.6 215.5 L21.6 213.4 L17.7 210.1 L17.9 208.3 L16.0 208.8 L10.5 205.8 L9.2 207.2 L5.1 204.2 L1.4 205.7 L1.6 198.9 L0.0 195.3 L4.4 192.5 L7.0 195.3 L10.0 192.9 L12.1 193.5 L15.0 189.6 L19.3 189.5 L20.4 188.1 L19.2 185.9 L21.9 186.3 L27.0 182.1 L30.6 184.8 L32.5 190.8 L50.5 190.8 L57.4 192.1 L59.4 194.3 L60.7 191.6 L58.5 187.4 L65.4 173.7 L69.8 173.9 L71.3 175.5 L72.5 171.9 L75.6 171.7 L78.3 173.6 L77.4 175.5 L80.7 174.3 L80.1 176.2 L82.1 179.4 L85.8 180.6 L85.2 175.7 L97.2 173.6 L98.7 171.8 L102.8 172.2 L106.9 176.1 L110.1 174.1 L115.9 176.9 L119.5 168.1 L119.2 163.2 L121.5 164.5 L122.2 158.9 L126.0 160.0 L139.7 158.2 L142.1 151.2 L149.7 141.4 L145.1 135.2 L133.9 132.9 L122.0 133.4 L120.4 132.2 L120.2 128.1 L121.6 125.5 L127.9 124.1 L134.1 116.5 L135.9 105.0 L131.1 105.8 L134.1 102.7 L131.4 102.0 L130.5 97.0 L133.2 90.7 L132.5 87.1 L138.7 85.5 L141.1 88.0 L142.7 87.7 L143.5 85.5 L146.2 86.5 L145.8 84.6 L148.0 84.2 L149.3 81.5 L148.3 80.4 L151.2 79.1 L150.1 77.0 L152.8 74.3 L153.0 71.0 L151.4 69.7 L155.4 67.2 L160.9 67.2 L164.9 65.3 L164.5 66.7 L165.9 67.5 L163.6 71.1 L165.8 71.7 L167.0 68.1 L170.5 73.4 L172.4 73.5 L171.6 71.7 L173.7 68.5 L176.8 68.8 L184.0 76.0 L193.7 77.7 L194.4 81.4 L190.7 84.8 L194.4 85.5 L194.9 83.5 L198.0 83.7 L200.5 87.6 L208.1 91.6 L216.5 91.6 L216.7 86.7 L219.7 86.5 L220.2 82.6 L221.8 83.0 L219.3 79.5 L223.4 82.8 L223.2 84.9 L225.5 84.3 L225.3 78.6 L228.8 75.9 L233.1 61.2 L235.1 61.2 L231.9 55.3 L235.5 51.4 L239.7 52.8 L240.5 47.7 L244.7 48.7 L250.8 45.5 L255.6 46.2 L257.4 44.7 L257.9 51.3 L262.1 51.4 L259.1 49.7 L261.1 46.5 L267.4 45.6 L274.6 49.5 L276.1 51.8 L279.5 50.8 L284.2 52.5 L286.2 51.3 L285.9 48.0 L287.7 44.8 L290.6 42.9 L290.6 39.8 L292.4 40.7 L293.4 38.6 L295.4 39.2 L299.3 43.6 L300.2 41.4 L303.8 40.4 L303.2 37.1 L304.5 37.8 L306.1 35.2 L310.6 34.7 L310.3 32.6 L312.7 31.8 L311.8 30.5 L309.3 32.2 L310.7 25.4 L305.8 23.2 L311.1 21.2 L321.4 22.4 L322.7 26.8 L325.8 28.9 L327.8 26.7 L329.7 27.6 L334.3 25.3 L335.9 27.8 L334.8 30.5 L337.0 30.1 L336.3 32.7 L339.6 31.3 L341.7 33.9 L345.6 31.1 L339.4 26.3 L341.9 25.5 L342.6 23.2 L345.1 25.3 L347.1 23.1 L352.1 23.2 L357.8 19.2 L359.3 20.0 L362.0 16.2 L360.0 13.2 L362.9 11.8 L362.8 8.5 L366.1 7.7 L367.1 4.9 L370.0 5.3 L369.7 3.5 L365.6 2.7 L365.5 1.1 L370.9 1.5 L373.3 0.0Z"/></svg></div>
 </div></section>
 
-<div class="wrap">
-<main id="main">
+<section class="band band-find" aria-labelledby="h-rf"><div class="band-in">
+<p class="eyebrow">1 · What holds, and what depends on the judge</p>
+<h2 id="h-rf">The robust findings first</h2>
+<p class="sub">The same evidence was judged by two language models, Gemini and Claude. Some findings are the same under either judge; others move with it.</p>
+<div class="cols2 rf" id="rf"></div>
+<p class="rf-note" id="rfNote"></p>
+</div></section>
 
-<section aria-labelledby="h-found">
-<p class="eyebrow">1 · What was found</p>
-<h2 id="h-found">The answer, and what it depends on</h2>
-<div class="judge" id="judge" role="group" aria-label="Judging setting">
-  <span class="lab" id="judgeLab">Judge:</span>
-  <div class="seg" id="regime"><button type="button" data-r="final" aria-describedby="judgeLab">Claude-preferred</button><button type="button" data-r="bulk">Gemini-only</button></div>
-  <p class="why" id="regimeShort"></p>
-</div>
-<details class="more" style="margin:8px 0 14px"><summary>How the two judging settings differ</summary>
-  <p class="small muted" id="regimeText"></p>
-  <p class="small muted">The answers depend on who judged the evidence. Both views are shown; neither is "the truth". The <a href="whitepaper.html#judge-dependence">whitepaper</a> compares them against a hand-labelled sample.</p></details>
-<ol class="findings" id="findings" aria-live="polite"></ol>
-</section>
-
-<section aria-labelledby="h-km">
+<section class="band band-km" aria-labelledby="h-km"><div class="band-in">
 <p class="eyebrow">2 · The completed terms</p>
-<h2 id="h-km">Share of promises realised, by month of tenure</h2>
+<h2 id="h-km">How much of each manifesto was realised</h2>
 <p class="sub">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The diamonds are what was documented at each landmark month; the gap between line and diamonds is evidence that appeared only later.</p>
-<div class="terms" id="cards" aria-label="Headline numbers per term"></div>
-<div class="figure" style="margin-top:12px">
+<div class="viewbar" id="viewbar"><span class="lab" id="viewLab">Judge:</span><div class="seg" role="group" aria-labelledby="viewLab"><button type="button" data-v="gemini">Gemini-only</button><button type="button" data-v="claude">Claude-only</button></div><span id="viewTag"></span></div>
+<p class="muted small" id="viewText" style="max-width:70ch;margin:0 0 16px"></p>
+<div class="terms" id="cards" aria-live="polite"></div>
+<div class="slegend" id="slegend"></div>
+<div class="figure" style="margin-top:18px">
   <div class="tools"><label class="check"><input type="checkbox" id="showDoc"> Show what was documented at each landmark</label></div>
   <div class="chart"><canvas id="kmChart" role="img" aria-label="Share of promises realised by month for each term" aria-describedby="kmAlt"></canvas></div>
-  <div class="key" id="kmKey"></div>
-  <p class="vh" id="kmAlt"></p>
+  <div class="key" id="kmKey"></div><p class="vh" id="kmAlt"></p>
 </div>
-<details class="more"><summary>Who judged what at month 5</summary><p class="small" id="judgeNote"></p></details>
-</section>
+<details class="more"><summary>Status counts and who judged what</summary><div id="judgeNote"></div></details>
+</div></section>
 
-<section aria-labelledby="h-tvk">
-<p class="eyebrow">3 · TVK 2026–</p>
-<h2 id="h-tvk">A projection, with its assumptions</h2>
+<section class="band band-forest" aria-labelledby="h-fp"><div class="band-in">
+<p class="eyebrow">3 · What goes with faster delivery</p>
+<h2 id="h-fp">Promise characteristics, under both judges</h2>
+<p class="sub">A Cox model estimates which promise characteristics go with faster delivery. A marker right of 1 means faster, left of 1 slower; the line is the 95% interval. Both judges are shown at once, so you can see where they agree.</p>
+<div class="panel fp"><div class="mkkey" id="fpKey"></div><div id="forest"></div></div>
+<p class="rf-note" id="fpNote"></p>
+<details class="more"><summary>The same numbers as a table</summary><div id="fpTable" class="scroll"></div></details>
+</div></section>
+
+<section class="band band-dark" aria-labelledby="h-tvk"><div class="band-in">
+<p class="eyebrow">4 · TVK 2026–</p>
+<h2 id="h-tvk">Is TVK keeping pace?</h2>
 <p class="sub">Projection under historical patterns, built from the two completed terms. It shows what the past would imply, with the assumptions stated below each line; it is not a prediction of what TVK will do. Bands show fitting uncertainty only.</p>
-<div class="figure">
-  <div class="chart"><canvas id="projChart" role="img" aria-label="Projected share of TVK promises realised by month under three assumptions" aria-describedby="projAlt"></canvas></div>
-  <div class="key" id="projKey"></div>
-  <p class="vh" id="projAlt"></p>
-</div>
-<div class="lines" id="assume"></div>
-<details class="more"><summary>Numbers by month, with 10th–90th percentile bands</summary><div id="proj-table" class="scroll"></div></details>
-</section>
+<div class="panel"><h3 style="margin:0 0 4px;font-size:17px">Pace after five months</h3>
+<p class="muted small" style="margin:0 0 14px">Like for like: TVK's documented count at month 5 against what the earlier government(s) had documented by month 5, judged by the same judge. 1.0 means the same pace.</p>
+<div class="pace" id="pace"></div><p class="read" id="paceRead"></p>
+<details class="more"><summary>How the pace factor is computed</summary><p class="small muted" id="paceHow"></p></details></div>
+<div class="cols2 wide" style="margin-top:20px" id="projPanels"></div>
+<div class="panel" style="margin-top:20px" id="projNote"></div>
+<details class="more"><summary>Projection numbers by month</summary><div id="projTable" class="scroll"></div></details>
+</div></section>
 
-<section aria-labelledby="h-trust">
-<p class="eyebrow">4 · How far to trust this</p>
-<h2 id="h-trust">Measured accuracy, and the limits</h2>
-<div class="trust" id="trust"></div>
-<div class="honesty" style="margin-top:12px" id="honesty"></div>
-</section>
+<section class="band band-acc" aria-labelledby="h-acc"><div class="band-in">
+<p class="eyebrow">5 · How far to trust this</p>
+<h2 id="h-acc">Checked against 40 hand labels</h2>
+<p class="sub" id="accSub"></p>
+<div class="cols2 wide" id="accCards"></div>
+<ul class="limits" id="limits"></ul>
+<p class="small" style="margin-top:12px"><a href="whitepaper.html#accuracy">All accuracy tables</a> · <a href="whitepaper.html#limitations">all limitations</a></p>
+</div></section>
 
-<section aria-labelledby="h-work">
-<p class="eyebrow">5 · Behind these numbers</p>
-<h2 id="h-work">The work, in short</h2>
-<div class="behind" id="behind"></div>
-<div class="next" style="margin-top:12px">
-  <a href="promises.html"><b>Promise explorer</b><span id="nextP">Every promise with its status and evidence</span></a>
-  <a href="whitepaper.html"><b>Whitepaper</b><span>Method, accuracy tables and all limitations</span></a>
-</div>
-</section>
-
-</main><div id="foot"></div></div>
+<section class="band band-work" aria-labelledby="h-work"><div class="band-in">
+<h2 id="h-work">The work behind this</h2>
+<p style="max-width:60ch;margin:0">A pipeline that collects official documents, extracts every promise, finds evidence as of any past date, has models judge it under strict checks and validates them against hand labels.</p>
+<div class="btnrow"><a class="btn" href="work.html" style="text-decoration:none;display:inline-flex;align-items:center">See the work, stage by stage →</a><span class="small"><a href="promises.html">Promise explorer</a> · <a href="whitepaper.html">Whitepaper</a></span></div>
+</div></section>
+</main>
+<div class="wrap"><div id="foot"></div></div>
 <script src="assets/vendor/chart.umd.min.js"></script><script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("index");
-const REGIMES = {
-  final: {name: "Claude-preferred judging", short: "Claude's verdicts wherever Claude judged; the Gemini model fills the rest.", text: "Claude's verdicts are used wherever Claude judged (the hand-labelled sample, headline promises, all TVK promises at month 5, DMK's first landmarks); the lighter Gemini model fills the rest. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."},
-  bulk: {name: "Gemini-only judging", short: "One judge, the lighter Gemini model, for every promise of every term.", text: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised."}};
-let regime = "final", D = null, charts = [], showDoc = false;
-const mixText = (sum, t, m) => { const x = sum.cells.find(y => y.term === t && y.month === m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : ""; };
+const SETS = ["gemini", "claude"], SN = {gemini: "Gemini-only", claude: "Claude-only"};
+const SETTEXT = {
+  gemini: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised.",
+  claude: "Claude's verdicts on their own. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."};
+const POOR_CONCORDANCE = 0.6;   // presentation threshold for "ranks poorly" (0.5 is chance)
+let view = "gemini", showDoc = false, D = null, charts = {};
+const SUM = (k) => D.sum[k], MOD = (k) => D.model[k];
+const standin = (k) => !!((SUM(k).meta || {}).standin || (MOD(k).meta || {}).standin);
+const tag = (k) => standin(k) ? `<span class="tag" title="Stand-in until the Claude-only run finishes">preliminary</span>` : "";
 const cellOf = (S, t, m) => S.cells.find(x => x.term === t && x.month === m);
-const keyItem = (kind, color, text) => `<span style="color:${color}"><i class="${kind}"></i><span style="color:var(--muted)">${text}</span></span>`;
+const hrOf = (m, n) => m.cox.both_terms_strata.hazard_ratios.find(r => r.covariate === n);
+const mixText = (S, t, m) => { const x = cellOf(S, t, m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : ""; };
+const rgba = (hex, a) => { const h = hex.replace("#", ""); return h.length === 6 ? `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})` : hex; };
+const lastOf = (p) => p.months.length - 1;
+const evKey = (k) => k === "gemini" ? "final_bulk" : (D.ev.judges.final_claude ? "final_claude" : "strong");
+const evOf = (k) => D.ev.judges[evKey(k)].groups.pooled_AIADMK_DMK;
+const destroy = (k) => { if (charts[k]) { charts[k].destroy(); delete charts[k]; } };
 
-function render() {
-  charts.forEach(c => c.destroy()); charts = [];
-  const sum = regime === "bulk" ? D.sumB : D.sum, model = regime === "bulk" ? D.modelB : D.model, ev = D.ev, c = COLORS(), cells = sum.cells, p = model.projection, xs = p.months;
-  $("#regimeShort").textContent = REGIMES[regime].short;
-  $("#regimeText").innerHTML = `<strong>${REGIMES[regime].name}.</strong> ${REGIMES[regime].text}`;
-  $$("#regime button").forEach(b => b.setAttribute("aria-pressed", b.dataset.r === regime));
+/* 1 robust findings: each item is tested on the data; one that fails moves to "depends on the judge" */
+function renderRobust() {
+  const G = "gemini", C = "claude", holds = [], depends = [];
+  const two = (f, fmt = (x) => x) => `${fmt(f(G))} (Gemini-only), ${fmt(f(C))} (Claude-only)`;
+  const hrs = (n) => (k) => { const r = hrOf(MOD(k), n); return r ? r.hr : NaN; };
+  const excl = (n, dir) => SETS.every(k => { const r = hrOf(MOD(k), n); return r && (dir > 0 ? r.lo > 1 : r.hi < 1); });
+  const vague = "specificity=vague", adv = "promise_type=advocacy", uni = "union_dependent";
+  const ok1 = excl(vague, 1) && excl(adv, 1);
+  const x1 = {ok: ok1, html: `<b>Vague and advocacy promises are realised faster.</b>Hazard ratio (above 1 means faster): vague ${hrs(vague)(G).toFixed(1)} Gemini-only, ${hrs(vague)(C).toFixed(1)} Claude-only; advocacy ${hrs(adv)(G).toFixed(1)}, ${hrs(adv)(C).toFixed(1)}. ${ok1 ? "Every 95% interval excludes 1." : "Not every 95% interval excludes 1."}`};
+  const ok2 = excl(uni, -1);
+  const x2 = {ok: ok2, html: `<b>Union-dependent promises are realised more slowly.</b>Hazard ratio ${hrs(uni)(G).toFixed(2)} Gemini-only, ${hrs(uni)(C).toFixed(2)} Claude-only. ${ok2 ? "Both 95% intervals are below 1." : "Not both 95% intervals are below 1."}`};
+  const fin = (k, t) => cellOf(SUM(k), t, 0).realised;
+  const ok3 = SETS.every(k => fin(k, "AIADMK-2016") > fin(k, "DMK-2021"));
+  const x3 = {ok: ok3, html: `<b>AIADMK 2016–21 shows the higher share realised by the end of its term.</b>AIADMK ${pct(fin(G, "AIADMK-2016"))} against DMK ${pct(fin(G, "DMK-2021"))} (Gemini-only); ${pct(fin(C, "AIADMK-2016"))} against ${pct(fin(C, "DMK-2021"))} (Claude-only). A description of documented outcomes, not a ranking of parties.`};
+  const cz = (k) => MOD(k).backtest.concordance, ok4 = SETS.every(k => cz(k) < POOR_CONCORDANCE);
+  const x4 = {ok: ok4, html: `<b>Promise characteristics rank promises poorly.</b>Concordance of the DMK-fitted model on AIADMK: ${cz(G).toFixed(2)} (Gemini-only), ${cz(C).toFixed(2)} (Claude-only); 0.5 is chance.`};
+  const dt = (k) => evOf(k).date, mo = (k) => dt(k).median_abs_days / 30.4;
+  const x5 = {ok: true, html: `<b>Dates are approximate, by about five to six months.</b>Median gap between a hand label's date and the verdict's date: ${mo(G).toFixed(1)} months (Gemini-only, n = ${dt(G).n}), ${mo(C).toFixed(1)} months (Claude's verdicts, n = ${dt(C).n}).`};
+  [x1, x2, x3, x4, x5].forEach(x => (x.ok ? holds : depends).push(x.ok ? x.html : x.html.replace("<b>", "<b>Differs by judge: ")));
+  // depends on the judge
+  const m5 = (k, t) => cellOf(SUM(k), t, 5).realised, last = (k) => lastOf(MOD(k).projection), pr = (k, line) => MOD(k).projection[line].share[last(k)];
+  const bt5 = (m) => m.backtest.landmarks["5"];
+  const mixed = bt5(D.mixed);
+  depends.push(`<b>The level of "realised".</b>DMK 2021–26 by month 5: ${pct(m5(G, "DMK-2021"), 1)} (Gemini-only) against ${pct(m5(C, "DMK-2021"), 1)} (Claude-only); by the end of its term ${pct(fin(G, "DMK-2021"))} against ${pct(fin(C, "DMK-2021"))}.`);
+  depends.push(`<b>TVK's level.</b>Documented as realised after 5 months: ${pct(m5(G, "TVK-2026"), 1)} (Gemini-only) against ${pct(m5(C, "TVK-2026"), 1)} (Claude-only). No TVK promise is in the hand-labelled sample, so neither figure can be checked.`);
+  depends.push(`<b>The projection range.</b>TVK by ${monthLabel(MOD(G).projection.months[last(G)])}, at historical pace: ${pct(pr(G, "no_update"))} (Gemini-only), ${pct(pr(C, "no_update"))} (Claude-only); if its current pace persists, an extrapolation: ${pct(pr(G, "matched_update"))}, ${pct(pr(C, "matched_update"))}.`);
+  depends.push(`<b>Whether the pace update helps.</b>In the reverse backtest from month 5 it raises the error from ${bt5(MOD(G)).mae_model.toFixed(1)} to ${bt5(MOD(G)).mae_model_pace.toFixed(1)} points when one judge judged both terms (Gemini-only), and lowers it from ${mixed.mae_model.toFixed(1)} to ${mixed.mae_model_pace.toFixed(1)} points when the terms had different judges.`);
+  const col = (h, arr) => `<div class="panel"><h3>${h}</h3><ul>${arr.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
+  $("#rf").innerHTML = col("Holds under both judges", holds) + col("Depends on the judge", depends);
+  $("#rfNote").innerHTML = standin(C) ? `${tag(C)} Claude-only figures are preliminary: until the Claude-only run finishes they come from a stand-in (Claude's verdicts where Claude judged, Gemini's elsewhere).` : "";
+}
 
-  // 1 findings
-  const full = (t) => cellOf(sum, t, 0), tv5 = (S) => cellOf(S, "TVK-2026", 5);
-  const last = xs.length - 1, ends = SCENARIOS.filter(s => p[s.key]).map(s => p[s.key].share[last]);
-  const f = [
-    [`${pct(full("AIADMK-2016").realised)} · ${pct(full("DMK-2021").realised)}`, `<span class="k">Completed terms.</span> Share of promises realised by the end of the term, AIADMK 2016–21 and DMK 2021–26 respectively. This is not a ranking of parties. Under Claude-preferred judging the terms were judged by different mixes of judges (see section 4).`]];
-  if (D.sumB) f.push([`${pct(tv5(D.sum).realised, 1)} <small>vs</small> ${pct(tv5(D.sumB).realised, 1)}`, `<span class="k">The judge matters.</span> TVK 2026– at month 5, from the same evidence: Claude-preferred judging against Gemini-only judging. No TVK promise is in the hand-labelled sample, so this project cannot say which is closer.`]);
-  f.push([`${pct(Math.min(...ends))}–${pct(Math.max(...ends))}`, `<span class="k">TVK 2026–, under historical patterns.</span> Projected share realised by ${monthLabel(xs[last])}, across three stated assumptions (below) in the current judging setting. It is not a prediction of what TVK will do.`]);
-  $("#findings").innerHTML = f.map(([b, t]) => `<li><div class="big">${b}</div><p>${t}</p></li>`).join("");
-
-  // 2 term strip + KM chart
+/* 2 toggle: end-of-term shares (100% stacked bars) and Kaplan–Meier curves */
+function renderView() {
+  const k = view, sum = SUM(k), model = MOD(k), cEl = $("#kmChart"), c = COLORS(cEl);
+  $$("#viewbar button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === k));
+  $("#viewTag").innerHTML = tag(k);
+  $("#viewText").textContent = SETTEXT[k] + (standin(k) ? " Preliminary: this view is a stand-in (Claude's verdicts where Claude judged, Gemini's elsewhere) until the Claude-only run finishes." : "");
+  const sbar = (cl, name) => `<div class="sbar" role="img" aria-label="${esc(name)}: ${sum.statuses.filter(s => cl.status[s]).map(s => label(s) + " " + pct(cl.status[s] / cl.n)).join(", ")}">${sum.statuses.filter(s => cl.status[s]).map(s => `<i class="st-${s}" style="width:${100 * cl.status[s] / cl.n}%" title="${label(s)}: ${cl.status[s]} (${pct(cl.status[s] / cl.n)})"></i>`).join("")}</div>`;
   $("#cards").innerHTML = Object.entries(sum.terms).map(([t, info]) => {
-    const fu = cellOf(sum, t, 0), m5 = cellOf(sum, t, 5);
-    const main = info.term_end ? `<div class="stat">${pct(fu.realised)}</div><div class="muted small">realised by the end of the term (${int(fu.n)} promises)</div>` : `<div class="stat">${pct(m5.realised, 1)}</div><div class="muted small">documented as realised after 5 months (${int(m5.n)} promises)</div>`;
-    return `<div><div class="muted small"><span class="sw" style="background:${c[t]}"></span>${TERMS[t]}</div>${main}<div class="muted small" style="margin-top:4px">${info.term_end ? "Month 5: " + pct(m5.realised) + " documented" : "Term in progress"}</div></div>`;
+    const fu = cellOf(sum, t, 0), m5 = cellOf(sum, t, 5), cl = info.term_end ? fu : m5;
+    return `<div><div class="muted small"><span class="sw" style="background:${c[t]}"></span>${TERMS[t]}</div><div class="stat">${pct(cl.realised, info.term_end ? 0 : 1)}</div><div class="muted small">${info.term_end ? "realised by the end of the term" : "documented as realised after 5 months"} (${int(cl.n)} promises)</div>${sbar(cl, TERMS[t])}<div class="muted small">${info.term_end ? "Month 5: " + pct(m5.realised) + " documented" : "Term in progress"}</div></div>`;
   }).join("");
+  $("#slegend").innerHTML = sum.statuses.map(s => `<span><i class="st-${s}"></i>${label(s)}</span>`).join("") + `<span style="flex-basis:100%">Realised = fulfilled, partial or diluted, with a date. Bars show the share of each term's promises in each status.</span>`;
   const ds = [], alt = [];
   for (const [t, e] of Object.entries(model.km.terms)) {
     if (t === "TVK-2026") continue;
     ds.push({label: TERMS[t], data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c[t], backgroundColor: c[t], tension: .2, pointRadius: 0, borderWidth: 2.5});
-    if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised})), borderColor: c[t], backgroundColor: c.surface, borderWidth: 2, showLine: false, pointStyle: "rectRot", pointRadius: 6});
-    const end = e.E1.realised[e.E1.realised.length - 1]; alt.push(`${TERMS[t]} reaches ${pct(end)} by month ${e.months[e.months.length - 1]}`);
+    if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cellsFor(sum, t), borderColor: c[t], backgroundColor: c.surface, borderWidth: 2, showLine: false, pointStyle: "rectRot", pointRadius: 6});
+    alt.push(`${TERMS[t]} reaches ${pct(e.E1.realised[e.E1.realised.length - 1])} by month ${e.months[e.months.length - 1]}`);
   }
-  const tv = tv5(sum);
+  const tv = cellOf(sum, "TVK-2026", 5);
   ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c["TVK-2026"], backgroundColor: c["TVK-2026"], pointRadius: 7, showLine: false});
   alt.push(`TVK 2026– is at ${pct(tv.realised, 1)} documented at month 5`);
-  charts.push(lineChart($("#kmChart"), ds));
-  $("#kmAlt").textContent = "Chart summary: " + alt.join("; ") + ".";
-  $("#kmKey").innerHTML = ["AIADMK-2016", "DMK-2021"].map(t => keyItem("", c[t], TERMS[t])).join("") + (showDoc ? keyItem("sq", c.muted, "documented at the landmark month") : "") + `<span style="color:${c["TVK-2026"]}"><i class="sq" style="border-radius:50%;transform:none"></i><span style="color:var(--muted)">TVK 2026– at month 5</span></span>`;
-  $("#judgeNote").innerHTML = `<strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${regime === "final" ? "The terms were judged by different mixes of judges, so part of AIADMK's early lead may be judge leniency. Switch to Gemini-only judging to compare the terms with one judge." : "Every term has the same judge here. Compare with Claude-preferred judging: how large the realised shares are depends heavily on the judge."}`;
+  destroy("km"); charts.km = lineChart(cEl, ds);
+  $("#kmAlt").textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}): ${alt.join("; ")}.`;
+  const key = (cls, col, txt) => `<span style="color:${col}"><i class="${cls}"></i><span style="color:var(--muted)">${txt}</span></span>`;
+  $("#kmKey").innerHTML = ["AIADMK-2016", "DMK-2021"].map(t => key("", c[t], TERMS[t])).join("") + (showDoc ? key("sq", c.muted, "documented at the landmark month") : "") + `<span style="color:${c["TVK-2026"]}"><i class="sq" style="border-radius:50%;transform:none"></i><span style="color:var(--muted)">TVK 2026– at month 5</span></span>`;
+  const rows = Object.keys(sum.terms).flatMap(t => [0, 5].filter(m => cellOf(sum, t, m) && (m === 5 || sum.terms[t].term_end)).map(m => cellOf(sum, t, m)));
+  $("#judgeNote").innerHTML = `<p class="small"><strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${standin(k) ? "This stand-in mixes judges, so part of AIADMK's early lead may be judge leniency." : k === "gemini" ? "Every term has the same judge here." : ""}</p><div class="scroll"><table><caption class="vh">Number of promises by status</caption><thead><tr><th scope="col">Term</th><th scope="col">Cutoff</th><th scope="col">Promises</th>${sum.statuses.map(s => `<th scope="col">${label(s)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr><td>${TERMS[r.term]}</td><td>${monthLabel(r.month)}</td><td>${int(r.n)}</td>${sum.statuses.map(s => `<td>${r.status[s] || 0}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+const cellsFor = (sum, t) => sum.cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised}));
 
-  // 3 projection
-  const pd = [], rows = SCENARIOS.filter(s => p[s.key]), palpha = [];
-  for (const s of rows) {
-    const r = p[s.key], col = c[s.color] || s.color;
-    pd.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: col, backgroundColor: col, pointRadius: 0, borderWidth: 2.5, borderDash: s.dash});
-    if (r.lo) {
-      pd.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: col + "26", pointRadius: 0, fill: "+1"});
-      pd.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0});
-    }
-    palpha.push(`${s.name}: ${[12, 24, 60].filter(m => xs.includes(m)).map(m => pct(r.share[xs.indexOf(m)]) + " at month " + m).join(", ")}`);
-  }
-  charts.push(lineChart($("#projChart"), pd));
-  $("#projAlt").textContent = "Chart summary, projection under historical patterns, starting from the share documented at month 5. " + palpha.join("; ") + ".";
-  $("#projKey").innerHTML = rows.map(s => `<span style="color:${c[s.color] || s.color}"><i class="${s.dash.length > 2 ? "dot" : s.dash.length ? "d" : ""}"></i><span style="color:var(--muted)">${s.name}</span></span>`).join("");
-  const cols = [6, 12, 24, 36, 48, 60];
-  $("#proj-table").innerHTML = `<table><caption class="vh">Projected share of TVK promises realised, by month, with the 10th–90th percentile band</caption><thead><tr><th scope="col">Line</th><th scope="col">Pace factor</th>${cols.map(m => `<th scope="col">${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rows.map(s => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${s.name}</th><td>${p[s.key].k.toFixed(2)}</td>${cols.map(m => `<td>${pct(p[s.key].share[xs.indexOf(m)])}${p[s.key].lo ? `<br><span class="muted small">${pct(p[s.key].lo[xs.indexOf(m)])}–${pct(p[s.key].hi[xs.indexOf(m)])}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
-  const scenText = regime === "bulk" ? {matched_update: {says: "TVK's documented month-5 count is compared with the documented month-5 share of the completed terms judged by the same judge (here both, since one judge judged everything).", weak: "Added after scenario A's result was seen; with one judge for all terms it is close to the no-update line."}} : {};
-  $("#assume").innerHTML = rows.map(s => { const t = scenText[s.key] || s; return `<div class="line" style="--lc:${c[s.color] || s.color}"><h3>${s.name}</h3><div class="stat">${pct(p[s.key].share[last])} <small>by ${monthLabel(xs[last])}</small></div><p><strong>Assumes:</strong> ${t.says}</p><p class="weak"><strong>Weakness:</strong> ${t.weak}</p></div>`; }).join("");
-
-  // 4 trust
-  const lm = model.backtest.landmarks;
-  const cards = [`<div class="card"><div class="stat">${lm["5"].mae_model_pace.toFixed(1)} pts</div><div class="muted small">average gap between predicted and actual share realised, predicting AIADMK 2016–21 from its first 5 months with the pace update (${lm["5"].mae_model.toFixed(1)} pts without it; ${lm["5"].mae_baseline.toFixed(1)} pts using no promise characteristics). Fitted on DMK 2021–26 only.</div></div>`];
-  let nLab = null, noTvk = false;
-  if (ev && ev.judges) {
-    const j = ev.judges[regime === "bulk" ? "final_bulk" : "final"], g = j && j.groups.pooled_AIADMK_DMK.e1;
-    nLab = ev.n_labels; noTvk = !(ev.per_term_n || {})["TVK-2026"];
-    if (g) cards.push(`<div class="card"><div class="stat">${pct(g.accuracy.p)}</div><div class="muted small">of ${g.n} hand-labelled promises (AIADMK and DMK) agree with these verdicts on <em>realised or not</em> (95% interval ${pct(g.accuracy.lo)}–${pct(g.accuracy.hi)})</div></div>`);
-  }
-  $("#trust").innerHTML = cards.join("");
-  $("#honesty").innerHTML = `<h2>Read the numbers with these limits</h2><ul>
-    <li><strong>They depend on the judge.</strong> Switch the judging setting above and the realised shares move; neither setting is the truth.</li>
-    ${nLab ? `<li><strong>The hand-labelled check is small:</strong> ${nLab} promises${noTvk ? ", none from TVK, so TVK verdicts have no accuracy figure of their own" : ""}.</li>` : ""}
-    <li><strong>The projection is conditional.</strong> It is built from two completed terms treated as independent draws and shows what historical patterns would imply, with three assumptions stated, not a forecast.</li>
-    <li><strong>"No evidence found" is not "nothing happened".</strong> It means the document corpus held nothing showing an official step.</li></ul>
-    <p class="small" style="margin-top:6px"><a href="whitepaper.html#accuracy">Accuracy against the hand-labelled sample</a> · <a href="whitepaper.html#limitations">all limitations</a></p>`;
+/* 3 forest plot: one row per characteristic, two markers (Gemini-only hollow circle, Claude-only filled diamond) */
+function forestRows() {
+  const hg = MOD("gemini").cox.both_terms_strata.hazard_ratios, byC = Object.fromEntries(MOD("claude").cox.both_terms_strata.hazard_ratios.map(r => [r.covariate, r]));
+  const HEAD = {promise_type: "Promise type (vs administrative)", cost_band: "Cost band (vs none)", specificity: "Specificity (vs specific)", other: "Other characteristics (yes vs no)"};
+  const OTHER = {union_dependent: "Union-dependent", continues_existing: "Continues existing scheme"};
+  const rows = []; let g0 = null;
+  hg.forEach(r => {
+    const [g, v] = r.covariate.includes("=") ? r.covariate.split("=") : ["other", r.covariate];
+    if (g !== g0) { rows.push({head: HEAD[g] || label(g)}); g0 = g; }
+    rows.push({name: r.covariate, label: OTHER[v] || label(v), g: r, c: byC[r.covariate]});
+  });
+  return rows;
+}
+function renderForest() {
+  const el = $("#forest"), rows = forestRows(), W = Math.max(320, el.clientWidth || 700), narrow = W < 560;
+  const L = narrow ? 168 : 250, Rr = 16, T = 46, rh = narrow ? 36 : 34, hh = 28, lo = 0.2, hi = 7;
+  const X = (v) => L + (Math.log(Math.min(hi, Math.max(lo, v)) / lo) / Math.log(hi / lo)) * (W - L - Rr);
+  let y = T; const pos = rows.map(r => { const o = {...r, y, h: r.head ? hh : rh}; y += o.h; return o; });
+  const H = y + 40; let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-labelledby="fpT fpD"><title id="fpT">Hazard ratios by promise characteristic, both judges</title><desc id="fpD">Each row shows the hazard ratio and 95% interval under Gemini-only and Claude-only judging; the same numbers are in the table below. A value above 1 means faster realisation.</desc>`;
+  pos.forEach((r, i) => { if (!r.head && i % 2) svg += `<rect class="band-row" x="0" y="${r.y}" width="${W}" height="${r.h}" rx="6"/>`; });
+  [0.25, 0.5, 1, 2, 4].forEach(t => { svg += `<line class="gl${t === 1 ? " ref" : ""}" x1="${X(t)}" x2="${X(t)}" y1="${T - 8}" y2="${H - 34}"/><text class="t" x="${X(t)}" y="${H - 16}" text-anchor="middle">${t}</text>`; });
+  svg += `<text class="t" x="${X(1) - 8}" y="${T - 20}" text-anchor="end">← slower</text><text class="t" x="${X(1) + 8}" y="${T - 20}" text-anchor="start">faster →</text>`;
+  const mk = (s, r, dy) => { if (!s) return ""; const cy = r.y + r.h / 2 + dy, cls = s === r.g ? "g" : "c", x = X(s.hr);
+    const shape = cls === "g" ? `<circle class="mg" cx="${x}" cy="${cy}" r="4.6"/>` : `<polygon class="mc" points="${x},${cy - 6} ${x + 6},${cy} ${x},${cy + 6} ${x - 6},${cy}"/>`;
+    return `<g class="${cls}"><path class="ci" d="M${X(s.lo)} ${cy}H${X(s.hi)}M${X(s.lo)} ${cy - 4}V${cy + 4}M${X(s.hi)} ${cy - 4}V${cy + 4}"/>${shape}</g>`; };
+  pos.forEach(r => { if (r.head) svg += `<text class="h" x="4" y="${r.y + 19}">${esc(r.head)}</text>`; else svg += `<text x="16" y="${r.y + r.h / 2 + 4}">${esc(r.label)}</text>${mk(r.g, r, -5)}${mk(r.c, r, 5)}`; });
+  $("#forest").innerHTML = svg + "</svg>";
+  $("#fpKey").innerHTML = `<span><i class="mkg"></i>Gemini-only</span><span><i class="mkc"></i>Claude-only${tag("claude")}</span><span>${narrow ? "" : "Marker = hazard ratio, line = 95% interval"}</span>`;
+}
+function renderForestText() {
+  const cg = MOD("gemini").cox.both_terms_strata, cc = MOD("claude").cox.both_terms_strata;
+  $("#fpNote").innerHTML = `References: administrative promises, no cost, specific promises. Both completed terms are fitted together, each with its own baseline: ${int(cg.n)} promises and ${int(cg.events)} realisations (Gemini-only); ${int(cc.n)} promises and ${int(cc.events)} realisations (Claude-only${standin("claude") ? ", preliminary" : ""}).`;
+  const f = (r) => r ? `${r.hr.toFixed(2)} <span class="muted small">(${r.lo.toFixed(2)}–${r.hi.toFixed(2)})</span>` : "–";
+  $("#fpTable").innerHTML = `<table><caption class="vh">Hazard ratios with 95% intervals under each judge</caption><thead><tr><th scope="col">Characteristic</th><th scope="col">Gemini-only</th><th scope="col">Claude-only</th></tr></thead><tbody>${forestRows().filter(r => !r.head).map(r => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${esc(label(r.name.replace("=", ": ")))}</th><td>${f(r.g)}</td><td>${f(r.c)}</td></tr>`).join("")}</tbody></table>`;
 }
 
-Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null), load("work.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB, work]) => {
-  D = {sum, model, ev, sumB, modelB}; $("#foot").innerHTML = footer(sum);
-  if (!sumB || !modelB) $("#judge").hidden = true;
+/* 4 pace strip */
+function renderPace() {
+  const lo = 0.4, hi = 1.2, P = (v) => 100 * (Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo), cls = {gemini: "g", claude: "c"};
+  const rows = SETS.map(k => { const p = D.pace[k], d = p.documented_share_by_term;
+    return `<div class="pace-row"><div class="pl">${SN[k]}${tag(k)}</div><div><div class="pace-track ${cls[k]}"><i class="pace-ref" style="left:${P(1)}%"></i><i class="pace-iv" style="left:${P(p.k_lo)}%;width:${P(p.k_hi) - P(p.k_lo)}%"></i><i class="pace-mk ${cls[k]}" style="left:${P(p.k)}%"></i></div></div><div class="pr"><b>${p.k.toFixed(2)}</b> <span class="muted">(${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})</span></div><div class="ps">Documented by month ${p.month} under this judge: AIADMK ${pct(d["AIADMK-2016"].documented_share)}, DMK ${pct(d["DMK-2021"].documented_share)}, TVK ${pct(d["TVK-2026"].documented_share, 1)}</div></div>`; }).join("");
+  const top = `<div class="pace-row"><div></div><div class="pace-axis top"><span class="rl" style="left:${P(1)}%;transform:translateX(calc(-100% - 8px))">1.0 = same pace as earlier governments</span></div><div></div></div>`;
+  const axis = `<div class="pace-row"><div></div><div class="pace-axis"><span style="left:${P(0.5)}%">0.5</span><span style="left:${P(0.75)}%">0.75</span><span style="left:${P(1.0)}%">1.0</span><span style="left:${P(1.2)}%;transform:translateX(-100%)">1.2</span></div><div></div></div>`;
+  $("#pace").innerHTML = top + rows + axis;
+  const ks = SETS.map(k => D.pace[k]), mn = Math.min(...ks.map(p => p.k)), mx = Math.max(...ks.map(p => p.k));
+  const wider = SETS.reduce((a, b) => (D.pace[a].k_hi - D.pace[a].k_lo) >= (D.pace[b].k_hi - D.pace[b].k_lo) ? a : b);
+  const pg = D.pace.gemini, pc = D.pace.claude;
+  $("#paceRead").innerHTML = `<strong>Reading.</strong> After 5 months TVK is tracking at roughly ${pct(mn)}–${pct(mx)} of the pace earlier governments had documented by the same month: ${pct(pg.k)} under Gemini-only judging (80% interval ${pct(pg.k_lo)}–${pct(pg.k_hi)}) and ${pct(pc.k)} under Claude-only (${pct(pc.k_lo)}–${pct(pc.k_hi)}${standin("claude") ? ", preliminary" : ""}). The ${SN[wider]} interval is wider because it rests on only ${int(D.pace[wider].observed)} documented events (${int(D.pace[wider === "gemini" ? "claude" : "gemini"].observed)} under ${SN[wider === "gemini" ? "claude" : "gemini"]}).`;
+  $("#paceHow").innerHTML = `The pace factor is k = (O + c) / (E + c). O is TVK's documented count after ${pg.month} months (${int(pg.observed)} of ${int(pg.n)} under Gemini-only, ${int(pc.observed)} under Claude-only). E is the count TVK would have if it matched the earlier government${pg.matched_terms.length > 1 ? "s" : ""} judged by the same judge (${pg.expected.toFixed(1)} under Gemini-only, matched to ${pg.matched_terms.map(t => TERMS[t]).join(" and ")}; ${pc.expected.toFixed(1)} under Claude-only, matched to ${pc.matched_terms.map(t => TERMS[t]).join(" and ")}). c = ${pg.prior_events} prior events. The interval is the 10th to 90th percentile of the posterior Gamma(c + O, c + E). Posterior probability that TVK's pace is at least the earlier pace: ${pct(pg.p_k_ge_1)} (Gemini-only), ${pct(pc.p_k_ge_1)} (Claude-only).`;
+}
+
+/* 5 projection panels: two lines per setting, no scenario A on the overview */
+function renderProjection() {
+  SETS.forEach(k => destroy("proj_" + k));
+  $("#projPanels").innerHTML = SETS.map(k => `<div class="panel pnl"><h3>${SN[k]}${tag(k)}</h3><div class="chart"><canvas id="proj_${k}" role="img" aria-label="Projected share of TVK promises realised by month, ${SN[k]}" aria-describedby="projAlt_${k}"></canvas></div><div class="key" id="projKey_${k}"></div><p class="vh" id="projAlt_${k}"></p><p class="vals" id="projVals_${k}"></p><p class="warnline">"If TVK's current pace persists" is an extrapolation from five months, not validated as a forecast.</p></div>`).join("");
+  SETS.forEach(k => {
+    const el = $("#proj_" + k), c = COLORS(el), p = MOD(k).projection, xs = p.months, last = lastOf(p), ds = [];
+    const LINES = [{key: "no_update", name: "Historical pace", col: c.muted, dash: [6, 4]}, {key: "matched_update", name: "If TVK's current pace persists (extrapolation)", col: c.accent, dash: []}];
+    LINES.forEach(s => { const r = p[s.key];
+      ds.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: s.col, backgroundColor: s.col, pointRadius: 0, borderWidth: 2.6, borderDash: s.dash});
+      if (r.lo) { ds.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: rgba(s.col, .22), pointRadius: 0, fill: "+1"}); ds.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0}); } });
+    charts["proj_" + k] = lineChart(el, ds);
+    $("#projKey_" + k).innerHTML = LINES.map(s => `<span style="color:${s.col}"><i class="${s.dash.length ? "d" : ""}"></i><span style="color:var(--muted)">${s.name}</span></span>`).join("");
+    const a = p.no_update, b = p.matched_update, m = xs[last];
+    $("#projVals_" + k).innerHTML = `By ${monthLabel(m)}: <b>${pct(a.share[last])}</b> at historical pace (band ${pct(a.lo[last])}–${pct(a.hi[last])}); <b>${pct(b.share[last])}</b> if current pace persists (band ${pct(b.lo[last])}–${pct(b.hi[last])}).`;
+    $("#projAlt_" + k).textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}), projection under historical patterns from the share documented at month 5: historical pace ${[12, 24, 60].filter(x => xs.includes(x)).map(x => pct(a.share[xs.indexOf(x)]) + " at month " + x).join(", ")}; if current pace persists ${[12, 24, 60].filter(x => xs.includes(x)).map(x => pct(b.share[xs.indexOf(x)]) + " at month " + x).join(", ")}.`;
+  });
+  const btRow = (name, m, pre) => { const l = m.backtest.landmarks["5"]; return `<tr><th scope="row" style="color:var(--fg);font-weight:500">${name}${pre || ""}</th>${l && !l.unavailable ? `<td>${l.mae_model.toFixed(1)} pts</td><td>${l.mae_model_pace.toFixed(1)} pts</td>` : `<td colspan="2" class="muted">not available in this setting</td>`}</tr>`; };
+  $("#projNote").innerHTML = `<h3 style="margin:0 0 6px;font-size:17px">Why the second line is only an extrapolation</h3><p style="max-width:76ch">The pace update, applying TVK's pace factor to the months ahead, was tested on the completed terms: fit on DMK 2021–26, predict AIADMK 2016–21 from its first 5 months. It helped only when the two terms had different judges.</p><div class="scroll nomin"><table><caption class="vh">Backtest error from month 5, with and without the pace update</caption><thead><tr><th scope="col">Judging</th><th scope="col">Without update</th><th scope="col">With update</th></tr></thead><tbody>${btRow("Gemini-only (one judge for both terms)", MOD("gemini"))}${btRow("Claude-only", MOD("claude"), tag("claude"))}${btRow("Mixed judges (Claude where available, Gemini elsewhere)", D.mixed)}</tbody></table></div>`;
+  const cols = [6, 12, 24, 36, 48, 60], rowsT = SETS.flatMap(k => { const p = MOD(k).projection; return [["no_update", "Historical pace"], ["matched_update", "If current pace persists"]].map(([key, nm]) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${SN[k]}: ${nm}</th>${cols.map(m => { const i = p.months.indexOf(m), r = p[key]; return `<td>${pct(r.share[i])}<br><span class="muted small">${pct(r.lo[i])}–${pct(r.hi[i])}</span></td>`; }).join("")}</tr>`); });
+  $("#projTable").innerHTML = `<table><caption class="vh">Projected share realised by month, with 10th–90th percentile band</caption><thead><tr><th scope="col">Line</th>${cols.map(m => `<th scope="col">${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rowsT.join("")}</tbody></table>`;
+}
+
+/* 6 accuracy */
+function renderAccuracy() {
+  const E = D.ev, wilson = (c) => c && c.p != null ? `${pct(c.p)} <small class="muted">(${pct(c.lo)}–${pct(c.hi)})</small>` : "–";
+  const CAP = {final_bulk: "Gemini-only verdicts", strong: "Claude's own verdicts", final_claude: "Claude-only verdicts"};
+  const card = (k) => { const g = evOf(k), e = g.e1, d = g.date, nOf = (c) => c ? `${c.k} of ${c.n}` : "";
+    return `<div class="panel acc-card"><h3>${SN[k]}</h3><p class="muted small" style="margin:0 0 6px">${CAP[evKey(k)]}, compared with the hand labels at the end of the term</p>
+    <div class="row"><span>Agreement on <em>realised or not</em></span><b>${wilson(e.accuracy)}</b><small>${nOf(e.accuracy)} promises</small></div>
+    <div class="row"><span>Precision</span><b>${wilson(e.precision)}</b><small>When the judge says realised, the hand label agrees (${nOf(e.precision)}).</small></div>
+    <div class="row"><span>Recall</span><b>${wilson(e.recall)}</b><small>Of the promises the hand label says were realised, the share the judge also found (${nOf(e.recall)}).</small></div>
+    <div class="row"><span>Specificity</span><b>${wilson(e.specificity)}</b><small>Of the promises the hand label says were not realised, the share the judge agrees on (${nOf(e.specificity)}).</small></div>
+    <div class="row"><span>Date gap</span><b>${(d.median_abs_days / 30.4).toFixed(1)} months</b><small>Median, over ${d.n} promises both say were realised; ${pct(d.within_90_days.p)} are within 90 days.</small></div></div>`; };
+  $("#accCards").innerHTML = SETS.map(card).join("");
+  const pt = E.per_term_n || {}, parts = Object.entries(pt).map(([t, n]) => `${n} ${TERMS[t]}`).join(" and ");
+  $("#accSub").innerHTML = `A sample of <strong>n = ${E.n_labels}</strong> promises (${parts}) was labelled by hand without seeing any verdict. ${pt["TVK-2026"] ? "" : "<strong>No TVK promise is in the sample</strong>, so TVK verdicts have no accuracy figure of their own. "}Intervals are 95% Wilson intervals; with a sample this small they are wide. Aggregate numbers only.`;
+  $("#limits").innerHTML = `<li><strong>They depend on the judge.</strong> Switch the judge in section 2 and the realised shares move; neither setting is the truth.</li>
+    <li><strong>The hand-labelled check is small:</strong> ${E.n_labels} promises, from the two completed terms.</li>
+    <li><strong>The projection is conditional.</strong> It is built from two completed terms treated as independent draws and shows what historical patterns would imply, with the assumptions stated; it is not a forecast.</li>
+    <li><strong>"No evidence found" is not "nothing happened".</strong> It means the document corpus held nothing showing an official step.</li>`;
+}
+
+function renderAll() { renderRobust(); renderView(); renderForest(); renderForestText(); renderPace(); renderProjection(); renderAccuracy(); }
+Promise.all([load("summary_gemini.json"), load("summary_claude.json"), load("model_gemini.json"), load("model_claude.json"), load("pace.json"), load("evaluation.json"), load("model.json"), load("work.json").catch(() => null)]).then(([sg, sc, mg, mc, pace, ev, mixed, work]) => {
+  D = {sum: {gemini: sg, claude: sc}, model: {gemini: mg, claude: mc}, pace, ev, mixed};
+  $("#foot").innerHTML = footer(sg);
   const nDocs = work ? work.documents - (work.documents_by_type.manifesto || 0) : null;
-  const nProm = work ? work.promises_total : sum.cells.filter(x => x.month === 0 || x.term === "TVK-2026" && x.month === 5).reduce((a, x) => a + x.n, 0);
-  bind({facts: {terms: Object.keys(sum.terms).length, promises: nProm, documents: nDocs}});
-  $("#nextP").textContent = `All ${int(nProm)} promises with status, date, judge and evidence quotes`;
-  if (work) {
-    const it = [[int(nDocs), "official documents searched"], [int(work.promises_total), "promises extracted"], [int(work.retrieval_tasks), "evidence searches (indicator × date)"], [int(work.indicator_verdicts), "judge verdict rows"]];
-    $("#behind").innerHTML = it.map(([n, l]) => `<div><div class="stat">${n}</div><div class="muted small">${l}</div></div>`).join("") + `<p class="link"><a href="work.html">See the pipeline stage by stage, with how each was checked →</a></p>`;
-  } else $("#behind").innerHTML = `<p class="link"><a href="work.html">See the pipeline stage by stage →</a></p>`;
-  $$("#regime button").forEach(b => b.onclick = () => { regime = b.dataset.r; render(); });
-  $("#showDoc").onchange = (e) => { showDoc = e.target.checked; render(); };
-  onTheme(render); render();
+  const nProm = work ? work.promises_total : sg.cells.filter(x => x.month === 0 || (x.term === "TVK-2026" && x.month === 5)).reduce((a, x) => a + x.n, 0);
+  bind({facts: {terms: Object.keys(sg.terms).length, promises: nProm, documents: nDocs}});
+  $$("#viewbar button").forEach(b => b.onclick = () => { view = b.dataset.v; renderView(); });
+  $("#showDoc").onchange = (e) => { showDoc = e.target.checked; renderView(); };
+  let fw = 0; if (window.ResizeObserver) new ResizeObserver(() => { const w = $("#forest").clientWidth; if (w && w !== fw) { fw = w; renderForest(); } }).observe($("#forest"));
+  onTheme(renderAll); renderAll();
 }).catch(e => showLoadError(e));
 </script></body></html>

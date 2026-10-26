@@ -28,3 +28,10 @@ Spot-check verdicts are not in the database today (they live in the reviewed CSV
 - `evaluation.json`: add `per_term_n["TVK-2026"] = 0` explicitly. The pages infer "no TVK promise in the sample" from the key being absent.
 - `model*.json`: add `projection.horizon_month` (the pages use the last entry of `projection.months`, currently 60).
 - `promises.json`: a short `judge_label` per verdict would avoid the `strong/bulk/human` to "Claude/Gemini/human fix" mapping being duplicated in `index.html`, `promises.html` and `site.js`.
+
+## 4. Overview redesign (D-121): what the page assumes about the data
+- `evaluation.json.judges.final_claude` (the Claude-only final, same group structure as `final_bulk`). Until it exists the Claude-only accuracy card uses `judges.strong` (Claude's own verdicts), and says so in its caption.
+- `evaluation.json.per_term_n["TVK-2026"] = 0` explicitly (the page infers "no TVK promise" from the key being absent).
+- `model_claude.json.backtest.landmarks[m].unavailable = true` for months not covered: the page prints "not available in this setting". Months 5 and 6 are the ones the overview reads (month 5).
+- `pace.json.claude_preferred_mixed` is used by the whitepaper; the overview reads `gemini` and `claude`.
+- When the Claude-only run is final, set `meta.standin = false` in `summary_claude.json` and `model_claude.json`; every "preliminary" tag then disappears without a page change.

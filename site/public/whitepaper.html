@@ -57,8 +57,10 @@
 <div id="bt" class="scroll"></div>
 
 <h2 id="s9">9. The TVK projection</h2>
+<div id="paceWp"></div>
 <p>The projection starts from what is documented for TVK after five months and adds the number of further promises the historical hazards would realise, using a model fitted on both completed terms with equal weight. Three lines are shown because the result depends on one assumption, how to read TVK's slow documented start:</p>
 <ul id="scen"></ul>
+<p id="scenNote"></p>
 <p>The bands show fitting uncertainty only. Nothing here predicts what TVK will do: it states what historical patterns would imply.</p>
 
 <h2 id="judge-dependence">10. How much depends on the judge</h2>
@@ -66,6 +68,7 @@
 <div id="regimeCmp" class="scroll"></div>
 <p>Three things follow.</p>
 <ol id="regimeText2"></ol>
+<p id="overviewNote"></p>
 
 <h2 id="limitations">11. Limitations</h2>
 <ol id="lims"></ol>
@@ -86,7 +89,7 @@
 <script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("whitepaper");
-Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null), load("work.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB, work]) => {
+Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null), load("work.json").catch(() => null), load("pace.json").catch(() => null), load("model_claude.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB, work, pace, mclaude]) => {
   $("#foot").innerHTML = footer(sum);
   const n = {}; sum.cells.filter(c => c.month === 0 || (c.term === "TVK-2026")).forEach(c => n[c.term] = c.n);
   const W = work ? Object.assign({}, work, {docs: work.documents - (work.documents_by_type.manifesto || 0), chunks_round: Math.round(work.chunks / 1000) * 1000}) : {};
@@ -117,6 +120,13 @@ Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").c
   $("#scen").innerHTML = SCENARIOS.filter(s => model.projection[s.key]).map(s => `<li><strong>${s.name}</strong> (month 60: ${pct(model.projection[s.key].share.slice(-1)[0])}). <em>Assumes:</em> ${s.says} <em>Weakness:</em> ${s.weak}</li>`).join("");
   const ends = SCENARIOS.filter(s => model.projection[s.key]).map(s => model.projection[s.key].share.slice(-1)[0]);
   const cz = (m) => m.backtest.concordance.toFixed(2);
+  if (pace && pace.gemini && pace.claude_preferred_mixed) {
+    const pm = pace.claude_preferred_mixed, pg = pace.gemini, tn = (p) => p.matched_terms.map(t => TERMS[t]).join(" and "), kk = (p) => `k = ${p.k.toFixed(2)} (${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})`;
+    $("#paceWp").innerHTML = `<p><strong>Like-for-like pace.</strong> The question of whether TVK is keeping pace is answered before any projection. TVK's documented count after ${pm.month} months (O) is compared with the count the completed term(s) judged by the same judge had documented by month ${pm.month} (E). The pace factor is k = (O + c) / (E + c), with c = ${pm.prior_events} prior events; its 80% interval is the 10th to 90th percentile of the posterior Gamma(c + O, c + E), and 1.0 means the same pace as the earlier government(s). Claude-preferred judging: O = ${int(pm.observed)} of ${int(pm.n)}, matched to ${tn(pm)}, ${kk(pm)}. Gemini-only judging: O = ${int(pg.observed)} of ${int(pg.n)}, matched to ${tn(pg)}, ${kk(pg)}.</p>`;
+    ab.push(`<strong>TVK's pace after five months</strong> is ${pct(Math.min(pm.k, pg.k))}–${pct(Math.max(pm.k, pg.k))} of what the earlier government(s) had documented by the same month, depending on the judge (${kk(pm)} Claude-preferred; ${kk(pg)} Gemini-only; section 9).`);
+  }
+  if (model.projection.pace_update) $("#scenNote").innerHTML = `Scenario B, which applies the pace factor to future hazards, is an extrapolation from five months and is not validated as a forecast: in the reverse backtest the pace update cut the month-5 error only when the two terms had different judges (section 10). The overview shows only the "no update" line, labelled historical pace, and this line. Scenario A is kept here with its explanation: its expectation uses hindsight event dates while TVK's count is only what is documented now, so part of its apparent slowdown is documentation lag (its pace factor is ${model.projection.pace_update.k.toFixed(2)}).`;
+  if (mclaude && mclaude.meta && mclaude.meta.standin) $("#overviewNote").textContent = "The overview compares a Claude-only view with the Gemini-only view. Until the Claude-only run is finished, the Claude-only view is a preliminary stand-in; the comparison on this page uses the Claude-preferred setting described above.";
   if (sumB && modelB) {
     const row = (name, f) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${name}</th><td>${f(sum, model, "final")}</td><td>${f(sumB, modelB, "final_bulk")}</td></tr>`;
     const acc = (k) => { const g = ev && ev.judges[k] && ev.judges[k].groups.pooled_AIADMK_DMK.e1; return g ? `${pct(g.accuracy.p)} (${pct(g.recall.p)} recall, ${pct(g.specificity.p)} specificity)` : "–"; };

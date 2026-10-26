@@ -3,7 +3,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const pct = (x, d = 0) => (x == null || isNaN(x)) ? "–" : (100 * x).toFixed(d) + "%";
 const int = (n) => n == null ? "–" : Number(n).toLocaleString("en-IN");
 const TERMS = {"AIADMK-2016": "AIADMK 2016–21", "DMK-2021": "DMK 2021–26", "TVK-2026": "TVK 2026–"};
-const COLORS = () => { const s = getComputedStyle(document.documentElement), g = (k) => s.getPropertyValue(k).trim(); return {"AIADMK-2016": g("--c-a"), "DMK-2021": g("--c-d"), "TVK-2026": g("--c-t"), muted: g("--muted"), accent: g("--accent"), fg: g("--fg"), line: g("--line"), surface: g("--surface")}; };
+const COLORS = (el = document.documentElement) => { const s = getComputedStyle(el), g = (k) => s.getPropertyValue(k).trim(); return {"AIADMK-2016": g("--c-a"), "DMK-2021": g("--c-d"), "TVK-2026": g("--c-t"), muted: g("--muted"), accent: g("--accent"), fg: g("--fg"), line: g("--line"), surface: g("--surface"), bg: g("--bg")}; };
 const load = (f) => fetch("data/" + f).then(r => { if (!r.ok) throw new Error(f); return r.json(); });
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const label = (s) => s.replace(/_/g, " ");
@@ -50,7 +50,7 @@ function footer(sum) {
   return `<footer class="site"><p>UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10. Code: GPL v3. Data and text: CC BY 4.0. Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure. ${sum ? "Verdicts file: " + esc(sum.final_export) + "." : ""}</p></footer>`;
 }
 function lineChart(el, datasets, opts = {}) {
-  const c = COLORS();
+  const c = COLORS(el);
   return new Chart(el, {type: "line", data: {datasets}, options: Object.assign({responsive: true, maintainAspectRatio: false, parsing: false, animation: false,
     interaction: {mode: "nearest", intersect: false},
     scales: {x: {type: "linear", title: {display: true, text: "months since swearing-in", color: c.muted}, ticks: {color: c.muted, stepSize: 12}, grid: {color: c.line}, min: 0, max: 60},
