@@ -692,16 +692,16 @@
       "tasks": 4260
     },
     "claude_full_gap": {
-      "units": 234,
-      "exported": 234,
+      "units": 41,
+      "exported": 41,
       "judged": 0,
-      "tasks": 252
+      "tasks": 46
     },
     "claude_full": {
-      "units": 629,
-      "exported": 629,
-      "judged": 629,
-      "tasks": 711
+      "units": 822,
+      "exported": 822,
+      "judged": 822,
+      "tasks": 917
     },
     "claude_aiadmk_m5": {
       "units": 312,
@@ -720,12 +720,6 @@
       "exported": 0,
       "judged": 0,
       "tasks": 385
-    },
-    "flagged_aiadmk_landmarks": {
-      "units": 258,
-      "exported": 0,
-      "judged": 0,
-      "tasks": 346
     }
   },
   "batches": [
@@ -733,2119 +727,3178 @@
       "name": "batch_001",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": 175728,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_002",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": 172560,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_003",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": 169021,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_004",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": 172110,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_005",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": 173227,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_006",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": 177088,
+      "model": "claude-opus-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_007",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 170040,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_008",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": 92363,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_009",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": 71130,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_010",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 126653,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_011",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 170170,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_012",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 174463,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_013",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 165102,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_014",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 169344,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_015",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166569,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_016",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_017",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 168011,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_018",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 171474,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_019",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 171366,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_020",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 161651,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_021",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 167564,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_022",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166397,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_023",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 175108,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_024",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_025",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166386,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_026",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 164866,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_027",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 170844,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_028",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166229,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_029",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 167984,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_030",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_031",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_032",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 169737,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_033",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 171553,
+      "model": "claude-opus-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_034",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166773,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_035",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 171121,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_036",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166250,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_037",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 168489,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_038",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 161586,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_039",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166732,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_040",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 169469,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_041",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 166450,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_042",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 162382,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_043",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_044",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_045",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 164047,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_046",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_047",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_048",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 168397,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_049",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 164518,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_050",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 171205,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_051",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 170328,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_052",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 156611,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_053",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 172812,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_054",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 170502,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_055",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 165879,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_056",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 156649,
+      "model": "claude-opus-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_057",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 168438,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_058",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 169308,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_059",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 166076,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_060",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 164085,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_061",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 170517,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_062",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 168747,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_063",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 170771,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_064",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 168457,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_065",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 169380,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_066",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 166256,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_067",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 169646,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_068",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 172960,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_069",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 172709,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_070",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 170147,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_071",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 168547,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_072",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 169433,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_073",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 166171,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_074",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 170548,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_075",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 169357,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_076",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 173681,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_077",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 176870,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_078",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_079",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 172709,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_080",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 167722,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_081",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 170753,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_082",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 171410,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_083",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 180759,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_084",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_085",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 167126,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_086",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 166310,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_087",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 167612,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_088",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 182025,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_089",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 165166,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_090",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 171047,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_091",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 158203,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_092",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 167740,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_093",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 168885,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_094",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 169477,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_095",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 162879,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_096",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 171139,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_097",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 170638,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_098",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 165065,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_099",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 167900,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_100",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 164877,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_101",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 170379,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_102",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 164428,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_103",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 164816,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_104",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 165010,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_105",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 168914,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_106",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 169613,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_107",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": 171316,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_108",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_109",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_110",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_111",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_112",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_113",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_114",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_115",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_116",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_117",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_118",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_119",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_120",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_121",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_122",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_123",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_124",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_125",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_126",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_127",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_128",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_129",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_130",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_131",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_132",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_133",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_134",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_135",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_136",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_137",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_138",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_139",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_140",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_141",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_142",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_143",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_144",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_145",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_146",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_147",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_148",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_149",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_150",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_151",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_152",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_153",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_154",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_155",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_156",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_157",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_158",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_159",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_160",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_161",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_162",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_163",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_164",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_165",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_166",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_167",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_168",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_169",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_170",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_171",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_172",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_173",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_174",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_175",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_176",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_177",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_178",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_179",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_180",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_181",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_182",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_183",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_184",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_185",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_186",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_187",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_188",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_189",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_190",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_191",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_192",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_193",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_194",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_195",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_196",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_197",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_198",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_199",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_200",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_201",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_202",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_203",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_204",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_205",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_206",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_207",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_208",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_209",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_210",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_211",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": 118090,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_212",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": 107801,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_213",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_214",
       "groups": [
         "DMK-2021@2023-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_215",
       "groups": [
         "DMK-2021@2024-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_216",
       "groups": [
         "DMK-2021@2025-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_006_r",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-opus-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_033_r",
       "groups": [
         "DMK-2021@2021-10-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_056_r",
       "groups": [
         "DMK-2021@2021-11-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_093_r",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_098_r",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_104_r",
       "groups": [
         "DMK-2021@2022-05-07"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_217",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 166230,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_218",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 168685,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_219",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 166283,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_220",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169170,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_221",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 164124,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_222",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 163938,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_223",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 171075,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_224",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 162005,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_225",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 167574,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_226",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 165453,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_227",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 167605,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_228",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169576,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_229",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 167262,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_230",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 171217,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_231",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 171006,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_232",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 165356,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_233",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 168626,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_234",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 172463,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_235",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 168576,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_236",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169242,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_237",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 172432,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_238",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 171953,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_239",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 167079,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_240",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 172298,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_241",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 167781,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_242",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 165369,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_243",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 160810,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_244",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169572,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_245",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 166383,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_246",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 166807,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_247",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169738,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_248",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 168782,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_249",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 164203,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_250",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169230,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_251",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 169489,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_252",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": 173401,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_253",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_229_r",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_239_r",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_250_r",
       "groups": [
         "TVK-2026@2026-10-10"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_254",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_255",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_256",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_257",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_258",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_259",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_260",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_261",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": 159028,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_262",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_255_r",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_257_r",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_263",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_264",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_265",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_266",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_267",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_268",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_269",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_270",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_271",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_272",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_273",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_274",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_275",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_276",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_277",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_278",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_279",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_280",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_281",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_282",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_283",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_284",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_285",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_286",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_287",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_288",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_289",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_290",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_291",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_292",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_293",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_294",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_295",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_296",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_297",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_298",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_299",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_300",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_301",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_302",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_303",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_304",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_305",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_306",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_307",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_308",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_309",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_310",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_311",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_312",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_313",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_314",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_315",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_316",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_317",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_318",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_319",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_320",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_321",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_322",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_323",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_324",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_325",
       "groups": [
         "AIADMK-2016@2016-10-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_326",
       "groups": [
         "AIADMK-2016@2016-11-23"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_269_r",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_272_r",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_273_r",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_327",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_328",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_329",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_330",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_331",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_332",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_333",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_334",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_335",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_336",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_337",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_338",
       "groups": [
         "AIADMK-2016@full"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     },
     {
       "name": "batch_339",
       "groups": [
         "DMK-2021@full"
-      ]
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     }
   ],
   "fingerprint_history": [
