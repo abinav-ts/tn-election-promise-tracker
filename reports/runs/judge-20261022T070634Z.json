@@ -693,7 +693,7 @@
     "claude_full": {
       "units": 863,
       "exported": 863,
-      "judged": 496,
+      "judged": 572,
       "tasks": 963
     },
     "claude_aiadmk_m5": {
@@ -3368,8 +3368,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_285",
@@ -3377,8 +3377,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_286",
@@ -3386,8 +3386,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_287",
@@ -3395,8 +3395,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_288",

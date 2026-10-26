@@ -45709,7 +45709,30 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0147@full",
+    "DMK-2021-0054@full",
+    "DMK-2021-0605@full",
+    "DMK-2021-0153@full",
+    "DMK-2021-0538@full",
+    "DMK-2021-0553@full",
+    "DMK-2021-0607@full",
+    "DMK-2021-0411@full",
+    "DMK-2021-0288@full",
+    "DMK-2021-0169@full",
+    "DMK-2021-0117@full",
+    "DMK-2021-0202@full",
+    "DMK-2021-0072@full",
+    "DMK-2021-0002@full",
+    "DMK-2021-0529@full",
+    "DMK-2021-0488@full",
+    "DMK-2021-0458@full",
+    "DMK-2021-0329@full",
+    "DMK-2021-0091@full"
+   ]
   },
   {
    "n": 285,
@@ -45908,7 +45931,29 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0432@full",
+    "DMK-2021-0604@full",
+    "DMK-2021-0572@full",
+    "DMK-2021-0503@full",
+    "DMK-2021-0429@full",
+    "DMK-2021-0484@full",
+    "DMK-2021-0064@full",
+    "DMK-2021-0007@full",
+    "DMK-2021-0087@full",
+    "DMK-2021-0406@full",
+    "DMK-2021-0502@full",
+    "DMK-2021-0528@full",
+    "DMK-2021-0666@full",
+    "DMK-2021-0030@full",
+    "DMK-2021-0114@full",
+    "DMK-2021-0530@full",
+    "DMK-2021-0651@full",
+    "DMK-2021-0270@full"
+   ]
   },
   {
    "n": 286,
@@ -46103,7 +46148,31 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0589@full",
+    "DMK-2021-0456@full",
+    "DMK-2021-0051@full",
+    "DMK-2021-0449@full",
+    "DMK-2021-0303@full",
+    "DMK-2021-0183@full",
+    "DMK-2021-0294@full",
+    "DMK-2021-0304@full",
+    "DMK-2021-0189@full",
+    "DMK-2021-0412@full",
+    "DMK-2021-0275@full",
+    "DMK-2021-0423@full",
+    "DMK-2021-0402@full",
+    "DMK-2021-0515@full",
+    "DMK-2021-0459@full",
+    "DMK-2021-0517@full",
+    "DMK-2021-0660@full",
+    "DMK-2021-0232@full",
+    "DMK-2021-0100@full",
+    "DMK-2021-0506@full"
+   ]
   },
   {
    "n": 287,
@@ -46315,7 +46384,30 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0205@full",
+    "DMK-2021-0574@full",
+    "DMK-2021-0332@full",
+    "DMK-2021-0468@full",
+    "DMK-2021-0381@full",
+    "DMK-2021-0377@full",
+    "DMK-2021-0487@full",
+    "DMK-2021-0481@full",
+    "DMK-2021-0140@full",
+    "DMK-2021-0208@full",
+    "DMK-2021-0037@full",
+    "DMK-2021-0324@full",
+    "DMK-2021-0213@full",
+    "DMK-2021-0357@full",
+    "DMK-2021-0407@full",
+    "DMK-2021-0316@full",
+    "DMK-2021-0335@full",
+    "DMK-2021-0480@full",
+    "DMK-2021-0520@full"
+   ]
   },
   {
    "n": 288,
@@ -52276,7 +52368,7 @@
   "claude_full": {
    "units": 863,
    "exported": 863,
-   "judged": 496,
+   "judged": 572,
    "tasks": 963
   },
   "claude_aiadmk_m5": {
