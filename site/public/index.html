@@ -1,81 +1,174 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UMC 301 Course Project 1 - Election Promise Tracking</title>
 <meta name="description" content="Did Tamil Nadu governments keep their manifesto promises, and how fast? Evidence-based verdicts, survival curves and a projection for TVK 2026.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <link rel="stylesheet" href="assets/site.css"></head>
 <body data-page="index"><div class="wrap"><div id="nav"></div>
-<main>
-<section><h1>Did the promises get kept, and how fast?</h1>
-<p class="lede">Every promise in the manifestos of the parties that formed the Tamil Nadu government in 2016, 2021 and 2026, checked against official documents: policy notes, budget speeches, Government Orders and audit reports. A promise counts as <em>realised</em> when an official step puts it into operation, with the date of the earliest such step. Nothing here ranks parties or rates governments.</p></section>
-<section><h2>Which judge?</h2><p class="muted small">The answers depend on who judged the evidence. Both views are shown; neither is "the truth". The whitepaper compares them against a hand-labelled sample.</p>
-<div id="regime" class="filters" role="group" aria-label="Judging setting"><button type="button" class="pill" data-r="final" style="cursor:pointer;padding:8px 14px;border:1px solid var(--line)">Claude-preferred judging</button><button type="button" class="pill" data-r="bulk" style="cursor:pointer;padding:8px 14px;border:1px solid var(--line)">Gemini-only judging</button></div><p id="regimeText" class="note small" style="margin-top:10px"></p></section>
-<section id="cards" class="grid" aria-label="Headline numbers"></section>
-<section><h2>Share of promises realised, by month of tenure</h2>
-<p class="muted small">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The dots are what was documented at each landmark month; the gap between line and dots is evidence that appeared only later.</p>
-<div class="chart"><canvas id="kmChart" role="img" aria-label="Share of promises realised by month for each term"></canvas></div>
-<div id="judgeNote" class="note small" style="margin-top:10px"></div></section>
-<section><h2>TVK 2026: a projection, with its assumptions</h2>
-<p class="muted">Projection under historical patterns, built from the two completed terms. It shows what the past would imply, with the assumptions stated below each line; it is not a prediction of what TVK will do. Bands show fitting uncertainty only.</p>
-<div class="chart"><canvas id="projChart" role="img" aria-label="Projected share of TVK promises realised by month under three assumptions"></canvas></div>
-<div id="proj-table" class="scroll" style="margin-top:12px"></div>
-<div id="assume" class="assume" style="margin-top:12px"></div></section>
-<section><h2>How well do these methods work?</h2><div id="trust" class="grid"></div>
-<p class="small muted" style="margin-top:8px">Reverse backtest: the model is fitted on DMK 2021–26 only and asked to predict AIADMK 2016–21 from its early months. <a href="whitepaper.html#accuracy">Accuracy against a hand-labelled sample</a> and all limitations are in the whitepaper.</p></section>
+<main id="main">
+
+<section aria-labelledby="h-top">
+<h1 id="h-top">Did the promises get kept, and how fast?</h1>
+<p class="lede">Every promise in the manifestos of the parties that formed the Tamil Nadu government in 2016, 2021 and 2026, checked against official documents: policy notes, budget speeches, Government Orders and audit reports. A promise counts as <em>realised</em> when an official step puts it into operation, with the date of the earliest such step. Nothing here ranks parties or rates governments.</p>
+<p class="muted small" id="meta"></p>
+</section>
+
+<section aria-labelledby="h-found">
+<p class="eyebrow">1 · What was found</p>
+<h2 id="h-found">The answer, and what it depends on</h2>
+<div class="judge" id="judge" role="group" aria-label="Judging setting">
+  <span class="lab" id="judgeLab">Judge:</span>
+  <div class="seg" id="regime"><button type="button" data-r="final" aria-describedby="judgeLab">Claude-preferred</button><button type="button" data-r="bulk">Gemini-only</button></div>
+  <p class="why" id="regimeShort"></p>
+</div>
+<details class="more" style="margin:8px 0 14px"><summary>How the two judging settings differ</summary>
+  <p class="small muted" id="regimeText"></p>
+  <p class="small muted">The answers depend on who judged the evidence. Both views are shown; neither is "the truth". The <a href="whitepaper.html#judge-dependence">whitepaper</a> compares them against a hand-labelled sample.</p></details>
+<ol class="findings" id="findings" aria-live="polite"></ol>
+</section>
+
+<section aria-labelledby="h-km">
+<p class="eyebrow">2 · The completed terms</p>
+<h2 id="h-km">Share of promises realised, by month of tenure</h2>
+<p class="sub">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The diamonds are what was documented at each landmark month; the gap between line and diamonds is evidence that appeared only later.</p>
+<div class="terms" id="cards" aria-label="Headline numbers per term"></div>
+<div class="figure" style="margin-top:12px">
+  <div class="tools"><label class="check"><input type="checkbox" id="showDoc"> Show what was documented at each landmark</label></div>
+  <div class="chart"><canvas id="kmChart" role="img" aria-label="Share of promises realised by month for each term" aria-describedby="kmAlt"></canvas></div>
+  <div class="key" id="kmKey"></div>
+  <p class="vh" id="kmAlt"></p>
+</div>
+<details class="more"><summary>Who judged what at month 5</summary><p class="small" id="judgeNote"></p></details>
+</section>
+
+<section aria-labelledby="h-tvk">
+<p class="eyebrow">3 · TVK 2026–</p>
+<h2 id="h-tvk">A projection, with its assumptions</h2>
+<p class="sub">Projection under historical patterns, built from the two completed terms. It shows what the past would imply, with the assumptions stated below each line; it is not a prediction of what TVK will do. Bands show fitting uncertainty only.</p>
+<div class="figure">
+  <div class="chart"><canvas id="projChart" role="img" aria-label="Projected share of TVK promises realised by month under three assumptions" aria-describedby="projAlt"></canvas></div>
+  <div class="key" id="projKey"></div>
+  <p class="vh" id="projAlt"></p>
+</div>
+<div class="lines" id="assume"></div>
+<details class="more"><summary>Numbers by month, with 10th–90th percentile bands</summary><div id="proj-table" class="scroll"></div></details>
+</section>
+
+<section aria-labelledby="h-trust">
+<p class="eyebrow">4 · How far to trust this</p>
+<h2 id="h-trust">Measured accuracy, and the limits</h2>
+<div class="trust" id="trust"></div>
+<div class="honesty" style="margin-top:12px" id="honesty"></div>
+</section>
+
+<section aria-labelledby="h-work">
+<p class="eyebrow">5 · Behind these numbers</p>
+<h2 id="h-work">The work, in short</h2>
+<div class="behind" id="behind"></div>
+<div class="next" style="margin-top:12px">
+  <a href="promises.html"><b>Promise explorer</b><span id="nextP">Every promise with its status and evidence</span></a>
+  <a href="whitepaper.html"><b>Whitepaper</b><span>Method, accuracy tables and all limitations</span></a>
+</div>
+</section>
+
 </main><div id="foot"></div></div>
 <script src="assets/vendor/chart.umd.min.js"></script><script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("index");
 const REGIMES = {
-  final: {name: "Claude-preferred judging", text: "Claude's verdicts are used wherever Claude judged (the hand-labelled sample, headline promises, all TVK promises at month 5, DMK's first landmarks); the lighter Gemini model fills the rest. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."},
-  bulk: {name: "Gemini-only judging", text: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised."}};
-let regime = "final", D = null, charts = [];
-function mixText(sum, t, m) { const x = sum.cells.find(y => y.term === t && y.month === m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : ""; }
+  final: {name: "Claude-preferred judging", short: "Claude's verdicts wherever Claude judged; the Gemini model fills the rest.", text: "Claude's verdicts are used wherever Claude judged (the hand-labelled sample, headline promises, all TVK promises at month 5, DMK's first landmarks); the lighter Gemini model fills the rest. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."},
+  bulk: {name: "Gemini-only judging", short: "One judge, the lighter Gemini model, for every promise of every term.", text: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised."}};
+let regime = "final", D = null, charts = [], showDoc = false;
+const mixText = (sum, t, m) => { const x = sum.cells.find(y => y.term === t && y.month === m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : ""; };
+const cellOf = (S, t, m) => S.cells.find(x => x.term === t && x.month === m);
+const keyItem = (kind, color, text) => `<span style="color:${color}"><i class="${kind}"></i><span style="color:var(--muted)">${text}</span></span>`;
+
 function render() {
   charts.forEach(c => c.destroy()); charts = [];
-  const sum = regime === "bulk" ? D.sumB : D.sum, model = regime === "bulk" ? D.modelB : D.model, ev = D.ev, c = COLORS(), cells = sum.cells;
+  const sum = regime === "bulk" ? D.sumB : D.sum, model = regime === "bulk" ? D.modelB : D.model, ev = D.ev, c = COLORS(), cells = sum.cells, p = model.projection, xs = p.months;
+  $("#regimeShort").textContent = REGIMES[regime].short;
   $("#regimeText").innerHTML = `<strong>${REGIMES[regime].name}.</strong> ${REGIMES[regime].text}`;
-  document.querySelectorAll("#regime button").forEach(b => { b.setAttribute("aria-pressed", b.dataset.r === regime); b.style.fontWeight = b.dataset.r === regime ? 700 : 400; b.style.borderColor = b.dataset.r === regime ? c.accent : c.line; });
+  $$("#regime button").forEach(b => b.setAttribute("aria-pressed", b.dataset.r === regime));
+
+  // 1 findings
+  const full = (t) => cellOf(sum, t, 0), tv5 = (S) => cellOf(S, "TVK-2026", 5);
+  const last = xs.length - 1, ends = SCENARIOS.filter(s => p[s.key]).map(s => p[s.key].share[last]);
+  const f = [
+    [`${pct(full("AIADMK-2016").realised)} · ${pct(full("DMK-2021").realised)}`, `<span class="k">Completed terms.</span> Share of promises realised by the end of the term, AIADMK 2016–21 and DMK 2021–26 respectively. This is not a ranking of parties. Under Claude-preferred judging the terms were judged by different mixes of judges (see section 4).`]];
+  if (D.sumB) f.push([`${pct(tv5(D.sum).realised, 1)} <small>vs</small> ${pct(tv5(D.sumB).realised, 1)}`, `<span class="k">The judge matters.</span> TVK 2026– at month 5, from the same evidence: Claude-preferred judging against Gemini-only judging. No TVK promise is in the hand-labelled sample, so this project cannot say which is closer.`]);
+  f.push([`${pct(Math.min(...ends))}–${pct(Math.max(...ends))}`, `<span class="k">TVK 2026–, under historical patterns.</span> Projected share realised by ${monthLabel(xs[last])}, across three stated assumptions (below) in the current judging setting. It is not a prediction of what TVK will do.`]);
+  $("#findings").innerHTML = f.map(([b, t]) => `<li><div class="big">${b}</div><p>${t}</p></li>`).join("");
+
+  // 2 term strip + KM chart
   $("#cards").innerHTML = Object.entries(sum.terms).map(([t, info]) => {
-    const full = cells.find(x => x.term === t && x.month === 0), m5 = cells.find(x => x.term === t && x.month === 5);
-    const main = info.term_end ? `<div class="stat">${pct(full.realised)}</div><div class="muted small">realised by the end of the term (${full.n} promises)</div>` : `<div class="stat">${pct(m5.realised, 1)}</div><div class="muted small">documented as realised after 5 months (${m5.n} promises)</div>`;
-    return `<div class="card"><div class="muted small"><span class="sw" style="background:${c[t]}"></span>${TERMS[t]}</div>${main}<div class="muted small" style="margin-top:6px">${info.term_end ? "Month 5: " + pct(m5.realised) + " documented" : "Term in progress"}</div></div>`;
+    const fu = cellOf(sum, t, 0), m5 = cellOf(sum, t, 5);
+    const main = info.term_end ? `<div class="stat">${pct(fu.realised)}</div><div class="muted small">realised by the end of the term (${int(fu.n)} promises)</div>` : `<div class="stat">${pct(m5.realised, 1)}</div><div class="muted small">documented as realised after 5 months (${int(m5.n)} promises)</div>`;
+    return `<div><div class="muted small"><span class="sw" style="background:${c[t]}"></span>${TERMS[t]}</div>${main}<div class="muted small" style="margin-top:4px">${info.term_end ? "Month 5: " + pct(m5.realised) + " documented" : "Term in progress"}</div></div>`;
   }).join("");
-  const ds = [];
+  const ds = [], alt = [];
   for (const [t, e] of Object.entries(model.km.terms)) {
     if (t === "TVK-2026") continue;
-    ds.push({label: TERMS[t] + " (curve)", data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c[t], backgroundColor: c[t], tension: .2, pointRadius: 2});
-    ds.push({label: TERMS[t] + " (documented at the time)", data: cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised})), borderColor: c[t], backgroundColor: c[t], showLine: false, pointStyle: "rectRot", pointRadius: 5});
+    ds.push({label: TERMS[t], data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c[t], backgroundColor: c[t], tension: .2, pointRadius: 0, borderWidth: 2.5});
+    if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised})), borderColor: c[t], backgroundColor: c.surface, borderWidth: 2, showLine: false, pointStyle: "rectRot", pointRadius: 6});
+    const end = e.E1.realised[e.E1.realised.length - 1]; alt.push(`${TERMS[t]} reaches ${pct(end)} by month ${e.months[e.months.length - 1]}`);
   }
-  const tv = cells.find(x => x.term === "TVK-2026");
+  const tv = tv5(sum);
   ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c["TVK-2026"], backgroundColor: c["TVK-2026"], pointRadius: 7, showLine: false});
+  alt.push(`TVK 2026– is at ${pct(tv.realised, 1)} documented at month 5`);
   charts.push(lineChart($("#kmChart"), ds));
+  $("#kmAlt").textContent = "Chart summary: " + alt.join("; ") + ".";
+  $("#kmKey").innerHTML = ["AIADMK-2016", "DMK-2021"].map(t => keyItem("", c[t], TERMS[t])).join("") + (showDoc ? keyItem("sq", c.muted, "documented at the landmark month") : "") + `<span style="color:${c["TVK-2026"]}"><i class="sq" style="border-radius:50%;transform:none"></i><span style="color:var(--muted)">TVK 2026– at month 5</span></span>`;
   $("#judgeNote").innerHTML = `<strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${regime === "final" ? "The terms were judged by different mixes of judges, so part of AIADMK's early lead may be judge leniency. Switch to Gemini-only judging to compare the terms with one judge." : "Every term has the same judge here. Compare with Claude-preferred judging: how large the realised shares are depends heavily on the judge."}`;
-  const p = model.projection, xs = p.months, pd = [];
-  for (const s of SCENARIOS) {
-    const r = p[s.key]; if (!r) continue; const col = c[s.color] || s.color;
-    pd.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: col, backgroundColor: col, pointRadius: 0, borderWidth: 2.5});
+
+  // 3 projection
+  const pd = [], rows = SCENARIOS.filter(s => p[s.key]), palpha = [];
+  for (const s of rows) {
+    const r = p[s.key], col = c[s.color] || s.color;
+    pd.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: col, backgroundColor: col, pointRadius: 0, borderWidth: 2.5, borderDash: s.dash});
     if (r.lo) {
       pd.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: col + "26", pointRadius: 0, fill: "+1"});
       pd.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0});
     }
+    palpha.push(`${s.name}: ${[12, 24, 60].filter(m => xs.includes(m)).map(m => pct(r.share[xs.indexOf(m)]) + " at month " + m).join(", ")}`);
   }
-  const ch = lineChart($("#projChart"), pd); ch.options.plugins.legend.labels.filter = (item) => !/band/.test(item.text); ch.update(); charts.push(ch);
-  const cols = [6, 12, 24, 36, 48, 60], rows = SCENARIOS.filter(s => p[s.key]);
-  $("#proj-table").innerHTML = `<table><thead><tr><th>Line</th><th>Pace factor</th>${cols.map(m => `<th>${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rows.map(s => `<tr><td>${s.name}</td><td>${p[s.key].k.toFixed(2)}</td>${cols.map(m => `<td>${pct(p[s.key].share[xs.indexOf(m)])}${p[s.key].lo ? `<br><span class="muted small">${pct(p[s.key].lo[xs.indexOf(m)])}–${pct(p[s.key].hi[xs.indexOf(m)])}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  charts.push(lineChart($("#projChart"), pd));
+  $("#projAlt").textContent = "Chart summary, projection under historical patterns, starting from the share documented at month 5. " + palpha.join("; ") + ".";
+  $("#projKey").innerHTML = rows.map(s => `<span style="color:${c[s.color] || s.color}"><i class="${s.dash.length > 2 ? "dot" : s.dash.length ? "d" : ""}"></i><span style="color:var(--muted)">${s.name}</span></span>`).join("");
+  const cols = [6, 12, 24, 36, 48, 60];
+  $("#proj-table").innerHTML = `<table><caption class="vh">Projected share of TVK promises realised, by month, with the 10th–90th percentile band</caption><thead><tr><th scope="col">Line</th><th scope="col">Pace factor</th>${cols.map(m => `<th scope="col">${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rows.map(s => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${s.name}</th><td>${p[s.key].k.toFixed(2)}</td>${cols.map(m => `<td>${pct(p[s.key].share[xs.indexOf(m)])}${p[s.key].lo ? `<br><span class="muted small">${pct(p[s.key].lo[xs.indexOf(m)])}–${pct(p[s.key].hi[xs.indexOf(m)])}</span>` : ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
   const scenText = regime === "bulk" ? {matched_update: {says: "TVK's documented month-5 count is compared with the documented month-5 share of the completed terms judged by the same judge (here both, since one judge judged everything).", weak: "Added after scenario A's result was seen; with one judge for all terms it is close to the no-update line."}} : {};
-  $("#assume").innerHTML = rows.map(s => { const t = scenText[s.key] || s; return `<div class="card"><h3><span class="sw" style="background:${c[s.color] || s.color}"></span>${s.name}</h3><p><strong>Assumes:</strong> ${t.says}</p><p class="muted"><strong>Weakness:</strong> ${t.weak}</p></div>`; }).join("");
+  $("#assume").innerHTML = rows.map(s => { const t = scenText[s.key] || s; return `<div class="line" style="--lc:${c[s.color] || s.color}"><h3>${s.name}</h3><div class="stat">${pct(p[s.key].share[last])} <small>by ${monthLabel(xs[last])}</small></div><p><strong>Assumes:</strong> ${t.says}</p><p class="weak"><strong>Weakness:</strong> ${t.weak}</p></div>`; }).join("");
+
+  // 4 trust
   const lm = model.backtest.landmarks;
-  const cards = [`<div class="card"><div class="stat">${lm["5"].mae_model_pace.toFixed(1)} pts</div><div class="muted small">average gap between predicted and actual share realised, predicting AIADMK 2016–21 from its first 5 months with the pace update (${lm["5"].mae_model.toFixed(1)} pts without it; ${lm["5"].mae_baseline.toFixed(1)} pts using no promise characteristics)</div></div>`];
+  const cards = [`<div class="card"><div class="stat">${lm["5"].mae_model_pace.toFixed(1)} pts</div><div class="muted small">average gap between predicted and actual share realised, predicting AIADMK 2016–21 from its first 5 months with the pace update (${lm["5"].mae_model.toFixed(1)} pts without it; ${lm["5"].mae_baseline.toFixed(1)} pts using no promise characteristics). Fitted on DMK 2021–26 only.</div></div>`];
+  let nLab = null, noTvk = false;
   if (ev && ev.judges) {
-    const j = ev.judges[regime === "bulk" ? "final_bulk" : "final"]; const g = j && j.groups.pooled_AIADMK_DMK.e1;
+    const j = ev.judges[regime === "bulk" ? "final_bulk" : "final"], g = j && j.groups.pooled_AIADMK_DMK.e1;
+    nLab = ev.n_labels; noTvk = !(ev.per_term_n || {})["TVK-2026"];
     if (g) cards.push(`<div class="card"><div class="stat">${pct(g.accuracy.p)}</div><div class="muted small">of ${g.n} hand-labelled promises (AIADMK and DMK) agree with these verdicts on <em>realised or not</em> (95% interval ${pct(g.accuracy.lo)}–${pct(g.accuracy.hi)})</div></div>`);
   }
   $("#trust").innerHTML = cards.join("");
+  $("#honesty").innerHTML = `<h2>Read the numbers with these limits</h2><ul>
+    <li><strong>They depend on the judge.</strong> Switch the judging setting above and the realised shares move; neither setting is the truth.</li>
+    ${nLab ? `<li><strong>The hand-labelled check is small:</strong> ${nLab} promises${noTvk ? ", none from TVK, so TVK verdicts have no accuracy figure of their own" : ""}.</li>` : ""}
+    <li><strong>The projection is conditional.</strong> It is built from two completed terms treated as independent draws and shows what historical patterns would imply, with three assumptions stated, not a forecast.</li>
+    <li><strong>"No evidence found" is not "nothing happened".</strong> It means the document corpus held nothing showing an official step.</li></ul>
+    <p class="small" style="margin-top:6px"><a href="whitepaper.html#accuracy">Accuracy against the hand-labelled sample</a> · <a href="whitepaper.html#limitations">all limitations</a></p>`;
 }
-Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB]) => {
+
+Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null), load("work.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB, work]) => {
   D = {sum, model, ev, sumB, modelB}; $("#foot").innerHTML = footer(sum);
-  if (!sumB || !modelB) $("#regime").hidden = true;
-  document.querySelectorAll("#regime button").forEach(b => b.onclick = () => { regime = b.dataset.r; render(); });
-  render();
-}).catch(e => { document.body.insertAdjacentHTML("beforeend", "<p class='note'>Data failed to load: " + esc(e.message) + ". Serve the folder with a static server.</p>"); });
+  if (!sumB || !modelB) $("#judge").hidden = true;
+  const nDocs = work ? work.documents - (work.documents_by_type.manifesto || 0) : null;
+  const nProm = work ? work.promises_total : sum.cells.filter(x => x.month === 0 || x.term === "TVK-2026" && x.month === 5).reduce((a, x) => a + x.n, 0);
+  $("#meta").textContent = `${int(nProm)} promises · ${Object.keys(sum.terms).length} terms${nDocs ? " · " + int(nDocs) + " official documents" : ""} · judged by two language models and checked against hand labels`;
+  $("#nextP").textContent = `All ${int(nProm)} promises with status, date, judge and evidence quotes`;
+  if (work) {
+    const it = [[int(nDocs), "official documents searched"], [int(work.promises_total), "promises extracted"], [int(work.retrieval_tasks), "evidence searches (indicator × date)"], [int(work.indicator_verdicts), "judge verdict rows"]];
+    $("#behind").innerHTML = it.map(([n, l]) => `<div><div class="stat">${n}</div><div class="muted small">${l}</div></div>`).join("") + `<p class="link"><a href="work.html">See the pipeline stage by stage, with how each was checked →</a></p>`;
+  } else $("#behind").innerHTML = `<p class="link"><a href="work.html">See the pipeline stage by stage →</a></p>`;
+  $$("#regime button").forEach(b => b.onclick = () => { regime = b.dataset.r; render(); });
+  $("#showDoc").onchange = (e) => { showDoc = e.target.checked; render(); };
+  onTheme(render); render();
+}).catch(e => showLoadError(e));
 </script></body></html>
