@@ -633,7 +633,7 @@
   },
   "kind": "strong",
   "fingerprint": {
-    "hash": "d78229469cdd66e648ab601c9cbe4d3d2250655c07c0d20cef6e78d9020aac95",
+    "hash": "bb4902299fa27d7e9b342a97b064efdc40f8a57132b03b3de985921c6bf65b15",
     "parts": {
       "prompt_version": "1.3",
       "retrieval_run": "retrieve-20261020T191347Z",
@@ -651,10 +651,15 @@
           "tier_b",
           "flagged_full",
           "flagged_aiadmk_landmarks",
-          "flagged_dmk_landmarks"
+          "flagged_dmk_landmarks",
+          "claude_full",
+          "claude_aiadmk_m5",
+          "claude_aiadmk_m6",
+          "claude_dmk_m12",
+          "claude_aiadmk_m12"
         ]
       },
-      "code": "fe940ef61657d92f1091f807e51c89bf13a55c5fc3e08aef5d7397ebd49fe56f"
+      "code": "db9a216d4b2850f21e32c732391943e455ee2312441e88c4b8adec137726c295"
     }
   },
   "complete": false,
@@ -684,6 +689,30 @@
       "exported": 4002,
       "judged": 1934,
       "tasks": 4260
+    },
+    "claude_full": {
+      "units": 863,
+      "exported": 863,
+      "judged": 234,
+      "tasks": 963
+    },
+    "claude_aiadmk_m5": {
+      "units": 312,
+      "exported": 312,
+      "judged": 0,
+      "tasks": 385
+    },
+    "claude_aiadmk_m6": {
+      "units": 312,
+      "exported": 312,
+      "judged": 0,
+      "tasks": 385
+    },
+    "claude_aiadmk_m12": {
+      "units": 312,
+      "exported": 0,
+      "judged": 0,
+      "tasks": 385
     }
   },
   "batches": [
@@ -3143,6 +3172,585 @@
       "tokens": null,
       "model": "claude-sonnet-5-5",
       "status": "imported"
+    },
+    {
+      "name": "batch_263",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_264",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_265",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_266",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_267",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_268",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
+    },
+    {
+      "name": "batch_269",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_270",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_271",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_272",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_273",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_274",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_275",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_276",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_277",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_278",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_279",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_280",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_281",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_282",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_283",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_284",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_285",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_286",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_287",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_288",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_289",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_290",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_291",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_292",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_293",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_294",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_295",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_296",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_297",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_298",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_299",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_300",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_301",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_302",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_303",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_304",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_305",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_306",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_307",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_308",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_309",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_310",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_311",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_312",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_313",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_314",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_315",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_316",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_317",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_318",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_319",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_320",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_321",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_322",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_323",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_324",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_325",
+      "groups": [
+        "AIADMK-2016@2016-10-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
+    },
+    {
+      "name": "batch_326",
+      "groups": [
+        "AIADMK-2016@2016-11-23"
+      ],
+      "tokens": null,
+      "model": null,
+      "status": "exported"
     }
+  ],
+  "fingerprint_history": [
+    "d78229469cdd66e648ab601c9cbe4d3d2250655c07c0d20cef6e78d9020aac95"
   ]
 }

@@ -41664,7 +41664,28 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0150@full",
+    "AIADMK-2016-0003@full",
+    "AIADMK-2016-0270@full",
+    "AIADMK-2016-0309@full",
+    "AIADMK-2016-0036@full",
+    "AIADMK-2016-0303@full",
+    "AIADMK-2016-0120@full",
+    "AIADMK-2016-0104@full",
+    "AIADMK-2016-0080@full",
+    "AIADMK-2016-0056@full",
+    "AIADMK-2016-0170@full",
+    "AIADMK-2016-0212@full",
+    "AIADMK-2016-0106@full",
+    "AIADMK-2016-0245@full",
+    "AIADMK-2016-0185@full",
+    "AIADMK-2016-0215@full",
+    "AIADMK-2016-0119@full"
+   ]
   },
   {
    "n": 264,
@@ -41803,7 +41824,30 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0041@full",
+    "AIADMK-2016-0228@full",
+    "AIADMK-2016-0294@full",
+    "AIADMK-2016-0288@full",
+    "AIADMK-2016-0278@full",
+    "AIADMK-2016-0099@full",
+    "AIADMK-2016-0059@full",
+    "AIADMK-2016-0175@full",
+    "AIADMK-2016-0164@full",
+    "AIADMK-2016-0279@full",
+    "AIADMK-2016-0015@full",
+    "AIADMK-2016-0065@full",
+    "AIADMK-2016-0155@full",
+    "AIADMK-2016-0039@full",
+    "AIADMK-2016-0010@full",
+    "AIADMK-2016-0283@full",
+    "AIADMK-2016-0168@full",
+    "AIADMK-2016-0089@full",
+    "AIADMK-2016-0216@full"
+   ]
   },
   {
    "n": 265,
@@ -41933,7 +41977,26 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0180@full",
+    "AIADMK-2016-0241@full",
+    "AIADMK-2016-0201@full",
+    "AIADMK-2016-0260@full",
+    "AIADMK-2016-0227@full",
+    "AIADMK-2016-0250@full",
+    "AIADMK-2016-0062@full",
+    "AIADMK-2016-0142@full",
+    "AIADMK-2016-0306@full",
+    "AIADMK-2016-0113@full",
+    "AIADMK-2016-0178@full",
+    "AIADMK-2016-0273@full",
+    "AIADMK-2016-0256@full",
+    "AIADMK-2016-0253@full",
+    "AIADMK-2016-0217@full"
+   ]
   },
   {
    "n": 266,
@@ -42072,7 +42135,30 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0091@full",
+    "AIADMK-2016-0210@full",
+    "AIADMK-2016-0280@full",
+    "AIADMK-2016-0226@full",
+    "AIADMK-2016-0203@full",
+    "AIADMK-2016-0086@full",
+    "AIADMK-2016-0293@full",
+    "AIADMK-2016-0262@full",
+    "AIADMK-2016-0307@full",
+    "AIADMK-2016-0023@full",
+    "AIADMK-2016-0147@full",
+    "AIADMK-2016-0033@full",
+    "AIADMK-2016-0209@full",
+    "AIADMK-2016-0060@full",
+    "AIADMK-2016-0017@full",
+    "AIADMK-2016-0272@full",
+    "AIADMK-2016-0138@full",
+    "AIADMK-2016-0199@full",
+    "AIADMK-2016-0045@full"
+   ]
   },
   {
    "n": 267,
@@ -42202,7 +42288,26 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0234@full",
+    "AIADMK-2016-0244@full",
+    "AIADMK-2016-0011@full",
+    "AIADMK-2016-0266@full",
+    "AIADMK-2016-0046@full",
+    "AIADMK-2016-0198@full",
+    "AIADMK-2016-0192@full",
+    "AIADMK-2016-0247@full",
+    "AIADMK-2016-0110@full",
+    "AIADMK-2016-0006@full",
+    "AIADMK-2016-0116@full",
+    "AIADMK-2016-0076@full",
+    "AIADMK-2016-0074@full",
+    "AIADMK-2016-0145@full",
+    "AIADMK-2016-0239@full"
+   ]
   },
   {
    "n": 268,
@@ -42330,7 +42435,24 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0243@full",
+    "AIADMK-2016-0196@full",
+    "AIADMK-2016-0093@full",
+    "AIADMK-2016-0004@full",
+    "AIADMK-2016-0242@full",
+    "AIADMK-2016-0271@full",
+    "AIADMK-2016-0063@full",
+    "AIADMK-2016-0137@full",
+    "AIADMK-2016-0304@full",
+    "AIADMK-2016-0105@full",
+    "AIADMK-2016-0027@full",
+    "AIADMK-2016-0305@full",
+    "AIADMK-2016-0302@full"
+   ]
   },
   {
    "n": 269,
@@ -51808,7 +51930,7 @@
   "claude_full": {
    "units": 863,
    "exported": 863,
-   "judged": 136,
+   "judged": 234,
    "tasks": 963
   },
   "claude_aiadmk_m5": {
@@ -51828,12 +51950,6 @@
    "exported": 0,
    "judged": 0,
    "tasks": 385
-  },
-  "flagged_aiadmk_landmarks": {
-   "units": 258,
-   "exported": 0,
-   "judged": 0,
-   "tasks": 346
   }
  }
 }
