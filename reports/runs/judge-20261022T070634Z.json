@@ -692,16 +692,16 @@
       "tasks": 4260
     },
     "claude_full_gap": {
-      "units": 41,
-      "exported": 41,
+      "units": 8,
+      "exported": 8,
       "judged": 0,
-      "tasks": 46
+      "tasks": 10
     },
     "claude_full": {
-      "units": 822,
-      "exported": 822,
-      "judged": 822,
-      "tasks": 917
+      "units": 855,
+      "exported": 855,
+      "judged": 855,
+      "tasks": 953
     },
     "claude_aiadmk_m5": {
       "units": 312,
@@ -3879,8 +3879,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_338",
@@ -3888,8 +3888,8 @@
         "AIADMK-2016@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_339",
@@ -3897,8 +3897,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     }
   ],
   "fingerprint_history": [

@@ -54500,7 +54500,30 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0545@full",
+    "DMK-2021-0358@full",
+    "DMK-2021-0142@full",
+    "DMK-2021-0509@full",
+    "DMK-2021-0131@full",
+    "DMK-2021-0221@full",
+    "DMK-2021-0590@full",
+    "DMK-2021-0455@full",
+    "DMK-2021-0157@full",
+    "DMK-2021-0331@full",
+    "DMK-2021-0476@full",
+    "DMK-2021-0363@full",
+    "DMK-2021-0656@full",
+    "DMK-2021-0526@full",
+    "DMK-2021-0597@full",
+    "DMK-2021-0017@full",
+    "DMK-2021-0400@full",
+    "DMK-2021-0289@full",
+    "DMK-2021-0426@full"
+   ]
   },
   {
    "n": 338,
@@ -54563,7 +54586,15 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0287@full",
+    "AIADMK-2016-0297@full",
+    "AIADMK-2016-0136@full",
+    "AIADMK-2016-0009@full"
+   ]
   },
   {
    "n": 339,
@@ -54643,7 +54674,21 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0151@full",
+    "DMK-2021-0617@full",
+    "DMK-2021-0360@full",
+    "DMK-2021-0161@full",
+    "DMK-2021-0152@full",
+    "DMK-2021-0444@full",
+    "DMK-2021-0025@full",
+    "DMK-2021-0653@full",
+    "DMK-2021-0446@full",
+    "DMK-2021-0554@full"
+   ]
   }
  ],
  "levels": {
@@ -54672,16 +54717,16 @@
    "tasks": 4260
   },
   "claude_full_gap": {
-   "units": 41,
-   "exported": 41,
+   "units": 8,
+   "exported": 8,
    "judged": 0,
-   "tasks": 46
+   "tasks": 10
   },
   "claude_full": {
-   "units": 822,
-   "exported": 822,
-   "judged": 822,
-   "tasks": 917
+   "units": 855,
+   "exported": 855,
+   "judged": 855,
+   "tasks": 953
   },
   "claude_aiadmk_m5": {
    "units": 312,
