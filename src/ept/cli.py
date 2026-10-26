@@ -478,10 +478,10 @@ def _judge_aggregate(run: Optional[str]) -> None:
     typer.echo(f"judge aggregate: {run_aggregate(run)}")
 
 
-def _judge_final(force: bool, bulk_only: bool = False) -> None:
+def _judge_final(force: bool, bulk_only: bool = False, strong_only: bool = False) -> None:
     from ept.judge.final import run_final
 
-    typer.echo(f"judge final: {run_final(force, bulk_only)}")
+    typer.echo(f"judge final: {run_final(force, bulk_only, strong_only)}")
 
 
 def _judge_report() -> None:
@@ -546,9 +546,10 @@ def judge_aggregate(run: Optional[str] = JudgeRunOpt) -> None:
 
 
 @judge_app.command("final")
-def judge_final(force: bool = ForceOpt, bulk_only: bool = typer.Option(False, "--bulk-only", help="Gemini-consistent variant: bulk verdicts only (D-119)")) -> None:
+def judge_final(force: bool = ForceOpt, bulk_only: bool = typer.Option(False, "--bulk-only", help="Gemini-consistent variant: bulk verdicts only (D-119)"),
+                 strong_only: bool = typer.Option(False, "--strong-only", help="Claude-only variant: strong verdicts only, partial coverage (D-120)")) -> None:
     """Final verdicts: human > strong > bulk, carry-forward (spec 05 §4.10); `--bulk-only` = bulk verdicts for every term."""
-    _judge_final(force, bulk_only)
+    _judge_final(force, bulk_only, strong_only)
 
 
 @judge_app.command("report")
@@ -621,7 +622,7 @@ app.add_typer(model_app, name="model")
 
 @model_app.callback(invoke_without_command=True)
 def model(ctx: typer.Context, quick: bool = typer.Option(False, "--quick", help="20 bootstrap resamples (smoke test)"),
-          source: str = typer.Option("final", "--source", help="final (Claude-preferred) or bulk (Gemini-consistent, D-119)")) -> None:
+          source: str = typer.Option("final", "--source", help="final (Claude-preferred), bulk (Gemini-only, D-119) or strong (Claude-only, D-120)")) -> None:
     """Run everything and write reports/modelling_07.* and data/processed/model_outputs.json."""
     if ctx.invoked_subcommand is not None:
         return

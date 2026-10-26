@@ -90,3 +90,17 @@ Accounts, comments, a backend, Tamil-language pages, the forward backtest, any r
 - **D-115** · GitHub Pages from the `gh-pages` branch of the public repo `abinav-ts/tn-election-promise-tracker`, created after everything works locally; deploy by pushing the built folder, no workflow file, no token pasted.
 - **D-116** · Licences: code GPL v3, data and text CC BY 4.0.
 - **D-117** · Three-page static site (overview, promise explorer, whitepaper), vendored Chart.js, no framework; every number comes from exported JSON.
+
+## 11. Overview redesign (2026-10-26, D-121)
+**Data contract** (`site/public/data/`, written by `ept export-site`; every per-setting file starts with `meta: {setting, standin}`): `summary_gemini.json`, `summary_claude.json`, `model_gemini.json`, `model_claude.json`, `pace.json` (keys `gemini`, `claude`, `claude_preferred_mixed`), plus the existing `promises.json`, `evaluation.json`, `work.json`. `*_claude.json` is a stand-in (the Claude-preferred data, `meta.standin = true`) until the Claude-only run exists. Older files (`summary.json`, `model.json`, `*_bulk.json`) remain for the explorer and the whitepaper.
+
+**Overview order.**
+1. **Robust findings** (first, no chart needed): what holds under both judges (direction of covariate effects, AIADMK ahead at the end of term, weak ranking power, timing blur) and what moves with the judge (the level of "realised", TVK's level, whether the pace update helps).
+2. **Toggle, Claude-only / Gemini-only**, for the single-setting views: end-of-term shares and Kaplan–Meier curves.
+3. **Side by side, no toggle:** the Cox hazard ratios as one forest plot with two markers per characteristic; the TVK projection as two small panels, one per setting.
+4. **Pace strip** above the projection: for each setting one marker for k with its 80 % interval against 1.0, with the documented month-5 shares of AIADMK, DMK and TVK under the same judge.
+5. **Projection panels:** per setting two lines, "historical pace" and "if TVK's current pace persists" (labelled extrapolation, untested as a forecast), with the bootstrap band; scenario A is not on the overview.
+6. **Accuracy** (how each judge matched the 40 hand labels: precision, recall, date gap, limits).
+7. **Work done:** a link or short strip only; it stays its own page.
+The mixed "Claude-preferred" setting leaves the overview (kept in the explorer and whitepaper as the combined best-evidence set).
+

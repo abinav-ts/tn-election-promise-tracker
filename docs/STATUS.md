@@ -217,3 +217,5 @@ _Older next-step notes (superseded):_
   - Binding mechanism: `bind()` in `site.js` fills `data-b="path"` spans from the JSON and keeps the old text if the path is missing (console lists them). **Exporter requests: `docs/ui/exporter-requests.md`** (spot-check counts, undated documents, memory probe, leakage row count).
   - Screenshots: `docs/ui/before/` and `docs/ui/after/` (1000 and 390 px, overview also in dark); `docs/ui/shot.sh` regenerates them.
   - Needs the main conversation: (1) the exporter fields above; (2) check `whitepaper-changes.md`; (3) after the D-120 Claude-only run, update the "who judged what" texts (whitepaper §5, overview) and decide whether a third judge setting gets a third switch button; (4) merge `ui` into `main` and publish (not done here).
+- **2026-10-26 (afternoon) — Pace indicator (D-121) and Claude-only run started.** Six Claude batches (263–268) imported in a parallel burst before the 16:10 reset; 61 batches remain in the D-120 plan (269 onward). Pace data exported to `data/pace.json`; data contract for the UI redesign in spec 08 §11. UI work moves to a separate conversation on branch `ui`.
+

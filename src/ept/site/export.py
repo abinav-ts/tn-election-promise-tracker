@@ -168,6 +168,11 @@ def work_stats(cfg: Config) -> dict:
             "python_lines": loc, "tests": int(tests[-1]) if tests else None}
 
 
+def _stamp(obj: dict, setting: str, standin: bool = False) -> dict:
+    """Data-contract wrapper: every per-setting file carries which judging setting it is (D-121)."""
+    return {"meta": {"setting": setting, "standin": standin}, **obj}
+
+
 def export(cfg: Optional[Config] = None) -> dict:
     cfg = cfg or get_config()
     out = cfg.root / SITE / "data"
@@ -183,6 +188,22 @@ def export(cfg: Optional[Config] = None) -> dict:
     mb = cfg.path("model_outputs").with_name("model_outputs_bulk.json")
     if mb.exists():
         (out / "model_bulk.json").write_text(_json(json.loads(mb.read_text(encoding="utf-8"))), encoding="utf-8")
+    # data contract for the redesigned overview (D-121): summary_/model_ {gemini, claude}, plus pace.json.
+    # The Claude-only files are the Claude-preferred data (stand-in) until the Claude-only run exists.
+    mc = cfg.path("model_outputs").with_name("model_outputs_strong.json")
+    claude_model = json.loads(mc.read_text(encoding="utf-8")) if mc.exists() else model
+    standin = not mc.exists()
+    sg = built["summary_bulk"]
+    (out / "summary_claude.json").write_text(_json(_stamp(built["summary"], "claude", standin)), encoding="utf-8")
+    (out / "model_claude.json").write_text(_json(_stamp(claude_model, "claude", standin)), encoding="utf-8")
+    if sg:
+        (out / "summary_gemini.json").write_text(_json(_stamp(sg, "gemini")), encoding="utf-8")
+        (out / "model_gemini.json").write_text(_json(_stamp(json.loads(mb.read_text(encoding="utf-8")), "gemini")), encoding="utf-8")
+    pace = {"claude": _stamp(claude_model["projection"].get("pace", {}), "claude", standin)}
+    if mb.exists():
+        pace["gemini"] = _stamp(json.loads(mb.read_text(encoding="utf-8"))["projection"].get("pace", {}), "gemini")
+    pace["claude_preferred_mixed"] = _stamp(model["projection"].get("pace", {}), "claude_preferred_mixed")
+    (out / "pace.json").write_text(_json(pace), encoding="utf-8")
     ev_path = cfg.path("evaluation_json")
     if ev_path.exists():
         ev = json.loads(ev_path.read_text(encoding="utf-8"))

@@ -84,10 +84,15 @@ def run_all(cfg: Config, quick: bool = False, source: str = "final") -> dict:
         t2 = data.analysis_table(cfg, mode=mode, rows=rows)
         b = backtest.reverse_backtest(cfg, t2, rows, "DMK-2021", "AIADMK-2016", "E1")
         sens[mode] = {lm: {k: e[k] for k in ("mae_model", "mae_model_pace", "mae_baseline")}
-                      for lm, e in b["landmarks"].items()}
+                      for lm, e in _avail(b).items()}
     res["backtest_date_sensitivity"] = sens
     res["projection"] = project.project(cfg, tbl, "E1", rows)
     return res
+
+
+def _avail(b: dict) -> dict:
+    """Landmarks this verdict export covers (the Claude-only export covers months 5 and 6 only)."""
+    return {k: v for k, v in b["landmarks"].items() if not v.get("unavailable")}
 
 
 def _pct(x) -> str:
@@ -126,11 +131,11 @@ def write_markdown(cfg: Config, res: dict, path: Path) -> None:
           "| landmark | realised at landmark | model expected | pace factor k | model | model + pace update | no-covariate baseline |",
           "|---|---|---|---|---|---|---|"]
     kk = f"k_c={cfg.settings.model.pace_prior_events}"
-    for lm, e in b["landmarks"].items():
+    for lm, e in _avail(b).items():
         L.append(f"| m{lm} | {e['realised_at_landmark']} | {e['expected']:.0f} | {e[kk]:.2f} | {e['mae_model']:.1f} | {e['mae_model_pace']:.1f} | {e['mae_baseline']:.1f} |")
     L += ["", "Predicted vs observed share at selected months (model + pace update):", "",
           "| landmark | month | predicted | no update | observed |", "|---|---|---|---|---|"]
-    for lm, e in b["landmarks"].items():
+    for lm, e in _avail(b).items():
         for t in (12, 24, 36, 48, 60):
             if t in e["t_months"]:
                 i = e["t_months"].index(t)
@@ -139,7 +144,7 @@ def write_markdown(cfg: Config, res: dict, path: Path) -> None:
           "; ".join(f"{mode}: " + ", ".join(f"m{lm} {v['mae_model_pace']:.1f}" for lm, v in d.items())
                     for mode, d in res["backtest_date_sensitivity"].items()), ""]
     e2 = res["backtest"]["E2"]
-    L += ["E2 (fulfilled only) MAE, model + pace update: " + ", ".join(f"m{lm} {e['mae_model_pace']:.1f}" for lm, e in e2["landmarks"].items()), ""]
+    L += ["E2 (fulfilled only) MAE, model + pace update: " + ", ".join(f"m{lm} {e['mae_model_pace']:.1f}" for lm, e in _avail(e2).items()), ""]
     p = res["projection"]
     L += ["## TVK-2026 projection (pooled two-term model, equal-weight baselines)", "",
           f"Snapshot day {p['snapshot_day']} (month 5): {p['observed_events']} of {p['n']} promises realised "
@@ -204,7 +209,7 @@ def _figures(cfg: Config, res: dict, source: str = "final") -> None:
     b = res["backtest"]["E1"]
     fig, ax = plt.subplots(figsize=(7, 4))
     ax.plot(b["months"], [100 * v for v in b["observed"]], color="black", label="AIADMK observed")
-    for lm in ("5", "12", "24"):
+    for lm in [k for k in ("5", "12", "24") if k in _avail(b)]:
         e = b["landmarks"][lm]
         ax.plot(e["t_months"], [100 * v for v in e["pred_model_pace"]], label=f"predicted from m{lm} (pace update)")
     ax.set_xlabel("month of tenure"); ax.set_ylabel("% realised"); ax.legend(); ax.set_title("Reverse backtest (DMK model, AIADMK target)")

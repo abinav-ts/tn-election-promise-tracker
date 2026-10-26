@@ -1,6 +1,7 @@
 {
- "generated_at": "2026-10-25T17:22:13+00:00",
+ "generated_at": "2026-10-26T11:02:03+00:00",
  "final_export": "final_judge-20261025T102013Z.jsonl",
+ "source": "final",
  "settings": {
   "covariates": [
    "promise_type",
@@ -4584,6 +4585,45 @@
    ],
    "documented_share_month5": 0.047976011994003,
    "expected": 33.343328335832084
+  },
+  "pace": {
+   "month": 5,
+   "observed": 23.0,
+   "n": 695,
+   "observed_share": 0.033093525179856115,
+   "matched_terms": [
+    "DMK-2021"
+   ],
+   "documented_share_by_term": {
+    "AIADMK-2016": {
+     "n": 312,
+     "documented_share": 0.34615384615384615,
+     "judge_source": {
+      "bulk": 312
+     }
+    },
+    "DMK-2021": {
+     "n": 667,
+     "documented_share": 0.047976011994003,
+     "judge_source": {
+      "strong": 667
+     }
+    },
+    "TVK-2026": {
+     "n": 695,
+     "documented_share": 0.033093525179856115,
+     "judge_source": {
+      "strong": 694,
+      "human": 1
+     }
+    }
+   },
+   "prior_events": 20.0,
+   "expected": 33.343328335832084,
+   "k": 0.8060989319842609,
+   "k_lo": 0.65311649601671,
+   "k_hi": 0.9671056150190399,
+   "p_k_ge_1": 0.06475755361610247
   },
   "no_update": {
    "k": 1.0,

@@ -23,8 +23,8 @@ E2_STATUSES = {"fulfilled"}
 def newest_final(cfg: Config, source: str = "final") -> Path:
     """Newest final export; `source="bulk"` selects the Gemini-consistent variant (`bulkfinal_*.jsonl`, D-119)."""
     pattern = cfg.settings.paths.final_verdicts_glob
-    if source == "bulk":
-        pattern = pattern.replace("final_", "bulkfinal_")
+    if source in ("bulk", "strong"):
+        pattern = pattern.replace("final_", source + "final_")
     files = sorted(cfg.root.glob(pattern))
     if not files:
         raise FileNotFoundError(f"no final verdict export matches {pattern} (run `ept judge final`)")
@@ -98,6 +98,11 @@ def analysis_table(cfg: Config, mode: Optional[str] = None, rows: Optional[list[
                         "date_precision": r.get("date_precision"), "judge_source": r["judge_source"],
                         **cov.loc[pid].drop("term_id").to_dict()})
     df = pd.DataFrame(out)
+    expected = cov.groupby("term_id").size().to_dict()
+    got = df.groupby("term_id").size().to_dict()
+    if got != expected:
+        raise ValueError(f"the verdict export does not cover every promise at the comparison cutoff: {got} vs {expected} "
+                         "(a partial Claude-only export is not ready for modelling)")
     return df.sort_values("promise_id").reset_index(drop=True)
 
 

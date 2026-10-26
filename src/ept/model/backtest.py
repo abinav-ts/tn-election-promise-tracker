@@ -47,7 +47,11 @@ def reverse_backtest(cfg: Config, tbl: pd.DataFrame, rows: list[dict], train_ter
     risk = fit.rel_hazard(target)
     result["concordance"] = float(concordance_index(target["T"], -risk, target[event]))
     for lm in m.landmarks_months:
-        state = data.landmark_state(cfg, target_term, lm, rows).reindex(target["promise_id"]).fillna(0).astype(int).values
+        st = data.landmark_state(cfg, target_term, lm, rows)
+        if len(st) < len(target):   # a landmark this export does not cover (Claude-only covers months 5 and 6 only)
+            result["landmarks"][str(lm)] = {"unavailable": True, "rows": int(len(st))}
+            continue
+        state = st.reindex(target["promise_id"]).fillna(0).astype(int).values
         day_m = (add_months(sworn, lm) - sworn).days
         later = [i for i, t in enumerate(grid) if t > lm]
         days_all = np.concatenate([[day_m], t_days[later]])

@@ -39,6 +39,40 @@ def matched_terms(cfg: Config, rows: list[dict], target: str, months: int, min_s
     return ids, float(np.mean(shares)) if shares else float("nan")
 
 
+def pace_indicator(cfg: Config, rows: list[dict], tvk: pd.DataFrame, event: str = "E1") -> dict:
+    """The pace strip (spec 07 §4.5, D-121): TVK's documented month-5 count against what the completed terms judged by
+    the same judge had documented at the same point. k = (O + c)/(E + c) is the posterior mean of a Gamma(c, c) prior
+    updated with O ~ Poisson(k E); the 80 % interval is that posterior's 10th-90th percentile."""
+    from scipy.stats import gamma
+
+    from ept.dates import add_months
+    from ept.model.data import E1_STATUSES
+
+    m = cfg.settings.model
+    tvk_id = str(tvk["term_id"].iloc[0])
+    month = m.landmarks_months[0]
+    ids, share = matched_terms(cfg, rows, tvk_id, month, m.matched_min_same_judge)
+    O, N, c = float(tvk[event].sum()), len(tvk), float(m.pace_prior_events)
+    shares = {}
+    for t in cfg.settings.terms:
+        cut = add_months(t.sworn_in, month).isoformat()
+        rr = [r for r in rows if r["promise_id"].startswith(t.term_id + "-") and r["cutoff_date"] == cut]
+        if rr:
+            judges = {}
+            for r in rr:
+                judges[r["judge_source"]] = judges.get(r["judge_source"], 0) + 1
+            shares[t.term_id] = {"n": len(rr), "documented_share": sum(r["status"] in E1_STATUSES for r in rr) / len(rr),
+                                 "judge_source": judges}
+    out = {"month": month, "observed": O, "n": N, "observed_share": O / N, "matched_terms": ids,
+           "documented_share_by_term": shares, "prior_events": c}
+    if ids:
+        E = share * N
+        d = gamma(c + O, scale=1.0 / (c + E))
+        out.update(expected=E, k=(c + O) / (c + E), k_lo=float(d.ppf(0.10)), k_hi=float(d.ppf(0.90)),
+                   p_k_ge_1=float(1 - d.cdf(1.0)))
+    return out
+
+
 def project_curve(fit: CoxFit, tvk: pd.DataFrame, snap_day: int, months: list[int], dpm: float, c: float,
                   use_pace: bool, expected_override: float | None = None) -> dict:
     """Observed share at the snapshot plus the expected extra share by each month; also k, O, E."""
@@ -72,6 +106,7 @@ def project(cfg: Config, tbl: pd.DataFrame, event: str = "E1", rows: list[dict] 
     m_ids, m_share = matched_terms(cfg, rows, tvk_id, m.landmarks_months[0], m.matched_min_same_judge)
     E_matched = m_share * len(tvk)
     out["matched"] = {"terms": m_ids, "documented_share_month5": m_share, "expected": E_matched}
+    out["pace"] = pace_indicator(cfg, rows, tvk, event)
     variants = [("no_update", m.pace_prior_events, False, None), ("pace_update", m.pace_prior_events, True, None),
                 *[(f"pace_update_c{x}", x, True, None) for x in m.pace_prior_sensitivity]]
     if m_ids:
