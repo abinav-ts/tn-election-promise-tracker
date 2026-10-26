@@ -2,6 +2,7 @@
 <title>Tamil Nadu Election Promise Tracker</title>
 <meta name="description" content="Did Tamil Nadu governments keep their manifesto promises, and how fast? Evidence-based verdicts, survival curves and a projection for TVK 2026.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/site.css"></head>
 <body data-page="index"><div id="nav"></div>
 <main id="main" class="bands">
@@ -25,7 +26,7 @@
 <div class="frame"><div class="panel panel-dark" aria-live="polite"><div class="tbars" id="tbars"></div></div></div>
 <h3 style="font-size:20px;margin:44px 0 6px">Share realised over the months of tenure</h3>
 <p class="sub" style="margin-bottom:16px">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The diamonds are what was documented at each landmark month; the gap between line and diamonds is evidence that appeared only later.</p>
-<div class="panel panel-dark">
+<div class="panel panel-dark" id="kmPanel">
   <div class="tools"><label class="check"><input type="checkbox" id="showDoc"> Show what was documented at each landmark</label></div>
   <div class="chart"><canvas id="kmChart" role="img" aria-label="Share of promises realised by month for each term" aria-describedby="kmAlt"></canvas></div>
   <div class="key" id="kmKey"></div><p class="vh" id="kmAlt"></p>
@@ -87,8 +88,9 @@ const SETTEXT = {
   gemini: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised.",
   claude: "Claude's verdicts on their own. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."};
 const POOR_CONCORDANCE = 0.6;   // presentation threshold for "ranks poorly" (0.5 is chance)
-const REDUCED = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
-let view = "gemini", showDoc = false, D = null, charts = {}, barsIn = false;
+let view = "gemini", showDoc = false, D = null, charts = {};
+const vis = {tbars: REDUCED, km: REDUCED, fp: REDUCED, pace: REDUCED, proj: REDUCED, acc: REDUCED};   // which sections are currently on screen
+const ANIM = REDUCED ? false : {duration: 1900, easing: "easeOutQuart"};
 const SUM = (k) => D.sum[k], MOD = (k) => D.model[k];
 const standin = (k) => !!((SUM(k).meta || {}).standin || (MOD(k).meta || {}).standin);
 const tag = (k) => standin(k) ? `<span class="tag" title="Stand-in until the Claude-only run finishes">preliminary</span>` : "";
@@ -100,18 +102,10 @@ const lastOf = (p) => p.months.length - 1;
 const evKey = (k) => k === "gemini" ? "final_bulk" : (D.ev.judges.final_claude ? "final_claude" : "strong");
 const evOf = (k) => D.ev.judges[evKey(k)].groups.pooled_AIADMK_DMK;
 const destroy = (k) => { if (charts[k]) { charts[k].destroy(); delete charts[k]; } };
-/* count a number up (or to a new value); instant when the visitor prefers reduced motion */
-function tween(el, to, dec) {
-  const from = el._v || 0, t0 = performance.now(), dur = 1300; el._v = to;
-  if (REDUCED || from === to) { el.textContent = to.toFixed(dec) + "%"; return; }
-  const step = (t) => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = (from + (to - from) * e).toFixed(dec) + "%"; if (k < 1 && el._v === to) requestAnimationFrame(step); };
-  requestAnimationFrame(step);
-}
-
 /* 1 term bars (stacked vertically, animate when scrolled into view) and Kaplan–Meier */
 function buildBars() {
   const sum = SUM("gemini"), c = COLORS($("#tbars")), grp = (s) => ["fulfilled", "partial", "diluted"].includes(s);
-  $("#tbars").innerHTML = Object.keys(sum.terms).map((t, r) => `<div class="trow" style="--tc:${c[t]};--r:${r}"><div class="tbar" role="img" data-t="${t}">${sum.statuses.map((s, i) => `<i class="st-${s}" data-s="${s}" style="--i:${i}"></i>`).join("")}</div><div class="tlab"><div class="nm"><span class="dot"></span>${TERMS[t]}</div><div class="big" data-t="${t}">0%</div><div class="cap" data-t="${t}"></div></div></div>`).join("")
+  $("#tbars").innerHTML = Object.keys(sum.terms).map((t, r) => `<div class="trow" style="--tc:${c[t]};--r:${r}"><div class="tbar" role="img" data-t="${t}">${sum.statuses.map((s, i) => `<i class="st-${s}" data-s="${s}" style="--i:${i};width:0%"></i>`).join("")}</div><div class="tlab"><div class="nm"><span class="dot"></span>${TERMS[t]}</div><div class="big" data-t="${t}">0%</div><div class="cap" data-t="${t}"></div></div></div>`).join("")
     + `<div class="slegend"><span class="grp">Realised</span>${sum.statuses.filter(grp).map(s => `<span><i class="st-${s}"></i>${label(s)}</span>`).join("")}<span class="grp" style="margin-left:10px">Not realised, or no evidence</span>${sum.statuses.filter(s => !grp(s)).map(s => `<span><i class="st-${s}"></i>${label(s)}</span>`).join("")}</div>`;
 }
 function updateBars() {
@@ -119,35 +113,39 @@ function updateBars() {
   Object.entries(sum.terms).forEach(([t, info]) => {
     const cl = info.term_end ? cellOf(sum, t, 0) : cellOf(sum, t, 5), m5 = cellOf(sum, t, 5), bar = $(`.tbar[data-t="${t}"]`), dec = info.term_end ? 0 : 1;
     bar.setAttribute("aria-label", `${TERMS[t]}: ${sum.statuses.filter(s => cl.status[s]).map(s => label(s) + " " + pct(cl.status[s] / cl.n)).join(", ")}`);
-    sum.statuses.forEach(s => { const el = bar.querySelector(`[data-s="${s}"]`), p = (cl.status[s] || 0) / cl.n; el.style.setProperty("--w", (100 * p) + "%"); el.textContent = p >= 0.08 ? pct(p) : ""; el.title = `${label(s)}: ${cl.status[s] || 0} (${pct(p)})`; });
+    sum.statuses.forEach(s => { const el = bar.querySelector(`[data-s="${s}"]`), p = (cl.status[s] || 0) / cl.n; el.dataset.w = (100 * p) + "%"; if (vis.tbars) el.style.width = el.dataset.w; el.textContent = p >= 0.08 ? pct(p) : ""; el.title = `${label(s)}: ${cl.status[s] || 0} (${pct(p)})`; });
     $(`.cap[data-t="${t}"]`).innerHTML = `${info.term_end ? "realised by the end of the term" : "documented as realised after 5 months"}<br>${int(cl.n)} promises · ${info.term_end ? "month 5: " + pct(m5.realised) + " documented" : "term in progress"}`;
-    const big = $(`.big[data-t="${t}"]`); big._dec = dec; big._to = 100 * cl.realised; if (barsIn) tween(big, big._to, dec);
+    const big = $(`.big[data-t="${t}"]`); big._dec = dec; big._to = 100 * cl.realised; if (vis.tbars) tween(big, big._to, dec);
   });
 }
-function revealBars() { if (barsIn) return; barsIn = true; $("#tbars").classList.add("in"); $$("#tbars .big").forEach(b => tween(b, b._to, b._dec)); }
+const barsEnter = () => { vis.tbars = true; const t = $("#tbars"); t.classList.remove("noanim"); $$("#tbars .tbar i").forEach(i => { i.style.width = i.dataset.w; }); $$("#tbars .big").forEach(b => tween(b, b._to, b._dec)); };
+const barsLeave = () => { vis.tbars = false; const t = $("#tbars"); t.classList.add("noanim"); $$("#tbars .tbar i").forEach(i => { i.style.width = "0%"; }); $$("#tbars .big").forEach(b => { b._v = 0; b.textContent = "0%"; }); void t.offsetWidth; t.classList.remove("noanim"); };
 function renderView() {
   const k = view, sum = SUM(k), model = MOD(k), cEl = $("#kmChart"), c = COLORS(cEl);
   $$("#viewbar button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === k));
   $("#viewTag").innerHTML = tag(k);
   $("#viewText").textContent = SETTEXT[k] + (standin(k) ? " Preliminary: this view is a stand-in (Claude's verdicts where Claude judged, Gemini's elsewhere) until the Claude-only run finishes." : "");
   updateBars();
-  const ds = [], alt = [];
+  const c2 = c, ds = [], alt = [];
   for (const [t, e] of Object.entries(model.km.terms)) {
     if (t === "TVK-2026") continue;
-    ds.push({label: TERMS[t], data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c[t], backgroundColor: c[t], tension: .2, pointRadius: 0, borderWidth: 3});
-    if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cellsFor(sum, t), borderColor: c[t], backgroundColor: "#1a0e3a", borderWidth: 2.4, showLine: false, pointStyle: "rectRot", pointRadius: 7});
+    ds.push({label: TERMS[t], data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c2[t], backgroundColor: c2[t], tension: .2, pointRadius: 0, borderWidth: 3});
+    if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cellsFor(sum, t), borderColor: c2[t], backgroundColor: "#1a0e3a", borderWidth: 2.4, showLine: false, pointStyle: "rectRot", pointRadius: 7});
     alt.push(`${TERMS[t]} reaches ${pct(e.E1.realised[e.E1.realised.length - 1])} by month ${e.months[e.months.length - 1]}`);
   }
   const tv = cellOf(sum, "TVK-2026", 5);
-  ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c["TVK-2026"], backgroundColor: c["TVK-2026"], pointRadius: 8, showLine: false});
+  ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c2["TVK-2026"], backgroundColor: c2["TVK-2026"], pointRadius: 8, showLine: false});
   alt.push(`TVK 2026– is at ${pct(tv.realised, 1)} documented at month 5`);
-  destroy("km"); charts.km = lineChart(cEl, ds);
+  kmData = ds; if (vis.km) drawKM();
   $("#kmAlt").textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}): ${alt.join("; ")}.`;
   const key = (cls, col, txt) => `<span style="color:${col}"><i class="${cls}"></i><span style="color:var(--muted)">${txt}</span></span>`;
   $("#kmKey").innerHTML = ["AIADMK-2016", "DMK-2021"].map(t => key("", c[t], TERMS[t])).join("") + (showDoc ? key("sq", c.muted, "documented at the landmark month") : "") + `<span style="color:${c["TVK-2026"]}"><i class="sq" style="border-radius:50%;transform:none"></i><span style="color:var(--muted)">TVK 2026– at month 5</span></span>`;
   const rows = Object.keys(sum.terms).flatMap(t => [0, 5].filter(m => cellOf(sum, t, m) && (m === 5 || sum.terms[t].term_end)).map(m => cellOf(sum, t, m)));
   $("#judgeNote").innerHTML = `<p class="small"><strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${standin(k) ? "This stand-in mixes judges, so part of AIADMK's early lead may be judge leniency." : k === "gemini" ? "Every term has the same judge here." : ""}</p><div class="scroll"><table><caption class="vh">Number of promises by status</caption><thead><tr><th scope="col">Term</th><th scope="col">Cutoff</th><th scope="col">Promises</th>${sum.statuses.map(s => `<th scope="col">${label(s)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr><td>${TERMS[r.term]}</td><td>${monthLabel(r.month)}</td><td>${int(r.n)}</td>${sum.statuses.map(s => `<td>${r.status[s] || 0}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
+let kmData = null;
+function drawKM() { destroy("km"); if (kmData) charts.km = lineChart($("#kmChart"), kmData, {animation: ANIM}); }
+function clearKM() { destroy("km"); }
 const cellsFor = (sum, t) => sum.cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised}));
 
 /* 3 forest plot: one row per characteristic, two markers (Gemini-only hollow circle, Claude-only filled diamond) */
@@ -174,7 +172,8 @@ function renderForest() {
   svg += `<text class="t" x="${X(1) - 8}" y="${T - 20}" text-anchor="end">← slower</text><text class="t" x="${X(1) + 8}" y="${T - 20}" text-anchor="start">faster →</text>`;
   const mk = (s, r, dy) => { if (!s) return ""; const cy = r.y + r.h / 2 + dy, cls = s === r.g ? "g" : "c", x = X(s.hr);
     const shape = cls === "g" ? `<circle class="mg" cx="${x}" cy="${cy}" r="4.6"/>` : `<polygon class="mc" points="${x},${cy - 6} ${x + 6},${cy} ${x},${cy + 6} ${x - 6},${cy}"/>`;
-    return `<g class="${cls}"><path class="ci" d="M${X(s.lo)} ${cy}H${X(s.hi)}M${X(s.lo)} ${cy - 4}V${cy + 4}M${X(s.hi)} ${cy - 4}V${cy + 4}"/>${shape}</g>`; };
+    return `<g class="${cls} fpg" style="--n:${r.idx};transform-origin:${X(1)}px 0"><path class="ci" d="M${X(s.lo)} ${cy}H${X(s.hi)}M${X(s.lo)} ${cy - 4}V${cy + 4}M${X(s.hi)} ${cy - 4}V${cy + 4}"/>${shape}</g>`; };
+  let ri = 0; pos.forEach(r => { if (!r.head) r.idx = ri++; });
   pos.forEach(r => { if (r.head) svg += `<text class="h" x="4" y="${r.y + 19}">${esc(r.head)}</text>`; else svg += `<text x="16" y="${r.y + r.h / 2 + 4}">${esc(r.label)}</text>${mk(r.g, r, -5)}${mk(r.c, r, 5)}`; });
   $("#forest").innerHTML = svg + "</svg>";
   $("#fpKey").innerHTML = `<span><i class="mkg"></i>Gemini-only</span><span><i class="mkc"></i>Claude-only${tag("claude")}</span><span>${narrow ? "" : "Marker = hazard ratio, line = 95% interval"}</span>`;
@@ -187,10 +186,12 @@ function renderForestText() {
 }
 
 /* 4 pace strip */
+const paceEnter = () => { vis.pace = true; $("#pace").classList.remove("noanim"); $$("#pace .pace-mk,#pace .pace-iv").forEach(e => { e.style.left = e.dataset.left; if (e.dataset.w) e.style.width = e.dataset.w; }); };
+const paceLeave = () => { vis.pace = false; const p = $("#pace"); p.classList.add("noanim"); const ref = p.querySelector(".pace-ref").style.left; $$("#pace .pace-mk,#pace .pace-iv").forEach(e => { e.style.left = ref; if (e.dataset.w) e.style.width = "0%"; }); void p.offsetWidth; p.classList.remove("noanim"); };
 function renderPace() {
   const lo = 0.4, hi = 1.2, P = (v) => 100 * (Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo), cls = {gemini: "g", claude: "c"};
   const rows = SETS.map(k => { const p = D.pace[k], d = p.documented_share_by_term;
-    return `<div class="pace-row"><div class="pl">${SN[k]}${tag(k)}</div><div><div class="pace-track ${cls[k]}"><i class="pace-ref" style="left:${P(1)}%"></i><i class="pace-iv" style="left:${P(p.k_lo)}%;width:${P(p.k_hi) - P(p.k_lo)}%"></i><i class="pace-mk ${cls[k]}" style="left:${P(p.k)}%"></i></div></div><div class="pr"><b>${p.k.toFixed(2)}</b> <span class="muted">(${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})</span></div><div class="ps">Documented by month ${p.month} under this judge: AIADMK ${pct(d["AIADMK-2016"].documented_share)}, DMK ${pct(d["DMK-2021"].documented_share)}, TVK ${pct(d["TVK-2026"].documented_share, 1)}</div></div>`; }).join("");
+    return `<div class="pace-row"><div class="pl">${SN[k]}${tag(k)}</div><div><div class="pace-track ${cls[k]}"><i class="pace-ref" style="left:${P(1)}%"></i><i class="pace-iv" data-left="${P(p.k_lo)}%" data-w="${P(p.k_hi) - P(p.k_lo)}%" style="left:${vis.pace ? P(p.k_lo) : P(1)}%;width:${vis.pace ? P(p.k_hi) - P(p.k_lo) : 0}%"></i><i class="pace-mk ${cls[k]}" data-left="${P(p.k)}%" style="left:${vis.pace ? P(p.k) : P(1)}%"></i></div></div><div class="pr"><b>${p.k.toFixed(2)}</b> <span class="muted">(${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})</span></div><div class="ps">Documented by month ${p.month} under this judge: AIADMK ${pct(d["AIADMK-2016"].documented_share)}, DMK ${pct(d["DMK-2021"].documented_share)}, TVK ${pct(d["TVK-2026"].documented_share, 1)}</div></div>`; }).join("");
   const top = `<div class="pace-row"><div></div><div class="pace-axis top"><span class="rl" style="left:${P(1)}%;transform:translateX(calc(-100% - 8px))">1.0 = same pace as earlier governments</span></div><div></div></div>`;
   const axis = `<div class="pace-row"><div></div><div class="pace-axis"><span style="left:${P(0.5)}%">0.5</span><span style="left:${P(0.75)}%">0.75</span><span style="left:${P(1.0)}%">1.0</span><span style="left:${P(1.2)}%;transform:translateX(-100%)">1.2</span></div><div></div></div>`;
   $("#pace").innerHTML = top + rows + axis;
@@ -202,8 +203,12 @@ function renderPace() {
 }
 
 /* 3 projection panels: two lines per setting, no scenario A on the overview */
+let projData = {};
+function drawProj() { SETS.forEach(k => { destroy("proj_" + k); const d = projData[k]; if (d) charts["proj_" + k] = lineChart(d.el, d.ds, {animation: ANIM}); }); }
+const projEnter = () => { vis.proj = true; drawProj(); $$("#projPanels .bn").forEach(b => tween(b, b._to, 0)); };
+const projLeave = () => { vis.proj = false; SETS.forEach(k => destroy("proj_" + k)); $$("#projPanels .bn").forEach(b => { b._v = 0; b.textContent = "0%"; }); };
 function renderProjection() {
-  SETS.forEach(k => destroy("proj_" + k));
+  SETS.forEach(k => destroy("proj_" + k)); projData = {};
   $("#projPanels").innerHTML = SETS.map(k => `<div class="frame"><div class="panel panel-dark pnl"><h3><span class="sw" style="background:var(--s-${k === "gemini" ? "g" : "c"})"></span>${SN[k]}${tag(k)}</h3><div class="chart"><canvas id="proj_${k}" role="img" aria-label="Projected share of TVK promises realised by month, ${SN[k]}" aria-describedby="projAlt_${k}"></canvas></div><div class="key" id="projKey_${k}"></div><p class="vh" id="projAlt_${k}"></p><div class="bigstats" id="projVals_${k}"></div><p class="warnline">"If TVK's current pace persists" is an extrapolation from five months, not validated as a forecast.</p></div></div>`).join("");
   SETS.forEach(k => {
     const el = $("#proj_" + k), c = COLORS(el), p = MOD(k).projection, xs = p.months, last = lastOf(p), ds = [], hi = k === "gemini" ? c.sg : c.sc;
@@ -211,12 +216,14 @@ function renderProjection() {
     LINES.forEach(s => { const r = p[s.key];
       ds.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: s.col, backgroundColor: s.col, pointRadius: 0, borderWidth: 3, borderDash: s.dash});
       if (r.lo) { ds.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: rgba(s.col, .24), pointRadius: 0, fill: "+1"}); ds.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0}); } });
-    charts["proj_" + k] = lineChart(el, ds);
+    projData[k] = {el, ds};
     $("#projKey_" + k).innerHTML = LINES.map(s => `<span style="color:${s.col}"><i class="${s.dash.length ? "d" : ""}"></i><span style="color:var(--muted)">${s.name}</span></span>`).join("");
     const a = p.no_update, b = p.matched_update, m = xs[last];
-    $("#projVals_" + k).innerHTML = `<div><div class="bn" style="color:var(--muted)">${pct(a.share[last])}</div><div class="bl">at <b>historical pace</b> by ${monthLabel(m)}<br>band ${pct(a.lo[last])}–${pct(a.hi[last])}</div></div><div><div class="bn" style="color:${hi}">${pct(b.share[last])}</div><div class="bl"><b>if current pace persists</b> by ${monthLabel(m)} (extrapolation)<br>band ${pct(b.lo[last])}–${pct(b.hi[last])}</div></div>`;
+    $("#projVals_" + k).innerHTML = `<div><div class="bn" data-to="${100 * a.share[last]}" style="color:var(--muted)">${vis.proj ? pct(a.share[last]) : "0%"}</div><div class="bl">at <b>historical pace</b> by ${monthLabel(m)}<br>band ${pct(a.lo[last])}–${pct(a.hi[last])}</div></div><div><div class="bn" data-to="${100 * b.share[last]}" style="color:${hi}">${vis.proj ? pct(b.share[last]) : "0%"}</div><div class="bl"><b>if current pace persists</b> by ${monthLabel(m)} (extrapolation)<br>band ${pct(b.lo[last])}–${pct(b.hi[last])}</div></div>`;
     $("#projAlt_" + k).textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}), projection under historical patterns from the share documented at month 5: historical pace ${[12, 24, 60].filter(x => xs.includes(x)).map(x => pct(a.share[xs.indexOf(x)]) + " at month " + x).join(", ")}; if current pace persists ${[12, 24, 60].filter(x => xs.includes(x)).map(x => pct(b.share[xs.indexOf(x)]) + " at month " + x).join(", ")}.`;
   });
+  $$("#projPanels .bn").forEach(b => { b._to = +b.dataset.to; b._v = vis.proj ? b._to : 0; });
+  if (vis.proj) drawProj();
   const btRow = (name, m, pre) => { const l = m.backtest.landmarks["5"]; return `<tr><th scope="row" style="color:var(--fg);font-weight:500">${name}${pre || ""}</th>${l && !l.unavailable ? `<td>${l.mae_model.toFixed(1)} pts</td><td>${l.mae_model_pace.toFixed(1)} pts</td>` : `<td colspan="2" class="muted">not available in this setting</td>`}</tr>`; };
   $("#projNote").innerHTML = `<h3 style="margin:0 0 6px;font-size:18px">Why the second line is only an extrapolation</h3><p>The pace update, applying TVK's pace factor to the months ahead, was tested on the completed terms: fit on DMK 2021–26, predict AIADMK 2016–21 from its first 5 months. It helped only when the two terms had different judges.</p><div class="scroll nomin"><table><caption class="vh">Backtest error from month 5, with and without the pace update</caption><thead><tr><th scope="col">Judging</th><th scope="col">Without update</th><th scope="col">With update</th></tr></thead><tbody>${btRow("Gemini-only (one judge for both terms)", MOD("gemini"))}${btRow("Claude-only", MOD("claude"), tag("claude"))}${btRow("Mixed judges (Claude where available, Gemini elsewhere)", D.mixed)}</tbody></table></div>`;
   const cols = [6, 12, 24, 36, 48, 60], rowsT = SETS.flatMap(k => { const p = MOD(k).projection; return [["no_update", "Historical pace"], ["matched_update", "If current pace persists"]].map(([key, nm]) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${SN[k]}: ${nm}</th>${cols.map(m => { const i = p.months.indexOf(m), r = p[key]; return `<td>${pct(r.share[i])}<br><span class="muted small">${pct(r.lo[i])}–${pct(r.hi[i])}</span></td>`; }).join("")}</tr>`); });
@@ -257,9 +264,9 @@ function renderRobust() {
 
 /* 6 accuracy, with coloured meters (bar = share, pale range = 95% interval) */
 function renderAccuracy() {
-  const E = D.ev, wilson = (c) => c && c.p != null ? `${pct(c.p)} <span class="muted small">(${pct(c.lo)}–${pct(c.hi)})</span>` : "–";
+  const E = D.ev, wilson = (c) => c && c.p != null ? `<span class="v" data-to="${100 * c.p}">${vis.acc ? pct(c.p) : "0%"}</span> <span class="muted small">(${pct(c.lo)}–${pct(c.hi)})</span>` : "–";
   const CAP = {final_bulk: "Gemini-only verdicts", strong: "Claude's own verdicts", final_claude: "Claude-only verdicts"};
-  const meter = (c, col) => `<div class="meter" style="--mc:${col};--w:${100 * c.p}%"><i class="iv" style="left:${100 * c.lo}%;width:${100 * (c.hi - c.lo)}%"></i><i class="fill"></i></div>`;
+  const meter = (c, col) => `<div class="meter" style="--mc:${col}"><i class="iv" style="left:${100 * c.lo}%;width:${100 * (c.hi - c.lo)}%"></i><i class="fill" data-w="${100 * c.p}%" style="width:${vis.acc ? 100 * c.p : 0}%"></i></div>`;
   const card = (k) => { const g = evOf(k), e = g.e1, d = g.date, nOf = (c) => c ? `${c.k} of ${c.n}` : "";
     const row = (title, c, col, note) => `<div class="row"><div class="rh"><span>${title}</span><b>${wilson(c)}</b></div>${meter(c, col)}<small>${note}</small></div>`;
     return `<div class="panel panel-light acc-card"><h3><span class="sw" style="background:var(--s-${k === "gemini" ? "g" : "c"})"></span>${SN[k]}</h3><p class="muted small" style="margin:0 0 6px">${CAP[evKey(k)]}, compared with the hand labels at the end of the term</p>
@@ -269,6 +276,7 @@ function renderAccuracy() {
     ${row("Specificity", e.specificity, "#f0539a", `Of the promises the hand label says were not realised, the share the judge agrees on (${nOf(e.specificity)}).`)}
     <div class="row"><div class="rh"><span>Date gap</span><b>${(d.median_abs_days / 30.4).toFixed(1)} months</b></div><small>Median, over ${d.n} promises both say were realised; ${pct(d.within_90_days.p)} are within 90 days.</small></div></div>`; };
   $("#accCards").innerHTML = SETS.map(card).join("");
+  $("#accCards").classList.toggle("on", vis.acc); $$("#accCards .v").forEach(v => { v._to = +v.dataset.to; v._v = vis.acc ? v._to : 0; });
   const pt = E.per_term_n || {}, parts = Object.entries(pt).map(([t, n]) => `${n} ${TERMS[t]}`).join(" and ");
   $("#accSub").innerHTML = `A sample of <strong>n = ${E.n_labels}</strong> promises (${parts}) was labelled by hand without seeing any verdict. ${pt["TVK-2026"] ? "" : "<strong>No TVK promise is in the sample</strong>, so TVK verdicts have no accuracy figure of their own. "}Intervals are 95% Wilson intervals; with a sample this small they are wide. Aggregate numbers only.`;
   $("#limits").innerHTML = `<li><strong>They depend on the judge.</strong> Switch the judge in section 1 and the realised shares move; neither setting is the truth.</li>
@@ -277,6 +285,10 @@ function renderAccuracy() {
     <li><strong>"No evidence found" is not "nothing happened".</strong> It means the document corpus held nothing showing an official step.</li>`;
 }
 
+const accEnter = () => { vis.acc = true; const c = $("#accCards"); c.classList.remove("noanim"); c.classList.add("on"); $$("#accCards .fill").forEach(f => { f.style.width = f.dataset.w; }); $$("#accCards .v").forEach(v => tween(v, v._to, 0)); };
+const accLeave = () => { vis.acc = false; const c = $("#accCards"); c.classList.add("noanim"); c.classList.remove("on"); $$("#accCards .fill").forEach(f => { f.style.width = "0%"; }); $$("#accCards .v").forEach(v => { v._v = 0; v.textContent = "0%"; }); void c.offsetWidth; c.classList.remove("noanim"); };
+const fpEnter = () => { vis.fp = true; const f = $(".fp"); f.classList.remove("noanim"); f.classList.add("on"); };
+const fpLeave = () => { vis.fp = false; const f = $(".fp"); f.classList.add("noanim"); f.classList.remove("on"); void f.offsetWidth; f.classList.remove("noanim"); };
 function renderAll() { renderRobust(); renderView(); renderForest(); renderForestText(); renderPace(); renderProjection(); renderAccuracy(); }
 Promise.all([load("summary_gemini.json"), load("summary_claude.json"), load("model_gemini.json"), load("model_claude.json"), load("pace.json"), load("evaluation.json"), load("model.json"), load("work.json").catch(() => null)]).then(([sg, sc, mg, mc, pace, ev, mixed, work]) => {
   D = {sum: {gemini: sg, claude: sc}, model: {gemini: mg, claude: mc}, pace, ev, mixed};
@@ -288,9 +300,13 @@ Promise.all([load("summary_gemini.json"), load("summary_claude.json"), load("mod
   $("#showDoc").onchange = (e) => { showDoc = e.target.checked; renderView(); };
   let fw = 0; if (window.ResizeObserver) new ResizeObserver(() => { const w = $("#forest").clientWidth; if (w && w !== fw) { fw = w; renderForest(); } }).observe($("#forest"));
   buildBars(); renderAll();
-  /* animate the bars and meters when they scroll into view */
-  const go = (el) => { if (el.id === "tbars") revealBars(); else el.classList.add("in"); };
-  if (window.IntersectionObserver && !REDUCED) { const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { go(e.target); io.unobserve(e.target); } }), {threshold: 0.3}); io.observe($("#tbars")); io.observe($("#accCards")); }
-  else { go($("#tbars")); go($("#accCards")); }
+  /* every animated part starts at its origin and plays when the section is reached; it resets on leaving, so it replays */
+  onView($("#tbars"), barsEnter, barsLeave);
+  onView($("#kmPanel"), () => { vis.km = true; drawKM(); }, () => { vis.km = false; clearKM(); });
+  onView($(".fp"), fpEnter, fpLeave);
+  onView($("#pace"), paceEnter, paceLeave);
+  onView($("#projPanels"), projEnter, projLeave);
+  onView($("#accCards"), accEnter, accLeave);
+  document.addEventListener("themechange", renderAll);
 }).catch(e => showLoadError(e));
 </script></body></html>

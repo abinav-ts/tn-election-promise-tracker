@@ -1,0 +1,28 @@
+name: Leave a general comment
+description: Share a comment about the tracker. Comments are read by the maintainer and shown on the site only after approval.
+title: "Comment: "
+labels: ["community-comment"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. **This issue is public**, and so is your GitHub name. Comments are read by a person before anything is shown on the site; abusive, hateful, personal or off-topic comments are not published. Please do not include personal details. Comments never change a verdict and are never used by the judging or survival models. To dispute a specific verdict, use the "Suggest a correction" link on that promise instead.
+  - type: input
+    id: name
+    attributes:
+      label: Name to show (optional)
+      description: Leave empty to appear as "Anonymous". Your GitHub name is not shown on the site.
+  - type: textarea
+    id: comment
+    attributes:
+      label: Your comment
+      description: Up to 600 characters. Filled in by the form on the Promise explorer page.
+    validations:
+      required: true
+  - type: checkboxes
+    id: agree
+    attributes:
+      label: Before you submit
+      options:
+        - label: I understand this is public and may be shown on the site after review, or not shown at all.
+          required: true

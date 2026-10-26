@@ -1,6 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Whitepaper · Tamil Nadu Election Promise Tracker</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/site.css"></head>
 <body data-page="whitepaper"><div id="nav"></div><div class="wrap">
 <main id="main"><article class="prose">
@@ -75,6 +76,7 @@
 
 <h2 id="s12">12. Community corrections, now and later</h2>
 <p><strong>Now.</strong> Every promise in the explorer has a <em>Suggest a correction</em> link that opens a pre-filled GitHub issue (promise ID, the verdict shown, a form for the suggested status, date and evidence). Issues are reviewed by hand. They are stored separately from the verdicts, never change a verdict automatically, and are never used by the judging or survival models.</p>
+<p><strong>General comments.</strong> The promise explorer also has a comments section. A visitor's comment is first checked in the browser against a short list of abusive words, then submitted as a public GitHub issue. Nothing is shown on the site until a person has read and approved it, and approved comments appear labelled "visitor comments, unverified". Comments are stored separately from the verdicts and never change a verdict or feed any prompt, threshold, fit or gold set. The word list is only a first pass and cannot catch everything, which is why approval by hand is the actual filter.</p>
 <p><strong>Possible extension (designed, not built).</strong> A public judgement feature would store each submission as a separate record (promise ID, suggested status and date, evidence link, timestamp, a hashed anonymous contributor key) in its own table, never in the verdict tables. The rules would be:</p>
 <ol><li>community records are never inputs to a prompt, a threshold, a fit or the gold set;</li>
 <li>they are shown beside, not instead of, the evidence-based verdict, labelled "visitor suggestions, unverified";</li>

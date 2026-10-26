@@ -36,11 +36,34 @@ const SCENARIOS = [
 
 function nav(page) {
   const links = [["index.html", "Overview", "index"], ["promises.html", '<span class="wide">Promise explorer</span><span class="narrow">Explorer</span>', "promises"], ["whitepaper.html", "Whitepaper", "whitepaper"], ["work.html", "Work done", "work"]];
-  setTimeout(() => { const c = document.querySelector("header.site nav a[aria-current]"); if (c && c.scrollIntoView) c.scrollIntoView({inline: "center", block: "nearest"}); }, 0);
-  return `<a class="skip" href="#main">Skip to content</a><header class="site"><div class="hdr-in"><a class="brand" href="index.html">Tamil Nadu Election Promise Tracker</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></div></header>`;
+  setTimeout(() => { syncThemeBtn(); const c = document.querySelector("header.site nav a[aria-current]"); if (c && c.scrollIntoView) c.scrollIntoView({inline: "center", block: "nearest"}); }, 0);
+  const icon = `<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>`;
+  return `<a class="skip" href="#main">Skip to content</a><header class="site"><div class="hdr-in"><a class="brand" href="index.html">Tamil Nadu Election Promise Tracker</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav><button class="theme-btn" type="button" aria-label="Switch to dark theme" aria-pressed="false">${icon}</button></div></header>`;
+}
+/* theme: set before first paint by the inline head script; the header button flips it and remembers the choice */
+const getTheme = () => document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+function syncThemeBtn() { const b = document.querySelector(".theme-btn"); if (!b) return; const d = getTheme() === "dark"; b.setAttribute("aria-label", d ? "Switch to light theme" : "Switch to dark theme"); b.setAttribute("aria-pressed", String(d)); }
+document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest(".theme-btn"); if (!b) return; const t = getTheme() === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = t; try { localStorage.setItem("theme", t); } catch (err) {} syncThemeBtn(); document.dispatchEvent(new Event("themechange")); });
+
+/* motion helpers: animations play when a section is reached, and reset when it leaves, so they replay on every visit */
+const REDUCED = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
+function tween(el, to, dec, suffix = "%") {
+  const from = el._v || 0, t0 = performance.now(), dur = 1300; el._v = to;
+  if (REDUCED || from === to) { el.textContent = to.toFixed(dec) + suffix; return; }
+  const step = (t) => { if (el._v !== to) return; const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = (from + (to - from) * e).toFixed(dec) + suffix; if (k < 1 && el._v === to) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function onView(el, enter, leave) {
+  if (!el) return;
+  if (REDUCED || !window.IntersectionObserver) { setTimeout(enter, 0); return; }
+  let on = false;
+  new IntersectionObserver((es) => es.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio >= 0.15 && !on) { on = true; enter(); }
+    else if (!e.isIntersecting && on) { on = false; leave(); }
+  }), {threshold: [0, 0.15], rootMargin: "0px 0px -25% 0px"}).observe(el);   // starts once the section is in the upper three quarters of the screen
 }
 function footer() {
-  return `<footer class="site"><div class="ft-in"><p class="disc">Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure.</p><p class="lic">UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10.<br>Code: GPL v3. Data and text: CC BY 4.0.</p></div></footer>`;
+  return `<footer class="site"><div class="ft-in"><p class="disc">Verdicts are made by LLMs from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure.</p><p class="lic">UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10.<br>Code: GPL v3. Data and text: CC BY 4.0.</p></div></footer>`;
 }
 function lineChart(el, datasets, opts = {}) {
   const c = COLORS(el);

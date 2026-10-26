@@ -1,11 +1,22 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Promise explorer · Tamil Nadu Election Promise Tracker</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Tamil:wght@400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/site.css"></head>
-<body data-page="promises"><div id="nav"></div><div class="wrap">
-<main id="main"><section><h1>Promise explorer</h1>
-<p class="lede">Every promise with its status, date and the evidence behind it. Statuses at earlier months show only what was documented by then. "No evidence found" means the corpus held nothing showing an official step, not that nothing happened.</p></section>
-<section><div class="filters" role="search">
+<body data-page="promises"><div id="nav"></div>
+<main id="main" class="bands">
+
+<section class="hero hero-ex" aria-labelledby="h-ex"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in"><div class="hero-text">
+<h1 id="h-ex">Promise <span class="acc">explorer</span></h1>
+<p class="lede">Every promise with its status, date and the evidence behind it. Statuses at earlier months show only what was documented by then.</p>
+<p class="redsmall">"No evidence found" means the corpus held nothing showing an official step, not that nothing happened.</p>
+<ul class="facts" aria-label="The explorer in numbers"><li><b id="exN">–</b>promises</li><li><b id="exT">–</b>terms</li></ul>
+</div></div></section>
+
+<section class="band b-white t-light" id="find" aria-labelledby="h-find"><div class="band-in">
+<p class="eyebrow">Browse</p>
+<h2 id="h-find">Find a promise</h2>
+<div class="panel panel-tint ex-controls"><div class="filters" role="search">
 <input id="q" type="search" placeholder="Search promise text" aria-label="Search promise text">
 <select id="fterm" aria-label="Term"><option value="">All terms</option></select>
 <select id="fsector" aria-label="Sector"><option value="">All sectors</option></select>
@@ -13,13 +24,54 @@
 <select id="fstatus" aria-label="Status"><option value="">Any status</option></select>
 <select id="fcut" aria-label="Status as of"><option value="shown">Status at end of term (TVK: month 5)</option></select>
 <select id="fjudge" aria-label="Judge"><option value="">Any judge</option><option value="bulk">Gemini (bulk model)</option><option value="strong">Claude</option><option value="human">human fix</option></select>
-</div><p id="count" class="muted small" aria-live="polite" style="margin:10px 0 0"></p><div id="list"></div><p style="margin-top:14px"><button id="more" type="button" class="btn">Show more</button></p>
-<p class="muted small" style="max-width:70ch;margin-top:20px">Think a verdict is wrong? Every promise has a <strong>Suggest a correction</strong> link. Suggestions are reviewed by hand, are stored separately as GitHub issues, never change a verdict automatically, and are never used by the judging or survival models.</p></section>
-</main></div><div id="foot"></div>
+</div></div>
+<div class="rescount"><span id="count" aria-live="polite"></span><span>10 promises per page</span></div>
+<div id="list"></div>
+<nav class="pager" id="pager" aria-label="Pagination"></nav>
+</div></section>
+
+<section class="band b-lav t-lav" id="suggest" aria-labelledby="h-sug"><div class="band-in">
+<p class="eyebrow">Community · 1</p>
+<h2 id="h-sug">Think a verdict is wrong? Tell us.</h2>
+<p class="sub">Every promise has a <strong>Suggest a correction</strong> link. Suggestions are reviewed by hand, are stored separately as GitHub issues, never change a verdict automatically, and are never used by the judging or survival models.</p>
+<div class="steps">
+<div class="panel panel-tint step"><span class="n">1</span><h3>Find the promise</h3><p>Search or filter above, then open the promise to see its status, date and the evidence quoted.</p></div>
+<div class="panel panel-tint step"><span class="n">2</span><h3>Suggest a correction</h3><p>Use the link under the evidence. It opens a pre-filled GitHub issue (a free GitHub account is needed) where you give the status, date and evidence you think is right.</p></div>
+<div class="panel panel-tint step"><span class="n">3</span><h3>It is reviewed by hand</h3><p>Suggestions with checkable evidence are looked at by a person. They never change a verdict automatically.</p></div>
+</div>
+<div class="btnrow"><a class="btn-cta grad" href="#find">Find a promise to correct ↑</a><span class="small muted">Corrections need evidence we can check, such as an official document or a Government Order number. Opinions without evidence cannot be used.</span></div>
+</div></section>
+
+<section class="band b-black t-dark" id="comments" aria-labelledby="h-com"><div class="band-in">
+<p class="eyebrow">Community · 2</p>
+<h2 id="h-com">Comments</h2>
+<p class="sub">General comments on the tracker, not about one verdict. Nothing is shown until a person has read and approved it.</p>
+<div class="cols2 wide">
+<div class="panel panel-dark why"><h3>Why this website exists</h3>
+<p>Election manifestos are promises made in public. This site lets anyone check, promise by promise, whether an official step followed, when, and on what evidence, with the judge named beside every verdict.</p>
+<p>It also lets readers push back: question a verdict, add evidence, or say what is missing. Nothing here ranks parties or rates governments.</p>
+<p class="small" style="color:var(--muted)"><strong>How comments are handled.</strong> A short word list blocks obvious abuse in your browser. Your comment is then sent as a public GitHub issue. A person reads it, and only approved comments appear below, labelled "visitor comments, unverified". Comments never change a verdict. The word list cannot catch everything, which is why reading by hand is the real filter.</p></div>
+<form class="panel panel-light cform" id="cform" novalidate aria-labelledby="h-cf">
+<h3 id="h-cf" style="margin:0 0 14px;font-size:20px">Leave a comment</h3>
+<p class="err" id="cerr" role="alert" hidden></p>
+<div class="row"><label for="cname">Name to show (optional)</label><input type="text" id="cname" maxlength="40" autocomplete="nickname" placeholder="Anonymous"></div>
+<div class="row"><label for="ctext">Your comment</label><textarea id="ctext" maxlength="600" required aria-describedby="chint"></textarea><div class="hint" id="chint"><span>20 to 600 characters. No links, no personal details.</span><span id="ccount">0 / 600</span></div></div>
+<div class="row"><label class="chk"><input type="checkbox" id="cagree"><span>I understand this opens a public GitHub issue under my GitHub account, and that the comment may be shown after review, or not at all.</span></label></div>
+<button type="submit" class="btn-cta grad">Review and submit →</button>
+<p class="ok" id="cok" role="status" hidden>Thank you. A GitHub page opened in a new tab: press "Submit new issue" there to send it. Your comment appears here only after it has been approved.</p>
+</form>
+</div>
+<h3 style="margin:34px 0 4px;font-size:22px">Approved comments</h3>
+<p class="cmt-label">Visitor comments, unverified</p>
+<div class="clist" id="clist" aria-live="polite"></div>
+</div></section>
+
+</main>
+<div id="foot"></div>
 <script src="assets/site.js"></script>
 <script>
 $("#nav").innerHTML = nav("promises");
-const PAGE = 40; let shown = PAGE, view = [];
+const PER = 10; let page = 1, view = [];
 const REPO = "https://github.com/abinav-ts/tn-election-promise-tracker";
 function correctionLink(p, s) {
   const cur = s ? `${label(s[0])}${s[1] ? ", " + s[1] : ""}, judged by ${({strong: "Claude", bulk: "Gemini", human: "human fix"})[s[3]] || s[3]}` : "not judged at this month";
@@ -27,7 +79,8 @@ function correctionLink(p, s) {
   return REPO + "/issues/new?" + q.toString();
 }
 Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
-  $("#foot").innerHTML = footer(sum);
+  $("#foot").innerHTML = footer();
+  $("#exN").textContent = int(P.length); $("#exT").textContent = Object.keys(TERMS).length;
   const uniq = (k) => [...new Set(P.map(p => p[k]))].sort();
   const fill = (id, vals, fmt) => vals.forEach(v => $(id).insertAdjacentHTML("beforeend", `<option value="${esc(v)}">${esc(fmt ? fmt(v) : label(v))}</option>`));
   fill("#fterm", Object.keys(TERMS), t => TERMS[t]); fill("#fsector", uniq("sector")); fill("#ftype", uniq("type")); fill("#fstatus", sum.statuses);
@@ -40,11 +93,13 @@ Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
     view = P.filter(p => (!$("#fterm").value || p.term === $("#fterm").value) && (!$("#fsector").value || p.sector === $("#fsector").value) &&
       (!$("#ftype").value || p.type === $("#ftype").value) && (!q || p.text.toLowerCase().includes(q) || (p.src && p.src.includes(q))) &&
       (() => { const s = stat(p); if (!s) return !$("#fstatus").value && !$("#fjudge").value; return (!$("#fstatus").value || s[0] === $("#fstatus").value) && (!$("#fjudge").value || s[3] === $("#fjudge").value); })());
-    shown = PAGE; draw();
+    page = 1; draw();
   }
   function draw() {
-    $("#count").textContent = view.length + " of " + P.length + " promises";
-    $("#list").innerHTML = view.slice(0, shown).map(p => {
+    const n = Math.max(1, Math.ceil(view.length / PER)); page = Math.min(Math.max(1, page), n);
+    const a = (page - 1) * PER, b = Math.min(view.length, a + PER);
+    $("#count").textContent = view.length ? `Showing ${a + 1}–${b} of ${int(view.length)} promises${view.length < P.length ? " (filtered from " + int(P.length) + ")" : ""}` : "No promise matches these filters";
+    $("#list").innerHTML = view.slice(a, b).map(p => {
       const s = stat(p);
       const head = s ? `<span class="pill ${s[0]}">${label(s[0])}</span> <span class="muted small">${s[1] ? s[1] + " · " : ""}${({strong: "Claude", bulk: "Gemini", human: "human fix"})[s[3]] || s[3]}</span>` : `<span class="muted small">not judged at this month</span>`;
       const hist = Object.entries(p.v).filter(([m]) => m !== "0").sort((a, b) => a[0] - b[0]).map(([m, v]) => `m${m}: ${label(v[0])}`).join(" · ");
@@ -56,9 +111,46 @@ Promise.all([load("promises.json"), load("summary.json")]).then(([P, sum]) => {
         ${ev}<p class="small muted">${hist}</p>
         <p class="small"><a href="${correctionLink(p, s)}" rel="noopener">Suggest a correction</a> <span class="muted">(opens a GitHub issue; reviewed by hand, never changes a verdict automatically)</span></p></details>`;
     }).join("");
-    $("#more").hidden = shown >= view.length;
+    pager(n);
   }
-  ids.forEach(i => $("#" + i).addEventListener("input", apply)); $("#more").onclick = () => { shown += PAGE; draw(); };
+  /* numbered pages like a search engine: Previous, 1 … current±2 … last, Next */
+  function pager(n) {
+    const el = $("#pager"); if (n <= 1) { el.innerHTML = ""; return; }
+    const set = new Set([1, n]); for (let i = page - 2; i <= page + 2; i++) if (i > 1 && i < n) set.add(i);
+    const nums = [...set].sort((x, y) => x - y); let html = `<button type="button" class="pg" data-p="${page - 1}"${page === 1 ? " disabled" : ""}>‹ Previous</button>`, prev = 0;
+    nums.forEach(i => { if (i - prev > 1) html += `<span class="gap" aria-hidden="true">…</span>`; html += `<button type="button" class="pg${i === page ? " cur" : ""}" data-p="${i}" aria-label="Page ${i}"${i === page ? ' aria-current="page"' : ""}>${i}</button>`; prev = i; });
+    el.innerHTML = html + `<button type="button" class="pg" data-p="${page + 1}"${page === n ? " disabled" : ""}>Next ›</button>`;
+  }
+  $("#pager").addEventListener("click", (e) => { const b = e.target.closest(".pg"); if (!b || b.disabled) return; page = +b.dataset.p; draw(); $("#find").scrollIntoView({behavior: REDUCED ? "auto" : "smooth", block: "start"}); });
+  ids.forEach(i => $("#" + i).addEventListener("input", apply));
   apply();
 }).catch(e => showLoadError(e));
+
+/* ---- comments: a first-pass check in the browser, then a public GitHub issue; only approved comments are listed ---- */
+const ABUSE = /\b(idiots?|morons?|stupid|dumb|scum|filth|bastards?|bitch(es)?|shit|fuck(ing|ers?)?|assholes?|kill yourself|go die)\b/i;   // a first pass only: human review is the real filter
+function checkComment(name, text) {
+  const t = text.trim();
+  if (t.length < 20) return "Please write at least 20 characters.";
+  if (t.length > 600) return "Please keep the comment to 600 characters.";
+  if (/(https?:\/\/|www\.)/i.test(t)) return "Links are not accepted in comments. To add evidence for a verdict, use Suggest a correction on that promise.";
+  if (ABUSE.test(t) || ABUSE.test(name)) return "This contains language we do not publish. Please rephrase it.";
+  const letters = t.replace(/[^A-Za-z]/g, ""); if (letters.length >= 30 && letters.replace(/[^A-Z]/g, "").length / letters.length > 0.7) return "Please do not write the whole comment in capitals.";
+  if (/(.)\1{9,}/.test(t)) return "Please avoid long runs of repeated characters.";
+  return "";
+}
+$("#ctext").addEventListener("input", () => { $("#ccount").textContent = $("#ctext").value.length + " / 600"; });
+$("#cform").addEventListener("submit", (e) => {
+  e.preventDefault(); const err = $("#cerr"), ok = $("#cok"); ok.hidden = true;
+  const name = $("#cname").value.trim(), text = $("#ctext").value;
+  const why = checkComment(name, text) || ($("#cagree").checked ? "" : "Please tick the box to confirm you understand the comment is public.");
+  if (why) { err.textContent = why; err.hidden = false; return; }
+  err.hidden = true;
+  const q = new URLSearchParams({template: "comment.yml", title: "Comment: " + text.trim().slice(0, 50), name, comment: text.trim()});
+  window.open(REPO + "/issues/new?" + q.toString(), "_blank", "noopener");
+  ok.hidden = false;
+});
+fetch("community/comments.json").then(r => r.ok ? r.json() : []).catch(() => []).then((list) => {
+  const shown = (Array.isArray(list) ? list : []).filter(c => c && c.text && !ABUSE.test(c.text) && !ABUSE.test(c.name || "")).slice(0, 50);   // checked again before showing
+  $("#clist").innerHTML = shown.length ? shown.map(c => `<div class="panel panel-light cmt"><span class="who">${esc(c.name || "Anonymous")}</span><span class="when">${esc(c.date || "")}</span><p>${esc(c.text)}</p></div>`).join("") : `<div class="panel panel-dark cmt"><p style="margin:0;color:var(--muted)">No comments have been approved yet. Yours could be the first.</p></div>`;
+});
 </script></body></html>

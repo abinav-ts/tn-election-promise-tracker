@@ -35,3 +35,6 @@ Spot-check verdicts are not in the database today (they live in the reviewed CSV
 - `model_claude.json.backtest.landmarks[m].unavailable = true` for months not covered: the page prints "not available in this setting". Months 5 and 6 are the ones the overview reads (month 5).
 - `pace.json.claude_preferred_mixed` is used by the whitepaper; the overview reads `gemini` and `claude`.
 - When the Claude-only run is final, set `meta.standin = false` in `summary_claude.json` and `model_claude.json`; every "preliminary" tag then disappears without a page change.
+
+## 5. Approved comments (explorer)
+`site/public/community/comments.json` is currently approved by hand (see `docs/ui/moderation.md`); it is not generated, so `export-site` does not touch it. If the main conversation wants it generated, the exporter could read GitHub issues labelled `comment-approved` with `gh issue list --label comment-approved --json number,body,closedAt` and write `{id, name, date, text}` records (name from the form field, never the GitHub login). That keeps the "nothing is shown until approved" rule, because only labelled issues are exported.
