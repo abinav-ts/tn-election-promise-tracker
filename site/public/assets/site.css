@@ -14,6 +14,15 @@
 --hdr-bg:#241b3d;--glass-bg:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04));--glass-bd:rgba(255,255,255,.18);--glass-sh:0 10px 36px rgba(0,0,0,.35);--glass-hi:rgba(255,255,255,.28);--blob1:rgba(124,92,214,.38);--blob2:rgba(186,140,230,.20);--blob3:rgba(150,150,235,.16);--map:#b7a3f5;--map2:#7c5cd6;--c-a:#8da0cc;--c-d:#d9a650;--c-t:#5cc2af;--warn:#e2b04a;--warn-bg:#2f2812;--ok:#5fbf98;--bad:#e8806f;
 --p-ok-bg:#1f3a2f;--p-ok:#5fbf98;--p-mid-bg:#1f2c40;--p-mid:#8da0cc;--p-prog-bg:#3a2f14;--p-prog:#e2b04a;--p-block-bg:#3d221d;--p-block:#e8806f;color-scheme:dark}
 
+/* Alternative palette: blue. Same components, tokens only. Chart series use blue / violet / cyan (no red, green, yellow, black or mixes). */
+:root[data-palette="blue"]{--bg:#f2f6fc;--surface:#fff;--sunk:#e5ecf6;--fg:#131f30;--muted:#51617a;--line:#d5deec;--accent:#1f62d0;--accent-ink:#fff;--accent-soft:#e0eafb;
+--hdr-bg:#12356f;--blob1:rgba(51,120,240,.30);--blob2:rgba(64,190,245,.28);--blob3:rgba(110,110,240,.20);--map:#1f62d0;--map2:#4fb4f0;--glass-sh:0 10px 36px rgba(18,53,111,.16);
+--c-a:#1a73e8;--c-d:#8a5cf0;--c-t:#0e9ab8}
+@media (prefers-color-scheme:dark){:root[data-palette="blue"]:not([data-theme="light"]){--bg:#0e141d;--surface:#161d29;--sunk:#1e2735;--fg:#e8edf5;--muted:#93a3ba;--line:#2c384a;--accent:#7db2ff;--accent-ink:#0b1a33;--accent-soft:#1b2a45;
+--hdr-bg:#0f2a57;--blob1:rgba(51,120,240,.36);--blob2:rgba(64,190,245,.18);--blob3:rgba(110,110,240,.16);--map:#7db2ff;--map2:#2f7de1;--c-a:#6aa6ff;--c-d:#b49cff;--c-t:#4cc9e4}}
+:root[data-palette="blue"][data-theme="dark"]{--bg:#0e141d;--surface:#161d29;--sunk:#1e2735;--fg:#e8edf5;--muted:#93a3ba;--line:#2c384a;--accent:#7db2ff;--accent-ink:#0b1a33;--accent-soft:#1b2a45;
+--hdr-bg:#0f2a57;--blob1:rgba(51,120,240,.36);--blob2:rgba(64,190,245,.18);--blob3:rgba(110,110,240,.16);--map:#7db2ff;--map2:#2f7de1;--c-a:#6aa6ff;--c-d:#b49cff;--c-t:#4cc9e4}
+
 *{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-ui);overflow-wrap:break-word}
 a{color:var(--accent);text-underline-offset:2px}

@@ -9,6 +9,8 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": 
 const label = (s) => s.replace(/_/g, " ");
 const monthLabel = (m) => m === 0 ? "end of term" : "month " + m;
 
+// ?palette=blue|purple picks the colour palette and remembers it in this browser, so the tabs keep it.
+try { const q = new URLSearchParams(location.search).get("palette"); if (q === "blue" || q === "purple") localStorage.setItem("palette", q); const pal = localStorage.getItem("palette"); if (pal === "blue") document.documentElement.dataset.palette = "blue"; } catch (e) {}
 // ?theme=light|dark forces a theme (used for screenshots); otherwise the OS setting applies.
 try { const t = new URLSearchParams(location.search).get("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
 // Charts read their colours from CSS tokens, so redraw when the OS theme flips.
