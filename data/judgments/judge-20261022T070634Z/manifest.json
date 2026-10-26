@@ -42589,7 +42589,31 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported_with_failures",
+   "failed": {
+    "T05": [
+     "J6: the realisation date is neither the date extract's document date nor a date written in it"
+    ]
+   },
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0026@full",
+    "AIADMK-2016-0290@full",
+    "AIADMK-2016-0043@full",
+    "AIADMK-2016-0125@full",
+    "AIADMK-2016-0103@full",
+    "AIADMK-2016-0061@full",
+    "AIADMK-2016-0276@full",
+    "AIADMK-2016-0252@full",
+    "AIADMK-2016-0021@full",
+    "AIADMK-2016-0069@full",
+    "AIADMK-2016-0300@full",
+    "AIADMK-2016-0126@full",
+    "AIADMK-2016-0077@full",
+    "AIADMK-2016-0022@full",
+    "AIADMK-2016-0181@full",
+    "AIADMK-2016-0193@full"
+   ]
   },
   {
    "n": 270,
@@ -42726,7 +42750,28 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0037@full",
+    "AIADMK-2016-0153@full",
+    "AIADMK-2016-0158@full",
+    "AIADMK-2016-0016@full",
+    "AIADMK-2016-0025@full",
+    "AIADMK-2016-0140@full",
+    "AIADMK-2016-0188@full",
+    "AIADMK-2016-0070@full",
+    "AIADMK-2016-0028@full",
+    "AIADMK-2016-0296@full",
+    "AIADMK-2016-0121@full",
+    "AIADMK-2016-0218@full",
+    "AIADMK-2016-0295@full",
+    "AIADMK-2016-0057@full",
+    "AIADMK-2016-0312@full",
+    "AIADMK-2016-0261@full",
+    "AIADMK-2016-0143@full"
+   ]
   },
   {
    "n": 271,
@@ -42863,7 +42908,28 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0058@full",
+    "AIADMK-2016-0112@full",
+    "AIADMK-2016-0066@full",
+    "AIADMK-2016-0186@full",
+    "AIADMK-2016-0202@full",
+    "AIADMK-2016-0031@full",
+    "AIADMK-2016-0068@full",
+    "AIADMK-2016-0127@full",
+    "AIADMK-2016-0298@full",
+    "AIADMK-2016-0208@full",
+    "AIADMK-2016-0020@full",
+    "AIADMK-2016-0235@full",
+    "AIADMK-2016-0231@full",
+    "AIADMK-2016-0012@full",
+    "AIADMK-2016-0134@full",
+    "AIADMK-2016-0064@full",
+    "AIADMK-2016-0042@full"
+   ]
   },
   {
    "n": 272,
@@ -42999,7 +43065,30 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported_with_failures",
+   "failed": {
+    "T10": [
+     "J6: the realisation date is neither the date extract's document date nor a date written in it"
+    ]
+   },
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0013@full",
+    "AIADMK-2016-0024@full",
+    "AIADMK-2016-0214@full",
+    "AIADMK-2016-0277@full",
+    "AIADMK-2016-0224@full",
+    "AIADMK-2016-0085@full",
+    "AIADMK-2016-0129@full",
+    "AIADMK-2016-0144@full",
+    "AIADMK-2016-0018@full",
+    "AIADMK-2016-0259@full",
+    "AIADMK-2016-0101@full",
+    "AIADMK-2016-0115@full",
+    "AIADMK-2016-0301@full",
+    "AIADMK-2016-0034@full",
+    "AIADMK-2016-0187@full"
+   ]
   },
   {
    "n": 273,
@@ -43135,7 +43224,39 @@
     }
    ],
    "reused": [],
-   "status": "exported"
+   "status": "imported_with_failures",
+   "failed": {
+    "T05": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T07": [
+     "J6: the realisation date is neither the date extract's document date nor a date written in it"
+    ],
+    "T08": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T09": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ],
+    "T11": [
+     "J4: a realisation date (with date_extract) is required for fulfilled, partial and diluted, and not allowed otherwise"
+    ]
+   },
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "AIADMK-2016-0128@full",
+    "AIADMK-2016-0221@full",
+    "AIADMK-2016-0014@full",
+    "AIADMK-2016-0053@full",
+    "AIADMK-2016-0258@full",
+    "AIADMK-2016-0152@full",
+    "AIADMK-2016-0240@full",
+    "AIADMK-2016-0222@full",
+    "AIADMK-2016-0165@full",
+    "AIADMK-2016-0008@full",
+    "AIADMK-2016-0238@full",
+    "AIADMK-2016-0102@full"
+   ]
   },
   {
    "n": 274,
@@ -43323,7 +43444,30 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0220@full",
+    "DMK-2021-0334@full",
+    "DMK-2021-0145@full",
+    "DMK-2021-0465@full",
+    "DMK-2021-0266@full",
+    "DMK-2021-0004@full",
+    "DMK-2021-0437@full",
+    "DMK-2021-0370@full",
+    "DMK-2021-0479@full",
+    "DMK-2021-0627@full",
+    "DMK-2021-0388@full",
+    "DMK-2021-0596@full",
+    "DMK-2021-0141@full",
+    "DMK-2021-0148@full",
+    "DMK-2021-0602@full",
+    "DMK-2021-0013@full",
+    "DMK-2021-0196@full",
+    "DMK-2021-0211@full",
+    "DMK-2021-0139@full"
+   ]
   },
   {
    "n": 275,
@@ -43523,7 +43667,30 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0393@full",
+    "DMK-2021-0372@full",
+    "DMK-2021-0245@full",
+    "DMK-2021-0057@full",
+    "DMK-2021-0439@full",
+    "DMK-2021-0060@full",
+    "DMK-2021-0276@full",
+    "DMK-2021-0203@full",
+    "DMK-2021-0447@full",
+    "DMK-2021-0448@full",
+    "DMK-2021-0272@full",
+    "DMK-2021-0068@full",
+    "DMK-2021-0579@full",
+    "DMK-2021-0376@full",
+    "DMK-2021-0415@full",
+    "DMK-2021-0659@full",
+    "DMK-2021-0616@full",
+    "DMK-2021-0269@full",
+    "DMK-2021-0522@full"
+   ]
   },
   {
    "n": 276,
@@ -43688,7 +43855,31 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0557@full",
+    "DMK-2021-0136@full",
+    "DMK-2021-0570@full",
+    "DMK-2021-0537@full",
+    "DMK-2021-0431@full",
+    "DMK-2021-0542@full",
+    "DMK-2021-0286@full",
+    "DMK-2021-0199@full",
+    "DMK-2021-0359@full",
+    "DMK-2021-0236@full",
+    "DMK-2021-0119@full",
+    "DMK-2021-0416@full",
+    "DMK-2021-0243@full",
+    "DMK-2021-0621@full",
+    "DMK-2021-0006@full",
+    "DMK-2021-0486@full",
+    "DMK-2021-0264@full",
+    "DMK-2021-0474@full",
+    "DMK-2021-0345@full",
+    "DMK-2021-0132@full"
+   ]
   },
   {
    "n": 277,
@@ -43898,7 +44089,29 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0634@full",
+    "DMK-2021-0513@full",
+    "DMK-2021-0160@full",
+    "DMK-2021-0635@full",
+    "DMK-2021-0430@full",
+    "DMK-2021-0088@full",
+    "DMK-2021-0246@full",
+    "DMK-2021-0326@full",
+    "DMK-2021-0464@full",
+    "DMK-2021-0580@full",
+    "DMK-2021-0546@full",
+    "DMK-2021-0228@full",
+    "DMK-2021-0586@full",
+    "DMK-2021-0521@full",
+    "DMK-2021-0367@full",
+    "DMK-2021-0001@full",
+    "DMK-2021-0297@full",
+    "DMK-2021-0164@full"
+   ]
   },
   {
    "n": 278,
@@ -44143,7 +44356,28 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0534@full",
+    "DMK-2021-0127@full",
+    "DMK-2021-0229@full",
+    "DMK-2021-0566@full",
+    "DMK-2021-0201@full",
+    "DMK-2021-0056@full",
+    "DMK-2021-0307@full",
+    "DMK-2021-0085@full",
+    "DMK-2021-0454@full",
+    "DMK-2021-0277@full",
+    "DMK-2021-0256@full",
+    "DMK-2021-0223@full",
+    "DMK-2021-0453@full",
+    "DMK-2021-0280@full",
+    "DMK-2021-0340@full",
+    "DMK-2021-0261@full",
+    "DMK-2021-0281@full"
+   ]
   },
   {
    "n": 279,
@@ -44330,7 +44564,29 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0494@full",
+    "DMK-2021-0348@full",
+    "DMK-2021-0626@full",
+    "DMK-2021-0027@full",
+    "DMK-2021-0482@full",
+    "DMK-2021-0408@full",
+    "DMK-2021-0417@full",
+    "DMK-2021-0204@full",
+    "DMK-2021-0511@full",
+    "DMK-2021-0318@full",
+    "DMK-2021-0425@full",
+    "DMK-2021-0308@full",
+    "DMK-2021-0184@full",
+    "DMK-2021-0282@full",
+    "DMK-2021-0292@full",
+    "DMK-2021-0593@full",
+    "DMK-2021-0079@full",
+    "DMK-2021-0295@full"
+   ]
   },
   {
    "n": 280,
@@ -44559,7 +44815,29 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0311@full",
+    "DMK-2021-0328@full",
+    "DMK-2021-0525@full",
+    "DMK-2021-0646@full",
+    "DMK-2021-0543@full",
+    "DMK-2021-0296@full",
+    "DMK-2021-0016@full",
+    "DMK-2021-0577@full",
+    "DMK-2021-0551@full",
+    "DMK-2021-0227@full",
+    "DMK-2021-0020@full",
+    "DMK-2021-0206@full",
+    "DMK-2021-0195@full",
+    "DMK-2021-0146@full",
+    "DMK-2021-0177@full",
+    "DMK-2021-0353@full",
+    "DMK-2021-0174@full",
+    "DMK-2021-0065@full"
+   ]
   },
   {
    "n": 281,
@@ -44757,7 +45035,28 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0395@full",
+    "DMK-2021-0387@full",
+    "DMK-2021-0420@full",
+    "DMK-2021-0033@full",
+    "DMK-2021-0287@full",
+    "DMK-2021-0389@full",
+    "DMK-2021-0026@full",
+    "DMK-2021-0190@full",
+    "DMK-2021-0636@full",
+    "DMK-2021-0315@full",
+    "DMK-2021-0541@full",
+    "DMK-2021-0600@full",
+    "DMK-2021-0086@full",
+    "DMK-2021-0555@full",
+    "DMK-2021-0285@full",
+    "DMK-2021-0496@full",
+    "DMK-2021-0421@full"
+   ]
   },
   {
    "n": 282,
@@ -44945,7 +45244,30 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0398@full",
+    "DMK-2021-0226@full",
+    "DMK-2021-0612@full",
+    "DMK-2021-0516@full",
+    "DMK-2021-0575@full",
+    "DMK-2021-0321@full",
+    "DMK-2021-0629@full",
+    "DMK-2021-0619@full",
+    "DMK-2021-0499@full",
+    "DMK-2021-0379@full",
+    "DMK-2021-0214@full",
+    "DMK-2021-0149@full",
+    "DMK-2021-0514@full",
+    "DMK-2021-0584@full",
+    "DMK-2021-0350@full",
+    "DMK-2021-0330@full",
+    "DMK-2021-0591@full",
+    "DMK-2021-0028@full",
+    "DMK-2021-0126@full"
+   ]
   },
   {
    "n": 283,
@@ -45134,7 +45456,31 @@
      "cutoff": "full"
     }
    ],
-   "status": "exported"
+   "status": "imported",
+   "failed": {},
+   "model": "claude-sonnet-5-5",
+   "complete_units": [
+    "DMK-2021-0222@full",
+    "DMK-2021-0434@full",
+    "DMK-2021-0618@full",
+    "DMK-2021-0578@full",
+    "DMK-2021-0200@full",
+    "DMK-2021-0624@full",
+    "DMK-2021-0560@full",
+    "DMK-2021-0504@full",
+    "DMK-2021-0298@full",
+    "DMK-2021-0187@full",
+    "DMK-2021-0637@full",
+    "DMK-2021-0472@full",
+    "DMK-2021-0378@full",
+    "DMK-2021-0369@full",
+    "DMK-2021-0224@full",
+    "DMK-2021-0259@full",
+    "DMK-2021-0483@full",
+    "DMK-2021-0239@full",
+    "DMK-2021-0089@full",
+    "DMK-2021-0630@full"
+   ]
   },
   {
    "n": 284,
@@ -51930,7 +52276,7 @@
   "claude_full": {
    "units": 863,
    "exported": 863,
-   "judged": 234,
+   "judged": 496,
    "tasks": 963
   },
   "claude_aiadmk_m5": {

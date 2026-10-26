@@ -693,7 +693,7 @@
     "claude_full": {
       "units": 863,
       "exported": 863,
-      "judged": 234,
+      "judged": 496,
       "tasks": 963
     },
     "claude_aiadmk_m5": {
@@ -3233,8 +3233,8 @@
         "AIADMK-2016@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_270",
@@ -3242,8 +3242,8 @@
         "AIADMK-2016@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_271",
@@ -3251,8 +3251,8 @@
         "AIADMK-2016@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_272",
@@ -3260,8 +3260,8 @@
         "AIADMK-2016@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_273",
@@ -3269,8 +3269,8 @@
         "AIADMK-2016@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     },
     {
       "name": "batch_274",
@@ -3278,8 +3278,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_275",
@@ -3287,8 +3287,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_276",
@@ -3296,8 +3296,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_277",
@@ -3305,8 +3305,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_278",
@@ -3314,8 +3314,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_279",
@@ -3323,8 +3323,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_280",
@@ -3332,8 +3332,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_281",
@@ -3341,8 +3341,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_282",
@@ -3350,8 +3350,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_283",
@@ -3359,8 +3359,8 @@
         "DMK-2021@full"
       ],
       "tokens": null,
-      "model": null,
-      "status": "exported"
+      "model": "claude-sonnet-5-5",
+      "status": "imported"
     },
     {
       "name": "batch_284",
