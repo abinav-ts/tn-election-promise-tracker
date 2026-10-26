@@ -280,7 +280,7 @@ judge:
   smoke_max_first_fail: 0.25  # --limit run: first-answer failure rate above this stops for the user
   probe_max_share: 0.25       # memory probe: evidence-needing first answers above this stop for the user
   probe: {n: 40, seed: "ept-probe-2026-10-22", tasks_per_call: 10}   # D-092
-  strong: {tasks_per_batch: 20, priorities: [gold, headline, tvk_current, tier_b, flagged_full, flagged_aiadmk_landmarks, flagged_dmk_landmarks, claude_full, claude_aiadmk_m5, claude_aiadmk_m6, claude_dmk_m12, claude_aiadmk_m12]}   # D-086; tier_b = DMK landmarks by Claude (D-096)
+  strong: {tasks_per_batch: 20, priorities: [gold, headline, tvk_current, tier_b, flagged_full, flagged_aiadmk_landmarks, flagged_dmk_landmarks, claude_full_gap, claude_full, claude_aiadmk_m5, claude_aiadmk_m6, claude_dmk_m12, claude_aiadmk_m12]}   # D-086; tier_b = DMK landmarks by Claude (D-096)
   spotcheck: {per_term: 3, per_group: 3, near_days: 31}   # D-093
   rationale_max_words: 80     # global §7
 

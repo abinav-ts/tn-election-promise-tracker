@@ -101,6 +101,12 @@ def queue(ctx: Context, cfg: Config, keys: list[Key], bulk_run: Optional[str], g
     # D-120: the Claude-only regime. Every completed-term promise at full term, then AIADMK's early landmarks
     # (the reverse backtest's states); units already judged by Claude are skipped as already exported.
     completed = [(pid, p) for pid, p in promises.items() if terms[p["term_id"]].role in ("train", "backtest")]
+    # D-122: full-term units still lacking a strong verdict for some indicator (keys that were only "reused" from batches
+    # that were exported but never run). Defined before claude_full so these units take this label.
+    have_full = {r[0] for r in ctx.conn.execute(
+        "select indicator_id from indicator_verdicts where judge_source = 'strong' and cutoff_date is null")}
+    level("claude_full_gap", [(pid, c) for pid, p in completed for c in ctx.cutoffs(p["term_id"]) if c.label == FULL
+                              and any(i not in have_full for i in ctx.by_promise.get(pid, []))])
     level("claude_full", [(pid, c) for pid, p in completed for c in ctx.cutoffs(p["term_id"]) if c.label == FULL])
     for lab in ("m5", "m6", "m12"):
         level(f"claude_aiadmk_{lab}", [(pid, c) for pid, p in completed if terms[p["term_id"]].role == "backtest"
@@ -251,12 +257,15 @@ def run_export(levels: Optional[list[str]] = None, run_id: Optional[str] = None,
     if unknown:
         raise ValueError(f"unknown level(s) {sorted(unknown)}; levels: {cfg.settings.judge.strong.priorities}")
     exported_units = {u for b in m["batches"] if not b.get("retry_of") for u in b["units"]}
+    gap_level = "claude_full_gap"
     bulk_id = bulk["run_id"] if bulk else None
     units = [u for u in queue(ctx, cfg, keys, bulk_id, gold_promise_ids(cfg))
-             if u.level in levels and u.uid not in exported_units]
+             if u.level in levels and (u.uid not in exported_units or u.level == gap_level)]
     # within a level, earlier cutoffs first, so a chunk list shared by later landmarks is judged once (reuse)
     units.sort(key=lambda u: (levels.index(u.level), _order(u.cutoff)))
-    done = {t["key"]: (b["term"], b["order"]) for b in m["batches"] if not b.get("retry_of") for t in b["tasks"]}
+    # D-122: a key counts as done (reusable) only if its batch was actually imported, never merely exported
+    done = {t["key"]: (b["term"], b["order"]) for b in m["batches"]
+            if not b.get("retry_of") and str(b.get("status", "")).startswith("imported") for t in b["tasks"]}
     new = make_batches(units, cfg.settings.judge.strong.tasks_per_batch, done)
     n0 = max([b["n"] for b in m["batches"]] or [0])
     unit_cut = {u.uid: u.cutoff for u in units}
