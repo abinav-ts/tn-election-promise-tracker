@@ -40,8 +40,9 @@ const SCENARIOS = [
    weak: "Chosen after scenario A's result was seen, and rests on one term. Its pace factor is then applied to hindsight-based hazards."}];
 
 function nav(page) {
-  const links = [["index.html", "Overview", "index"], ["promises.html", "Promise explorer", "promises"], ["whitepaper.html", "Whitepaper", "whitepaper"], ["work.html", "Work done", "work"]];
-  return `<a class="skip" href="#main">Skip to content</a><header class="site"><a class="brand" href="index.html">UMC 301 Course Project 1 - Election Promise Tracking</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></header>`;
+  const links = [["index.html", "Overview", "index"], ["promises.html", '<span class="wide">Promise explorer</span><span class="narrow">Explorer</span>', "promises"], ["whitepaper.html", "Whitepaper", "whitepaper"], ["work.html", "Work done", "work"]];
+  setTimeout(() => { const c = document.querySelector("header.site nav a[aria-current]"); if (c && c.scrollIntoView) c.scrollIntoView({inline: "center", block: "nearest"}); }, 0);
+  return `<a class="skip" href="#main">Skip to content</a><header class="site"><div class="hdr-in"><a class="brand" href="index.html">Tamil Nadu Election Promise Tracker</a><nav aria-label="Main">${links.map(l => `<a href="${l[0]}"${l[2] === page ? ' aria-current="page"' : ""}>${l[1]}</a>`).join("")}</nav></div></header>`;
 }
 function footer(sum) {
   return `<footer class="site"><p>UMC 301 Course Project 1 - Election Promise Tracking (Data Science &amp; AI), 2026. Evidence corpus snapshot 2026-10-10. Code: GPL v3. Data and text: CC BY 4.0. Verdicts are made by language models from official documents and checked on small human samples; read the <a href="whitepaper.html">whitepaper</a> before relying on any figure. ${sum ? "Verdicts file: " + esc(sum.final_export) + "." : ""}</p></footer>`;
