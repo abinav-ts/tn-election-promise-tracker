@@ -131,7 +131,7 @@ function renderView() {
     if (t === "TVK-2026") continue;
     ds.push({label: TERMS[t], data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c2[t], backgroundColor: c2[t], tension: .2, pointRadius: 0, borderWidth: 3});
     if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cellsFor(sum, t), borderColor: c2[t], backgroundColor: "#1a0e3a", borderWidth: 2.4, showLine: false, pointStyle: "rectRot", pointRadius: 7});
-    alt.push(`${TERMS[t]} reaches ${pct(e.E1.realised[e.E1.realised.length - 1])} by month ${e.months[e.months.length - 1]}`);
+    alt.push(`${TERMS[t]} reaches ${pct(e.E1.realised[e.E1.realised.length - 1])} by the end of its term (month ${Math.round(e.months[e.months.length - 1])})`);
   }
   const tv = cellOf(sum, "TVK-2026", 5);
   ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c2["TVK-2026"], backgroundColor: c2["TVK-2026"], pointRadius: 8, showLine: false});

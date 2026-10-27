@@ -22,8 +22,14 @@ def km_tables(cfg: Config, df: pd.DataFrame) -> dict:
     out: dict = {"months": TABLE_MONTHS, "terms": {}, "groups": {}}
     for term, d in df.groupby("term_id"):
         cens = int(d["T"].max()) if d["E1"].sum() == 0 else int(d.loc[d["E1"] == 0, "T"].max()) if (d["E1"] == 0).any() else int(d["T"].max())
-        months = [t for t in TABLE_MONTHS if t * dpm <= cens + 1]
-        days = np.array([round(t * dpm) for t in months])
+        # a point for every month and one at the exact end of observation, so the curve reaches the end of the term
+        # (AIADMK's term is 59.4 months, so a fixed month-60 point would be dropped and the line would stop at 48)
+        months = list(range(1, int(cens / dpm) + 1))
+        days = [round(t * dpm) for t in months]
+        if cens > days[-1]:
+            months.append(round(cens / dpm, 2))
+            days.append(cens)
+        days = np.array(days)
         entry = {"n": int(len(d)), "months": months}
         for ev in ("E1", "E2"):
             km = km_survival(d, ev)
