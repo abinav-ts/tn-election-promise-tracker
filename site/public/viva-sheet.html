@@ -1,0 +1,330 @@
+<!doctype html><html lang="en"><head><meta name="robots" content="noindex"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Viva sheet · UMC 301 Course Project 1</title>
+<style>
+:root{--bg:#fbfbf9;--fg:#1c2128;--muted:#5b6670;--line:#d8dcdf;--accent:#3b4cc0;--soft:#eef0fb;--code:#f1f2f4;--warn:#fff4d6}
+@media (prefers-color-scheme:dark){:root{--bg:#14171c;--fg:#e6e9ee;--muted:#9aa4af;--line:#323943;--accent:#9aa7ff;--soft:#1d2233;--code:#1f242c;--warn:#3a3118}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+nav{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:18px 14px;border-right:1px solid var(--line);font-size:13.5px}
+nav h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+nav a{display:block;color:var(--fg);text-decoration:none;padding:3px 8px;border-radius:6px;line-height:1.35}
+nav a:hover{background:var(--soft);color:var(--accent)}nav a.tq{color:var(--muted);font-size:12.5px}
+nav input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px}
+main{padding:30px clamp(18px,4vw,56px) 80px;max-width:980px}
+h1{font-size:28px;line-height:1.2;margin:0 0 10px}h2{font-size:22px;margin:42px 0 8px;padding-top:12px;border-top:2px solid var(--line)}h3{font-size:17px;margin:26px 0 6px;color:var(--accent)}
+p,li{max-width:86ch}code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.92em}
+table{border-collapse:collapse;margin:12px 0;font-size:14.5px;display:block;overflow-x:auto}th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}th{background:var(--soft)}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}em{color:var(--fg)}
+p.q{margin:18px 0 4px;padding:8px 12px;background:var(--soft);border-left:4px solid var(--accent);border-radius:6px}
+p.q + p{margin-top:2px}
+.note{background:var(--warn);padding:8px 12px;border-radius:8px;font-size:14px}
+@media (max-width:860px){.wrap{grid-template-columns:1fr}nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}}
+@media print{nav{display:none}.wrap{display:block}main{max-width:none;padding:0}h2{break-after:avoid}p.q{break-inside:avoid}body{font-size:11.5pt}}
+</style></head><body><div class="wrap">
+<nav aria-label="Contents"><input id="f" type="search" placeholder="Filter questions" aria-label="Filter questions">
+<h2>Sections</h2><a href="#0-the-90-second-story" class="t2">0. The 90-second story</a><a href="#1-survival-analysis-vocabulary" class="t2">1. Survival analysis vocabulary</a><a href="#2-evaluation-vocabulary" class="t2">2. Evaluation vocabulary</a><a href="#3-retrieval-and-language-model-vocabulary" class="t2">3. Retrieval and language-model vocabulary</a><a href="#4-hard-questions-with-answers" class="t2">4. Hard questions with answers</a><a href="#5-numbers-card-verified-against-the-reports-on-2026-10-27" class="t2">5. Numbers card (verified against the reports on 2026-10-27)</a><a href="#6-do-these-before-the-viva-each-takes-minutes" class="t2">6. Do these before the viva (each takes minutes)</a><h2>Questions</h2><div id="qs"><a href="#q1" class="tq">Q1. What exactly is the dependent variable?</a><a href="#q2" class="tq">Q2. Why Cox and not logistic regression on &quot;realised or not&quot;?</a><a href="#q3" class="tq">Q3. Explain a hazard ratio of 1.49 for vague promises (Claude-only).</a><a href="#q4" class="tq">Q4. Does the proportional-hazards assumption hold?</a><a href="#q5" class="tq">Q5. What does a concordance of 0.52 mean?</a><a href="#q6" class="tq">Q6. Why is a Wilson interval better than the usual one?</a><a href="#q7" class="tq">Q7. Is n = 40 enough?</a><a href="#q8" class="tq">Q8. How do you know there is no data leakage?</a><a href="#q9" class="tq">Q9. Why do the two judges disagree so much, and which is right?</a><a href="#q10" class="tq">Q10. AIADMK 87% vs DMK 65% (Gemini-only) and 52% vs 30% (Claude-only): is A…</a><a href="#q11" class="tq">Q11. Why did you add scenario B after seeing A?</a><a href="#q12" class="tq">Q12. What is the independence assumption and is it reasonable?</a><a href="#q13" class="tq">Q13. What is censoring, and why censor unverifiable?</a><a href="#q14" class="tq">Q14. How does the bootstrap band work, and what does it miss?</a><a href="#q15" class="tq">Q15. What is RRF and why use it?</a><a href="#q16" class="tq">Q16. How is the pace factor derived?</a><a href="#q17" class="tq">Q17. Is the pace update a better forecast?</a><a href="#q18" class="tq">Q18. Why is the Claude-only level so low?</a><a href="#q19" class="tq">Q19. Why are dates so far off (median ≈ 5–6 months)?</a><a href="#q20" class="tq">Q20. What would you do with more time?</a><a href="#q21" class="tq">Q21. Why a stratified Cox model for the projection?</a><a href="#q22" class="tq">Q22. Why average cumulative hazards rather than survival curves?</a><a href="#q23" class="tq">Q23. How are ties and coarse dates handled?</a><a href="#q24" class="tq">Q24. What did the spot-checks show?</a><a href="#q25" class="tq">Q25. Why trust LLMs as measurement instruments at all?</a><a href="#q26" class="tq">Q26. Why not label everything by hand?</a><a href="#q27" class="tq">Q27. What is a landmark and why months 5, 6, 12, 24, 36, 48?</a><a href="#q28" class="tq">Q28. KM curve versus the landmark dots?</a><a href="#q29" class="tq">Q29. Where is multiple testing a problem?</a><a href="#q30" class="tq">Q30. Is there overfitting?</a><a href="#q31" class="tq">Q31. Why did you remove the combined Claude-preferred setting?</a><a href="#q32" class="tq">Q32. What do the 8 excluded promises mean for the Claude-only results?</a><a href="#q33" class="tq">Q33. Both settings say &quot;AIADMK ahead&quot;. Is that robust?</a><a href="#q34" class="tq">Q34. &quot;Continues existing&quot; has HR 1.47 under Claude-only but is not signific…</a><a href="#q35" class="tq">Q35. Why does the community-corrections feature never change a verdict?</a></div></nav>
+<main><h1 id="viva-sheet-umc-301-course-project-1-election-promise-tracking">Viva sheet — UMC 301 Course Project 1: Election Promise Tracking</h1>
+<p>(Updated 2026-10-27 for the two published settings, <strong>Claude-only</strong> and <strong>Gemini-only</strong>. An earlier combined "Claude-preferred" setting was dropped and is not used in any number below. Numbers are those of the published site and the reports in the repository.)</p>
+<p>Purpose: be able to explain, defend and criticise every method in the project <strong>in your own words</strong>. Each entry gives (a) the idea in one sentence, (b) the formula, (c) what we actually did with it and the numbers we got, (d) what can go wrong, i.e. the question a sharp examiner asks next. Read it with the code open (<code>python -m ept model --quick</code> takes about 12 seconds, so you can show things live).</p>
+<p>How to say the AI part honestly: <em>"I specified every stage in a written spec, approved the decisions (logged D-001 to D-125), labelled the test set myself, and used language models in two roles: as coding assistants and as measurement instruments, whose accuracy I measured against my own labels."</em> Then be ready for any method below. If you cannot explain a method, say what it does and what its assumption is, not who ran it.</p>
+<hr />
+<h2 id="0-the-90-second-story">0. The 90-second story</h2>
+<ol>
+<li><strong>Question.</strong> Do Tamil Nadu governments realise their manifesto promises, how fast, and what does the past imply for TVK (2026–)?</li>
+<li><strong>Data.</strong> 1,674 promises from three manifestos; 9,254 official English documents (60,259 passages).</li>
+<li><strong>Measurement.</strong> For each promise, find the 5 most relevant passages available by a given date; a language model decides a status and a date, forced to quote the passages; code rejects anything unsupported.</li>
+<li><strong>Two judges, never mixed.</strong> Claude-only (strict) and Gemini-only (lenient). Each published setting uses one judge for everything it covers.</li>
+<li><strong>Validation.</strong> Worst-case spot-checks at every stage, plus my random stratified hand-labelled set (n = 40) as the only unbiased accuracy estimate.</li>
+<li><strong>Analysis.</strong> Time-to-event analysis: Kaplan–Meier, a Cox model, a backtest (fit on DMK, predict AIADMK) and a TVK projection, run separately in each setting.</li>
+<li><strong>Result, honestly.</strong> The method works end to end and is reproducible. The <em>level</em> of "realised" depends heavily on the judge (TVK at month 5: 3.3% Claude-only, 22.9% Gemini-only; DMK at end of term: 30% vs 65%). What holds under both: the direction of the promise-characteristic effects, AIADMK ahead of DMK at the end of term, weak predictive power of the covariates, and TVK tracking at roughly 80–90% of earlier governments' documented pace. So the main finding is a <strong>measurement-validity finding</strong>: LLM-judged policy delivery is judge-dependent, and we quantified by how much.</li>
+</ol>
+<hr />
+<h2 id="1-survival-analysis-vocabulary">1. Survival analysis vocabulary</h2>
+<h3 id="event-time-origin-censoring">Event, time origin, censoring</h3>
+<ul>
+<li><strong>Event (E1):</strong> a promise is <em>realised</em> = status fulfilled, partial or diluted, with a date. <strong>E2</strong> = fulfilled only.</li>
+<li><strong>Time:</strong> days from the swearing-in (<code>sworn_in</code>) to the realisation date.</li>
+<li><strong>Right-censoring:</strong> we stop watching at <code>term_end</code> (or at the 2026-10-10 snapshot for TVK). A promise with no realisation by then is not "never realised", it is <em>not realised as far as we observed</em>: its time is known only to exceed the censoring time.</li>
+<li><strong>Assumption (non-informative censoring):</strong> being censored must be unrelated to how soon the promise would have been realised. <em>Where it is shaky:</em> unverifiable and undocumented promises are censored, and documentation probably correlates with delivery (large schemes leave GOs, small ones do not).</li>
+<li><strong>Coarse dates:</strong> a year-only date is placed at the middle of the year, clipped to [day 1, censoring time]. Sensitivity runs use the period start and end.</li>
+<li><strong>Counts per setting</strong> (promises / E1 events / unverifiable-censored): Claude-only — AIADMK 309 / 160 / 31, DMK 662 / 201 / 109, TVK 695 / 23 / 123. Gemini-only — AIADMK 312 / 270 / 10, DMK 667 / 434 / 52, TVK 695 / 159 / 99.</li>
+</ul>
+<h3 id="survival-function-hazard-cumulative-hazard">Survival function, hazard, cumulative hazard</h3>
+<ul>
+<li><strong>S(t) = P(T &gt; t):</strong> the share not yet realised by time t. We plot <strong>1 − S(t)</strong>, "share realised".</li>
+<li><strong>Hazard h(t)</strong> = instantaneous rate of realisation at t among promises not yet realised: h(t) = lim P(t ≤ T &lt; t+dt | T ≥ t)/dt.</li>
+<li><strong>Cumulative hazard H(t) = ∫₀ᵗ h(u) du</strong>, and <strong>S(t) = exp(−H(t))</strong>. This link is used constantly below.</li>
+</ul>
+<h3 id="kaplanmeier-estimator-non-parametric">Kaplan–Meier estimator (non-parametric)</h3>
+<ul>
+<li>Ŝ(t) = ∏ over event times tᵢ ≤ t of (1 − dᵢ/nᵢ), where dᵢ = events at tᵢ and nᵢ = promises still at risk just before tᵢ. Censored promises leave the risk set without counting as events.</li>
+<li><strong>Greenwood variance:</strong> Var Ŝ(t) = Ŝ(t)² Σ dᵢ/(nᵢ(nᵢ − dᵢ)). lifelines reports a log-log (exponential Greenwood) 95% interval, which stays inside [0,1].</li>
+<li><strong>Worked example</strong> (do this on paper): 10 promises; events at months 2, 3, 3, 7; one censored at 5; the rest censored later. Ŝ(2) = 1 − 1/10 = 0.90; Ŝ(3) = 0.90 × (1 − 2/9) = 0.70; at 5 one leaves the risk set (7 → 6); Ŝ(7) = 0.70 × (1 − 1/6) = 0.583, so 41.7% realised by month 7.</li>
+<li><strong>Our numbers</strong> (realised by month 12 / end of term): Claude-only AIADMK 20.7% / 51.8% (95% CI 46–58%), DMK 17.1% / 30.4% (27–34%). Gemini-only AIADMK 66.7% / 86.5% (83–90%), DMK 52.6% / 65.1% (61–69%).</li>
+<li><strong>The curve and the dots:</strong> the curve uses <em>hindsight</em> dates; the dots on the overview are what was <em>documented at the time</em> at each landmark. Their gap is documentation lag.</li>
+<li><strong>Why KM and not simply "percent realised"?</strong> Censoring and timing: for the completed terms the end-of-term share equals the simple percentage; KM gives the whole curve with intervals.</li>
+<li><strong>Limit:</strong> KM treats groups separately and cannot adjust for covariates (that is why Cox).</li>
+</ul>
+<h3 id="cox-proportional-hazards-model-semi-parametric-regression">Cox proportional-hazards model (semi-parametric regression)</h3>
+<ul>
+<li><strong>Model:</strong> h(t | x) = h₀(t) · exp(β′x). h₀(t) is an unspecified baseline hazard (the semi-parametric part); covariates multiply the hazard by a constant factor at all times.</li>
+<li><strong>Fitting by partial likelihood:</strong> L(β) = ∏ over events i of exp(β′xᵢ) / Σ_{j in risk set at tᵢ} exp(β′xⱼ). At each event time, the probability that <em>this</em> promise was the one realised, given someone was. The baseline h₀ cancels.</li>
+<li><strong>Ties:</strong> many promises are realised the same day (GOs). lifelines uses <strong>Efron's</strong> approximation.</li>
+<li><strong>Hazard ratio (HR) = exp(β).</strong> "At any moment, among promises not yet realised, a promise in this group is realised HR times as fast as one in the reference group, other covariates equal." <strong>HR ≠ probability of ever being realised.</strong></li>
+<li><strong>Our model:</strong> five covariates (promise type, cost band, specificity, Union-dependence, continues-existing), 13 coefficients; dummy-coded against references (administrative, cost none, specific).</li>
+<li><strong>Numbers (both terms together, term-stratified):</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Claude-only (n 971, 361 events)</th>
+<th>Gemini-only (n 979, 704 events)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vague (vs specific)</td>
+<td>1.49 (1.09–2.03)</td>
+<td>2.34 (1.85–2.97)</td>
+</tr>
+<tr>
+<td>Union-dependent</td>
+<td>0.28 (0.09–0.88)</td>
+<td>0.38 (0.20–0.72)</td>
+</tr>
+<tr>
+<td>advocacy (vs administrative)</td>
+<td>3.66 (0.98–13.6), borderline</td>
+<td>3.01 (1.42–6.39)</td>
+</tr>
+<tr>
+<td>continues existing</td>
+<td>1.47 (1.02–2.13)</td>
+<td>1.23 (0.92–1.66), not significant</td>
+</tr>
+</tbody>
+</table>
+<p>Reading: the <strong>directions agree</strong> for vague, advocacy and Union-dependent; the sizes and the significance differ. "Continues existing" is only significant under Claude-only, so I would not claim it as a finding.
+- <strong>CI and p-value:</strong> 95% CI = exp(β ± 1.96·SE(β)); the p-value is a Wald test of β = 0.
+- <strong>Events per variable:</strong> 201 events / 13 coefficients ≈ 15 for DMK under Claude-only (rule of thumb ≥ 10), so it is thin but acceptable; Gemini has more events.
+- <strong>Stratified Cox (the two-term model):</strong> <code>strata = term</code>: each term gets its own baseline hazard, coefficients are shared. Use when baselines differ (they do) but you believe the covariate effects are common.
+- <strong>What can go wrong:</strong> (1) proportional hazards may fail; (2) the covariates were themselves produced by an LLM from the manifesto text (measurement error); (3) 13 p-values with no multiplicity correction: descriptive only; (4) associations, not causes; (5) promises split from one manifesto item are correlated and the standard errors ignore that.</p>
+<h3 id="checking-proportional-hazards-schoenfeld-residuals">Checking proportional hazards (Schoenfeld residuals)</h3>
+<ul>
+<li>If PH holds, the Schoenfeld residuals of a covariate show no trend in (rank-transformed) time. <code>proportional_hazard_test(..., time_transform="rank")</code> tests that slope per covariate.</li>
+<li><strong>Our result (be ready):</strong> 13 tests per model. Claude-only two-term model: continues-existing p = 0.010, new-scheme 0.027, transfer-subsidy 0.035. Gemini-only two-term model: union-dependent p = 0.037. Single-term models have a couple each too (for example DMK Claude-only transfer-subsidy 0.004). With 13 tests per model, one or two below 0.05 is near what chance gives; but the Claude-only continues-existing violation (0.010) means I treat its coefficient as an average over time. We did not change the model (decision: a model I can explain beats a model that fits best).</li>
+</ul>
+<h3 id="concordance-index-harrells-c">Concordance index (Harrell's C)</h3>
+<ul>
+<li>Over all comparable pairs (the one with the earlier observed event vs a later one), the share where the model gave the earlier-realised promise the higher risk score. 0.5 = coin flip, 1 = perfect.</li>
+<li><strong>Ours:</strong> 0.516 (Claude-only) and 0.568 (Gemini-only) for the DMK model on AIADMK. Say it plainly: <em>"the covariates explain little of when a promise is realised"</em>, and under Claude-only it is almost chance.</li>
+</ul>
+<h3 id="conditional-survival-and-the-backtest">Conditional survival and the backtest</h3>
+<ul>
+<li><strong>Conditional survival:</strong> P(T &gt; t | T &gt; m) = S(t)/S(m). For a promise not realised by landmark month m, the chance of being realised by t is 1 − S(t)/S(m).</li>
+<li><strong>Predicted share realised by t</strong> = (realised at m + Σ over unrealised of [1 − S(t)/S(m)]) / N.</li>
+<li><strong>Reverse backtest:</strong> fit on DMK-2021 only; AIADMK's state at landmark m comes only from its verdicts at that cutoff; compare predicted with actual share. Score: mean absolute error (percentage points) over later months.</li>
+<li><strong>Baseline:</strong> the same with no covariates. The covariate model is useful only if it beats this.</li>
+<li><strong>Only Gemini-only can be run:</strong> Claude did not judge AIADMK's early months in full. Gemini-only month 5: model error 14.7 points vs no-covariate baseline 18.5 (month 6: 14.6 vs 17.4; month 12: 13.7 vs 15.0; month 24: 9.0 vs 9.4). A modest gain at best, shrinking to nothing later.</li>
+<li><strong>Why this is not a forecast:</strong> DMK 2021 and AIADMK 2016 are both past; validation is across terms, valid only under the <strong>independence assumption</strong> (each term an independent draw from a common process given covariates). That is wrong in detail (same bureaucracy, same Union government for part of both).</li>
+</ul>
+<h3 id="pace-factor-the-is-tvk-keeping-pace-part">Pace factor (the "is TVK keeping pace?" part)</h3>
+<ul>
+<li>O = TVK's documented count at month 5; E = the count TVK would have if it matched the earlier government(s) <strong>judged by the same judge</strong>, documented at month 5. <strong>k = (O + c)/(E + c), c = 20.</strong></li>
+<li>This is the posterior mean of a rate multiplier k under a Poisson count model with a Gamma(c, c) prior (mean 1): O ~ Poisson(k·E), k ~ Gamma(c, c) ⇒ k | O ~ Gamma(c + O, c + E). The 80% interval is that posterior's 10th–90th percentile. In words: c acts like "c events' worth of trust in history".</li>
+<li><strong>Matching rule:</strong> a completed term is matched only if the <em>same judge</em> covered at least 90% of its promises at that landmark. Under Claude-only that leaves DMK alone (Claude judged only 33 of 312 AIADMK promises at month 5); under Gemini-only both terms.</li>
+<li><strong>Numbers:</strong> Claude-only k = 0.81 (0.65–0.97), O = 23, E = 33.3, matched to DMK. Gemini-only k = 0.92 (0.83–1.00), O = 159, E = 175.5, matched to both. So TVK is tracking at roughly 80–90% of the earlier pace; the Claude interval is wider because it rests on only 23 events.</li>
+<li><strong>Extending it forward ("if the current pace persists")</strong> multiplies future hazards by k. That is an extrapolation from five months. It is shown on the site, labelled as such.</li>
+<li><strong>Scenario A and what I learned (be ready for this):</strong> my first version compared TVK's <em>documented</em> count with a <em>hindsight</em>-based expectation (k = 0.17, month-60 projection 22% Claude-only), which is not like for like: part of the apparent slowness is documentation lag. Scenario B (matched judge, documented vs documented) fixed that, but I wrote it <em>after</em> seeing A's result, so it is post-hoc and labelled so. Also, earlier in the project, when the two terms were judged by different judges, the pace update appeared to cut the backtest error (14.5 → 6.7 points); with one judge for both terms (Gemini-only) it does not help (14.7 → 16.0). Conclusion I drew: that earlier gain was a judge artefact, so I dropped the mixed setting and I do not claim the pace update improves prediction.</li>
+</ul>
+<h3 id="bootstrap-band">Bootstrap band</h3>
+<ul>
+<li><strong>Percentile bootstrap:</strong> resample the training promises (within each term) with replacement, refit the Cox model, recompute the projection; 200 times; the 10th and 90th percentiles form an 80% band.</li>
+<li><strong>What it covers:</strong> fitting uncertainty. <strong>What it does not cover:</strong> a different government behaving differently, judge error, model misspecification.</li>
+</ul>
+<h3 id="why-these-methods-and-not-others">Why these methods and not others</h3>
+<ul>
+<li><em>Weibull / accelerated-failure-time:</em> imposes a hazard shape; with fast early realisation then a plateau, it fits poorly.</li>
+<li><em>Competing risks:</em> "blocked by the Union" is arguably competing; only 1–2 promises are <code>blocked_external</code>, so treated as censored.</li>
+<li><em>Frailty / clustering by manifesto unit, time-varying covariates:</em> not used; extensions.</li>
+</ul>
+<hr />
+<h2 id="2-evaluation-vocabulary">2. Evaluation vocabulary</h2>
+<h3 id="confusion-matrix-and-four-rates-e1-realised-vs-not-pooled-aiadmk-dmk-n-40">Confusion matrix and four rates (E1: realised vs not), pooled AIADMK + DMK, n = 40</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Claude-only</th>
+<th>Gemini-only</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TP / FN / FP / TN</td>
+<td>12 / 18 / 0 / 10</td>
+<td>25 / 5 / 6 / 4</td>
+</tr>
+<tr>
+<td>Accuracy (agreement)</td>
+<td>22/40 = 55% (95% CI 40–69)</td>
+<td>29/40 = 72.5% (57–84)</td>
+</tr>
+<tr>
+<td>Recall</td>
+<td>12/30 = 40% (25–58)</td>
+<td>25/30 = 83% (66–93)</td>
+</tr>
+<tr>
+<td>Precision</td>
+<td>12/12 = 100% (76–100)</td>
+<td>25/31 = 81% (64–91)</td>
+</tr>
+<tr>
+<td>Specificity</td>
+<td>10/10 = 100% (72–100)</td>
+<td>4/10 = 40% (17–69)</td>
+</tr>
+<tr>
+<td>Exact 7-status match</td>
+<td>14/40 = 35% (22–50)</td>
+<td>24/40 = 60% (45–74)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Accuracy</strong> = (TP+TN)/n. <strong>Recall (sensitivity)</strong> = TP/(TP+FN): of promises I said were realised, the share the judge found. <strong>Precision</strong> = TP/(TP+FP): of promises the judge called realised, the share I agree with. <strong>Specificity</strong> = TN/(TN+FP): of promises I said were not realised, the share the judge agrees on.</li>
+<li><strong>Why four numbers:</strong> accuracy hides asymmetric error. Claude never over-claims (precision and specificity 100%) but misses 60% of realised promises; Gemini finds most (83%) but calls 6 of 10 not-realised promises realised. Opposite error profiles.</li>
+<li><strong>Per term accuracy:</strong> Claude-only 55% in both terms; Gemini-only AIADMK 90% (70–97), DMK 55% (34–74). So Gemini's good score is mostly AIADMK.</li>
+<li><strong>Why not Cohen's kappa:</strong> it needs two raters on the same items; I have one human and no re-label, and I prefer numbers I can recompute by hand from the counts.</li>
+</ul>
+<h3 id="wilson-score-interval">Wilson score interval</h3>
+<ul>
+<li>For k successes in n: p̂ = k/n, interval = [ (p̂ + z²/2n) ± z·√(p̂(1−p̂)/n + z²/4n²) ] / (1 + z²/n), z = 1.96.</li>
+<li><strong>Why not Wald p̂ ± z√(p̂(1−p̂)/n):</strong> it misbehaves for small n and p̂ near 0 or 1 (exceeds [0,1], zero width at 0% or 100%). Wilson inverts the score test and keeps near-nominal coverage.</li>
+<li><strong>Worked example:</strong> 8/10 → 49%–94%. Ours: Claude's precision 12/12 = 100% has interval 76–100%: <em>"100% on 12 cases only rules out below about 76%"</em>.</li>
+</ul>
+<h3 id="sampling-design-behind-the-gold-set">Sampling design behind the gold set</h3>
+<ul>
+<li><strong>Stratified random:</strong> strata = term × specificity × sector; within a stratum, ordered by sha256(seed + promise_id), so the draw is reproducible and any prefix remains stratified. One promise per manifesto unit.</li>
+<li><strong>Oversampling vague promises</strong> in DMK ⇒ post-stratification weights in a side table: weighted accuracy Claude-only 55.7%, Gemini-only 70.3%, versus unweighted 55% and 72.5%. Small effect.</li>
+<li><strong>n = 40 limits:</strong> half-width about ±13 points; 55% and 72.5% sit inside each other's intervals, so no significance tests were run, deliberately.</li>
+<li><strong>Blindness:</strong> I labelled without seeing any model verdict, covariate or indicator.</li>
+<li><strong>Admit:</strong> no TVK promise in the sample; no self re-label.</li>
+</ul>
+<h3 id="date-accuracy">Date accuracy</h3>
+<ul>
+<li>Where both I and the judge say realised: median absolute gap 148 days under Claude-only (n = 12), 178 days under Gemini-only (n = 25); 33% and 32% within 90 days. The judges' dates tend to be earlier (median signed −94 and −155 days). <em>Consequence:</em> timing results are shapes, not day-accurate facts.</li>
+</ul>
+<h3 id="judge-agreement-and-error-causes">Judge agreement and error causes</h3>
+<ul>
+<li><strong>Gemini vs Claude</strong> on the 1,666 promises both judged at the comparison date: same realised-or-not 75%, same exact status 50%. Neither is truth.</li>
+<li><strong>Disagreements with my labels, by automatic bucket:</strong> Claude-only 26 (evidence outside the corpus 9, judge error 12, retrieval miss 5); Gemini-only 16 (7, 6, 3). Note <code>evidence_outside_corpus</code> is not a judge error: I used the web.</li>
+<li><strong>in_corpus = true</strong> (25 labels where my evidence was in the corpus): Claude-only accuracy only 48% (its low recall), Gemini-only 92%. So on promises whose evidence the corpus holds, Gemini matches me, and Claude is too strict.</li>
+<li><strong>Directional promises</strong> (effort-only wording, n = 11): Claude-only 18%, Gemini-only 82%. Claude's strictness bites hardest there. The stage 05 directional flag caught only 3 of the 11 I tagged.</li>
+</ul>
+<h3 id="no-combined-verdicts">No combined verdicts</h3>
+<ul>
+<li>Each setting has its own carry-forward: a realisation found at an earlier date is carried to later dates <em>within the same judge</em>, so "realised by month m" never flips back. There is no setting that mixes the two judges. (An internal combined set with three human spot-check fixes exists in the repository; it feeds neither published setting.)</li>
+</ul>
+<hr />
+<h2 id="3-retrieval-and-language-model-vocabulary">3. Retrieval and language-model vocabulary</h2>
+<h3 id="chunking-and-the-evidence-window">Chunking and the evidence window</h3>
+<ul>
+<li>Documents are split into 300–500-word chunks. A chunk is eligible at cutoff c only if its <strong>availability date</strong> ≤ c: the document date, tightened to the fiscal-year end for policy notes and budget speeches, and never later than the fetch date; undated documents are excluded. This is the main leakage control.</li>
+</ul>
+<h3 id="bm25-lexical-ranking">BM25 (lexical ranking)</h3>
+<ul>
+<li>score(q, d) = Σ_{t∈q} IDF(t) · f(t,d)(k₁+1) / (f(t,d) + k₁(1 − b + b·|d|/avgdl)). Rare words weigh more (IDF); repeated words saturate (k₁ = 1.5); long documents are penalised (b = 0.75).</li>
+<li>Weakness: exact words only; "Night Shelter" is matched as two words (one of three wrong items in the stage 04 spot-check).</li>
+</ul>
+<h3 id="dense-retrieval">Dense retrieval</h3>
+<ul>
+<li><code>BAAI/bge-small-en-v1.5</code> maps text to a 384-dimensional vector; relevance = cosine similarity. Exact search over all 60,259 vectors.</li>
+<li>Weakness: recurring common words can dominate meaning.</li>
+</ul>
+<h3 id="reciprocal-rank-fusion-rrf">Reciprocal rank fusion (RRF)</h3>
+<ul>
+<li>score(d) = Σ_r 1/(k + rank_r(d)), k = 60, equal weights: merges BM25 and dense without calibrating scores. Then k = 5 chunks, at most 2 per document, at least 2 Government Orders where available.</li>
+</ul>
+<h3 id="the-judge-as-a-measurement-instrument">The judge as a measurement instrument</h3>
+<ul>
+<li>Temperature 0, a versioned prompt (v1.3), structured JSON, the judge sees only the 5 chunks (no cutoff date, no party name).</li>
+<li><strong>Guardrails (code, not trust):</strong> each cited chunk needs a verbatim quote (5–40 words) found in it (after Unicode normalisation; rapidfuzz <code>partial_ratio</code> ≥ 95 allowed and flagged); a realisation date must be the document's date or a date written in a cited chunk; not before the swearing-in or after the latest cited chunk's availability; a "realised" verdict needs a citation; failing tasks are retried with feedback, then marked unresolved.</li>
+<li><strong>What the guardrails do not prove:</strong> a real quote can still be interpreted wrongly. That is why the human-labelled set exists.</li>
+<li><strong>8 promises never passed the checks</strong> in Claude's repeated attempts (J3 quote, J5 date window or J6 date source), so they are excluded from Claude-only (3 of 312 AIADMK, 5 of 667 DMK) and the site says so. The pipeline refuses a gap above 1% per term.</li>
+<li><strong>Memory probe:</strong> 40 tasks with no evidence at all; 0 of 40 answers claimed a status needing evidence.</li>
+<li><strong>Two models:</strong> Gemini 3.5 Flash-Lite (free tier, every task) and Claude (isolated subagents: Opus 5.5 for the first batches, Sonnet 5.5 for the rest; the difference is not measurable here).</li>
+</ul>
+<h3 id="hindsight-dates-vs-documented-at-the-time">Hindsight dates vs documented-at-the-time</h3>
+<ul>
+<li>A promise realised in month 2 may be <em>documented</em> only in a policy note from month 14. The KM curve uses hindsight dates; the landmark dots show what was documented. This mismatch confounds comparisons of "documented at month 5" across terms unless the same judge is used (hence the matched-judge rule).</li>
+</ul>
+<hr />
+<h2 id="4-hard-questions-with-answers">4. Hard questions with answers</h2>
+<p class="q" id="q1"><strong>Q1. What exactly is the dependent variable?</strong> Time from swearing-in to the first official operationalisation of the promise (E1), censored at term end. Fulfilled, partial and diluted statuses with a date count as the event.</p>
+<p class="q" id="q2"><strong>Q2. Why Cox and not logistic regression on "realised or not"?</strong> Logistic regression ignores <em>when</em> and cannot use TVK's incomplete observation. Time-to-event handles right-censoring and answers "how fast".</p>
+<p class="q" id="q3"><strong>Q3. Explain a hazard ratio of 1.49 for vague promises (Claude-only).</strong> At any moment, among promises not yet realised, a vague promise is realised about 1.5 times as fast as a specific one (95% CI 1.09–2.03), other covariates fixed. It is not "49% more likely ever to be realised", and it is an association (vague wording is easier to satisfy with some measure). Gemini-only gives 2.34.</p>
+<p class="q" id="q4"><strong>Q4. Does the proportional-hazards assumption hold?</strong> Mostly, not entirely. Claude-only two-term model: continues-existing p = 0.010, new-scheme 0.027, transfer-subsidy 0.035; Gemini-only: union-dependent 0.037. With 13 tests per model one or two are expected by chance, but I treat the Claude-only continues-existing effect as an average, not a constant.</p>
+<p class="q" id="q5"><strong>Q5. What does a concordance of 0.52 mean?</strong> For Claude-only, the model orders promises by realisation speed barely better than a coin; 0.57 under Gemini-only. Promise characteristics have weak predictive power; timing is dominated by factors outside the manifesto text.</p>
+<p class="q" id="q6"><strong>Q6. Why is a Wilson interval better than the usual one?</strong> The normal (Wald) interval fails for small n or extreme proportions; Wilson inverts the score test, stays in [0,1] and has better coverage. 12 of 12 gives 76–100%, not 100–100%.</p>
+<p class="q" id="q7"><strong>Q7. Is n = 40 enough?</strong> For agreement to within about ±13 points, yes; for ranking the judges, no: 55% and 72.5% have intervals that overlap, so I ran no significance tests. Weakness: no TVK promise in the sample.</p>
+<p class="q" id="q8"><strong>Q8. How do you know there is no data leakage?</strong> Five controls in code and tests: (1) the judge sees only supplied chunks and must quote them; (2) only documents available by the cutoff are retrievable (DB-wide check, 0 violations); (3) covariates use only manifesto text; (4) gold labels never entered a prompt (overlap test) and only the evaluation code reads them; (5) model fits assert the training term only (a planted target row fails the test). Residual risk: the models' background knowledge, bounded by quote checks and the memory probe, not eliminated.</p>
+<p class="q" id="q9"><strong>Q9. Why do the two judges disagree so much, and which is right?</strong> Different error profiles. Claude: precision 100%, specificity 100%, recall 40% (strict). Gemini: recall 83%, precision 81%, specificity 40% (lenient). Neither is "right". Against my labels Gemini agrees more (72.5% vs 55%) mainly because the labels mostly say realised and Claude misses many. For TVK nobody can say, because there are no TVK labels.</p>
+<p class="q" id="q10"><strong>Q10. AIADMK 87% vs DMK 65% (Gemini-only) and 52% vs 30% (Claude-only): is AIADMK better?</strong> I do not claim that. 83 AIADMK promises continue existing schemes, the judges differ, dates are blurred, and "realised" is not "good". What holds in both settings is that AIADMK shows the higher documented share; the project does not rank governments.</p>
+<p class="q" id="q11"><strong>Q11. Why did you add scenario B after seeing A?</strong> A compared a documented count with a hindsight-based expectation and gave k = 0.17. B compares documented with documented, same judge. It is post-hoc, so it is labelled so, and both stay in the whitepaper.</p>
+<p class="q" id="q12"><strong>Q12. What is the independence assumption and is it reasonable?</strong> Each term is treated as an independent draw from a common delivery process given the covariates. False in detail (shared bureaucracy, Union relations, budget cycles). So the backtest tests transfer between terms, not forecasting ability.</p>
+<p class="q" id="q13"><strong>Q13. What is censoring, and why censor <code>unverifiable</code>?</strong> A promise with no observed realisation by the end has an unknown realisation time. <code>unverifiable</code> means the corpus cannot decide; I censor rather than drop or count it as an event. If undocumented delivery is common this biases curves downward.</p>
+<p class="q" id="q14"><strong>Q14. How does the bootstrap band work, and what does it miss?</strong> Resample the training promises with replacement, refit, re-project, 200 times; 10th–90th percentiles. It measures fitting variability only, not judge error or a structurally different government.</p>
+<p class="q" id="q15"><strong>Q15. What is RRF and why use it?</strong> It adds 1/(60 + rank) across rankings, merging BM25 and dense retrieval without calibrating scores on different scales.</p>
+<p class="q" id="q16"><strong>Q16. How is the pace factor derived?</strong> A Gamma–Poisson posterior mean: O ~ Poisson(k·E), prior k ~ Gamma(c, c), so k = (O + c)/(E + c), c = 20. It was fixed before the backtest. TVK: 0.81 (0.65–0.97) Claude-only, 0.92 (0.83–1.00) Gemini-only.</p>
+<p class="q" id="q17"><strong>Q17. Is the pace update a better forecast?</strong> I do not claim it. Where I can test it (Gemini-only, one judge for both terms) it does not improve the backtest (14.7 → 16.0 points at month 5). An earlier apparent gain with mixed judges was a judge artefact. So the extension "if current pace persists" is labelled an extrapolation, and the pace factor itself is used as a like-for-like comparison.</p>
+<p class="q" id="q18"><strong>Q18. Why is the Claude-only level so low?</strong> Claude is strict: it needs a quoted official step and a date inside a cited passage. It was never wrong when it said realised (12 of 12) but found only 12 of the 30 promises I said were realised. In the 25 labels whose evidence is in the corpus, its accuracy is 48%. So I read its realised shares as a lower bound, and Gemini's as an upper bound that over-claims (specificity 40%). The truth plausibly lies between them.</p>
+<p class="q" id="q19"><strong>Q19. Why are dates so far off (median ≈ 5–6 months)?</strong> I have not isolated the cause, so say so. Likely contributors (hypotheses): the judge's date must be the cited document's date or a date written in it, which can be a later restatement of an earlier step, while I labelled the earliest official step I could find, sometimes outside the corpus; year-only dates are mid-year. Timing results are shapes, not day-level facts.</p>
+<p class="q" id="q20"><strong>Q20. What would you do with more time?</strong> Label TVK promises and 40 more at random; a re-label for the human ceiling; judge AIADMK landmarks with Claude for a single-judge backtest under Claude; time-varying hazards; cluster-robust standard errors; an ensemble of judges.</p>
+<p class="q" id="q21"><strong>Q21. Why a stratified Cox model for the projection?</strong> The completed terms have very different baseline speeds, so each keeps its own baseline (strata) while effects are shared; the projection averages the two terms' cumulative baseline hazards with equal weight.</p>
+<p class="q" id="q22"><strong>Q22. Why average cumulative hazards rather than survival curves?</strong> Hazards are what the Cox model scales by covariates; averaging cumulative hazards keeps S = exp(−H) valid and consistent with proportional hazards.</p>
+<p class="q" id="q23"><strong>Q23. How are ties and coarse dates handled?</strong> Efron ties; year/month dates at the period midpoint, clipped to day 1 and the censoring time; start/end sensitivity runs exist.</p>
+<p class="q" id="q24"><strong>Q24. What did the spot-checks show?</strong> Retrieval (stage 04): 3 ok, 3 partial, 3 wrong, all query-wording misses. Judging (stage 05): 5 ok, 4 wrong (a date a few days past its availability cap, an unresolved case, a general committee taken as evidence, a cumulative multi-year amount that cannot be checked from five passages). Spot-checks sample worst cases, so they say nothing about overall accuracy; the gold set does.</p>
+<p class="q" id="q25"><strong>Q25. Why trust LLMs as measurement instruments at all?</strong> I treat the judge like any noisy device: constrain it (evidence-only, quotes, date checks), calibrate it (against hand labels), report its error rates and show results under two different instruments. Conclusions that survive both are firm; those that do not are reported as judge-dependent.</p>
+<p class="q" id="q26"><strong>Q26. Why not label everything by hand?</strong> 1,674 promises with evidence search is not feasible solo; the pipeline gives coverage, the hand labels give calibration.</p>
+<p class="q" id="q27"><strong>Q27. What is a landmark and why months 5, 6, 12, 24, 36, 48?</strong> A simulated "as of" date: month 5 matches TVK's current age; later months give the backtest different amounts of information. Each landmark run sees only documents available by that date.</p>
+<p class="q" id="q28"><strong>Q28. KM curve versus the landmark dots?</strong> The curve uses hindsight dates; the dots are what was documented then. The gap is documentation lag.</p>
+<p class="q" id="q29"><strong>Q29. Where is multiple testing a problem?</strong> 13 Schoenfeld tests and 13 Wald p-values per model, no correction; descriptive only. At Bonferroni (p &lt; 0.004 for 13 tests) under Gemini-only the vague and Union-dependent effects survive clearly (p = 0.000, 0.003) and advocacy is on the line (0.004); under Claude-only none do (vague 0.012, Union 0.030, continues-existing 0.040).</p>
+<p class="q" id="q30"><strong>Q30. Is there overfitting?</strong> 13 coefficients on 201–704 events; the backtest is out of term. The main risks are measurement error in covariates and outcomes, not overfitting.</p>
+<p class="q" id="q31"><strong>Q31. Why did you remove the combined Claude-preferred setting?</strong> It took Claude's verdict where Claude had judged and Gemini's elsewhere, so different terms and months were judged by different mixes of judges. That made cross-term comparison (the backtest, the month-5 shares) partly a comparison of judges. I replaced it with two pure single-judge settings so each is internally consistent, and kept the combined set only as an internal artefact.</p>
+<p class="q" id="q32"><strong>Q32. What do the 8 excluded promises mean for the Claude-only results?</strong> They are 0.5% of the sample (3 AIADMK, 5 DMK). Claude never produced a verdict passing the checks for them (quote or date failures after two or three tries), so they are excluded, not guessed. They are listed in the output, and the pipeline refuses more than 1% missing per term.</p>
+<p class="q" id="q33"><strong>Q33. Both settings say "AIADMK ahead". Is that robust?</strong> The direction is the same in both. The size depends on the judge (52 vs 30 and 87 vs 65), and 83 AIADMK promises continue existing schemes, which makes them easier to realise by wording. It describes documented outcomes, not performance.</p>
+<p class="q" id="q34"><strong>Q34. "Continues existing" has HR 1.47 under Claude-only but is not significant under Gemini-only. What do you conclude?</strong> Nothing firm. It violates proportional hazards in the Claude-only model (p = 0.010), the two settings disagree on significance, and the covariate is itself LLM-derived. I report it as judge-dependent.</p>
+<p class="q" id="q35"><strong>Q35. Why does the community-corrections feature never change a verdict?</strong> Self-selected input is not a sample and invites coordinated campaigns on a political topic. Suggestions become GitHub issues reviewed by hand, stored separately, and are never inputs to prompts, models or the gold set.</p>
+<hr />
+<h2 id="5-numbers-card-verified-against-the-reports-on-2026-10-27">5. Numbers card (verified against the reports on 2026-10-27)</h2>
+<ul>
+<li>Corpus: 9,254 documents, 60,259 chunks; 95.6% dated to the day; 220 undated (excluded).</li>
+<li>Promises: 1,674 (DMK 667, AIADMK 312, TVK 695); indicators 1,863; retrieval tasks 8,433.</li>
+<li><strong>Realised by end of term</strong> — Claude-only: AIADMK 52% (160/309), DMK 30% (201/662). Gemini-only: AIADMK 87% (270/312), DMK 65% (434/667).</li>
+<li><strong>TVK at month 5</strong> — Claude-only 3.3% (23/695), Gemini-only 22.9% (159/695). DMK at month 5: 4.8% vs 15.9%.</li>
+<li><strong>Claude-only coverage:</strong> 309/312 AIADMK and 662/667 DMK at full term, TVK 695/695 at month 5; no AIADMK landmark before the end of term; 8 promises excluded.</li>
+<li><strong>Gold set:</strong> 40 labels (20 + 20), no TVK. Claude-only: agreement 55% (40–69), precision 100%, recall 40%, specificity 100%. Gemini-only: 72.5% (57–84), precision 81%, recall 83%, specificity 40%. Date gap median 148 d (Claude) and 178 d (Gemini).</li>
+<li><strong>Hazard ratios (vague / Union-dependent / advocacy):</strong> Claude-only 1.49 / 0.28 / 3.66; Gemini-only 2.34 / 0.38 / 3.01. <strong>Concordance:</strong> 0.52 / 0.57.</li>
+<li><strong>Backtest (month 5, error in points, model vs baseline):</strong> Gemini-only 14.7 vs 18.5; Claude-only not available.</li>
+<li><strong>Pace factor (80% interval):</strong> Claude-only 0.81 (0.65–0.97); Gemini-only 0.92 (0.83–1.00).</li>
+<li><strong>TVK at month 60, historical pace / current pace persists:</strong> Claude-only 37% / 31%; Gemini-only 71% / 69%.</li>
+<li><strong>Work:</strong> 400 tests; decisions D-001 to D-125; 341 strong-judge batches exported, 200 run (the rest were left to Gemini or not needed); tests offline.</li>
+<li><strong>Site:</strong> https://abinav-ts.github.io/tn-election-promise-tracker/ ; code at github.com/abinav-ts/tn-election-promise-tracker (public).</li>
+</ul>
+<h2 id="6-do-these-before-the-viva-each-takes-minutes">6. Do these before the viva (each takes minutes)</h2>
+<ol>
+<li>Re-derive the Kaplan–Meier worked example by hand; then compare with <code>python -m ept model --quick</code>.</li>
+<li>Compute the Wilson interval for 25/31 by hand (expect about 64–91%).</li>
+<li>For the two-term model print the hazard-ratio table for both settings and explain three rows in plain words.</li>
+<li>Open <code>reports/modelling_07_bulk.md</code> and explain the backtest table row by row (E, O, k, MAE).</li>
+<li>Say, without notes, why Claude is strict and Gemini lenient, using the confusion matrices above.</li>
+<li>Say the five leakage controls and one residual risk.</li>
+<li>Be ready to say what you would <em>not</em> conclude: that AIADMK was better, that TVK will realise X%, that either judge is right.</li>
+<li>Be ready for "Claude said so": answer with the method (guardrails, labels, intervals), not the tool.</li>
+</ol></main></div>
+<script>document.getElementById('f').addEventListener('input',function(e){var v=e.target.value.toLowerCase();document.querySelectorAll('#qs a').forEach(function(a){a.style.display=a.textContent.toLowerCase().indexOf(v)>=0?'':'none'})})</script>
+</body></html>
