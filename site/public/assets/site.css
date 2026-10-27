@@ -347,5 +347,5 @@ footer.site a{color:#cdbcff}
 
 .stackwrap{display:flex;flex-direction:column;gap:var(--gap);padding-block:clamp(28px,5vw,44px) 64px}
 
-/* whitepaper: standard space between the last section and the footer */
-.wrap>.prose{padding-bottom:clamp(88px,9vw,120px)}
+/* whitepaper content: equal space above (below the hero) and below (above the footer); 18px and 10px are the first and last elements' own margins */
+.wrap>.prose{--gapv:clamp(56px,7vw,96px);padding-top:calc(var(--gapv) - 18px);padding-bottom:calc(var(--gapv) - 10px)}
