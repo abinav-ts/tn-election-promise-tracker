@@ -78,6 +78,7 @@ function correctionLink(p, s) {
   return REPO + "/issues/new?" + q.toString();
 }
 Promise.all([load("promises.json"), load("summary_claude.json")]).then(([P, sum]) => {
+  if (!P.length || !P[0].j || !P[0].g) throw new Error("the browser holds an older copy of the data; reload the page without cache (Cmd+Shift+R)");
   $("#foot").innerHTML = footer();
   const uniq = (k) => [...new Set(P.map(p => p[k]))].sort();
   const fill = (id, vals, fmt) => vals.forEach(v => $(id).insertAdjacentHTML("beforeend", `<option value="${esc(v)}">${esc(fmt ? fmt(v) : label(v))}</option>`));

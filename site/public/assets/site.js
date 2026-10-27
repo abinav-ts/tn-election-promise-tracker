@@ -4,7 +4,7 @@ const pct = (x, d = 0) => (x == null || isNaN(x)) ? "–" : (100 * x).toFixed(d)
 const int = (n) => n == null ? "–" : Number(n).toLocaleString("en-IN");
 const TERMS = {"AIADMK-2016": "AIADMK 2016–21", "DMK-2021": "DMK 2021–26", "TVK-2026": "TVK 2026–"};
 const COLORS = (el = document.documentElement) => { const s = getComputedStyle(el), g = (k) => s.getPropertyValue(k).trim(); return {"AIADMK-2016": g("--c-a"), "DMK-2021": g("--c-d"), "TVK-2026": g("--c-t"), muted: g("--muted"), accent: g("--accent"), fg: g("--fg"), line: g("--line"), surface: g("--surface"), bg: g("--bg"), sg: g("--s-g"), sc: g("--s-c")}; };
-const load = (f) => fetch("data/" + f).then(r => { if (!r.ok) throw new Error(f); return r.json(); });
+const load = (f) => fetch("data/" + f, {cache: "no-cache"}).then(r => { if (!r.ok) throw new Error(f); return r.json(); });
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const label = (s) => s.replace(/_/g, " ");
 const monthLabel = (m) => m === 0 ? "end of term" : "month " + m;
