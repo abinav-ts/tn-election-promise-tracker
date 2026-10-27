@@ -357,3 +357,6 @@ footer.site a{color:#cdbcff}
 }
 
 .stackwrap{display:flex;flex-direction:column;gap:var(--gap);padding-block:clamp(28px,5vw,44px) 64px}
+
+/* whitepaper: standard space between the last section and the footer */
+.wrap>.prose{padding-bottom:clamp(56px,6vw,80px)}
