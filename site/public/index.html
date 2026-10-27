@@ -50,7 +50,6 @@
 <div class="pace" id="pace"></div><p class="read" id="paceRead"></p>
 <details class="more"><summary>How the pace factor is computed</summary><p class="small muted" id="paceHow"></p></details></div>
 <div class="cols2 wide" style="margin-top:26px" id="projPanels"></div>
-<div class="panel panel-tint" style="margin-top:26px" id="projNote"></div>
 <details class="more"><summary>Projection numbers by month</summary><div id="projTable" class="scroll"></div></details>
 </div></section>
 
@@ -224,8 +223,6 @@ function renderProjection() {
   });
   $$("#projPanels .bn").forEach(b => { b._to = +b.dataset.to; b._v = vis.proj ? b._to : 0; });
   if (vis.proj) drawProj();
-  const btRow = (name, m, pre) => { const l = m.backtest.landmarks["5"]; return `<tr><th scope="row" style="color:var(--fg);font-weight:500">${name}${pre || ""}</th>${l && !l.unavailable ? `<td>${l.mae_model.toFixed(1)} pts</td><td>${l.mae_model_pace.toFixed(1)} pts</td>` : `<td colspan="2" class="muted">not available in this setting</td>`}</tr>`; };
-  $("#projNote").innerHTML = `<h3 style="margin:0 0 6px;font-size:18px">Why the second line is only an extrapolation</h3><p>The pace update, applying TVK's pace factor to the months ahead, was tested on the completed terms: fit on DMK 2021–26, predict AIADMK 2016–21 from its first 5 months. Where it can be tested (Gemini-only, one judge for both terms) it does not improve the prediction, so the second line is shown as an extrapolation only.</p><div class="scroll nomin"><table><caption class="vh">Backtest error from month 5, with and without the pace update</caption><thead><tr><th scope="col">Judging</th><th scope="col">Without update</th><th scope="col">With update</th></tr></thead><tbody>${btRow("Gemini-only (one judge for both terms)", MOD("gemini"))}${btRow("Claude-only", MOD("claude"), tag("claude"))}</tbody></table></div>`;
   const cols = [6, 12, 24, 36, 48, 60], rowsT = SETS.flatMap(k => { const p = MOD(k).projection; return [["no_update", "Historical pace"], ["matched_update", "If current pace persists"]].map(([key, nm]) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${SN[k]}: ${nm}</th>${cols.map(m => { const i = p.months.indexOf(m), r = p[key]; return `<td>${pct(r.share[i])}<br><span class="muted small">${pct(r.lo[i])}–${pct(r.hi[i])}</span></td>`; }).join("")}</tr>`); });
   $("#projTable").innerHTML = `<table><caption class="vh">Projected share realised by month, with 10th–90th percentile band</caption><thead><tr><th scope="col">Line</th>${cols.map(m => `<th scope="col">${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rowsT.join("")}</tbody></table>`;
 }
@@ -251,12 +248,9 @@ function renderRobust() {
   [x1, x2, x3, x4, x5].forEach(x => (x.ok ? holds : depends).push(x.ok ? x.html : x.html.replace("<b>", "<b>Differs by judge: ")));
   // depends on the judge
   const m5 = (k, t) => cellOf(SUM(k), t, 5).realised, last = (k) => lastOf(MOD(k).projection), pr = (k, line) => MOD(k).projection[line].share[last(k)];
-  const bt5 = (m) => m.backtest.landmarks["5"];
   depends.push(`<b>The level of "realised".</b>DMK 2021–26 by month 5: ${pct(m5(G, "DMK-2021"), 1)} (Gemini-only) against ${pct(m5(C, "DMK-2021"), 1)} (Claude-only); by the end of its term ${pct(fin(G, "DMK-2021"))} against ${pct(fin(C, "DMK-2021"))}.`);
   depends.push(`<b>TVK's level.</b>Documented as realised after 5 months: ${pct(m5(G, "TVK-2026"), 1)} (Gemini-only) against ${pct(m5(C, "TVK-2026"), 1)} (Claude-only). No TVK promise is in the hand-labelled sample, so neither figure can be checked.`);
   depends.push(`<b>The projection range.</b>TVK by ${monthLabel(MOD(G).projection.months[last(G)])}, at historical pace: ${pct(pr(G, "no_update"))} (Gemini-only), ${pct(pr(C, "no_update"))} (Claude-only); if its current pace persists, an extrapolation: ${pct(pr(G, "matched_update"))}, ${pct(pr(C, "matched_update"))}.`);
-  const g5 = bt5(MOD(G)), c5 = bt5(MOD(C)), dirn = g5.mae_model_pace > g5.mae_model ? "raises" : "lowers";
-  depends.push(`<b>Whether the pace update helps.</b>In the reverse backtest from month 5, under Gemini-only judging (one judge for both terms), it ${dirn} the error from ${g5.mae_model.toFixed(1)} to ${g5.mae_model_pace.toFixed(1)} points. Under Claude-only judging it cannot be tested: ${c5 && !c5.unavailable ? "" : "Claude judged too few AIADMK promises at month 5."}`);
   const col = (h, arr, cls) => `<div class="panel panel-tint ${cls}"><h3>${h}</h3><ul>${arr.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
   $("#rf").innerHTML = col("Holds under both judges", holds, "holds") + col("Depends on the judge", depends, "dep");
   $("#rfNote").innerHTML = exclN(C) ? `Claude-only excludes ${exclN(C)} promises (${Object.entries(MOD(C).excluded_promises).map(([t, v]) => v.length + " " + TERMS[t]).join(", ")}) that never passed the judge checks.` : "";
