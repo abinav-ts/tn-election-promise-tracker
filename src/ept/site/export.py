@@ -97,49 +97,53 @@ def summary_for(cfg: Config, rows: list[dict], months: dict) -> dict:
 
 
 def build(cfg: Config) -> dict:
-    rows = mdata.load_final(cfg)
+    """Two single-judge settings (D-124): Claude-only (primary) and Gemini-only. The mixed Claude-preferred set is not
+    published. A promise's primary verdict is Claude's where Claude has one; Gemini's sits beside it."""
+    crows = mdata.load_final(cfg, "strong")
+    grows = mdata.load_final(cfg, "bulk")
     prom = load_promises(cfg)
     months = cutoff_months(cfg)
     q = quotes_by_promise(cfg)
-    by: dict[str, list[dict]] = defaultdict(list)
-    for r in rows:
-        by[r["promise_id"]].append(r)
-    show: dict[str, dict] = {}   # the verdict whose evidence is displayed: full term (TVK: its snapshot)
-    for pid, rs in by.items():
-        term = pid.rsplit("-", 1)[0]
+    cby: dict[str, list[dict]] = defaultdict(list)
+    gby: dict[str, list[dict]] = defaultdict(list)
+    for r in crows:
+        cby[r["promise_id"]].append(r)
+    for r in grows:
+        gby[r["promise_id"]].append(r)
+
+    def shown_row(rs: list[dict], term: str) -> Optional[dict]:
         want = None if cfg.term(term).term_end is not None else mdata.snapshot_date(cfg, term).isoformat()
-        show[pid] = next(r for r in rs if r["cutoff_date"] == want)
-    docs = chunk_docs(cfg, {c for r in show.values() for c in r["cited_chunk_ids"]})
+        return next((r for r in rs if r["cutoff_date"] == want), None)
+
+    show: dict[str, tuple[dict, str]] = {}   # the verdict whose evidence is displayed, and whose it is
+    for pid in prom:
+        term = pid.rsplit("-", 1)[0]
+        c, g = shown_row(cby.get(pid, []), term), shown_row(gby.get(pid, []), term)
+        if c is not None:
+            show[pid] = (c, "claude")
+        elif g is not None:
+            show[pid] = (g, "gemini")
+    docs = chunk_docs(cfg, {c for r, _ in show.values() for c in r["cited_chunk_ids"]})
+
+    def hist(rs: list[dict], term: str) -> dict:
+        return {str(months.get((term, r["cutoff_date"]), 0)): [r["status"], r["realisation_date"] or "", r["date_precision"] or "",
+                                                                 r["judge_source"]] for r in rs}
+
     items = []
     for pid in sorted(prom):
         p = dict(prom[pid])
         term = p["term"]
-        v = {}
-        for r in by[pid]:
-            m = months.get((term, r["cutoff_date"]), 0)
-            v[str(m)] = [r["status"], r["realisation_date"] or "", r["date_precision"] or "", r["judge_source"]]
-        s = show[pid]
+        s, by = show[pid]
         ev = []
         for cid in s["cited_chunk_ids"][:EVIDENCE_MAX]:
             d = docs.get(cid)
             if d:
                 ev.append({**d, "quote": q.get(pid, {}).get(cid, "")[:QUOTE_MAX]})
-        p.update(v=v, shown=str(months.get((term, s["cutoff_date"]), 0)), why=s["rationale"], conf=round(s["confidence"], 2),
-                 review=bool(s["needs_review"]), reasons=s.get("review_reasons") or [], model=s["judge_model"], ev=ev)
+        p.update(v=hist(cby.get(pid, []), term), g=hist(gby.get(pid, []), term), shown=str(months.get((term, s["cutoff_date"]), 0)),
+                 by=by, why=s["rationale"], conf=round(s["confidence"], 2), review=bool(s["needs_review"]),
+                 reasons=s.get("review_reasons") or [], model=s["judge_model"], ev=ev)
         items.append(p)
-    summary = summary_for(cfg, rows, months)
-    alt = {}
-    try:
-        brows = mdata.load_final(cfg, "bulk")
-        bsum = summary_for(cfg, brows, months)
-        for r in brows:
-            if r["promise_id"] in show and r["cutoff_date"] == show[r["promise_id"]]["cutoff_date"]:
-                alt[r["promise_id"]] = [r["status"], r["realisation_date"] or "", r["date_precision"] or ""]
-        for it in items:
-            it["alt"] = alt.get(it["id"])
-    except FileNotFoundError:
-        bsum = None
-    return {"promises": items, "summary": summary, "summary_bulk": bsum}
+    return {"promises": items, "summary_claude": summary_for(cfg, crows, months), "summary_gemini": summary_for(cfg, grows, months)}
 
 
 def work_stats(cfg: Config) -> dict:
@@ -179,42 +183,30 @@ def export(cfg: Optional[Config] = None) -> dict:
     cfg = cfg or get_config()
     out = cfg.root / SITE / "data"
     out.mkdir(parents=True, exist_ok=True)
+    for old in ("summary.json", "model.json", "summary_bulk.json", "model_bulk.json"):   # the mixed setting is gone (D-124)
+        (out / old).unlink(missing_ok=True)
     built = build(cfg)
     (out / "promises.json").write_text(_json(built["promises"]), encoding="utf-8")
-    (out / "summary.json").write_text(_json(built["summary"]), encoding="utf-8")
     (out / "work.json").write_text(_json(work_stats(cfg)), encoding="utf-8")
-    if built["summary_bulk"]:
-        (out / "summary_bulk.json").write_text(_json(built["summary_bulk"]), encoding="utf-8")
-    model = json.loads(cfg.path("model_outputs").read_text(encoding="utf-8"))
-    (out / "model.json").write_text(_json(model), encoding="utf-8")
-    mb = cfg.path("model_outputs").with_name("model_outputs_bulk.json")
-    if mb.exists():
-        (out / "model_bulk.json").write_text(_json(json.loads(mb.read_text(encoding="utf-8"))), encoding="utf-8")
-    # data contract for the redesigned overview (D-121): summary_/model_ {gemini, claude}, plus pace.json.
-    # The Claude-only files are the Claude-preferred data (stand-in) until the Claude-only run exists.
-    mc = cfg.path("model_outputs").with_name("model_outputs_strong.json")
-    claude_model = json.loads(mc.read_text(encoding="utf-8")) if mc.exists() else model
-    standin = not mc.exists()
-    sg = built["summary_bulk"]
-    try:
-        csum = summary_for(cfg, mdata.load_final(cfg, "strong"), cutoff_months(cfg))
-    except FileNotFoundError:
-        csum = built["summary"]
-    (out / "summary_claude.json").write_text(_json(_stamp(csum, "claude", standin)), encoding="utf-8")
-    (out / "model_claude.json").write_text(_json(_stamp(claude_model, "claude", standin)), encoding="utf-8")
-    if sg:
-        (out / "summary_gemini.json").write_text(_json(_stamp(sg, "gemini")), encoding="utf-8")
-        (out / "model_gemini.json").write_text(_json(_stamp(json.loads(mb.read_text(encoding="utf-8")), "gemini")), encoding="utf-8")
-    pace = {"claude": _stamp(claude_model["projection"].get("pace", {}), "claude", standin)}
-    if mb.exists():
-        pace["gemini"] = _stamp(json.loads(mb.read_text(encoding="utf-8"))["projection"].get("pace", {}), "gemini")
-    pace["claude_preferred_mixed"] = _stamp(model["projection"].get("pace", {}), "claude_preferred_mixed")
+    base = cfg.path("model_outputs")
+    models = {}
+    for setting, src in (("claude", "strong"), ("gemini", "bulk")):
+        mp = base.with_name(f"model_outputs_{src}.json")
+        if not mp.exists():
+            raise FileNotFoundError(f"{mp.name} is missing: run `ept model --source {src}` first")
+        models[setting] = json.loads(mp.read_text(encoding="utf-8"))
+        (out / f"summary_{setting}.json").write_text(_json(_stamp(built[f"summary_{setting}"], setting)), encoding="utf-8")
+        (out / f"model_{setting}.json").write_text(_json(_stamp(models[setting], setting)), encoding="utf-8")
+    pace = {k: _stamp(m["projection"].get("pace", {}), k) for k, m in models.items()}
     (out / "pace.json").write_text(_json(pace), encoding="utf-8")
     ev_path = cfg.path("evaluation_json")
     if ev_path.exists():
         ev = json.loads(ev_path.read_text(encoding="utf-8"))
-        # aggregate tables only: drop the per-promise listing of disagreements
-        for j in ev.get("judges", {}).values():
+        # aggregate tables of the two published settings only; no per-promise listing; no mixed setting
+        ev["judges"] = {k: v for k, v in ev.get("judges", {}).items() if k in ("final_claude", "final_bulk")}
+        for j in ev["judges"].values():
             j.get("disagreements", {}).pop("listed", None)
+        ev.pop("landmarks_final", None)
+        ev.pop("runs", None)
         (out / "evaluation.json").write_text(_json(ev), encoding="utf-8")
     return {"promises": len(built["promises"]), "bytes": {p.name: p.stat().st_size for p in out.glob("*.json")}}

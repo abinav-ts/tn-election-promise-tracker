@@ -104,3 +104,6 @@ Accounts, comments, a backend, Tamil-language pages, the forward backtest, any r
 7. **Work done:** a link or short strip only; it stays its own page.
 The mixed "Claude-preferred" setting leaves the overview (kept in the explorer and whitepaper as the combined best-evidence set).
 
+## 12. Two settings only (2026-10-27, D-124)
+The site shows Claude-only and Gemini-only judging. Nothing combined is published. Data files: `summary_{claude,gemini}.json`, `model_{claude,gemini}.json`, `pace.json`, `evaluation.json` (judges `final_claude`, `final_bulk`), `promises.json` (`v` Claude's verdicts, `g` Gemini's, `by`), `work.json`; `summary.json`, `model.json` and `*_bulk.json` are deleted on every export. A summary cell is displayed only when `complete` is true (Claude-only has no complete AIADMK landmark before the end of term). The backtest is shown for Gemini-only; Claude-only shows "not available". The explorer's judge filter is replaced by "Claude and Gemini disagree on realised or not" and "Claude has no verdict".
+

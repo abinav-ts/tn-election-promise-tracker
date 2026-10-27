@@ -90,11 +90,13 @@ let view = "gemini", showDoc = false, D = null, charts = {};
 const vis = {tbars: REDUCED, km: REDUCED, fp: REDUCED, pace: REDUCED, proj: REDUCED, acc: REDUCED};   // which sections are currently on screen
 const ANIM = REDUCED ? false : {duration: 1900, easing: "easeOutQuart"};
 const SUM = (k) => D.sum[k], MOD = (k) => D.model[k];
-const standin = (k) => !!((SUM(k).meta || {}).standin || (MOD(k).meta || {}).standin);
-const tag = (k) => standin(k) ? `<span class="tag" title="Stand-in until the Claude-only run finishes">preliminary</span>` : "";
+const exclN = (k) => Object.values((MOD(k) || {}).excluded_promises || {}).reduce((a, v) => a + v.length, 0);
+const exclNote = (k) => exclN(k) ? ` ${exclN(k)} promises that never passed the judge checks are left out of this view.` : "";
+const standin = () => false;   // both settings are final (D-124)
+const tag = () => "";
 const cellOf = (S, t, m) => S.cells.find(x => x.term === t && x.month === m);
 const hrOf = (m, n) => m.cox.both_terms_strata.hazard_ratios.find(r => r.covariate === n);
-const mixText = (S, t, m) => { const x = cellOf(S, t, m); return x ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : ""; };
+const mixText = (S, t, m) => { const x = cellOf(S, t, m); return x && x.complete ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : "not judged in full"; };
 const rgba = (hex, a) => { const h = hex.replace("#", ""); return h.length === 6 ? `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})` : hex; };
 const lastOf = (p) => p.months.length - 1;
 const evKey = (k) => k === "gemini" ? "final_bulk" : (D.ev.judges.final_claude ? "final_claude" : "strong");
@@ -112,7 +114,7 @@ function updateBars() {
     const cl = info.term_end ? cellOf(sum, t, 0) : cellOf(sum, t, 5), m5 = cellOf(sum, t, 5), bar = $(`.tbar[data-t="${t}"]`), dec = info.term_end ? 0 : 1;
     bar.setAttribute("aria-label", `${TERMS[t]}: ${sum.statuses.filter(s => cl.status[s]).map(s => label(s) + " " + pct(cl.status[s] / cl.n)).join(", ")}`);
     sum.statuses.forEach(s => { const el = bar.querySelector(`[data-s="${s}"]`), p = (cl.status[s] || 0) / cl.n; el.dataset.w = (100 * p) + "%"; if (vis.tbars) el.style.width = el.dataset.w; el.textContent = p >= 0.08 ? pct(p) : ""; el.title = `${label(s)}: ${cl.status[s] || 0} (${pct(p)})`; });
-    $(`.cap[data-t="${t}"]`).innerHTML = `${info.term_end ? "realised by the end of the term" : "documented as realised after 5 months"}<br>${int(cl.n)} promises · ${info.term_end ? "month 5: " + pct(m5.realised) + " documented" : "term in progress"}`;
+    $(`.cap[data-t="${t}"]`).innerHTML = `${info.term_end ? "realised by the end of the term" : "documented as realised after 5 months"}<br>${int(cl.n)} promises · ${info.term_end ? (m5 && m5.complete ? "month 5: " + pct(m5.realised) + " documented" : "month 5: not judged in full by Claude") : "term in progress"}`;
     const big = $(`.big[data-t="${t}"]`); big._dec = dec; big._to = 100 * cl.realised; if (vis.tbars) tween(big, big._to, dec);
   });
 }
@@ -122,7 +124,7 @@ function renderView() {
   const k = view, sum = SUM(k), model = MOD(k), cEl = $("#kmChart"), c = COLORS(cEl);
   $$("#viewbar button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === k));
   $("#viewTag").innerHTML = tag(k);
-  $("#viewText").textContent = SETTEXT[k] + (standin(k) ? " Preliminary: this view is a stand-in (Claude's verdicts where Claude judged, Gemini's elsewhere) until the Claude-only run finishes." : "");
+  $("#viewText").textContent = SETTEXT[k] + exclNote(k);
   updateBars();
   const c2 = c, ds = [], alt = [];
   for (const [t, e] of Object.entries(model.km.terms)) {
@@ -138,13 +140,13 @@ function renderView() {
   $("#kmAlt").textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}): ${alt.join("; ")}.`;
   const key = (cls, col, txt) => `<span style="color:${col}"><i class="${cls}"></i><span style="color:var(--muted)">${txt}</span></span>`;
   $("#kmKey").innerHTML = ["AIADMK-2016", "DMK-2021"].map(t => key("", c[t], TERMS[t])).join("") + (showDoc ? key("sq", c.muted, "documented at the landmark month") : "") + `<span style="color:${c["TVK-2026"]}"><i class="sq" style="border-radius:50%;transform:none"></i><span style="color:var(--muted)">TVK 2026– at month 5</span></span>`;
-  const rows = Object.keys(sum.terms).flatMap(t => [0, 5].filter(m => cellOf(sum, t, m) && (m === 5 || sum.terms[t].term_end)).map(m => cellOf(sum, t, m)));
-  $("#judgeNote").innerHTML = `<p class="small"><strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${standin(k) ? "This stand-in mixes judges, so part of AIADMK's early lead may be judge leniency." : k === "gemini" ? "Every term has the same judge here." : ""}</p><div class="scroll"><table><caption class="vh">Number of promises by status</caption><thead><tr><th scope="col">Term</th><th scope="col">Cutoff</th><th scope="col">Promises</th>${sum.statuses.map(s => `<th scope="col">${label(s)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr><td>${TERMS[r.term]}</td><td>${monthLabel(r.month)}</td><td>${int(r.n)}</td>${sum.statuses.map(s => `<td>${r.status[s] || 0}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const rows = Object.keys(sum.terms).flatMap(t => [0, 5].filter(m => cellOf(sum, t, m) && cellOf(sum, t, m).complete && (m === 5 || sum.terms[t].term_end)).map(m => cellOf(sum, t, m)));
+  $("#judgeNote").innerHTML = `<p class="small"><strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${k === "gemini" ? "Every term has the same judge here." : "Every verdict here is Claude's. Claude judged the full term of both completed terms and month 5 for DMK and TVK; AIADMK's early months were not judged in full, so they are left out."}</p><div class="scroll"><table><caption class="vh">Number of promises by status</caption><thead><tr><th scope="col">Term</th><th scope="col">Cutoff</th><th scope="col">Promises</th>${sum.statuses.map(s => `<th scope="col">${label(s)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr><td>${TERMS[r.term]}</td><td>${monthLabel(r.month)}</td><td>${int(r.n)}</td>${sum.statuses.map(s => `<td>${r.status[s] || 0}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 let kmData = null;
 function drawKM() { destroy("km"); if (kmData) charts.km = lineChart($("#kmChart"), kmData, {animation: ANIM}); }
 function clearKM() { destroy("km"); }
-const cellsFor = (sum, t) => sum.cells.filter(x => x.term === t && x.month > 0).map(x => ({x: x.month, y: 100 * x.realised}));
+const cellsFor = (sum, t) => sum.cells.filter(x => x.term === t && x.month > 0 && x.complete).map(x => ({x: x.month, y: 100 * x.realised}));
 
 /* 3 forest plot: one row per characteristic, two markers (Gemini-only hollow circle, Claude-only filled diamond) */
 function forestRows() {
@@ -178,7 +180,7 @@ function renderForest() {
 }
 function renderForestText() {
   const cg = MOD("gemini").cox.both_terms_strata, cc = MOD("claude").cox.both_terms_strata;
-  $("#fpNote").innerHTML = `References: administrative promises, no cost, specific promises. Both completed terms are fitted together, each with its own baseline: ${int(cg.n)} promises and ${int(cg.events)} realisations (Gemini-only); ${int(cc.n)} promises and ${int(cc.events)} realisations (Claude-only${standin("claude") ? ", preliminary" : ""}).`;
+  $("#fpNote").innerHTML = `References: administrative promises, no cost, specific promises. Both completed terms are fitted together, each with its own baseline: ${int(cg.n)} promises and ${int(cg.events)} realisations (Gemini-only); ${int(cc.n)} promises and ${int(cc.events)} realisations (Claude-only).`;
   const f = (r) => r ? `${r.hr.toFixed(2)} <span class="muted small">(${r.lo.toFixed(2)}–${r.hi.toFixed(2)})</span>` : "–";
   $("#fpTable").innerHTML = `<table><caption class="vh">Hazard ratios with 95% intervals under each judge</caption><thead><tr><th scope="col">Characteristic</th><th scope="col">Gemini-only</th><th scope="col">Claude-only</th></tr></thead><tbody>${forestRows().filter(r => !r.head).map(r => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${esc(label(r.name.replace("=", ": ")))}</th><td>${f(r.g)}</td><td>${f(r.c)}</td></tr>`).join("")}</tbody></table>`;
 }
@@ -223,7 +225,7 @@ function renderProjection() {
   $$("#projPanels .bn").forEach(b => { b._to = +b.dataset.to; b._v = vis.proj ? b._to : 0; });
   if (vis.proj) drawProj();
   const btRow = (name, m, pre) => { const l = m.backtest.landmarks["5"]; return `<tr><th scope="row" style="color:var(--fg);font-weight:500">${name}${pre || ""}</th>${l && !l.unavailable ? `<td>${l.mae_model.toFixed(1)} pts</td><td>${l.mae_model_pace.toFixed(1)} pts</td>` : `<td colspan="2" class="muted">not available in this setting</td>`}</tr>`; };
-  $("#projNote").innerHTML = `<h3 style="margin:0 0 6px;font-size:18px">Why the second line is only an extrapolation</h3><p>The pace update, applying TVK's pace factor to the months ahead, was tested on the completed terms: fit on DMK 2021–26, predict AIADMK 2016–21 from its first 5 months. It helped only when the two terms had different judges.</p><div class="scroll nomin"><table><caption class="vh">Backtest error from month 5, with and without the pace update</caption><thead><tr><th scope="col">Judging</th><th scope="col">Without update</th><th scope="col">With update</th></tr></thead><tbody>${btRow("Gemini-only (one judge for both terms)", MOD("gemini"))}${btRow("Claude-only", MOD("claude"), tag("claude"))}${btRow("Mixed judges (Claude where available, Gemini elsewhere)", D.mixed)}</tbody></table></div>`;
+  $("#projNote").innerHTML = `<h3 style="margin:0 0 6px;font-size:18px">Why the second line is only an extrapolation</h3><p>The pace update, applying TVK's pace factor to the months ahead, was tested on the completed terms: fit on DMK 2021–26, predict AIADMK 2016–21 from its first 5 months. Where it can be tested (Gemini-only, one judge for both terms) it does not improve the prediction, so the second line is shown as an extrapolation only.</p><div class="scroll nomin"><table><caption class="vh">Backtest error from month 5, with and without the pace update</caption><thead><tr><th scope="col">Judging</th><th scope="col">Without update</th><th scope="col">With update</th></tr></thead><tbody>${btRow("Gemini-only (one judge for both terms)", MOD("gemini"))}${btRow("Claude-only", MOD("claude"), tag("claude"))}</tbody></table></div>`;
   const cols = [6, 12, 24, 36, 48, 60], rowsT = SETS.flatMap(k => { const p = MOD(k).projection; return [["no_update", "Historical pace"], ["matched_update", "If current pace persists"]].map(([key, nm]) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${SN[k]}: ${nm}</th>${cols.map(m => { const i = p.months.indexOf(m), r = p[key]; return `<td>${pct(r.share[i])}<br><span class="muted small">${pct(r.lo[i])}–${pct(r.hi[i])}</span></td>`; }).join("")}</tr>`); });
   $("#projTable").innerHTML = `<table><caption class="vh">Projected share realised by month, with 10th–90th percentile band</caption><thead><tr><th scope="col">Line</th>${cols.map(m => `<th scope="col">${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rowsT.join("")}</tbody></table>`;
 }
@@ -250,14 +252,14 @@ function renderRobust() {
   // depends on the judge
   const m5 = (k, t) => cellOf(SUM(k), t, 5).realised, last = (k) => lastOf(MOD(k).projection), pr = (k, line) => MOD(k).projection[line].share[last(k)];
   const bt5 = (m) => m.backtest.landmarks["5"];
-  const mixed = bt5(D.mixed);
   depends.push(`<b>The level of "realised".</b>DMK 2021–26 by month 5: ${pct(m5(G, "DMK-2021"), 1)} (Gemini-only) against ${pct(m5(C, "DMK-2021"), 1)} (Claude-only); by the end of its term ${pct(fin(G, "DMK-2021"))} against ${pct(fin(C, "DMK-2021"))}.`);
   depends.push(`<b>TVK's level.</b>Documented as realised after 5 months: ${pct(m5(G, "TVK-2026"), 1)} (Gemini-only) against ${pct(m5(C, "TVK-2026"), 1)} (Claude-only). No TVK promise is in the hand-labelled sample, so neither figure can be checked.`);
   depends.push(`<b>The projection range.</b>TVK by ${monthLabel(MOD(G).projection.months[last(G)])}, at historical pace: ${pct(pr(G, "no_update"))} (Gemini-only), ${pct(pr(C, "no_update"))} (Claude-only); if its current pace persists, an extrapolation: ${pct(pr(G, "matched_update"))}, ${pct(pr(C, "matched_update"))}.`);
-  depends.push(`<b>Whether the pace update helps.</b>In the reverse backtest from month 5 it raises the error from ${bt5(MOD(G)).mae_model.toFixed(1)} to ${bt5(MOD(G)).mae_model_pace.toFixed(1)} points when one judge judged both terms (Gemini-only), and lowers it from ${mixed.mae_model.toFixed(1)} to ${mixed.mae_model_pace.toFixed(1)} points when the terms had different judges.`);
+  const g5 = bt5(MOD(G)), c5 = bt5(MOD(C)), dirn = g5.mae_model_pace > g5.mae_model ? "raises" : "lowers";
+  depends.push(`<b>Whether the pace update helps.</b>In the reverse backtest from month 5, under Gemini-only judging (one judge for both terms), it ${dirn} the error from ${g5.mae_model.toFixed(1)} to ${g5.mae_model_pace.toFixed(1)} points. Under Claude-only judging it cannot be tested: ${c5 && !c5.unavailable ? "" : "Claude judged too few AIADMK promises at month 5."}`);
   const col = (h, arr, cls) => `<div class="panel panel-tint ${cls}"><h3>${h}</h3><ul>${arr.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
   $("#rf").innerHTML = col("Holds under both judges", holds, "holds") + col("Depends on the judge", depends, "dep");
-  $("#rfNote").innerHTML = standin(C) ? `${tag(C)} Claude-only figures are preliminary: until the Claude-only run finishes they come from a stand-in (Claude's verdicts where Claude judged, Gemini's elsewhere).` : "";
+  $("#rfNote").innerHTML = exclN(C) ? `Claude-only excludes ${exclN(C)} promises (${Object.entries(MOD(C).excluded_promises).map(([t, v]) => v.length + " " + TERMS[t]).join(", ")}) that never passed the judge checks.` : "";
 }
 
 /* 6 accuracy, with coloured meters (bar = share, pale range = 95% interval) */
@@ -288,8 +290,8 @@ const accLeave = () => { vis.acc = false; const c = $("#accCards"); c.classList.
 const fpEnter = () => { vis.fp = true; const f = $(".fp"); f.classList.remove("noanim"); f.classList.add("on"); };
 const fpLeave = () => { vis.fp = false; const f = $(".fp"); f.classList.add("noanim"); f.classList.remove("on"); void f.offsetWidth; f.classList.remove("noanim"); };
 function renderAll() { renderRobust(); renderView(); renderForest(); renderForestText(); renderPace(); renderProjection(); renderAccuracy(); }
-Promise.all([load("summary_gemini.json"), load("summary_claude.json"), load("model_gemini.json"), load("model_claude.json"), load("pace.json"), load("evaluation.json"), load("model.json"), load("work.json").catch(() => null)]).then(([sg, sc, mg, mc, pace, ev, mixed, work]) => {
-  D = {sum: {gemini: sg, claude: sc}, model: {gemini: mg, claude: mc}, pace, ev, mixed};
+Promise.all([load("summary_gemini.json"), load("summary_claude.json"), load("model_gemini.json"), load("model_claude.json"), load("pace.json"), load("evaluation.json"), load("work.json").catch(() => null)]).then(([sg, sc, mg, mc, pace, ev, work]) => {
+  D = {sum: {gemini: sg, claude: sc}, model: {gemini: mg, claude: mc}, pace, ev};
   $("#foot").innerHTML = footer();
   const nDocs = work ? work.documents - (work.documents_by_type.manifesto || 0) : null;
   const nProm = work ? work.promises_total : sg.cells.filter(x => x.month === 0 || (x.term === "TVK-2026" && x.month === 5)).reduce((a, x) => a + x.n, 0);

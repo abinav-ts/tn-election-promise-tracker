@@ -18,11 +18,10 @@ from ept.retrieve.run import latest_run as latest_retrieval
 
 LIMITATIONS = [
     "n is about 20 promises per term: the intervals are wide and small differences are not meaningful.",
-    "One labeller and no second annotator: self-agreement is the only ceiling, and the labeller saw the corpus and the web, which the judges cannot (`in_corpus`).",
-    "Strong-judge verdicts for gold promises come from Claude Opus; TVK and later levels partly from Sonnet. Opus vs Sonnet cannot be measured here.",
-    "DMK landmark verdicts mix Claude and Gemini judges (D-097); gold measures full-term quality, and landmark agreement uses gold dates that carry the same labelling error.",
-    "No TVK promise is in the labelled prefix (positions 41-48 were not reached), so TVK-2026 verdicts have no measured accuracy of their own. The 8-promise self-agreement re-label was not done (user, 2026-10-25), so the human ceiling is not measured.",
-    "The final verdicts combine judges: a realisation found at an earlier landmark is carried forward (D-090) even where the full-term judge said not started. This raises recall (final 87 % vs Claude alone 40 %) at the cost of precision, and it means 'final' is not the same judge as 'strong'. Realisation dates are the weak point: the median gap to the hand-labelled date is about five to six months and fewer than a third are within 90 days, so event times in the survival models are approximate.",
+    "One labeller and no second annotator: self-agreement is the only ceiling, and the labeller saw the corpus and the web, which the judges cannot (`in_corpus`). The 8-promise self-agreement re-label was not done, so the human ceiling is not measured.",
+    "No TVK promise is in the labelled prefix (positions 41-48 were not reached), so TVK-2026 verdicts have no measured accuracy of their own.",
+    "Claude-only verdicts come from two Claude models (Opus 5.5 for the hand-labelled and headline promises and the first DMK landmarks, Sonnet 5.5 for the rest); the difference between them cannot be measured here.",
+    "Gold measures quality at the end of the term (TVK: month 5); accuracy at earlier landmark months is not reported for the published settings.",
     "Judges and the labeller both know Tamil Nadu politics: the citation and quote checks stop unsupported claims, not memory-driven choices between supported statuses. The memory probe (0/40 evidence-needing answers) is the only direct measurement.",
 ]
 
@@ -173,10 +172,11 @@ def run(cfg: Optional[Config] = None, allow_short: bool = False) -> dict:
     strong = ec.strong_run_id or store.latest_run(cfg, "strong")["run_id"]
     final = _final_verdicts(cfg)
     judges = {"bulk": _run_verdicts(cfg, bulk), "strong": _run_verdicts(cfg, strong), "final": final}
-    try:  # the Gemini-consistent variant (D-119), when it has been built
-        judges["final_bulk"] = _final_verdicts(cfg, "bulk")
-    except FileNotFoundError:
-        pass
+    for name, src in (("final_bulk", "bulk"), ("final_claude", "strong")):   # single-judge variants (D-119, D-120)
+        try:
+            judges[name] = _final_verdicts(cfg, src)
+        except FileNotFoundError:
+            pass
     pids = [r["promise_id"] for r in labels]
     cut = {p: _cutoff_key(cfg, p.rsplit("-", 1)[0]) for p in pids}
     cov = mdata.load_covariates(cfg)

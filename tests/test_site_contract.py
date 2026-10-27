@@ -52,7 +52,7 @@ def test_model_per_setting():
 
 def test_pace():
     pace = load("pace.json")
-    for k in ("gemini", "claude", "claude_preferred_mixed"):
+    for k in ("gemini", "claude"):   # the mixed Claude-preferred setting is no longer published (D-124)
         p = pace[k]
         assert {"month", "observed", "n", "expected", "prior_events", "k", "k_lo", "k_hi", "p_k_ge_1", "matched_terms"} <= set(p), k
         assert p["k_lo"] <= p["k"] <= p["k_hi"]
@@ -62,10 +62,9 @@ def test_pace():
 def test_evaluation_aggregates_only():
     ev = load("evaluation.json")
     assert isinstance(ev["n_labels"], int) and "per_term_n" in ev
-    for key in ("final_bulk",):
-        assert key in ev["judges"]
-    claude_key = "final_claude" if "final_claude" in ev["judges"] else "strong"  # the page falls back to `strong`
-    for key in ("final_bulk", claude_key, "final"):
+    assert set(ev["judges"]) == {"final_bulk", "final_claude"}   # only the two published single-judge settings
+    claude_key = "final_claude"
+    for key in ("final_bulk", claude_key):
         g = ev["judges"][key]["groups"]["pooled_AIADMK_DMK"]
         for metric in ("accuracy", "precision", "recall", "specificity"):
             assert {"p", "lo", "hi", "k", "n"} <= set(g["e1"][metric]), (key, metric)
@@ -73,17 +72,19 @@ def test_evaluation_aggregates_only():
         d = ev["judges"][key]["groups"]["pooled_AIADMK_DMK"]["date"]
         assert d["n"] > 0 and "median_abs_days" in d and "p" in d["within_90_days"], key
     blob = json.dumps(ev)
-    assert "listed" not in ev["judges"]["final"].get("disagreements", {}) and "gold_labels" not in blob
+    assert all("listed" not in j.get("disagreements", {}) for j in ev["judges"].values()) and "gold_labels" not in blob
 
 
 def test_files_other_pages_read():
-    mixed = load("model.json")  # the whitepaper and the overview's backtest note use the mixed (Claude-preferred) files
-    assert "5" in mixed["backtest"]["landmarks"] and "pace_update" in mixed["projection"]
-    assert load("summary.json")["cells"] and load("summary_bulk.json")["cells"] and load("model_bulk.json")["backtest"]
+    for s_ in SETTINGS:   # the whitepaper reads scenario A (pace_update) from both settings
+        assert "pace_update" in load(f"model_{s_}.json")["projection"] and load(f"summary_{s_}.json")["cells"]
+    assert {c["month"] for c in load("summary_claude.json")["cells"]} >= {0, 5}
+    for gone in ("summary.json", "model.json", "summary_bulk.json", "model_bulk.json"):   # the mixed setting is not exported
+        assert not (DATA / gone).exists(), gone
     w = load("work.json")
     for k in ("documents", "documents_by_type", "chunks", "promises_total", "indicators", "retrieval_tasks", "indicator_verdicts",
               "strong_batches_run", "strong_batches_exported", "subagent_tokens", "decisions", "commits", "python_lines", "tests"):
         assert k in w, k
     promises = load("promises.json")
-    assert len(promises) >= 1 and {"id", "term", "text", "v", "shown", "ev"} <= set(promises[0])
+    assert len(promises) >= 1 and {"id", "term", "text", "v", "g", "by", "shown", "ev"} <= set(promises[0])
     assert isinstance(json.loads((DATA.parent / "community" / "comments.json").read_text(encoding="utf-8")), list)

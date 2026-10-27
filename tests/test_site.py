@@ -15,11 +15,14 @@ def test_build_shape_and_no_gold():
     b = X.build(cfg)
     assert len(b["promises"]) == 1674
     p = b["promises"][0]
-    assert {"id", "term", "text", "v", "shown", "why", "ev", "model"} <= set(p)
+    assert {"id", "term", "text", "v", "g", "by", "shown", "why", "ev", "model"} <= set(p)
     blob = json.dumps(b)
     assert "gold_labels" not in blob and "gold_relabel" not in blob
-    cells = {(c["term"], c["month"]): c for c in b["summary"]["cells"]}
-    assert cells[("AIADMK-2016", 0)]["n"] == 312 and cells[("DMK-2021", 0)]["n"] == 667 and cells[("TVK-2026", 5)]["n"] == 695
+    cg = {(c["term"], c["month"]): c for c in b["summary_gemini"]["cells"]}
+    assert cg[("AIADMK-2016", 0)]["n"] == 312 and cg[("DMK-2021", 0)]["n"] == 667 and cg[("TVK-2026", 5)]["n"] == 695
+    cc = {(c["term"], c["month"]): c for c in b["summary_claude"]["cells"]}   # Claude-only: 8 promises excluded (D-123)
+    assert cc[("AIADMK-2016", 0)]["n"] == 309 and cc[("DMK-2021", 0)]["n"] == 662 and cc[("TVK-2026", 5)]["n"] == 695
+    assert cc[("AIADMK-2016", 0)]["complete"] and not cc[("AIADMK-2016", 5)]["complete"]
 
 
 def test_pages_reference_existing_local_assets():

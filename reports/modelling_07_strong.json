@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T05:51:24+00:00",
+ "generated_at": "2026-10-27T06:00:07+00:00",
  "final_export": "strongfinal_judge-20261027T054911Z.jsonl",
  "source": "strong",
  "excluded_promises": {
@@ -159,11 +159,12 @@
   }
  ],
  "limitations": [
-  "The judge differs by term and month: month-5 realised share is 4.8 % for DMK-2021 and 3.3 % for TVK-2026 (both Claude-judged) against 34.6 % for AIADMK-2016 (Gemini-judged); from month 24 both completed terms are mostly Gemini-judged and AIADMK is still 20-25 points higher. The backtest measures model error plus some judge difference (stage 06 bounds it); no parameter is adjusted for it.",
+  "The level of 'realised' depends on the judge. Under Claude-only judging, far fewer promises are realised than under Gemini-only judging (Claude is stricter, Gemini more lenient), at every term and landmark, and neither is the truth. Each setting uses one judge for every promise it covers, so within a setting terms are compared like for like; the comparison between settings is the measure of how much the answers depend on the judge.",
+  "The Claude-only setting covers the full term of both completed terms and month 5 for DMK-2021 and TVK-2026. Claude did not judge AIADMK's early months in full, so the reverse backtest cannot be run under it, and eight promises that never passed the judge checks are excluded from it.",
   "Only two completed terms, treated as independent draws. The reverse backtest is cross-term validation, not a forecast; the forward direction was not built, so the AIADMK-only model is not validated as a predictor.",
-  "Year- and month-precision dates (about 16 % of events) and conservative document dates blur event times.",
-  "`unverifiable` is censored, not an event; it is 124 of TVK's 695 promises.",
-  "Realisation dates are approximate: against 40 hand-labelled promises (stage 06) the median gap is about five to six months and fewer than a third are within 90 days, so the timing in these curves and in the backtest is blurred.",
+  "Some events have only year- or month-precision dates, and document dates are conservative, so event times are blurred.",
+  "`unverifiable` is censored, not an event; a large share of TVK's promises is unverifiable under every setting.",
+  "Realisation dates are approximate: against 40 hand-labelled promises (stage 06) the median gap is about five to six months and about a third or fewer are within 90 days, so the timing in these curves and in the backtest is blurred.",
   "Five covariates leave most variation unexplained; the bootstrap band shows fitting uncertainty only.",
   "TVK starts with a different coalition, Union-State relationship and fiscal position; the projection is 'projection under historical patterns' and extrapolates from month 5."
  ],
