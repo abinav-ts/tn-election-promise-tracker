@@ -39,3 +39,4 @@ docs/VIVA_SHEET.md
 # user files that may hold gold labels: never commit
 /Gold-label-pdf.pdf
 /*.pdf
+docs/VIVA_SHEET.html
