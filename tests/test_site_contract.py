@@ -86,5 +86,7 @@ def test_files_other_pages_read():
               "strong_batches_run", "strong_batches_exported", "subagent_tokens", "decisions", "commits", "python_lines", "tests"):
         assert k in w, k
     promises = load("promises.json")
-    assert len(promises) >= 1 and {"id", "term", "text", "v", "g", "by", "shown", "ev"} <= set(promises[0])
+    assert len(promises) >= 1 and {"id", "term", "text", "v", "g", "shown", "j"} <= set(promises[0])
+    ex = [x for x in promises if x["j"]["claude"] is None]   # the promises Claude never passed: Gemini's block is still there
+    assert ex and all(x["j"]["gemini"] for x in ex)
     assert isinstance(json.loads((DATA.parent / "community" / "comments.json").read_text(encoding="utf-8")), list)

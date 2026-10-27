@@ -15,7 +15,8 @@ def test_build_shape_and_no_gold():
     b = X.build(cfg)
     assert len(b["promises"]) == 1674
     p = b["promises"][0]
-    assert {"id", "term", "text", "v", "g", "by", "shown", "why", "ev", "model"} <= set(p)
+    assert {"id", "term", "text", "v", "g", "shown", "j"} <= set(p) and {"claude", "gemini"} == set(p["j"])
+    assert p["j"]["claude"] is None or {"status", "why", "conf", "model", "ev"} <= set(p["j"]["claude"])
     blob = json.dumps(b)
     assert "gold_labels" not in blob and "gold_relabel" not in blob
     cg = {(c["term"], c["month"]): c for c in b["summary_gemini"]["cells"]}

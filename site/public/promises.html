@@ -108,12 +108,15 @@ Promise.all([load("promises.json"), load("summary_claude.json")]).then(([P, sum]
       const gv = g ? ` <span class="muted small">· Gemini: ${label(g[0])}${g[1] ? ", " + g[1] : ""}</span>` : "";
       const head = s ? `<span class="pill ${s[0]}">${label(s[0])}</span> <span class="muted small">${s[1] ? s[1] + " · " : ""}Claude</span>${gv}` : (g ? `<span class="muted small">Claude: no verdict</span> <span class="pill ${g[0]}">${label(g[0])}</span> <span class="muted small">${g[1] ? g[1] + " · " : ""}Gemini</span>` : `<span class="muted small">not judged at this month</span>`);
       const hist = Object.entries(p.v).filter(([m]) => m !== "0").sort((a, b) => a[0] - b[0]).map(([m, v]) => `m${m}: ${label(v[0])}`).join(" · ");
-      const ev = p.ev.length ? p.ev.map(e => `<div class="ev"><div class="small muted">${esc(e.type.replace("_", " "))} · ${esc(e.date || "undated")} · ${e.url ? `<a href="${esc(e.url)}" rel="noopener">${esc(e.title || "source")}</a>` : esc(e.title)}</div>${e.quote ? `<q>${esc(e.quote)}</q>` : ""}</div>`).join("") : `<p class="muted small">No evidence found in the corpus for this promise.</p>`;
+      const evs = (j) => j.ev.length ? j.ev.map(e => `<div class="ev"><div class="small muted">${esc(e.type.replace("_", " "))} · ${esc(e.date || "undated")} · ${e.url ? `<a href="${esc(e.url)}" rel="noopener">${esc(e.title || "source")}</a>` : esc(e.title)}</div>${e.quote ? `<q>${esc(e.quote)}</q>` : ""}</div>`).join("") : `<p class="muted small">No evidence found in the corpus for this promise.</p>`;
+      const histOf = (h) => Object.entries(h).filter(([m]) => m !== "0").sort((x, y) => x[0] - y[0]).map(([m, v]) => `m${m}: ${label(v[0])}`).join(" · ") || "only the end-of-term verdict";
+      const block = (name, j, h) => j ? `<div class="jb"><h4>${name}</h4><p><span class="pill ${j.status}">${label(j.status)}</span> <span class="muted small">${j.date ? j.date + " · " : ""}confidence ${j.conf}${j.model ? " · " + esc(j.model) : ""}${j.review ? " · flagged for review" + ((j.reasons || []).length ? ": " + esc(j.reasons.join(", ")) : "") : ""}</span></p><p><strong>Why:</strong> ${esc(j.why)}</p>${evs(j)}<p class="small muted">Verdicts at other months: ${histOf(h)}</p></div>`
+        : `<div class="jb"><h4>${name}</h4><p class="muted small">No verdict: this promise never passed ${name}'s judge checks, so it is left out of that setting.</p></div>`;
+      const judges = `<p class="small muted" style="margin:10px 0 0">Reasoning and evidence are for the end-of-term verdict (TVK: month 5). The two judges read the same passages and often differ; neither is the truth.</p><div class="jpair">${block("Claude", p.j.claude, p.v)}${block("Gemini", p.j.gemini, p.g)}</div>`;
       return `<details class="item"><summary><span class="t">${esc(p.text)}</span> ${head}</summary>
         <p class="small muted">${TERMS[p.term]} · ${esc(p.section)} · ${label(p.sector)} · ${label(p.type)} · ${p.spec}${p.head ? " · headline" : ""}</p>
         ${p.src ? `<p class="tl small">${esc(p.src)}</p>` : ""}
-        <p><strong>Why this status:</strong> ${p.by === "gemini" ? "<em>Claude has no verdict for this promise (it never passed the judge checks); this is Gemini's reasoning.</em> " : ""}${esc(p.why)} <span class="muted small">(confidence ${p.conf}; ${esc(p.model || "")}${p.review ? "; flagged for review: " + esc((p.reasons || []).join(", ")) : ""})</span></p>
-        ${ev}<p class="small muted">${hist}</p>
+        ${judges}
         <p class="small"><a href="${correctionLink(p, s)}" rel="noopener">Suggest a correction</a> <span class="muted">(opens a GitHub issue; reviewed by hand, never changes a verdict automatically)</span></p></details>`;
     }).join("");
     pager(n);

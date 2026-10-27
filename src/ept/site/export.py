@@ -115,33 +115,34 @@ def build(cfg: Config) -> dict:
         want = None if cfg.term(term).term_end is not None else mdata.snapshot_date(cfg, term).isoformat()
         return next((r for r in rs if r["cutoff_date"] == want), None)
 
-    show: dict[str, tuple[dict, str]] = {}   # the verdict whose evidence is displayed, and whose it is
-    for pid in prom:
-        term = pid.rsplit("-", 1)[0]
-        c, g = shown_row(cby.get(pid, []), term), shown_row(gby.get(pid, []), term)
-        if c is not None:
-            show[pid] = (c, "claude")
-        elif g is not None:
-            show[pid] = (g, "gemini")
-    docs = chunk_docs(cfg, {c for r, _ in show.values() for c in r["cited_chunk_ids"]})
+    shown_c = {pid: shown_row(cby.get(pid, []), pid.rsplit("-", 1)[0]) for pid in prom}
+    shown_g = {pid: shown_row(gby.get(pid, []), pid.rsplit("-", 1)[0]) for pid in prom}
+    docs = chunk_docs(cfg, {c for rr in list(shown_c.values()) + list(shown_g.values()) if rr for c in rr["cited_chunk_ids"]})
 
     def hist(rs: list[dict], term: str) -> dict:
         return {str(months.get((term, r["cutoff_date"]), 0)): [r["status"], r["realisation_date"] or "", r["date_precision"] or "",
                                                                  r["judge_source"]] for r in rs}
 
+    def judged(pid: str, r: Optional[dict]) -> Optional[dict]:
+        """One judge's reasoning and evidence for the displayed (end-of-term / TVK month-5) verdict."""
+        if r is None:
+            return None
+        ev = []
+        for cid in r["cited_chunk_ids"][:EVIDENCE_MAX]:
+            d = docs.get(cid)
+            if d:
+                ev.append({**d, "quote": q.get(pid, {}).get(cid, "")[:QUOTE_MAX]})
+        return {"status": r["status"], "date": r["realisation_date"] or "", "why": r["rationale"], "conf": round(r["confidence"], 2),
+                "review": bool(r["needs_review"]), "reasons": r.get("review_reasons") or [], "model": r["judge_model"], "ev": ev}
+
     items = []
     for pid in sorted(prom):
         p = dict(prom[pid])
         term = p["term"]
-        s, by = show[pid]
-        ev = []
-        for cid in s["cited_chunk_ids"][:EVIDENCE_MAX]:
-            d = docs.get(cid)
-            if d:
-                ev.append({**d, "quote": q.get(pid, {}).get(cid, "")[:QUOTE_MAX]})
-        p.update(v=hist(cby.get(pid, []), term), g=hist(gby.get(pid, []), term), shown=str(months.get((term, s["cutoff_date"]), 0)),
-                 by=by, why=s["rationale"], conf=round(s["confidence"], 2), review=bool(s["needs_review"]),
-                 reasons=s.get("review_reasons") or [], model=s["judge_model"], ev=ev)
+        shown = shown_c[pid] or shown_g[pid]
+        p.update(v=hist(cby.get(pid, []), term), g=hist(gby.get(pid, []), term),
+                 shown=str(months.get((term, shown["cutoff_date"]), 0)),
+                 j={"claude": judged(pid, shown_c[pid]), "gemini": judged(pid, shown_g[pid])})
         items.append(p)
     return {"promises": items, "summary_claude": summary_for(cfg, crows, months), "summary_gemini": summary_for(cfg, grows, months)}
 

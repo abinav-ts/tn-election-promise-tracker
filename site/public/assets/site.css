@@ -349,3 +349,8 @@ footer.site a{color:#cdbcff}
 
 /* whitepaper content: equal space above (below the hero) and below (above the footer); 18px and 10px are the first and last elements' own margins */
 .wrap>.prose{--gapv:clamp(56px,7vw,96px);padding-top:calc(var(--gapv) - 18px);padding-bottom:calc(var(--gapv) - 10px)}
+
+/* explorer: one block per judge, side by side on wide screens, stacked on phones */
+.jpair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px 20px;margin-top:10px}
+.jb{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--surface)}
+.jb h4{margin:0 0 6px;font-size:15px}
