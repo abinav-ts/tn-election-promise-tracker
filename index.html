@@ -1,0 +1,306 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tamil Nadu Election Promise Tracker</title>
+<meta name="description" content="Did Tamil Nadu governments keep their manifesto promises, and how fast? Evidence-based verdicts, survival curves and a projection for TVK 2026.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css"></head>
+<body data-page="index"><div id="nav"></div>
+<main id="main" class="bands">
+<section class="hero" aria-labelledby="h-top"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in">
+<div class="hero-text">
+<h1 id="h-top">Promises made. <span class="acc">Promises kept?</span></h1>
+<p class="lede">A neutral, evidence-based look at how Tamil Nadu's ruling parties performed on their promises. Every promise in the manifestos of the parties that formed the government in 2016, 2021 and 2026, checked against official documents: policy notes, budget speeches, Government Orders and audit reports. Nothing here ranks parties or rates governments.</p>
+<div class="glass"><svg class="tick" viewBox="0 0 34 34" fill="none" aria-hidden="true"><circle cx="17" cy="17" r="15.5" stroke="currentColor" stroke-width="2"/><path d="M10 17.5l5 5 9.5-10.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<p>A promise counts as <em>realised</em> when an official step puts it into operation, with the date of the earliest such step.</p></div>
+<ul class="facts" aria-label="The project in numbers"><li><b data-b="facts.terms" data-f="int">–</b>terms</li><li><b data-b="facts.promises" data-f="int">–</b>promises</li><li><b data-b="facts.documents" data-f="int">–</b>official documents</li></ul>
+</div>
+<div class="hero-map" id="heroMap" aria-hidden="true"></div>
+</div></section>
+
+<section class="band b-white t-light hl" aria-labelledby="h-km"><div class="band-in">
+<h2 id="h-km">How much of each manifesto was realised</h2>
+<p class="sub">Each bar is 100% of a term's promises, split by what the evidence shows. Cool colours are realised (fulfilled, partial or diluted, with a date); warm colours are not. Switch the judge to see how much the answer depends on it.</p>
+<div class="viewbar" id="viewbar"><span class="lab" id="viewLab">Judge:</span><div class="seg" role="group" aria-labelledby="viewLab"><button type="button" data-v="gemini">Gemini-only</button><button type="button" data-v="claude">Claude-only</button></div><span id="viewTag"></span></div>
+<p class="muted small" id="viewText" style="margin:0 0 20px"></p>
+<div class="panel panel-dark" aria-live="polite"><div class="tbars" id="tbars"></div></div>
+<h3 style="font-size:20px;margin:44px 0 6px">Share realised over the months of tenure</h3>
+<p class="sub" style="margin-bottom:16px">Curves use the date each realised promise was first operationalised, as far as the evidence now shows (Kaplan–Meier). The diamonds are what was documented at each landmark month; the gap between line and diamonds is evidence that appeared only later.</p>
+<div class="panel panel-dark" id="kmPanel">
+  <div class="tools"><label class="check"><input type="checkbox" id="showDoc"> Show what was documented at each landmark</label></div>
+  <div class="chart"><canvas id="kmChart" role="img" aria-label="Share of promises realised by month for each term" aria-describedby="kmAlt"></canvas></div>
+  <div class="key" id="kmKey"></div><p class="vh" id="kmAlt"></p>
+</div>
+<details class="more"><summary>Status counts and who judged what</summary><div id="judgeNote"></div></details>
+</div></section>
+
+<section class="band b-black t-dark" aria-labelledby="h-fp"><div class="band-in">
+<p class="eyebrow">2 · What goes with faster delivery</p>
+<h2 id="h-fp">Promise characteristics, under both judges</h2>
+<p class="sub">A Cox model estimates which promise characteristics go with faster delivery. A marker right of 1 means faster, left of 1 slower; the line is the 95% interval. Both judges are shown at once, so you can see where they agree.</p>
+<div class="panel panel-light fp"><div class="mkkey" id="fpKey"></div><div id="forest"></div></div>
+<p class="rf-note" id="fpNote" style="margin-top:16px"></p>
+<details class="more"><summary>The same numbers as a table</summary><div id="fpTable" class="scroll"></div></details>
+</div></section>
+
+<section class="band b-lav t-lav hl" aria-labelledby="h-tvk"><div class="band-in">
+<h2 id="h-tvk">Is TVK keeping pace?</h2>
+<p class="sub">Projection under historical patterns, built from the two completed terms. It shows what the past would imply, with the assumptions stated below each line; it is not a prediction of what TVK will do. Bands show fitting uncertainty only.</p>
+<div class="panel panel-dark"><h3 style="margin:0 0 4px;font-size:18px">Pace after five months</h3>
+<p class="muted small" style="margin:0 0 16px">Like for like: TVK's documented count at month 5 against what the earlier government(s) had documented by month 5, judged by the same judge. 1.0 means the same pace.</p>
+<div class="pace" id="pace"></div><p class="read" id="paceRead"></p>
+<details class="more"><summary>How the pace factor is computed</summary><p class="small muted" id="paceHow"></p></details></div>
+<div class="cols2 wide" style="margin-top:26px" id="projPanels"></div>
+<details class="more"><summary>Projection numbers by month</summary><div id="projTable" class="scroll"></div></details>
+</div></section>
+
+<section class="band b-white t-light" aria-labelledby="h-rf"><div class="band-in">
+<p class="eyebrow">4 · Conclusions</p>
+<h2 id="h-rf">Conclusions</h2>
+<p class="sub">The same evidence was judged by two language models, Gemini and Claude. Some findings are the same under either judge; others move with it.</p>
+<div class="cols2 rf" id="rf"></div>
+<p class="rf-note" id="rfNote"></p>
+</div></section>
+
+<section class="band b-black t-dark" aria-labelledby="h-acc"><div class="band-in">
+<p class="eyebrow">5 · How far to trust this</p>
+<h2 id="h-acc">Checked against 40 hand labels</h2>
+<p class="sub" id="accSub"></p>
+<div class="cols2 wide" id="accCards"></div>
+<ul class="limits" id="limits"></ul>
+<p class="small" style="margin-top:14px"><a href="whitepaper.html#accuracy">All accuracy tables</a> · <a href="whitepaper.html#limitations">all limitations</a></p>
+</div></section>
+
+<section class="band b-lav t-lav" aria-labelledby="h-work"><div class="band-in" style="padding-block:clamp(40px,5vw,64px)">
+<div class="panel panel-dark" style="padding:28px 30px"><h2 id="h-work" style="margin-bottom:8px">The work behind this</h2>
+<p style="max-width:70ch;margin:0;color:var(--muted)">A pipeline that collects official documents, extracts every promise, finds evidence as of any past date, has models judge it under strict checks and validates them against hand labels.</p>
+<div class="btnrow"><a class="btn-cta" href="work.html">See the work, stage by stage →</a><span class="small"><a href="promises.html" style="color:var(--accent)">Promise explorer</a> · <a href="whitepaper.html" style="color:var(--accent)">Whitepaper</a></span></div></div>
+</div></section>
+</main>
+<div id="foot"></div>
+<script src="assets/vendor/chart.umd.min.js"></script><script src="assets/site.js"></script>
+<script>
+$("#nav").innerHTML = nav("index"); tnMap($("#heroMap"));
+const SETS = ["gemini", "claude"], SN = {gemini: "Gemini-only", claude: "Claude-only"};
+const SETTEXT = {
+  gemini: "One judge, the lighter Gemini model, for every promise of every term, so terms are compared like for like. It is more lenient: on the hand-labelled sample it called some not-realised promises realised.",
+  claude: "Claude's verdicts on their own. Claude is stricter: it was almost never wrong when it said a promise was realised, but it found fewer realised promises."};
+const POOR_CONCORDANCE = 0.6;   // presentation threshold for "ranks poorly" (0.5 is chance)
+let view = "gemini", showDoc = false, D = null, charts = {};
+const vis = {tbars: REDUCED, km: REDUCED, fp: REDUCED, pace: REDUCED, proj: REDUCED, acc: REDUCED};   // which sections are currently on screen
+const ANIM = REDUCED ? false : {duration: 1900, easing: "easeOutQuart"};
+const SUM = (k) => D.sum[k], MOD = (k) => D.model[k];
+const exclN = (k) => Object.values((MOD(k) || {}).excluded_promises || {}).reduce((a, v) => a + v.length, 0);
+const exclNote = (k) => exclN(k) ? ` ${exclN(k)} promises that never passed the judge checks are left out of this view.` : "";
+const standin = () => false;   // both settings are final (D-124)
+const tag = () => "";
+const cellOf = (S, t, m) => S.cells.find(x => x.term === t && x.month === m);
+const hrOf = (m, n) => m.cox.both_terms_strata.hazard_ratios.find(r => r.covariate === n);
+const mixText = (S, t, m) => { const x = cellOf(S, t, m); return x && x.complete ? Object.entries(x.judge_source).map(([k, v]) => v + " " + (k === "strong" ? "by Claude" : k === "bulk" ? "by Gemini" : "human fix")).join(", ") : "not judged in full"; };
+const rgba = (hex, a) => { const h = hex.replace("#", ""); return h.length === 6 ? `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})` : hex; };
+const lastOf = (p) => p.months.length - 1;
+const evKey = (k) => k === "gemini" ? "final_bulk" : (D.ev.judges.final_claude ? "final_claude" : "strong");
+const evOf = (k) => D.ev.judges[evKey(k)].groups.pooled_AIADMK_DMK;
+const destroy = (k) => { if (charts[k]) { charts[k].destroy(); delete charts[k]; } };
+/* 1 term bars (stacked vertically, animate when scrolled into view) and Kaplan–Meier */
+function buildBars() {
+  const sum = SUM("gemini"), c = COLORS($("#tbars")), grp = (s) => ["fulfilled", "partial", "diluted"].includes(s);
+  $("#tbars").innerHTML = Object.keys(sum.terms).map((t, r) => `<div class="trow" style="--tc:${c[t]};--r:${r}"><div class="tbar" role="img" data-t="${t}">${sum.statuses.map((s, i) => `<i class="st-${s}" data-s="${s}" style="--i:${i};width:0%"></i>`).join("")}</div><div class="tlab"><div class="nm"><span class="dot"></span>${TERMS[t]}</div><div class="big" data-t="${t}">0%</div><div class="cap" data-t="${t}"></div></div></div>`).join("")
+    + `<div class="slegend"><span class="grp">Realised</span>${sum.statuses.filter(grp).map(s => `<span><i class="st-${s}"></i>${label(s)}</span>`).join("")}<span class="grp" style="margin-left:10px">Not realised, or no evidence</span>${sum.statuses.filter(s => !grp(s)).map(s => `<span><i class="st-${s}"></i>${label(s)}</span>`).join("")}</div>`;
+}
+function updateBars() {
+  const sum = SUM(view);
+  Object.entries(sum.terms).forEach(([t, info]) => {
+    const cl = info.term_end ? cellOf(sum, t, 0) : cellOf(sum, t, 5), m5 = cellOf(sum, t, 5), bar = $(`.tbar[data-t="${t}"]`), dec = info.term_end ? 0 : 1;
+    bar.setAttribute("aria-label", `${TERMS[t]}: ${sum.statuses.filter(s => cl.status[s]).map(s => label(s) + " " + pct(cl.status[s] / cl.n)).join(", ")}`);
+    sum.statuses.forEach(s => { const el = bar.querySelector(`[data-s="${s}"]`), p = (cl.status[s] || 0) / cl.n; el.dataset.w = (100 * p) + "%"; if (vis.tbars) el.style.width = el.dataset.w; el.textContent = p >= 0.08 ? pct(p) : ""; el.title = `${label(s)}: ${cl.status[s] || 0} (${pct(p)})`; });
+    $(`.cap[data-t="${t}"]`).innerHTML = `${info.term_end ? "realised by the end of the term" : "documented as realised after 5 months"}<br>${int(cl.n)} promises · ${info.term_end ? (m5 && m5.complete ? "month 5: " + pct(m5.realised) + " documented" : "month 5: not judged in full by Claude") : "term in progress"}`;
+    const big = $(`.big[data-t="${t}"]`); big._dec = dec; big._to = 100 * cl.realised; if (vis.tbars) tween(big, big._to, dec);
+  });
+}
+const barsEnter = () => { vis.tbars = true; const t = $("#tbars"); t.classList.remove("noanim"); $$("#tbars .tbar i").forEach(i => { i.style.width = i.dataset.w; }); $$("#tbars .big").forEach(b => tween(b, b._to, b._dec)); };
+const barsLeave = () => { vis.tbars = false; const t = $("#tbars"); t.classList.add("noanim"); $$("#tbars .tbar i").forEach(i => { i.style.width = "0%"; }); $$("#tbars .big").forEach(b => { b._v = 0; b.textContent = "0%"; }); void t.offsetWidth; t.classList.remove("noanim"); };
+function renderView() {
+  const k = view, sum = SUM(k), model = MOD(k), cEl = $("#kmChart"), c = COLORS(cEl);
+  $$("#viewbar button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === k));
+  $("#viewTag").innerHTML = tag(k);
+  $("#viewText").textContent = SETTEXT[k] + exclNote(k);
+  updateBars();
+  const c2 = c, ds = [], alt = [];
+  for (const [t, e] of Object.entries(model.km.terms)) {
+    if (t === "TVK-2026") continue;
+    ds.push({label: TERMS[t], data: [{x: 0, y: 0}, ...e.months.map((m, i) => ({x: m, y: 100 * e.E1.realised[i]}))], borderColor: c2[t], backgroundColor: c2[t], tension: .2, pointRadius: 0, borderWidth: 3});
+    if (showDoc) ds.push({label: TERMS[t] + " (documented at the time)", data: cellsFor(sum, t), borderColor: c2[t], backgroundColor: "#1a0e3a", borderWidth: 2.4, showLine: false, pointStyle: "rectRot", pointRadius: 7});
+    alt.push(`${TERMS[t]} reaches ${pct(e.E1.realised[e.E1.realised.length - 1])} by the end of its term (month ${Math.round(e.months[e.months.length - 1])})`);
+  }
+  const tv = cellOf(sum, "TVK-2026", 5);
+  ds.push({label: "TVK 2026– (documented at month 5)", data: [{x: 5, y: 100 * tv.realised}], borderColor: c2["TVK-2026"], backgroundColor: c2["TVK-2026"], pointRadius: 8, showLine: false});
+  alt.push(`TVK 2026– is at ${pct(tv.realised, 1)} documented at month 5`);
+  kmData = ds; if (vis.km) drawKM();
+  $("#kmAlt").textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}): ${alt.join("; ")}.`;
+  const key = (cls, col, txt) => `<span style="color:${col}"><i class="${cls}"></i><span style="color:var(--muted)">${txt}</span></span>`;
+  $("#kmKey").innerHTML = ["AIADMK-2016", "DMK-2021"].map(t => key("", c[t], TERMS[t])).join("") + (showDoc ? key("sq", c.muted, "documented at the landmark month") : "") + `<span style="color:${c["TVK-2026"]}"><i class="sq" style="border-radius:50%;transform:none"></i><span style="color:var(--muted)">TVK 2026– at month 5</span></span>`;
+  const rows = Object.keys(sum.terms).flatMap(t => [0, 5].filter(m => cellOf(sum, t, m) && cellOf(sum, t, m).complete && (m === 5 || sum.terms[t].term_end)).map(m => cellOf(sum, t, m)));
+  $("#judgeNote").innerHTML = `<p class="small"><strong>Who judged what.</strong> At month 5: DMK, ${mixText(sum, "DMK-2021", 5)}; TVK, ${mixText(sum, "TVK-2026", 5)}; AIADMK, ${mixText(sum, "AIADMK-2016", 5)}. ${k === "gemini" ? "Every term has the same judge here." : "Every verdict here is Claude's. Claude judged the full term of both completed terms and month 5 for DMK and TVK; AIADMK's early months were not judged in full, so they are left out."}</p><div class="scroll"><table><caption class="vh">Number of promises by status</caption><thead><tr><th scope="col">Term</th><th scope="col">Cutoff</th><th scope="col">Promises</th>${sum.statuses.map(s => `<th scope="col">${label(s)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr><td>${TERMS[r.term]}</td><td>${monthLabel(r.month)}</td><td>${int(r.n)}</td>${sum.statuses.map(s => `<td>${r.status[s] || 0}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+let kmData = null;
+function drawKM() { destroy("km"); if (kmData) charts.km = lineChart($("#kmChart"), kmData, {animation: ANIM}); }
+function clearKM() { destroy("km"); }
+const cellsFor = (sum, t) => sum.cells.filter(x => x.term === t && x.month > 0 && x.complete).map(x => ({x: x.month, y: 100 * x.realised}));
+
+/* 3 forest plot: one row per characteristic, two markers (Gemini-only hollow circle, Claude-only filled diamond) */
+function forestRows() {
+  const hg = MOD("gemini").cox.both_terms_strata.hazard_ratios, byC = Object.fromEntries(MOD("claude").cox.both_terms_strata.hazard_ratios.map(r => [r.covariate, r]));
+  const HEAD = {promise_type: "Promise type (vs administrative)", cost_band: "Cost band (vs none)", specificity: "Specificity (vs specific)", other: "Other characteristics (yes vs no)"};
+  const OTHER = {union_dependent: "Union-dependent", continues_existing: "Continues existing scheme"};
+  const rows = []; let g0 = null;
+  hg.forEach(r => {
+    const [g, v] = r.covariate.includes("=") ? r.covariate.split("=") : ["other", r.covariate];
+    if (g !== g0) { rows.push({head: HEAD[g] || label(g)}); g0 = g; }
+    rows.push({name: r.covariate, label: OTHER[v] || label(v), g: r, c: byC[r.covariate]});
+  });
+  return rows;
+}
+function renderForest() {
+  const el = $("#forest"), rows = forestRows(), W = Math.max(320, el.clientWidth || 700), narrow = W < 560;
+  const L = narrow ? 168 : 250, Rr = 16, T = 46, rh = narrow ? 36 : 34, hh = 28, lo = 0.2, hi = 7;
+  const X = (v) => L + (Math.log(Math.min(hi, Math.max(lo, v)) / lo) / Math.log(hi / lo)) * (W - L - Rr);
+  let y = T; const pos = rows.map(r => { const o = {...r, y, h: r.head ? hh : rh}; y += o.h; return o; });
+  const H = y + 40; let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-labelledby="fpT fpD"><title id="fpT">Hazard ratios by promise characteristic, both judges</title><desc id="fpD">Each row shows the hazard ratio and 95% interval under Gemini-only and Claude-only judging; the same numbers are in the table below. A value above 1 means faster realisation.</desc>`;
+  pos.forEach((r, i) => { if (!r.head && i % 2) svg += `<rect class="band-row" x="0" y="${r.y}" width="${W}" height="${r.h}" rx="6"/>`; });
+  [0.25, 0.5, 1, 2, 4].forEach(t => { svg += `<line class="gl${t === 1 ? " ref" : ""}" x1="${X(t)}" x2="${X(t)}" y1="${T - 8}" y2="${H - 34}"/><text class="t" x="${X(t)}" y="${H - 16}" text-anchor="middle">${t}</text>`; });
+  svg += `<text class="t" x="${X(1) - 8}" y="${T - 20}" text-anchor="end">← slower</text><text class="t" x="${X(1) + 8}" y="${T - 20}" text-anchor="start">faster →</text>`;
+  const mk = (s, r, dy) => { if (!s) return ""; const cy = r.y + r.h / 2 + dy, cls = s === r.g ? "g" : "c", x = X(s.hr);
+    const shape = cls === "g" ? `<circle class="mg" cx="${x}" cy="${cy}" r="4.6"/>` : `<polygon class="mc" points="${x},${cy - 6} ${x + 6},${cy} ${x},${cy + 6} ${x - 6},${cy}"/>`;
+    return `<g class="${cls} fpg" style="--n:${r.idx};transform-origin:${X(1)}px 0"><path class="ci" d="M${X(s.lo)} ${cy}H${X(s.hi)}M${X(s.lo)} ${cy - 4}V${cy + 4}M${X(s.hi)} ${cy - 4}V${cy + 4}"/>${shape}</g>`; };
+  let ri = 0; pos.forEach(r => { if (!r.head) r.idx = ri++; });
+  pos.forEach(r => { if (r.head) svg += `<text class="h" x="4" y="${r.y + 19}">${esc(r.head)}</text>`; else svg += `<text x="16" y="${r.y + r.h / 2 + 4}">${esc(r.label)}</text>${mk(r.g, r, -5)}${mk(r.c, r, 5)}`; });
+  $("#forest").innerHTML = svg + "</svg>";
+  $("#fpKey").innerHTML = `<span><i class="mkg"></i>Gemini-only</span><span><i class="mkc"></i>Claude-only${tag("claude")}</span><span>${narrow ? "" : "Marker = hazard ratio, line = 95% interval"}</span>`;
+}
+function renderForestText() {
+  const cg = MOD("gemini").cox.both_terms_strata, cc = MOD("claude").cox.both_terms_strata;
+  $("#fpNote").innerHTML = `References: administrative promises, no cost, specific promises. Both completed terms are fitted together, each with its own baseline: ${int(cg.n)} promises and ${int(cg.events)} realisations (Gemini-only); ${int(cc.n)} promises and ${int(cc.events)} realisations (Claude-only).`;
+  const f = (r) => r ? `${r.hr.toFixed(2)} <span class="muted small">(${r.lo.toFixed(2)}–${r.hi.toFixed(2)})</span>` : "–";
+  $("#fpTable").innerHTML = `<table><caption class="vh">Hazard ratios with 95% intervals under each judge</caption><thead><tr><th scope="col">Characteristic</th><th scope="col">Gemini-only</th><th scope="col">Claude-only</th></tr></thead><tbody>${forestRows().filter(r => !r.head).map(r => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${esc(label(r.name.replace("=", ": ")))}</th><td>${f(r.g)}</td><td>${f(r.c)}</td></tr>`).join("")}</tbody></table>`;
+}
+
+/* 4 pace strip */
+const paceEnter = () => { vis.pace = true; $("#pace").classList.remove("noanim"); $$("#pace .pace-mk,#pace .pace-iv").forEach(e => { e.style.left = e.dataset.left; if (e.dataset.w) e.style.width = e.dataset.w; }); };
+const paceLeave = () => { vis.pace = false; const p = $("#pace"); p.classList.add("noanim"); const ref = p.querySelector(".pace-ref").style.left; $$("#pace .pace-mk,#pace .pace-iv").forEach(e => { e.style.left = ref; if (e.dataset.w) e.style.width = "0%"; }); void p.offsetWidth; p.classList.remove("noanim"); };
+function renderPace() {
+  const lo = 0.4, hi = 1.2, P = (v) => 100 * (Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo), cls = {gemini: "g", claude: "c"};
+  const rows = SETS.map(k => { const p = D.pace[k], d = p.documented_share_by_term;
+    return `<div class="pace-row"><div class="pl">${SN[k]}${tag(k)}</div><div><div class="pace-track ${cls[k]}"><i class="pace-ref" style="left:${P(1)}%"></i><i class="pace-iv" data-left="${P(p.k_lo)}%" data-w="${P(p.k_hi) - P(p.k_lo)}%" style="left:${vis.pace ? P(p.k_lo) : P(1)}%;width:${vis.pace ? P(p.k_hi) - P(p.k_lo) : 0}%"></i><i class="pace-mk ${cls[k]}" data-left="${P(p.k)}%" style="left:${vis.pace ? P(p.k) : P(1)}%"></i></div></div><div class="pr"><b>${p.k.toFixed(2)}</b> <span class="muted">(${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})</span></div><div class="ps">Documented by month ${p.month} under this judge: AIADMK ${pct(d["AIADMK-2016"].documented_share)}, DMK ${pct(d["DMK-2021"].documented_share)}, TVK ${pct(d["TVK-2026"].documented_share, 1)}</div></div>`; }).join("");
+  const top = `<div class="pace-row"><div></div><div class="pace-axis top"><span class="rl" style="left:${P(1)}%;transform:translateX(calc(-100% - 8px))">1.0 = same pace as earlier governments</span></div><div></div></div>`;
+  const axis = `<div class="pace-row"><div></div><div class="pace-axis"><span style="left:${P(0.5)}%">0.5</span><span style="left:${P(0.75)}%">0.75</span><span style="left:${P(1.0)}%">1.0</span><span style="left:${P(1.2)}%;transform:translateX(-100%)">1.2</span></div><div></div></div>`;
+  $("#pace").innerHTML = top + rows + axis;
+  const ks = SETS.map(k => D.pace[k]), mn = Math.min(...ks.map(p => p.k)), mx = Math.max(...ks.map(p => p.k));
+  const wider = SETS.reduce((a, b) => (D.pace[a].k_hi - D.pace[a].k_lo) >= (D.pace[b].k_hi - D.pace[b].k_lo) ? a : b);
+  const pg = D.pace.gemini, pc = D.pace.claude;
+  $("#paceRead").innerHTML = `<strong>Reading.</strong> After 5 months TVK is tracking at roughly ${pct(mn)}–${pct(mx)} of the pace earlier governments had documented by the same month: ${pct(pg.k)} under Gemini-only judging (80% interval ${pct(pg.k_lo)}–${pct(pg.k_hi)}) and ${pct(pc.k)} under Claude-only (${pct(pc.k_lo)}–${pct(pc.k_hi)}${standin("claude") ? ", preliminary" : ""}). The ${SN[wider]} interval is wider because it rests on only ${int(D.pace[wider].observed)} documented events (${int(D.pace[wider === "gemini" ? "claude" : "gemini"].observed)} under ${SN[wider === "gemini" ? "claude" : "gemini"]}).`;
+  $("#paceHow").innerHTML = `The pace factor is k = (O + c) / (E + c). O is TVK's documented count after ${pg.month} months (${int(pg.observed)} of ${int(pg.n)} under Gemini-only, ${int(pc.observed)} under Claude-only). E is the count TVK would have if it matched the earlier government${pg.matched_terms.length > 1 ? "s" : ""} judged by the same judge (${pg.expected.toFixed(1)} under Gemini-only, matched to ${pg.matched_terms.map(t => TERMS[t]).join(" and ")}; ${pc.expected.toFixed(1)} under Claude-only, matched to ${pc.matched_terms.map(t => TERMS[t]).join(" and ")}). c = ${pg.prior_events} prior events. The interval is the 10th to 90th percentile of the posterior Gamma(c + O, c + E). Posterior probability that TVK's pace is at least the earlier pace: ${pct(pg.p_k_ge_1)} (Gemini-only), ${pct(pc.p_k_ge_1)} (Claude-only).`;
+}
+
+/* 3 projection panels: two lines per setting, no scenario A on the overview */
+let projData = {};
+function drawProj() { SETS.forEach(k => { destroy("proj_" + k); const d = projData[k]; if (d) charts["proj_" + k] = lineChart(d.el, d.ds, {animation: ANIM}); }); }
+const projEnter = () => { vis.proj = true; drawProj(); $$("#projPanels .bn").forEach(b => tween(b, b._to, 0)); };
+const projLeave = () => { vis.proj = false; SETS.forEach(k => destroy("proj_" + k)); $$("#projPanels .bn").forEach(b => { b._v = 0; b.textContent = "0%"; }); };
+function renderProjection() {
+  SETS.forEach(k => destroy("proj_" + k)); projData = {};
+  $("#projPanels").innerHTML = SETS.map(k => `<div class="panel panel-dark pnl"><h3><span class="sw" style="background:var(--s-${k === "gemini" ? "g" : "c"})"></span>${SN[k]}${tag(k)}</h3><div class="chart"><canvas id="proj_${k}" role="img" aria-label="Projected share of TVK promises realised by month, ${SN[k]}" aria-describedby="projAlt_${k}"></canvas></div><div class="key" id="projKey_${k}"></div><p class="vh" id="projAlt_${k}"></p><div class="bigstats" id="projVals_${k}"></div><p class="warnline">"If TVK's current pace persists" is an extrapolation from five months.</p></div>`).join("");
+  SETS.forEach(k => {
+    const el = $("#proj_" + k), c = COLORS(el), p = MOD(k).projection, xs = p.months, last = lastOf(p), ds = [], hi = k === "gemini" ? c.sg : c.sc;
+    const LINES = [{key: "no_update", name: "Historical pace", col: c.muted, dash: [6, 4]}, {key: "matched_update", name: "If TVK's current pace persists (extrapolation)", col: hi, dash: []}];
+    LINES.forEach(s => { const r = p[s.key];
+      ds.push({label: s.name, data: [{x: 5, y: 100 * p.observed_share_snapshot}, ...xs.map((x, i) => ({x, y: 100 * r.share[i]}))], borderColor: s.col, backgroundColor: s.col, pointRadius: 0, borderWidth: 3, borderDash: s.dash});
+      if (r.lo) { ds.push({label: s.name + " band", data: xs.map((x, i) => ({x, y: 100 * r.hi[i]})), borderColor: "transparent", backgroundColor: rgba(s.col, .24), pointRadius: 0, fill: "+1"}); ds.push({label: s.name + " band low", data: xs.map((x, i) => ({x, y: 100 * r.lo[i]})), borderColor: "transparent", backgroundColor: "transparent", pointRadius: 0}); } });
+    projData[k] = {el, ds};
+    $("#projKey_" + k).innerHTML = LINES.map(s => `<span style="color:${s.col}"><i class="${s.dash.length ? "d" : ""}"></i><span style="color:var(--muted)">${s.name}</span></span>`).join("");
+    const a = p.no_update, b = p.matched_update, m = xs[last];
+    $("#projVals_" + k).innerHTML = `<div><div class="bn" data-to="${100 * a.share[last]}" style="color:var(--muted)">${vis.proj ? pct(a.share[last]) : "0%"}</div><div class="bl">at <b>historical pace</b> by ${monthLabel(m)}<br>band ${pct(a.lo[last])}–${pct(a.hi[last])}</div></div><div><div class="bn" data-to="${100 * b.share[last]}" style="color:${hi}">${vis.proj ? pct(b.share[last]) : "0%"}</div><div class="bl"><b>if current pace persists</b> by ${monthLabel(m)} (extrapolation)<br>band ${pct(b.lo[last])}–${pct(b.hi[last])}</div></div>`;
+    $("#projAlt_" + k).textContent = `Chart summary (${SN[k]}${standin(k) ? ", preliminary" : ""}), projection under historical patterns from the share documented at month 5: historical pace ${[12, 24, 60].filter(x => xs.includes(x)).map(x => pct(a.share[xs.indexOf(x)]) + " at month " + x).join(", ")}; if current pace persists ${[12, 24, 60].filter(x => xs.includes(x)).map(x => pct(b.share[xs.indexOf(x)]) + " at month " + x).join(", ")}.`;
+  });
+  $$("#projPanels .bn").forEach(b => { b._to = +b.dataset.to; b._v = vis.proj ? b._to : 0; });
+  if (vis.proj) drawProj();
+  const cols = [6, 12, 24, 36, 48, 60], rowsT = SETS.flatMap(k => { const p = MOD(k).projection; return [["no_update", "Historical pace"], ["matched_update", "If current pace persists"]].map(([key, nm]) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${SN[k]}: ${nm}</th>${cols.map(m => { const i = p.months.indexOf(m), r = p[key]; return `<td>${pct(r.share[i])}<br><span class="muted small">${pct(r.lo[i])}–${pct(r.hi[i])}</span></td>`; }).join("")}</tr>`); });
+  $("#projTable").innerHTML = `<table><caption class="vh">Projected share realised by month, with 10th–90th percentile band</caption><thead><tr><th scope="col">Line</th>${cols.map(m => `<th scope="col">${monthLabel(m)}</th>`).join("")}</tr></thead><tbody>${rowsT.join("")}</tbody></table>`;
+}
+
+/* 1 robust findings: each item is tested on the data; one that fails moves to "depends on the judge" */
+function renderRobust() {
+  const G = "gemini", C = "claude", holds = [], depends = [];
+  const two = (f, fmt = (x) => x) => `${fmt(f(G))} (Gemini-only), ${fmt(f(C))} (Claude-only)`;
+  const hrs = (n) => (k) => { const r = hrOf(MOD(k), n); return r ? r.hr : NaN; };
+  const excl = (n, dir) => SETS.every(k => { const r = hrOf(MOD(k), n); return r && (dir > 0 ? r.lo > 1 : r.hi < 1); });
+  const vague = "specificity=vague", adv = "promise_type=advocacy", uni = "union_dependent";
+  const ok1 = excl(vague, 1) && excl(adv, 1);
+  const x1 = {ok: ok1, html: `<b>Vague and advocacy promises are realised faster.</b>Hazard ratio (above 1 means faster): vague ${hrs(vague)(G).toFixed(1)} Gemini-only, ${hrs(vague)(C).toFixed(1)} Claude-only; advocacy ${hrs(adv)(G).toFixed(1)}, ${hrs(adv)(C).toFixed(1)}. ${ok1 ? "Every 95% interval excludes 1." : "Not every 95% interval excludes 1."}`};
+  const ok2 = excl(uni, -1);
+  const x2 = {ok: ok2, html: `<b>Union-dependent promises are realised more slowly.</b>Hazard ratio ${hrs(uni)(G).toFixed(2)} Gemini-only, ${hrs(uni)(C).toFixed(2)} Claude-only. ${ok2 ? "Both 95% intervals are below 1." : "Not both 95% intervals are below 1."}`};
+  const fin = (k, t) => cellOf(SUM(k), t, 0).realised;
+  const ok3 = SETS.every(k => fin(k, "AIADMK-2016") > fin(k, "DMK-2021"));
+  const x3 = {ok: ok3, html: `<b>AIADMK 2016–21 shows the higher share realised by the end of its term.</b>AIADMK ${pct(fin(G, "AIADMK-2016"))} against DMK ${pct(fin(G, "DMK-2021"))} (Gemini-only); ${pct(fin(C, "AIADMK-2016"))} against ${pct(fin(C, "DMK-2021"))} (Claude-only). A description of documented outcomes, not a ranking of parties.`};
+  const cz = (k) => MOD(k).backtest.concordance, ok4 = SETS.every(k => cz(k) < POOR_CONCORDANCE);
+  const x4 = {ok: ok4, html: `<b>Promise characteristics rank promises poorly.</b>Concordance of the DMK-fitted model on AIADMK: ${cz(G).toFixed(2)} (Gemini-only), ${cz(C).toFixed(2)} (Claude-only); 0.5 is chance.`};
+  const dt = (k) => evOf(k).date, mo = (k) => dt(k).median_abs_days / 30.4;
+  const x5 = {ok: true, html: `<b>Dates are approximate, by about five to six months.</b>Median gap between a hand label's date and the verdict's date: ${mo(G).toFixed(1)} months (Gemini-only, n = ${dt(G).n}), ${mo(C).toFixed(1)} months (Claude's verdicts, n = ${dt(C).n}).`};
+  [x1, x2, x3, x4, x5].forEach(x => (x.ok ? holds : depends).push(x.ok ? x.html : x.html.replace("<b>", "<b>Differs by judge: ")));
+  // depends on the judge
+  const m5 = (k, t) => cellOf(SUM(k), t, 5).realised, last = (k) => lastOf(MOD(k).projection), pr = (k, line) => MOD(k).projection[line].share[last(k)];
+  depends.push(`<b>The level of "realised".</b>DMK 2021–26 by month 5: ${pct(m5(G, "DMK-2021"), 1)} (Gemini-only) against ${pct(m5(C, "DMK-2021"), 1)} (Claude-only); by the end of its term ${pct(fin(G, "DMK-2021"))} against ${pct(fin(C, "DMK-2021"))}.`);
+  depends.push(`<b>TVK's level.</b>Documented as realised after 5 months: ${pct(m5(G, "TVK-2026"), 1)} (Gemini-only) against ${pct(m5(C, "TVK-2026"), 1)} (Claude-only). No TVK promise is in the hand-labelled sample, so neither figure can be checked.`);
+  depends.push(`<b>The projection range.</b>TVK by ${monthLabel(MOD(G).projection.months[last(G)])}, at historical pace: ${pct(pr(G, "no_update"))} (Gemini-only), ${pct(pr(C, "no_update"))} (Claude-only); if its current pace persists, an extrapolation: ${pct(pr(G, "matched_update"))}, ${pct(pr(C, "matched_update"))}.`);
+  const col = (h, arr, cls) => `<div class="panel panel-tint ${cls}"><h3>${h}</h3><ul>${arr.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
+  $("#rf").innerHTML = col("Holds under both judges", holds, "holds") + col("Depends on the judge", depends, "dep");
+  $("#rfNote").innerHTML = exclN(C) ? `Claude-only excludes ${exclN(C)} promises (${Object.entries(MOD(C).excluded_promises).map(([t, v]) => v.length + " " + TERMS[t]).join(", ")}) that never passed the judge checks.` : "";
+}
+
+/* 6 accuracy, with coloured meters (bar = share, pale range = 95% interval) */
+function renderAccuracy() {
+  const E = D.ev, wilson = (c) => c && c.p != null ? `<span class="v" data-to="${100 * c.p}">${vis.acc ? pct(c.p) : "0%"}</span> <span class="muted small">(${pct(c.lo)}–${pct(c.hi)})</span>` : "–";
+  const CAP = {final_bulk: "Gemini-only verdicts", strong: "Claude's own verdicts", final_claude: "Claude-only verdicts"};
+  const meter = (c, col) => `<div class="meter" style="--mc:${col}"><i class="iv" style="left:${100 * c.lo}%;width:${100 * (c.hi - c.lo)}%"></i><i class="fill" data-w="${100 * c.p}%" style="width:${vis.acc ? 100 * c.p : 0}%"></i></div>`;
+  const card = (k) => { const g = evOf(k), e = g.e1, d = g.date, nOf = (c) => c ? `${c.k} of ${c.n}` : "";
+    const row = (title, c, col, note) => `<div class="row"><div class="rh"><span>${title}</span><b>${wilson(c)}</b></div>${meter(c, col)}<small>${note}</small></div>`;
+    return `<div class="panel panel-light acc-card"><h3><span class="sw" style="background:var(--s-${k === "gemini" ? "g" : "c"})"></span>${SN[k]}</h3><p class="muted small" style="margin:0 0 6px">${CAP[evKey(k)]}, compared with the hand labels at the end of the term</p>
+    ${row("Agreement on <em>realised or not</em>", e.accuracy, "#7c4dff", nOf(e.accuracy) + " promises")}
+    ${row("Precision", e.precision, "#17c3d6", `When the judge says realised, the hand label agrees (${nOf(e.precision)}).`)}
+    ${row("Recall", e.recall, "#f59e0b", `Of the promises the hand label says were realised, the share the judge also found (${nOf(e.recall)}).`)}
+    ${row("Specificity", e.specificity, "#f0539a", `Of the promises the hand label says were not realised, the share the judge agrees on (${nOf(e.specificity)}).`)}
+    <div class="row"><div class="rh"><span>Date gap</span><b>${(d.median_abs_days / 30.4).toFixed(1)} months</b></div><small>Median, over ${d.n} promises both say were realised; ${pct(d.within_90_days.p)} are within 90 days.</small></div></div>`; };
+  $("#accCards").innerHTML = SETS.map(card).join("");
+  $("#accCards").classList.toggle("on", vis.acc); $$("#accCards .v").forEach(v => { v._to = +v.dataset.to; v._v = vis.acc ? v._to : 0; });
+  const pt = E.per_term_n || {}, parts = Object.entries(pt).map(([t, n]) => `${n} ${TERMS[t]}`).join(" and ");
+  $("#accSub").innerHTML = `A sample of <strong>n = ${E.n_labels}</strong> promises (${parts}) was labelled by hand without seeing any verdict. ${pt["TVK-2026"] ? "" : "<strong>No TVK promise is in the sample</strong>, so TVK verdicts have no accuracy figure of their own. "}Intervals are 95% Wilson intervals; with a sample this small they are wide. Aggregate numbers only.`;
+  $("#limits").innerHTML = `<li><strong>They depend on the judge.</strong> Switch the judge in section 1 and the realised shares move; neither setting is the truth.</li>
+    <li><strong>The hand-labelled check is small:</strong> ${E.n_labels} promises, from the two completed terms.</li>
+    <li><strong>The projection is conditional.</strong> It is built from two completed terms treated as independent draws and shows what historical patterns would imply, with the assumptions stated; it is not a forecast.</li>
+    <li><strong>"No evidence found" is not "nothing happened".</strong> It means the document corpus held nothing showing an official step.</li>`;
+}
+
+const accEnter = () => { vis.acc = true; const c = $("#accCards"); c.classList.remove("noanim"); c.classList.add("on"); $$("#accCards .fill").forEach(f => { f.style.width = f.dataset.w; }); $$("#accCards .v").forEach(v => tween(v, v._to, 0)); };
+const accLeave = () => { vis.acc = false; const c = $("#accCards"); c.classList.add("noanim"); c.classList.remove("on"); $$("#accCards .fill").forEach(f => { f.style.width = "0%"; }); $$("#accCards .v").forEach(v => { v._v = 0; v.textContent = "0%"; }); void c.offsetWidth; c.classList.remove("noanim"); };
+const fpEnter = () => { vis.fp = true; const f = $(".fp"); f.classList.remove("noanim"); f.classList.add("on"); };
+const fpLeave = () => { vis.fp = false; const f = $(".fp"); f.classList.add("noanim"); f.classList.remove("on"); void f.offsetWidth; f.classList.remove("noanim"); };
+function renderAll() { renderRobust(); renderView(); renderForest(); renderForestText(); renderPace(); renderProjection(); renderAccuracy(); }
+Promise.all([load("summary_gemini.json"), load("summary_claude.json"), load("model_gemini.json"), load("model_claude.json"), load("pace.json"), load("evaluation.json"), load("work.json").catch(() => null)]).then(([sg, sc, mg, mc, pace, ev, work]) => {
+  D = {sum: {gemini: sg, claude: sc}, model: {gemini: mg, claude: mc}, pace, ev};
+  $("#foot").innerHTML = footer();
+  const nDocs = work ? work.documents - (work.documents_by_type.manifesto || 0) : null;
+  const nProm = work ? work.promises_total : sg.cells.filter(x => x.month === 0 || (x.term === "TVK-2026" && x.month === 5)).reduce((a, x) => a + x.n, 0);
+  bind({facts: {terms: Object.keys(sg.terms).length, promises: nProm, documents: nDocs}});
+  $$("#viewbar button").forEach(b => b.onclick = () => { view = b.dataset.v; renderView(); });
+  $("#showDoc").onchange = (e) => { showDoc = e.target.checked; renderView(); };
+  let fw = 0; if (window.ResizeObserver) new ResizeObserver(() => { const w = $("#forest").clientWidth; if (w && w !== fw) { fw = w; renderForest(); } }).observe($("#forest"));
+  buildBars(); renderAll();
+  /* every animated part starts at its origin and plays when the section is reached; it resets on leaving, so it replays */
+  onView($("#tbars"), barsEnter, barsLeave);
+  onView($("#kmPanel"), () => { vis.km = true; drawKM(); }, () => { vis.km = false; clearKM(); });
+  onView($(".fp"), fpEnter, fpLeave);
+  onView($("#pace"), paceEnter, paceLeave);
+  onView($("#projPanels"), projEnter, projLeave);
+  onView($("#accCards"), accEnter, accLeave);
+  document.addEventListener("themechange", renderAll);
+}).catch(e => showLoadError(e));
+</script></body></html>

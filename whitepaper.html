@@ -1,0 +1,168 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Whitepaper · Tamil Nadu Election Promise Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script>(function(){var t=null;try{t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){t="light"}}document.documentElement.dataset.theme=t})()</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b3fa0'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css"></head>
+<body data-page="whitepaper"><div id="nav"></div>
+<main id="main" class="bands">
+<section class="hero hero-ex" aria-labelledby="h-wp"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in"><div class="hero-text">
+<h1 id="h-wp">Whitepaper: method, accuracy and limits</h1>
+<p class="lede">Course project, Data Science &amp; AI, 2026. <a href="work.html">See everything that was built and checked, stage by stage</a>. This page states what was done, how it was checked and what it cannot tell you. Numbers on this page are read from the published data files.</p>
+</div></div></section>
+<div class="wrap"><article class="prose">
+
+<div class="abstract" id="abstract"><h2>In short</h2><ul id="abstractList"></ul></div>
+
+<nav class="toc" aria-label="Sections"><strong>Sections</strong><ol>
+<li><a href="#s1">1. Question and scope</a></li><li><a href="#s2">2. Data</a></li><li><a href="#s3">3. Pipeline</a></li><li><a href="#s4">4. Keeping the answers leak-free</a></li>
+<li><a href="#s5">5. Who judged what</a></li><li><a href="#accuracy">6. How accurate are the verdicts?</a></li><li><a href="#s7">7. Survival analysis</a></li><li><a href="#s8">8. Reverse backtest</a></li>
+<li><a href="#s9">9. The TVK projection</a></li><li><a href="#judge-dependence">10. How much depends on the judge</a></li><li><a href="#limitations">11. Limitations</a></li><li><a href="#s12">12. Community corrections</a></li><li><a href="#s13">13. Reproducibility and licences</a></li></ol></nav>
+
+<h2 id="s1">1. Question and scope</h2>
+<p>Do Tamil Nadu governments realise their manifesto promises, how fast, and what can the past say about the current government? Three terms are studied: DMK 2021–26 (<span data-b="n.DMK-2021"></span> promises), AIADMK 2016–21 (<span data-b="n.AIADMK-2016"></span>) and TVK 2026– (<span data-b="n.TVK-2026"></span>, in progress). Only the party that formed the government is analysed. The project does not judge whether a policy was good, and it does not rank parties.</p>
+
+<h2 id="s2">2. Data</h2>
+<p><strong>Promises.</strong> Promises come from the manifestos (DMK in English; AIADMK and TVK in Tamil, translated to English with the original text kept beside each promise).</p>
+<p><strong>Evidence.</strong> Evidence is a corpus of <span data-b="work.docs" data-f="int">9,254</span> English official documents (about <span data-b="work.chunks_round" data-f="int">60,000</span> passages): departmental policy notes, budget speeches, Governor's addresses, Government Orders, audit reports and official scheme pages. Documents are dated, and a document counts as available only from the date it could have been public. About <span data-b="work.undated_documents" data-f="int">220</span> documents have no usable date and are excluded. Newspapers and party trackers are not evidence.</p>
+
+<h2 id="s3">3. Pipeline</h2>
+<ol><li><strong>Promise extraction.</strong> Each manifesto is cut into items and each item into atomic, independently checkable promises (<span data-b="work.promises_total" data-f="int">1,674</span> in total). The lists were frozen before any evidence was read.</li>
+<li><strong>Classification.</strong> Each promise gets features read only from the manifesto text: sector, type, cost band, vague or specific, whether it depends on the Union government, whether it continues an existing scheme. A vague promise is split into two to four checkable indicators.</li>
+<li><strong>Retrieval.</strong> For each indicator and each landmark date, the five most relevant passages are found (keyword and meaning-based search combined), only among documents available by that date.</li>
+<li><strong>Judging.</strong> A language model reads only those five passages and returns a status, a date, the passages it relies on and a word-for-word quote from each. Code rejects any verdict whose quote is not in the passage, whose date is not written in a cited passage, or that claims delivery without a citation.</li></ol>
+<h3>Status and date</h3>
+<p>Statuses: fulfilled, partial, diluted, in progress, not started, blocked by an outside authority, unverifiable. A promise is <em>realised</em> (the event analysed) when it is fulfilled, partial or diluted with a date. The date is the first official step that put it into operation: a Government Order, a scheme launch or an enacted law. Budget announcements and statements of intent do not count. "Not started" means documents on the topic exist and show no official step; "unverifiable" means nothing in the corpus was about it.</p>
+
+<h2 id="s4">4. Keeping the answers leak-free</h2>
+<p>Language models already know a lot about Tamil Nadu. The controls:</p>
+<ol><li>the judge sees only the supplied passages and must quote them;</li>
+<li>at each landmark month only documents available by that date are shown, and a verdict at an earlier date is never revised from later evidence except by carrying an earlier finding forward;</li>
+<li>promise features use only manifesto text;</li>
+<li>the hand-labelled test set is never shown to any model;</li>
+<li>every model fit uses the training term only.</li></ol>
+<p>A test with no evidence at all (the "memory probe") found <span data-b="checks.memory_probe.claimed">0</span> of <span data-b="checks.memory_probe.n">40</span> answers that claimed a status without evidence.</p>
+
+<h2 id="s5">5. Who judged what</h2>
+<p>Two judges were used, and their verdicts are never mixed: each published setting uses one judge for every promise it covers, so within a setting all terms are treated identically. <strong>Claude-only:</strong> Claude (the "strong" judge, in fresh isolated sessions that read only the instructions and the passages) judged every promise at the end of the term for both completed terms, and month 5 for DMK 2021–26 and TVK 2026–. Eight promises never passed the judge checks in any attempt and are excluded from this setting. AIADMK's early months were not judged in full by Claude, so they are not part of it. <strong>Gemini-only:</strong> a lighter, free model (Gemini 3.5 Flash-Lite, the "bulk" judge) judged every task at every landmark for all three terms. Three hand corrections from the spot-check are recorded in the project repository but applied to neither setting, so that each is a pure single-judge result.</p>
+<div id="judgeTable" class="scroll"></div>
+
+<h2 id="accuracy">6. How accurate are the verdicts?</h2>
+<p>A random, stratified sample of promises was labelled by hand from the manifesto text, the corpus and the web, without seeing any verdict. The judges' verdicts at the end of the term (TVK: month 5) are compared with these labels. Reported: how often the judge agrees on <em>realised or not</em> (the event the survival models use), and on the exact status. Intervals are 95% Wilson intervals; with a sample this small they are wide.</p>
+<div id="acc" class="scroll"><p class="note">Accuracy figures appear here when the hand-labelled evaluation is published.</p></div>
+<h3>Hand spot-checks of the worst cases</h3>
+<p>Before this, the worst cases from each stage were reviewed by hand: retrieval (<span data-b="spot.stage04.wrong">3</span> of <span data-b="spot.stage04.n">9</span> wrong, all search-query misses), judging (<span data-b="spot.stage05.wrong">4</span> of <span data-b="spot.stage05.n">9</span> wrong: a date a few days outside the availability cap, an unresolved case, a general committee taken as evidence, and a cumulative amount that cannot be checked from five passages).</p>
+
+<h2 id="s7">7. Survival analysis</h2>
+<p>For each term, time to realisation is measured in days from the swearing-in. A Kaplan–Meier curve shows the share realised by each month. A Cox model estimates which promise characteristics go with faster delivery (hazard ratio above 1 = faster). Promises with no realisation date are treated as not yet realised at the end of the observation period. Coarse dates (year or month only) are placed at the middle of their period.</p>
+<div id="hr" class="scroll"></div>
+
+<h2 id="s8">8. Reverse backtest</h2>
+<p>The model is fitted on DMK 2021–26 only and asked to predict AIADMK 2016–21 from what was documented at its landmark months. Under the assumption that terms are independent draws, this is a fair test across terms, but it is not a forecast forward in time. The error is the average gap, in percentage points, between predicted and actual share realised.</p>
+<div id="bt" class="scroll"></div>
+
+<h2 id="s9">9. The TVK projection</h2>
+<div id="paceWp"></div>
+<p>The projection starts from what is documented for TVK after five months and adds the number of further promises the historical hazards would realise, using a model fitted on both completed terms with equal weight. Three lines are shown because the result depends on one assumption, how to read TVK's slow documented start:</p>
+<ul id="scen"></ul>
+<p id="scenNote"></p>
+<p>The bands show fitting uncertainty only. Nothing here predicts what TVK will do: it states what historical patterns would imply.</p>
+
+<h2 id="judge-dependence">10. How much depends on the judge</h2>
+<p>The same evidence was judged two ways: by Claude alone and by the lighter Gemini model alone. Neither is the truth. On the hand-labelled sample Gemini over-claims realisation (it calls some not-realised promises realised), while Claude almost never over-claims but misses many realised promises. The results of the two settings:</p>
+<div id="regimeCmp" class="scroll"></div>
+<p>Three things follow.</p>
+<ol id="regimeText2"></ol>
+
+<h2 id="limitations">11. Limitations</h2>
+<ol id="lims"></ol>
+
+<h2 id="s12">12. Community corrections, now and later</h2>
+<p><strong>Now.</strong> Every promise in the explorer has a <em>Suggest a correction</em> link that opens a pre-filled GitHub issue (promise ID, the verdict shown, a form for the suggested status, date and evidence). Issues are reviewed by hand. They are stored separately from the verdicts, never change a verdict automatically, and are never used by the judging or survival models.</p>
+<p><strong>General comments.</strong> The promise explorer also has a comments section. A visitor's comment is first checked in the browser against a short list of abusive words, then submitted as a public GitHub issue. Nothing is shown on the site until a person has read and approved it, and approved comments appear labelled "visitor comments, unverified". Comments are stored separately from the verdicts and never change a verdict or feed any prompt, threshold, fit or gold set. The word list is only a first pass and cannot catch everything, which is why approval by hand is the actual filter.</p>
+<p><strong>Possible extension (designed, not built).</strong> A public judgement feature would store each submission as a separate record (promise ID, suggested status and date, evidence link, timestamp, a hashed anonymous contributor key) in its own table, never in the verdict tables. The rules would be:</p>
+<ol><li>community records are never inputs to a prompt, a threshold, a fit or the gold set;</li>
+<li>they are shown beside, not instead of, the evidence-based verdict, labelled "visitor suggestions, unverified";</li>
+<li>anti-abuse limits per contributor and per promise, and moderation before anything is displayed;</li>
+<li>only evidence-bearing suggestions can trigger a re-check of a promise, and a re-check uses the same evidence-only judging as everything else;</li>
+<li>counts are never presented as a measurement, since self-selected visitors are not a sample.</li></ol>
+<p>Open voting on a political topic invites coordinated campaigns, which is why this was left as a design rather than a feature.</p>
+
+<h2 id="s13">13. Reproducibility and licences</h2>
+<p>Every stage is a command in <code>python -m ept</code>, every prompt is a versioned file and every strong-judge batch is committed. Code: GPL v3. Data exports and this text: CC BY 4.0. Quoted excerpts of government documents are linked to their official sources and remain their publishers' property.</p>
+</article></div></main>
+<div id="foot"></div>
+<script src="assets/site.js"></script>
+<script>
+$("#nav").innerHTML = nav("whitepaper");
+Promise.all([load("summary_claude.json"), load("summary_gemini.json"), load("model_claude.json"), load("model_gemini.json"), load("evaluation.json").catch(() => null), load("work.json").catch(() => null), load("pace.json").catch(() => null)]).then(([sumC, sumG, mC, mG, ev, work, pace]) => {
+  $("#foot").innerHTML = footer();
+  const cell = (S, t, m) => S.cells.find(c => c.term === t && c.month === m);
+  const done = (S, t, m) => { const c = cell(S, t, m); return c && c.complete ? c : null; };
+  const real = (S, t, m, d) => { const c = done(S, t, m); return c ? pct(c.realised, d || 0) : "not judged in full"; };
+  const n = {}; sumG.cells.filter(c => c.month === 0 || c.term === "TVK-2026").forEach(c => n[c.term] = c.of);
+  const W = work ? Object.assign({}, work, {docs: work.documents - (work.documents_by_type.manifesto || 0), chunks_round: Math.round(work.chunks / 1000) * 1000}) : {};
+  bind(Object.assign({}, W, {n, work: W, ev, spot: W.spot, checks: W.checks}));
+  const excl = Object.entries(mC.excluded_promises || {}).map(([t, v]) => `${v.length} ${TERMS[t]}`).join(" and ");
+  // verdicts per setting
+  const jr = (S, name) => S.cells.filter(c => [5, 12, 24, 0].includes(c.month) && c.complete).map(c => `<tr><td>${name}</td><td>${TERMS[c.term]}</td><td>${monthLabel(c.month)}</td><td>${int(c.n)} of ${int(c.of)}</td></tr>`).join("");
+  $("#judgeTable").innerHTML = `<table><caption class="vh">Promises judged in full, by setting, term and month</caption><thead><tr><th scope="col">Setting</th><th scope="col">Term</th><th scope="col">Month</th><th scope="col">Promises judged</th></tr></thead><tbody>${jr(sumC, "Claude-only")}${jr(sumG, "Gemini-only")}</tbody></table><p class="small muted">Only cells where the judge covered (nearly) every promise are listed. ${excl ? "Claude-only excludes " + excl + " promises that never passed the checks." : ""}</p>`;
+  // accuracy
+  const ab = [], NAME = {final_claude: "Claude-only", final_bulk: "Gemini-only"};
+  const f = (c) => c && c.p != null ? `${pct(c.p)} <span class="muted small">(${pct(c.lo)}–${pct(c.hi)})</span>` : "–";
+  if (ev && ev.judges) {
+    const rows = [];
+    for (const [j, jj] of Object.entries(ev.judges)) for (const [g, e] of Object.entries(jj.groups)) { const t = e.e1;
+      rows.push(`<tr><td>${NAME[j] || j}</td><td>${g.replace(/_/g, " ")}</td><td>${t.n}</td><td>${f(t.accuracy)}</td><td>${f(t.recall)}</td><td>${f(t.precision)}</td><td>${f(t.specificity)}</td><td>${f(e.status.exact)}</td></tr>`); }
+    $("#acc").innerHTML = `<table><caption class="vh">Agreement of each setting with the hand labels</caption><thead><tr><th scope="col">Setting</th><th scope="col">Group</th><th scope="col">n</th><th scope="col">Realised-or-not agreement</th><th scope="col">Recall</th><th scope="col">Precision</th><th scope="col">Specificity</th><th scope="col">Exact status</th></tr></thead><tbody>${rows.join("")}</tbody></table><p class="small muted">Recall: of promises the human says were realised, the share the judge also says were. Precision: of those the judge says were realised, the share the human agrees with. Specificity: of promises the human says were not realised, the share the judge agrees on.</p>`;
+    const dC = ev.judges.final_claude && ev.judges.final_claude.groups.pooled_AIADMK_DMK.date, dG = ev.judges.final_bulk && ev.judges.final_bulk.groups.pooled_AIADMK_DMK.date;
+    if (dC && dC.n && dG && dG.n) $("#acc").insertAdjacentHTML("beforeend", `<p class="small"><strong>Dates are the weak point.</strong> Where both the label and the verdict say a promise was realised, the median gap between the two dates is ${Math.round(dC.median_abs_days)} days under Claude-only (n=${dC.n}) and ${Math.round(dG.median_abs_days)} days under Gemini-only (n=${dG.n}), about ${(dC.median_abs_days / 30.4).toFixed(0)} to ${(dG.median_abs_days / 30.4).toFixed(0)} months; ${pct(dC["within_90_days"].p)} and ${pct(dG["within_90_days"].p)} are within 90 days. Of ${ev.n_labels} labelled promises, none are TVK promises, so TVK verdicts have no accuracy figure of their own.</p>`);
+    if (ev.bulk_vs_strong) $("#acc").insertAdjacentHTML("beforeend", `<p class="small">Gemini and Claude agree on the realised-or-not question for ${pct(ev.bulk_vs_strong.same_e1.p)} of ${ev.bulk_vs_strong.n} promises both judged at the comparison date (neither is the truth).</p>`);
+    const gA = (k) => ev.judges[k] && ev.judges[k].groups.pooled_AIADMK_DMK.e1;
+    if (gA("final_claude") && gA("final_bulk")) ab.push(`<strong>Accuracy.</strong> On a hand-labelled sample of ${ev.n_labels} promises (AIADMK and DMK only), the verdicts agree with the labels on <em>realised or not</em> for ${pct(gA("final_claude").accuracy.p)} of promises under Claude-only judging (95% interval ${pct(gA("final_claude").accuracy.lo)}–${pct(gA("final_claude").accuracy.hi)}) and ${pct(gA("final_bulk").accuracy.p)} under Gemini-only judging (${pct(gA("final_bulk").accuracy.lo)}–${pct(gA("final_bulk").accuracy.hi)}). Claude is almost never wrong when it says a promise was realised (precision ${pct(gA("final_claude").precision.p)}) but finds only ${pct(gA("final_claude").recall.p)} of the realised ones; Gemini finds more (${pct(gA("final_bulk").recall.p)}) but over-claims. No TVK promise is in the sample (section 6).`);
+    if (dC && dC.n) ab.push(`<strong>Dates are the weak point.</strong> The median gap between a label's date and the verdict's date is about ${(dC.median_abs_days / 30.4).toFixed(0)} to ${(dG.median_abs_days / 30.4).toFixed(0)} months (section 6).`);
+  }
+  // hazard ratios, both settings side by side
+  const hC = mC.cox.both_terms_strata.hazard_ratios, hG = mG.cox.both_terms_strata.hazard_ratios, hg = (n) => hG.find(r => r.covariate === n);
+  const cell2 = (r) => r ? `${r.hr.toFixed(2)} <span class="muted small">(${r.lo.toFixed(2)}–${r.hi.toFixed(2)})</span>` : "–";
+  $("#hr").innerHTML = `<table><caption class="vh">Cox model hazard ratios, both completed terms, by setting</caption><thead><tr><th scope="col">Characteristic (vs reference)</th><th scope="col">Claude-only</th><th scope="col">Gemini-only</th></tr></thead><tbody>${hC.map(r => `<tr><td>${esc(r.covariate.replace(/_/g, " "))}</td><td>${cell2(r)}</td><td>${cell2(hg(r.covariate))}</td></tr>`).join("")}</tbody></table><p class="small muted">Hazard ratio with its 95% interval; above 1 means realised faster. Both completed terms, each with its own baseline. References: administrative promises, no cost, specific promises. Concordance of the DMK-fitted model on AIADMK: ${mC.backtest.concordance.toFixed(2)} (Claude-only) and ${mG.backtest.concordance.toFixed(2)} (Gemini-only); 0.5 is chance, so promise characteristics explain little of the timing.</p>`;
+  const lm = mG.backtest.landmarks, avail = Object.entries(lm).filter(([, e]) => !e.unavailable);
+  $("#bt").innerHTML = `<table><caption class="vh">Backtest error by landmark month, Gemini-only</caption><thead><tr><th scope="col">Predicting from</th><th scope="col">Model</th><th scope="col">No promise characteristics</th></tr></thead><tbody>${avail.map(([m, e]) => `<tr><td>month ${m}</td><td>${e.mae_model.toFixed(1)} pts</td><td>${e.mae_baseline.toFixed(1)} pts</td></tr>`).join("")}</tbody></table><p class="small muted">Shown for the Gemini-only setting, where one judge judged both terms at every landmark. The backtest cannot be run under Claude-only judging, because Claude judged too few AIADMK promises at the landmark months. The model under-predicts AIADMK throughout (for example, from month 5 it predicts ${pct(lm["5"].pred_model[lm["5"].t_months.indexOf(48)])} realised by month 48; the actual figure is ${pct(lm["5"].observed[lm["5"].t_months.indexOf(48)])}).</p>`;
+  const last = (m, k) => m.projection[k] ? pct(m.projection[k].share.slice(-1)[0]) : "–";
+  $("#scen").innerHTML = SCENARIOS.filter(s => mC.projection[s.key] || mG.projection[s.key]).map(s => `<li><strong>${s.name}</strong> (month 60: ${last(mC, s.key)} Claude-only, ${last(mG, s.key)} Gemini-only). <em>Assumes:</em> ${s.says} <em>Weakness:</em> ${s.weak}</li>`).join("");
+  const shown = [mC, mG].flatMap(m => ["no_update", "matched_update"].map(k => m.projection[k] && m.projection[k].share.slice(-1)[0]).filter(x => x != null));
+  const cz = (m) => m.backtest.concordance.toFixed(2);
+  const pc = pace && pace.claude, pg = pace && pace.gemini;
+  if (pc && pg) {
+    const tn = (p) => p.matched_terms.map(t => TERMS[t]).join(" and "), kk = (p) => `k = ${p.k.toFixed(2)} (${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})`;
+    $("#paceWp").innerHTML = `<p><strong>Like-for-like pace.</strong> The question of whether TVK is keeping pace is answered before any projection. TVK's documented count after ${pg.month} months (O) is compared with the count the completed term(s) judged by the same judge had documented by month ${pg.month} (E). The pace factor is k = (O + c) / (E + c), with c = ${pg.prior_events} prior events; its 80% interval is the 10th to 90th percentile of the posterior Gamma(c + O, c + E), and 1.0 means the same pace as the earlier government(s). Claude-only judging: O = ${int(pc.observed)} of ${int(pc.n)}, matched to ${tn(pc)}, ${kk(pc)}. Gemini-only judging: O = ${int(pg.observed)} of ${int(pg.n)}, matched to ${tn(pg)}, ${kk(pg)}.</p>`;
+    ab.push(`<strong>TVK's pace after five months</strong> is ${pct(Math.min(pc.k, pg.k))}–${pct(Math.max(pc.k, pg.k))} of what the earlier government(s) had documented by the same month, depending on the judge (${kk(pc)} Claude-only; ${kk(pg)} Gemini-only; section 9).`);
+  }
+  $("#scenNote").innerHTML = `Scenario B, which applies the pace factor to future hazards, is an extrapolation from five months. The overview shows only the "no update" line, labelled historical pace, and this line. Scenario A is kept here with its explanation: its expectation uses hindsight event dates while TVK's count is only what is documented now, so part of its apparent slowdown is documentation lag (its pace factor is ${mC.projection.pace_update.k.toFixed(2)} under Claude-only and ${mG.projection.pace_update.k.toFixed(2)} under Gemini-only).`;
+  // two settings compared
+  const rowc = (name, fC, fG) => `<tr><th scope="row" style="color:var(--fg);font-weight:500">${name}</th><td>${fC()}</td><td>${fG()}</td></tr>`;
+  const acc = (k) => { const g = ev && ev.judges[k] && ev.judges[k].groups.pooled_AIADMK_DMK.e1; return g ? `${pct(g.accuracy.p)} (${pct(g.recall.p)} recall, ${pct(g.specificity.p)} specificity)` : "–"; };
+  const m5s = (S) => ["AIADMK-2016", "DMK-2021", "TVK-2026"].map(t => real(S, t, 5)).join(" / "), ends = (S) => ["AIADMK-2016", "DMK-2021"].map(t => real(S, t, 0)).join(" / ");
+  const kc = (p) => p && p.k != null ? `${p.k.toFixed(2)} (${p.k_lo.toFixed(2)}–${p.k_hi.toFixed(2)})` : "–";
+  const btx = (m) => { const l = m.backtest.landmarks["5"]; return l && !l.unavailable ? `${l.mae_model.toFixed(1)}` : "not available"; };
+  $("#regimeCmp").innerHTML = `<table><caption class="vh">Results under the two judging settings</caption><thead><tr><th scope="col"></th><th scope="col">Claude-only</th><th scope="col">Gemini-only</th></tr></thead><tbody>
+    ${rowc("Realised by month 5: AIADMK / DMK / TVK", () => m5s(sumC), () => m5s(sumG))}
+    ${rowc("Realised by end of term: AIADMK / DMK", () => ends(sumC), () => ends(sumG))}
+    ${rowc(`Agreement with ${ev ? ev.n_labels : "the"} hand labels (realised or not)`, () => acc("final_claude"), () => acc("final_bulk"))}
+    ${rowc("Concordance of the DMK-fitted model on AIADMK", () => cz(mC), () => cz(mG))}
+    ${rowc("Backtest error from month 5 (pts)", () => btx(mC), () => btx(mG))}
+    ${rowc("TVK pace factor after 5 months (80% interval)", () => kc(pc), () => kc(pg))}
+    ${rowc("TVK projection at month 60: historical pace / current pace persists", () => `${last(mC, "no_update")} / ${last(mC, "matched_update")}`, () => `${last(mG, "no_update")} / ${last(mG, "matched_update")}`)}
+    </tbody></table>`;
+  const dirOk = ["specificity=vague", "promise_type=advocacy"].every(c => hC.find(r => r.covariate === c).hr > 1 && hg(c).hr > 1) && hC.find(r => r.covariate === "union_dependent").hr < 1 && hg("union_dependent").hr < 1;
+  $("#regimeText2").innerHTML = `<li><strong>The level of "realised" depends on the judge:</strong> TVK at month 5 is ${real(sumC, "TVK-2026", 5, 1)} under Claude-only and ${real(sumG, "TVK-2026", 5, 1)} under Gemini-only, and DMK at the end of its term ${real(sumC, "DMK-2021", 0)} against ${real(sumG, "DMK-2021", 0)}. No TVK promise is in the hand-labelled sample, so this project cannot say which is closer.</li>
+    <li><strong>${dirOk ? "The direction of the promise-characteristic effects does not depend on the judge" : "The promise-characteristic effects are not the same under both judges"}:</strong> ${dirOk ? "vague and advocacy promises are realised faster and Union-dependent ones more slowly under both settings." : "see the hazard-ratio table in section 7."}</li>
+    <li><strong>Promise characteristics explain little either way:</strong> the model beats a baseline that ignores them only modestly, and the concordance is ${cz(mC)} under Claude-only and ${cz(mG)} under Gemini-only judging.</li>`;
+  ab.push(`<strong>The answers depend on the judge.</strong> TVK at month 5 is ${real(sumC, "TVK-2026", 5, 1)} realised under Claude-only judging and ${real(sumG, "TVK-2026", 5, 1)} under Gemini-only judging, from the same evidence; neither is the truth (section 10).`);
+  ab.push(`<strong>Promise characteristics explain little of the timing.</strong> The concordance of the DMK-fitted model on AIADMK is ${cz(mC)} (Claude-only) and ${cz(mG)} (Gemini-only), where 0.5 is chance (section 7).`);
+  ab.push(`<strong>The TVK projection is conditional.</strong> Under historical patterns and stated assumptions, ${pct(Math.min(...shown))}–${pct(Math.max(...shown))} of TVK's promises would be realised by month 60, depending on the judge and the line. It states what historical patterns would imply; it does not predict what TVK will do (section 9).`);
+  ab.unshift(`<strong>What was done.</strong> The promises of three Tamil Nadu terms (${work ? int(work.promises_total) : ""} in all) were checked against ${work ? int(W.docs) : ""} official documents; a promise is <em>realised</em> when an official step puts it into operation (sections 1–3).`);
+  $("#abstractList").innerHTML = ab.map(t => `<li>${t}</li>`).join("");
+  const lims = [...mC.limitations, ...((ev && ev.limitations) || [])];
+  $("#lims").innerHTML = lims.map(t => `<li>${esc(t).replace(/`/g, "")}</li>`).join("");
+}).catch(e => showLoadError(e));
+</script></body></html>
