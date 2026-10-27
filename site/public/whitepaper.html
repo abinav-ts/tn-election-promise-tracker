@@ -5,11 +5,10 @@
 <link rel="stylesheet" href="assets/site.css"></head>
 <body data-page="whitepaper"><div id="nav"></div>
 <main id="main" class="bands">
-<section class="hero hero-ex has-map" aria-labelledby="h-wp"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in"><div class="hero-text">
+<section class="hero hero-ex" aria-labelledby="h-wp"><div class="hero-bg" aria-hidden="true"></div><div class="hero-in"><div class="hero-text">
 <h1 id="h-wp">Whitepaper: method, accuracy and limits</h1>
 <p class="lede">Course project, Data Science &amp; AI, 2026. <a href="work.html">See everything that was built and checked, stage by stage</a>. This page states what was done, how it was checked and what it cannot tell you. Numbers on this page are read from the published data files.</p>
 </div></div></section>
-<div class="mapfix" id="mapfix" aria-hidden="true"></div>
 <div class="wrap"><article class="prose">
 
 <div class="abstract" id="abstract"><h2>In short</h2><ul id="abstractList"></ul></div>
@@ -95,7 +94,7 @@
 <div id="foot"></div>
 <script src="assets/site.js"></script>
 <script>
-$("#nav").innerHTML = nav("whitepaper"); tnMap($("#mapfix"));
+$("#nav").innerHTML = nav("whitepaper");
 Promise.all([load("summary.json"), load("model.json"), load("evaluation.json").catch(() => null), load("summary_bulk.json").catch(() => null), load("model_bulk.json").catch(() => null), load("work.json").catch(() => null), load("pace.json").catch(() => null), load("model_claude.json").catch(() => null)]).then(([sum, model, ev, sumB, modelB, work, pace, mclaude]) => {
   $("#foot").innerHTML = footer(sum);
   const n = {}; sum.cells.filter(c => c.month === 0 || (c.term === "TVK-2026")).forEach(c => n[c.term] = c.n);

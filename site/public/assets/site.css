@@ -344,17 +344,6 @@ footer.site a{color:#cdbcff}
 /* work page numbers: 12 cards fill a perfect grid at every width (4x3, 3x4, 2x6) */
 .kv{grid-template-columns:repeat(4,minmax(0,1fr))}@media (max-width:900px){.kv{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:520px){.kv{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* whitepaper: the state outline stays put on the right while the page scrolls; tables are opaque cards, so the outline disappears behind them only where they are */
-.mapfix{display:none}
-@media (min-width:1080px){
-  .mapfix{display:block;position:fixed;z-index:0;top:112px;right:max(16px,calc(50vw - 520px));width:clamp(240px,24vw,330px);pointer-events:none;opacity:.5}
-  .mapfix svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 0 22px var(--blob1))}
-  .mapfix path{fill:none;stroke:url(#mapGrad);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
-  .hero-ex.has-map .hero-text{max-width:min(100%,660px)}
-  .hero-in,.prose>*,footer.site{position:relative;z-index:1}
-  .prose>.scroll{background:var(--bg);padding:6px 0}
-  footer.site{z-index:2}
-}
 
 .stackwrap{display:flex;flex-direction:column;gap:var(--gap);padding-block:clamp(28px,5vw,44px) 64px}
 

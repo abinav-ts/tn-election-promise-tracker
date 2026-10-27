@@ -97,3 +97,5 @@ No whitepaper text changed in this round. The overview changed as follows (wordi
 - **Removed from the work page:** the "9 specifications" card (the other 12 numbers are unchanged), so the grid is a complete rectangle at every width.
 - **Overview:** the multicolour frames and the "Headline result" badges are gone; the two headline sections keep the larger heading size.
 - **Whitepaper outline:** a decorative Tamil Nadu outline (the same shape as the overview) stays fixed at the right on screens 1080 px and wider. Tables are opaque cards, so the outline disappears behind them only where they are; it is hidden on narrower screens.
+
+- **2026-10-27 (reversal):** the fixed Tamil Nadu outline on the whitepaper was removed at the user's request, together with its hero text-width limit, the opaque table cards and the footer layering. The whitepaper hero (title and intro, no new words) and the larger bottom gap stay. The outline remains on the overview hero only.
