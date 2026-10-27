@@ -99,5 +99,8 @@ def test_matched_terms_picks_same_judge_term():
             mk("DMK-2021-0001", "2021-10-07", "strong", "fulfilled"), mk("DMK-2021-0002", "2021-10-07", "strong", "not_started"),
             mk("DMK-2021-0003", "2021-10-07", "strong", "not_started"), mk("DMK-2021-0004", "2021-10-07", "strong", "not_started"),
             mk("AIADMK-2016-0001", "2016-10-23", "bulk", "fulfilled")]
-    ids, share = project.matched_terms(cfg, rows, "TVK-2026", 5, 0.9)
+    ids, share = project.matched_terms(cfg, rows, "TVK-2026", 5, 0.9, {"DMK-2021": 4, "AIADMK-2016": 1, "TVK-2026": 2})
     assert ids == ["DMK-2021"] and share == pytest.approx(0.25)
+    # a term whose landmark is only partly covered by the same judge is not matched
+    ids2, _ = project.matched_terms(cfg, rows, "TVK-2026", 5, 0.9, {"DMK-2021": 40, "AIADMK-2016": 1, "TVK-2026": 2})
+    assert ids2 == []

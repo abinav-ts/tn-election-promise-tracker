@@ -75,6 +75,7 @@ def chunk_docs(cfg: Config, chunk_ids: set[str]) -> dict[str, dict]:
 
 
 def summary_for(cfg: Config, rows: list[dict], months: dict) -> dict:
+    promises_all = load_promises(cfg)
     summary = {"statuses": STATUS_ORDER, "cells": []}
     cell: dict[tuple, Counter] = defaultdict(Counter)
     src: dict[tuple, Counter] = defaultdict(Counter)
@@ -83,10 +84,11 @@ def summary_for(cfg: Config, rows: list[dict], months: dict) -> dict:
         k = (term, months.get((term, r["cutoff_date"]), 0))
         cell[k][r["status"]] += 1
         src[k][r["judge_source"]] += 1
+    totals = {t.term_id: sum(1 for p in promises_all if p.startswith(t.term_id + "-")) for t in cfg.settings.terms}
     for (term, m), c in sorted(cell.items()):
         n = sum(c.values())
-        summary["cells"].append({"term": term, "month": m, "n": n, "status": dict(c), "realised": sum(c[s] for s in E1) / n,
-                                 "judge_source": dict(src[(term, m)])})
+        summary["cells"].append({"term": term, "month": m, "n": n, "of": totals[term], "complete": n >= 0.99 * totals[term],
+                                 "status": dict(c), "realised": sum(c[s] for s in E1) / n, "judge_source": dict(src[(term, m)])})
     summary["terms"] = {t.term_id: {"party": t.party, "sworn_in": t.sworn_in.isoformat(),
                                     "term_end": t.term_end.isoformat() if t.term_end else None, "role": str(t.role)}
                         for t in cfg.settings.terms}
@@ -194,7 +196,11 @@ def export(cfg: Optional[Config] = None) -> dict:
     claude_model = json.loads(mc.read_text(encoding="utf-8")) if mc.exists() else model
     standin = not mc.exists()
     sg = built["summary_bulk"]
-    (out / "summary_claude.json").write_text(_json(_stamp(built["summary"], "claude", standin)), encoding="utf-8")
+    try:
+        csum = summary_for(cfg, mdata.load_final(cfg, "strong"), cutoff_months(cfg))
+    except FileNotFoundError:
+        csum = built["summary"]
+    (out / "summary_claude.json").write_text(_json(_stamp(csum, "claude", standin)), encoding="utf-8")
     (out / "model_claude.json").write_text(_json(_stamp(claude_model, "claude", standin)), encoding="utf-8")
     if sg:
         (out / "summary_gemini.json").write_text(_json(_stamp(sg, "gemini")), encoding="utf-8")

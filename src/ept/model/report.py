@@ -64,11 +64,12 @@ def _fits(cfg: Config, tbl: pd.DataFrame) -> dict:
 def run_all(cfg: Config, quick: bool = False, source: str = "final") -> dict:
     m = cfg.settings.model
     rows = data.load_final(cfg, source)
-    tbl = data.analysis_table(cfg, rows=rows)
+    tbl = data.analysis_table(cfg, rows=rows, allow_missing=0.01 if source == "strong" else 0.0)
+    excluded = tbl.attrs.get("excluded", {})
     if quick:
         cfg.settings.model.bootstrap.n = min(cfg.settings.model.bootstrap.n, 20)
     res: dict = {"generated_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-                 "final_export": data.newest_final(cfg, source).name, "source": source, "settings": m.model_dump(mode="json"),
+                 "final_export": data.newest_final(cfg, source).name, "source": source, "excluded_promises": excluded, "settings": m.model_dump(mode="json"),
                  "counts": {t: {"n": int(len(d)), "E1": int(d["E1"].sum()), "E2": int(d["E2"].sum()),
                                 "day1": int((d[d.E1 == 1]["T"] == 1).sum()),
                                 "coarse_dates": int(((d.E1 == 1) & (d.date_precision != "day")).sum()),
@@ -81,7 +82,7 @@ def run_all(cfg: Config, quick: bool = False, source: str = "final") -> dict:
                        "E2": backtest.reverse_backtest(cfg, tbl, rows, "DMK-2021", "AIADMK-2016", "E2")}
     sens = {}
     for mode in ("start", "end"):
-        t2 = data.analysis_table(cfg, mode=mode, rows=rows)
+        t2 = data.analysis_table(cfg, mode=mode, rows=rows, allow_missing=0.01 if source == "strong" else 0.0)
         b = backtest.reverse_backtest(cfg, t2, rows, "DMK-2021", "AIADMK-2016", "E1")
         sens[mode] = {lm: {k: e[k] for k in ("mae_model", "mae_model_pace", "mae_baseline")}
                       for lm, e in _avail(b).items()}

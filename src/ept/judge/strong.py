@@ -263,9 +263,12 @@ def run_export(levels: Optional[list[str]] = None, run_id: Optional[str] = None,
              if u.level in levels and (u.uid not in exported_units or u.level == gap_level)]
     # within a level, earlier cutoffs first, so a chunk list shared by later landmarks is judged once (reuse)
     units.sort(key=lambda u: (levels.index(u.level), _order(u.cutoff)))
-    # D-122: a key counts as done (reusable) only if its batch was actually imported, never merely exported
+    # D-122: a key counts as done (reusable) only if its batch was imported AND a strong verdict exists for it
+    # (a task that failed in an imported batch has none and must be judged again)
+    judged = {r[0] for r in conn.execute("select distinct judging_key from indicator_verdicts where judge_source = 'strong'")}
     done = {t["key"]: (b["term"], b["order"]) for b in m["batches"]
-            if not b.get("retry_of") and str(b.get("status", "")).startswith("imported") for t in b["tasks"]}
+            if not b.get("retry_of") and str(b.get("status", "")).startswith("imported")
+            for t in b["tasks"] if t["key"] in judged}
     new = make_batches(units, cfg.settings.judge.strong.tasks_per_batch, done)
     n0 = max([b["n"] for b in m["batches"]] or [0])
     unit_cut = {u.uid: u.cutoff for u in units}

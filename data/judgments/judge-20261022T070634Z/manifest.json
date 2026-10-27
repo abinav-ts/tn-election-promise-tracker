@@ -54689,6 +54689,128 @@
     "DMK-2021-0446@full",
     "DMK-2021-0554@full"
    ]
+  },
+  {
+   "n": 340,
+   "name": "batch_340",
+   "group": "AIADMK-2016@full",
+   "term": "AIADMK-2016",
+   "cutoff": "full",
+   "order": [
+    "2021-05-06",
+    true
+   ],
+   "levels": [
+    "claude_full_gap"
+   ],
+   "units": [
+    "AIADMK-2016-0299@full",
+    "AIADMK-2016-0154@full",
+    "AIADMK-2016-0151@full"
+   ],
+   "tasks": [
+    {
+     "alias": "T01",
+     "key": "2a1b060f2926ab4dc42648ab07fe42632cc42675326d20824ff917300cd0da83",
+     "indicator_id": "AIADMK-2016-0299-I1"
+    },
+    {
+     "alias": "T02",
+     "key": "238e7f0eb7263207fb0c16574795529b3d58eeb9c5941e37d78c75ecf04d0ecc",
+     "indicator_id": "AIADMK-2016-0154-I1"
+    },
+    {
+     "alias": "T03",
+     "key": "cb656d8a00aa58a927d2b7aa4b44617d3d22943af85743a300ceefea1e0ece84",
+     "indicator_id": "AIADMK-2016-0151-I1"
+    }
+   ],
+   "reused": [],
+   "status": "imported_with_failures",
+   "failed": {
+    "T01": [
+     "J5: the realisation date is before the government took office or later than the cited extracts allow"
+    ],
+    "T02": [
+     "J6: the realisation date is neither the date extract's document date nor a date written in it"
+    ],
+    "T03": [
+     "J6: the realisation date is neither the date extract's document date nor a date written in it"
+    ]
+   },
+   "model": "claude-sonnet-5-5",
+   "complete_units": []
+  },
+  {
+   "n": 341,
+   "name": "batch_341",
+   "group": "DMK-2021@full",
+   "term": "DMK-2021",
+   "cutoff": "full",
+   "order": [
+    "2026-05-09",
+    true
+   ],
+   "levels": [
+    "claude_full_gap"
+   ],
+   "units": [
+    "DMK-2021-0312@full",
+    "DMK-2021-0536@full",
+    "DMK-2021-0284@full",
+    "DMK-2021-0257@full",
+    "DMK-2021-0664@full"
+   ],
+   "tasks": [
+    {
+     "alias": "T01",
+     "key": "6dd07b903315321b1ffdbd961636eeec6688765c74e641df6e627e3621c341ee",
+     "indicator_id": "DMK-2021-0284-I2"
+    },
+    {
+     "alias": "T02",
+     "key": "3b0e898707f729429cb04d3f485afef5a767e4f3dd9c3ded283a2c183592bec3",
+     "indicator_id": "DMK-2021-0664-I1"
+    }
+   ],
+   "reused": [
+    {
+     "key": "086cc88132484662bf1166b8b9977bd6c4ecb66ebf7b1515fb3c640e6dc3f521",
+     "indicator_id": "DMK-2021-0312-I1",
+     "cutoff": "full"
+    },
+    {
+     "key": "f6ce08add59dbc58b76ade9e5fcc9e7e249f4ae14c59f514d84dc9e0bca7fd33",
+     "indicator_id": "DMK-2021-0312-I2",
+     "cutoff": "full"
+    },
+    {
+     "key": "736a3e28119238f7b4c9dd08dc531b63681fc446609e6974fb84740dee04e0ea",
+     "indicator_id": "DMK-2021-0536-I1",
+     "cutoff": "full"
+    },
+    {
+     "key": "4ca6a45497d973d841b9c7b71eff7fb0d3734079a0fd26f750c78da0c5871b39",
+     "indicator_id": "DMK-2021-0284-I1",
+     "cutoff": "full"
+    },
+    {
+     "key": "a09bba24463f3a1a153b5483a09f048eeee09889c5ea9c93760c8f70a18ee50d",
+     "indicator_id": "DMK-2021-0257-I1",
+     "cutoff": "full"
+    }
+   ],
+   "status": "imported_with_failures",
+   "failed": {
+    "T01": [
+     "J3: quote for C1 not found in the extract verbatim (copy one continuous passage exactly from that extract, no '...')"
+    ],
+    "T02": [
+     "J6: the realisation date is neither the date extract's document date nor a date written in it"
+    ]
+   },
+   "model": "claude-sonnet-5-5",
+   "complete_units": []
   }
  ],
  "levels": {

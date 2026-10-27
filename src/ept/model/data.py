@@ -79,7 +79,11 @@ def _term_rows(rows: list[dict], term_id: str, term_end: Optional[dt.date], snap
             if r["promise_id"].startswith(term_id + "-") and r["cutoff_date"] == want}
 
 
-def analysis_table(cfg: Config, mode: Optional[str] = None, rows: Optional[list[dict]] = None) -> pd.DataFrame:
+def analysis_table(cfg: Config, mode: Optional[str] = None, rows: Optional[list[dict]] = None,
+                   allow_missing: float = 0.0) -> pd.DataFrame:
+    """`allow_missing` (D-123): the largest share of a term's promises that may lack a verdict at the comparison cutoff and
+    be excluded (the Claude-only setting, where a few tasks never pass the checks); the excluded ids are kept in
+    `df.attrs["excluded"]`."""
     mode = mode or cfg.settings.model.coarse_dates
     rows = rows if rows is not None else load_final(cfg)
     cov = load_covariates(cfg).set_index("promise_id")
@@ -100,10 +104,18 @@ def analysis_table(cfg: Config, mode: Optional[str] = None, rows: Optional[list[
     df = pd.DataFrame(out)
     expected = cov.groupby("term_id").size().to_dict()
     got = df.groupby("term_id").size().to_dict()
-    if got != expected:
-        raise ValueError(f"the verdict export does not cover every promise at the comparison cutoff: {got} vs {expected} "
-                         "(a partial Claude-only export is not ready for modelling)")
-    return df.sort_values("promise_id").reset_index(drop=True)
+    excluded = {}
+    for t, n in expected.items():
+        miss = n - got.get(t, 0)
+        if miss and miss / n > allow_missing:
+            raise ValueError(f"the verdict export does not cover every promise at the comparison cutoff: {got} vs {expected} "
+                             f"(more than {allow_missing:.1%} missing in {t}; a partial export is not ready for modelling)")
+        if miss:
+            excluded[t] = sorted(set(cov.index[cov["term_id"] == t]) - set(df["promise_id"]))
+    df.attrs["excluded"] = excluded
+    out_df = df.sort_values("promise_id").reset_index(drop=True)
+    out_df.attrs["excluded"] = excluded
+    return out_df
 
 
 def landmark_state(cfg: Config, term_id: str, months: int, rows: Optional[list[dict]] = None) -> pd.Series:

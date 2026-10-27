@@ -1,7 +1,8 @@
 {
- "generated_at": "2026-10-26T11:02:03+00:00",
+ "generated_at": "2026-10-27T05:50:48+00:00",
  "final_export": "final_judge-20261025T102013Z.jsonl",
  "source": "final",
+ "excluded_promises": {},
  "settings": {
   "covariates": [
    "promise_type",
@@ -4597,6 +4598,7 @@
    "documented_share_by_term": {
     "AIADMK-2016": {
      "n": 312,
+     "of": 312,
      "documented_share": 0.34615384615384615,
      "judge_source": {
       "bulk": 312
@@ -4604,6 +4606,7 @@
     },
     "DMK-2021": {
      "n": 667,
+     "of": 667,
      "documented_share": 0.047976011994003,
      "judge_source": {
       "strong": 667
@@ -4611,6 +4614,7 @@
     },
     "TVK-2026": {
      "n": 695,
+     "of": 695,
      "documented_share": 0.033093525179856115,
      "judge_source": {
       "strong": 694,

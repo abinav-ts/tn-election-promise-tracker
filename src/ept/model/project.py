@@ -16,7 +16,8 @@ def _rng(seed: str, salt: int = 0) -> np.random.Generator:
     return np.random.default_rng(int(hashlib.sha256(f"{seed}:{salt}".encode()).hexdigest()[:12], 16))
 
 
-def matched_terms(cfg: Config, rows: list[dict], target: str, months: int, min_share: float) -> tuple[list[str], float]:
+def matched_terms(cfg: Config, rows: list[dict], target: str, months: int, min_share: float,
+                  totals: dict[str, int] | None = None) -> tuple[list[str], float]:
     """Scenario B (D-114): completed terms whose landmark-`months` rows used the same judge as the target's snapshot
     rows (>= `min_share` of them); returns their ids and the mean documented (landmark) E1 share."""
     from ept.dates import add_months
@@ -25,6 +26,9 @@ def matched_terms(cfg: Config, rows: list[dict], target: str, months: int, min_s
     def at(term_id: str, cutoff: str) -> list[dict]:
         return [r for r in rows if r["promise_id"].startswith(term_id + "-") and r["cutoff_date"] == cutoff]
 
+    if totals is None:
+        cov = data.load_covariates(cfg)
+        totals = cov.groupby("term_id").size().to_dict()
     snap = add_months(cfg.term(target).sworn_in, months).isoformat()
     t_rows = at(target, snap)
     judge = max({r["judge_source"] for r in t_rows}, key=lambda j: sum(r["judge_source"] == j for r in t_rows))
@@ -33,7 +37,9 @@ def matched_terms(cfg: Config, rows: list[dict], target: str, months: int, min_s
         if t.term_id == target or t.term_end is None:
             continue
         rr = at(t.term_id, add_months(t.sworn_in, months).isoformat())
-        if rr and sum(r["judge_source"] == judge for r in rr) / len(rr) >= min_share:
+        # D-123: the landmark must be covered (not a subset), else its documented share is biased
+        covered = len(rr) / totals.get(t.term_id, len(rr)) if rr else 0.0
+        if rr and covered >= min_share and sum(r["judge_source"] == judge for r in rr) / len(rr) >= min_share:
             ids.append(t.term_id)
             shares.append(sum(r["status"] in E1_STATUSES for r in rr) / len(rr))
     return ids, float(np.mean(shares)) if shares else float("nan")
@@ -51,7 +57,8 @@ def pace_indicator(cfg: Config, rows: list[dict], tvk: pd.DataFrame, event: str 
     m = cfg.settings.model
     tvk_id = str(tvk["term_id"].iloc[0])
     month = m.landmarks_months[0]
-    ids, share = matched_terms(cfg, rows, tvk_id, month, m.matched_min_same_judge)
+    totals_all = data.load_covariates(cfg).groupby("term_id").size().to_dict()
+    ids, share = matched_terms(cfg, rows, tvk_id, month, m.matched_min_same_judge, totals_all)
     O, N, c = float(tvk[event].sum()), len(tvk), float(m.pace_prior_events)
     shares = {}
     for t in cfg.settings.terms:
@@ -61,7 +68,8 @@ def pace_indicator(cfg: Config, rows: list[dict], tvk: pd.DataFrame, event: str 
             judges = {}
             for r in rr:
                 judges[r["judge_source"]] = judges.get(r["judge_source"], 0) + 1
-            shares[t.term_id] = {"n": len(rr), "documented_share": sum(r["status"] in E1_STATUSES for r in rr) / len(rr),
+            shares[t.term_id] = {"n": len(rr), "of": int(totals_all.get(t.term_id, len(rr))),
+                                 "documented_share": sum(r["status"] in E1_STATUSES for r in rr) / len(rr),
                                  "judge_source": judges}
     out = {"month": month, "observed": O, "n": N, "observed_share": O / N, "matched_terms": ids,
            "documented_share_by_term": shares, "prior_events": c}

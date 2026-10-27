@@ -633,7 +633,7 @@
   },
   "kind": "strong",
   "fingerprint": {
-    "hash": "d127f6bf7389b728a04f51e1eae22149002d0c87636bc2821864e8622f18ce6d",
+    "hash": "99388e471283cb65a935f4731e10e1c615eb47ca5c77315dfdfd484ec7b5ee04",
     "parts": {
       "prompt_version": "1.3",
       "retrieval_run": "retrieve-20261020T191347Z",
@@ -660,7 +660,7 @@
           "claude_aiadmk_m12"
         ]
       },
-      "code": "f03b35e3739417b8e51e696e151f4923c219529f03e871b1e6eb18264377f88e"
+      "code": "a1a569e58d4f6c664c2f2104187ef11acc50e61c1e08474f32c5aa0955d57c53"
     }
   },
   "complete": false,
@@ -3899,6 +3899,24 @@
       "tokens": null,
       "model": "claude-sonnet-5-5",
       "status": "imported"
+    },
+    {
+      "name": "batch_340",
+      "groups": [
+        "AIADMK-2016@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
+    },
+    {
+      "name": "batch_341",
+      "groups": [
+        "DMK-2021@full"
+      ],
+      "tokens": null,
+      "model": "claude-sonnet-5-5",
+      "status": "imported_with_failures"
     }
   ],
   "fingerprint_history": [
